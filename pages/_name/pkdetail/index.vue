@@ -1,0 +1,586 @@
+<template>
+  <div id="pkdetail">
+    <top-view></top-view>
+    <div class="top">
+      <div class="left">
+        <p>楼盘对比</p>
+        <span>楼盘信息</span>
+      </div>
+      <div class="center">
+        <img class="topimg" src="~/assets/lun02.jpg" alt />
+        <div class="msg">
+          <h6>锦云澜天里</h6>
+          <p class="type">
+            <span class="zhuang">在售</span>
+            <span>住宅</span>
+          </p>
+          <p class="pri">
+            约
+            <span>17500</span>元/m²
+          </p>
+          <button>
+            <img src="~/assets/navtel.png" />电话咨询
+          </button>
+        </div>
+      </div>
+      <div class="center">
+        <img class="topimg" src="~/assets/lun02.jpg" alt />
+        <div class="msg">
+          <h6>锦云澜天里</h6>
+          <p class="type">
+            <span class="zhuang">在售</span>
+            <span>住宅</span>
+          </p>
+          <p class="pri">
+            约
+            <span>17500</span>元/m²
+          </p>
+          <button>
+            <img src="~/assets/navtel.png" />电话咨询
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="message">
+      <table>
+        <tr class="address">
+          <td>楼盘地址</td>
+          <td>
+            <img src="~/assets/icon-path.png" alt />
+            <span>睦州大道与清溪大 道交叉口</span>
+          </td>
+          <td>
+            <img src="~/assets/icon-path.png" alt />
+            <span>睦州大道与清溪大 道交叉口</span>
+          </td>
+        </tr>
+        <tr>
+          <td>项目特色</td>
+          <td>
+            <span class="type">刚需楼盘</span>
+            <span class="type">刚需楼盘</span>
+          </td>
+          <td>
+            <span class="type">刚需楼盘</span>
+            <span class="type">刚需楼盘</span>
+          </td>
+        </tr>
+        <tr>
+          <td>销售状态</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>建筑类型</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr class="shou">
+          <td>预售许可</td>
+          <td>
+            <p>临售许字（2020） 第00013号</p>
+          </td>
+          <td>
+            <p>临售许字（2020） 第00013号</p>
+          </td>
+        </tr>
+        <tr>
+          <td>装修状况</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>层高</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>产权年限</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>距地铁</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+      </table>
+      <h3>销售信息</h3>
+      <table>
+        <tr class="pri">
+          <td>参考单价</td>
+          <td>
+            <p>约15000元/m²</p>
+            <button>咨询底价</button>
+          </td>
+          <td>
+            <p>约15000元/m²</p>
+            <button>咨询底价</button>
+          </td>
+        </tr>
+        <tr>
+          <td>参考总价</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>开盘时间</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>交房时间</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr class="shou">
+          <td>开发商</td>
+          <td>
+            <p>临售许字（2020） 第00013号</p>
+          </td>
+          <td>
+            <p>临售许字（2020） 第00013号</p>
+          </td>
+        </tr>
+
+        <tr class="hui">
+          <td>优惠信息</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+      </table>
+      <h3>建筑信息</h3>
+      <table>
+        <tr>
+          <td>户型面积</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr class="hu">
+          <td>楼盘户型</td>
+          <td>
+            <span>1室、2室</span>
+            <p class="more">
+              更多户型
+              <img src="~/assets/j-more.png" alt />
+            </p>
+          </td>
+          <td>
+            <span>1室、2室</span>
+            <p class="more">
+              更多户型
+              <img src="~/assets/j-more.png" alt />
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>建筑面积</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>物业费用</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>容积率</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>物业公司</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>绿化率</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+        <tr>
+          <td>车位情况</td>
+          <td>在售</td>
+          <td>在售</td>
+        </tr>
+      </table>
+      <button class="btn">咨询详细楼盘信息</button>
+    </div>
+    <div class="other">
+      <h3>猜你喜欢</h3>
+      <div class="pro">
+        <img src="~/assets/lun02.jpg" alt />
+        <div class="pro-msg">
+          <h5>
+            上课的龙卷风
+            <span>在售</span>
+          </h5>
+          <p class="pro-price">
+            <span>53000</span>
+            <i>元/m²</i>起
+          </p>
+          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
+          <p class="pro-icon">
+            <span class="pro-icon-zhuang">两个</span>
+            <span class="pro-icon-type">我的</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <nav-view></nav-view>
+  </div>
+</template>
+<script>
+import topView from "@/components/header.vue";
+import nav from "@/components/nav.vue";
+export default {
+  components: {
+    "top-view": topView,
+    "nav-view": nav,
+  },
+  data() {
+    return {
+      navnum: 0,
+    };
+  },
+};
+</script>
+<style lang="less" scoped>
+.top {
+  display: flex;
+  padding-top: 44px;
+  padding-bottom: 1.25rem;
+  .left {
+    width: 5.625rem;
+    text-align: center;
+    margin-right: 0.3125rem;
+    p {
+      color: #646566;
+      font-size: 0.8125rem;
+      margin-top: 3.375rem;
+    }
+    span {
+      display: block;
+      color: #121212;
+      font-size: 0.9375rem;
+      margin-top: 6.375rem;
+    }
+  }
+  .center {
+    width: 7.5rem;
+    height: 10.8rem;
+    border-radius: 0.25rem;
+    box-shadow: 0px 0px 1.1875rem 0.0625rem rgba(0, 0, 0, 0.04);
+    margin-right: 1.25rem;
+    margin-top: 20px;
+    .topimg {
+      width: 100%;
+      height: 4.125rem;
+      border-radius: 0.1875rem 0.1875rem 0 0;
+      margin-bottom: 0.2rem;
+    }
+    .msg {
+      padding-left: 0.625rem;
+      h6 {
+        color: #323233;
+        font-size: 0.8125rem;
+        width: 5.625rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 0.25rem;
+        font-weight: 400;
+      }
+      .type {
+        margin-bottom: 0.375rem;
+        span {
+          font-size: 0.625rem;
+          color: #7d7e80;
+          padding: 0.125rem 0.25rem;
+          background-color: #f5f5f5;
+          border-radius: 0.125rem;
+          margin-right: 0.3125rem;
+        }
+        .zhuang {
+          color: #2ac66d;
+          background-color: #e9f7ea;
+        }
+      }
+      .pri {
+        color: #ff6a48;
+        font-size: 0.625rem;
+        margin-bottom: 0.25rem;
+        span {
+          font-size: 0.875rem;
+        }
+      }
+      button {
+        width: 6rem;
+        height: 1.5rem;
+        border-radius: 0.1875rem;
+        text-align: center;
+        line-height: 1.5rem;
+        border: 0;
+        background: linear-gradient(-90deg, #ff4c4c, #ff986a);
+        box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(255, 76, 76, 0.2);
+        color: #fff;
+        font-size: 0.75rem;
+        img {
+          width: 0.75rem;
+          margin-right: 0.25rem;
+          margin-bottom: -0.125rem;
+        }
+      }
+    }
+  }
+}
+.message {
+  margin-bottom: 2.1875rem;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    tr {
+      height: 3.125rem;
+      border-bottom: 0.03125rem solid #ededed;
+      td {
+        font-size: 0.8125rem;
+        text-align: center;
+        color: #323233;
+        img {
+          width: 0.75rem;
+        }
+        .type {
+          color: #7d7e80;
+          font-size: 0.6875rem;
+          padding: 0.1875rem 0.375rem;
+          background-color: #f5f5f5;
+          border-radius: 0.125rem;
+        }
+        .type:nth-of-type(1) {
+          margin-left: 0.5625rem;
+          margin-right: 0.3125rem;
+        }
+      }
+      td:nth-of-type(1) {
+        width: 4.75rem;
+        background-color: #f7f7f7;
+        color: #7d7e80;
+        font-size: 0.8125rem;
+        text-align: left;
+        padding-left: 0.875rem;
+      }
+      td:nth-of-type(2) {
+        border-right: 0.03125rem solid #e6e6e6;
+      }
+    }
+    .address {
+      td:nth-of-type(2) {
+        color: #323233;
+        text-align: left;
+        padding: 0 0.5625rem;
+        span {
+          display: inline-block;
+          width: 6.5rem;
+          margin-left: 0.1rem;
+        }
+        img {
+          margin-bottom: -0.0625rem;
+          float: left;
+        }
+      }
+      td:nth-of-type(3) {
+        text-align: left;
+        padding: 0 0.5625rem;
+        span {
+          display: inline-block;
+          width: 6.5rem;
+          margin-left: 0.1rem;
+        }
+        img {
+          margin-bottom: -0.0625rem;
+          float: left;
+        }
+      }
+    }
+    .shou {
+      height: 3.75rem;
+      td:nth-of-type(2) {
+        text-align: left;
+        p {
+          width: 6.875rem;
+          margin-left: 1.125rem;
+        }
+      }
+      td:nth-of-type(3) {
+        text-align: left;
+        p {
+          width: 6.875rem;
+          margin-left: 1.125rem;
+        }
+      }
+    }
+    .pri {
+      height: 4.375rem;
+      td:nth-of-type(2) {
+        p {
+          color: #ff5454;
+          margin-bottom: 0.5rem;
+        }
+        button {
+          width: 4.375rem;
+          height: 1.5rem;
+          border-radius: 0.1875rem;
+          text-align: center;
+          line-height: 1.5rem;
+          color: #fff;
+          font-size: 0.75rem;
+          border: 0;
+          background: linear-gradient(270deg, #1fc365, #3fd6a6);
+          box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(44, 203, 128, 0.2);
+        }
+      }
+      td:nth-of-type(3) {
+        p {
+          margin-bottom: 0.5rem;
+          color: #ff5454;
+        }
+        button {
+          width: 4.375rem;
+          height: 1.5rem;
+          border-radius: 0.1875rem;
+          text-align: center;
+          line-height: 1.5rem;
+          color: #fff;
+          font-size: 0.75rem;
+          border: 0;
+          background: linear-gradient(270deg, #1fc365, #3fd6a6);
+          box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(44, 203, 128, 0.2);
+        }
+      }
+    }
+    .hui {
+      td:nth-of-type(2) {
+        color: #fe582f;
+      }
+      td:nth-of-type(3) {
+        color: #fe582f;
+      }
+    }
+    .hu {
+      td:nth-of-type(2) {
+        p {
+          color: #5f7891;
+          font-size: 0.75rem;
+
+          margin-left: 1.125rem;
+        }
+      }
+      td:nth-of-type(3) {
+        p {
+          color: #5f7891;
+          font-size: 0.75rem;
+
+          margin-left: 1.125rem;
+        }
+      }
+    }
+  }
+  h3 {
+    color: #121212;
+    font-size: 0.9375rem;
+    line-height: 3.75rem;
+    font-weight: 400;
+    padding-left: 0.875rem;
+  }
+  .btn {
+    width: 18.75rem;
+    height: 2.25rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    line-height: 2.25rem;
+    margin-left: 2.34375rem;
+    margin-top: 1.25rem;
+    border: 0;
+    background-color: #f1f8f4;
+    color: #1fc365;
+    font-weight: 0.9375rem;
+    font-weight: bold;
+  }
+}
+.other {
+  padding: 0 4%;
+  padding-bottom: 3.75rem;
+  h3 {
+    color: rgba(50, 51, 51, 1);
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .pro {
+    margin-bottom: 1.875rem;
+    width: 100%;
+    display: flex;
+    text-decoration: none;
+    img {
+      width: 6.875rem;
+      height: 5rem;
+      margin-right: 0.75rem;
+      border-radius: 0.1875rem;
+    }
+    .pro-msg {
+      flex: 1;
+      h5 {
+        color: #5c5c5c;
+        font-size: 1rem;
+        font-weight: bold;
+        margin-top: -0.25rem;
+        margin-bottom: 0.125rem;
+        span {
+          color: #1fc365;
+          font-size: 0.6875rem;
+          float: right;
+          padding: 0.1875rem 0.375rem;
+          background-color: #f0faf1;
+          border-radius: 0.125rem;
+          font-weight: 400;
+        }
+      }
+      .pro-price {
+        color: #7a7a7a;
+        font-size: 0.75rem;
+        margin-bottom: 0.1875rem;
+        span {
+          color: #fe582f;
+          font-size: 0.9375rem;
+        }
+        i {
+          font-style: normal;
+          color: #fe582f;
+        }
+      }
+      .attr {
+        color: #7a7a7a;
+        font-size: 0.75rem;
+        margin-bottom: 0.1875rem;
+      }
+      .pro-icon {
+        .pro-icon-zhuang {
+          color: #5aabe5;
+          font-size: 0.6875rem;
+          padding: 0.1875rem 0.375rem;
+          background-color: #f0f5f9;
+          margin-right: 0.375rem;
+          border-radius: 0.125rem;
+        }
+        .pro-icon-type {
+          color: #888a8f;
+          font-size: 0.6875rem;
+          padding: 0.1875rem 0.375rem;
+          border-radius: 0.125rem;
+          background-color: #f7f8fa;
+          margin-right: 0.375rem;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -38,7 +38,10 @@ export default {
       },
       {
         src: '//webapi.amap.com/maps?v=1.4.14&key=729ac4d779c7e625bc11bd5ba3ff3112'
-      }
+      },
+      {
+        src: '//cdn.bootcdn.net/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js'
+      },
     ]
   },
   /*
@@ -49,10 +52,10 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [{
-    src: '~plugins/echarts',
-    ssr: false
-  }, ],
+  plugins: [
+    {src: '~plugins/echarts',ssr: false}, 
+    {src: '~plugins/vant',ssr: true}, 
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

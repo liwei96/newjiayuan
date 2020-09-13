@@ -632,28 +632,6 @@
       <button class="btnicon">获取详细周边配套</button>
     </div>
     <div class="line"></div>
-    <div class="other">
-      <h3>看了该楼盘的还看了</h3>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="line"></div>
     <div class="dian">
       <h3>
         楼盘点评
@@ -702,7 +680,66 @@
     </div>
     <div class="line"></div>
     <div class="wen">
-        <h3>楼盘问答 <span>全部问答<img src="~/assets/go.png" alt=""></span></h3>
+      <h3>
+        楼盘问答
+        <span>
+          全部问答
+          <img src="~/assets/go.png" alt />
+        </span>
+      </h3>
+      <ul>
+        <li>
+          <p class="con">
+            <span>问</span>苕溪学府住宅是否可以安装防盗窗，是否可以封闭 阳台?
+          </p>
+          <p class="num">共1个专业回答</p>
+        </li>
+        <li>
+          <p class="con">
+            <span>问</span>苕溪学府住宅是否可以安装防盗窗，是否可以封闭 阳台?
+          </p>
+          <p class="num">共1个专业回答</p>
+        </li>
+      </ul>
+      <button>我要提问</button>
+    </div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="other">
+      <h3>为你推荐</h3>
+      <div class="pro">
+        <img src="~/assets/lun02.jpg" alt />
+        <div class="pro-msg">
+          <h5>
+            上课的龙卷风
+            <span>在售</span>
+          </h5>
+          <p class="pro-price">
+            <span>53000</span>
+            <i>元/m²</i>起
+          </p>
+          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
+          <p class="pro-icon">
+            <span class="pro-icon-zhuang">两个</span>
+            <span class="pro-icon-type">我的</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="nav-peo">
+        <img src="~/assets/ke_h.png" alt />
+        <span v-if="btn"></span>
+        <p>在线咨询</p>
+      </div>
+      <button>
+        <img src="~/assets/time.png" />预约看房
+      </button>
+      <a href="tel:400">
+        <button class="nav-tel">
+          <img src="~/assets/bartel.png" />电话咨询
+        </button>
+      </a>
     </div>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
@@ -719,6 +756,7 @@ export default {
   },
   data() {
     return {
+      btn:false,
       mapnum: 0,
       tabnum: 1,
       isnull: false,
@@ -2213,6 +2251,7 @@ header {
       width: 6.875rem;
       height: 5rem;
       margin-right: 0.75rem;
+      border-radius: 0.1875rem;
     }
     .pro-msg {
       flex: 1;
@@ -2290,7 +2329,7 @@ header {
   }
   ul {
     li {
-        margin-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
       .dian-top {
         overflow: hidden;
         .peo {
@@ -2329,36 +2368,155 @@ header {
           }
         }
         .active {
-            color: #FF761A;
+          color: #ff761a;
         }
       }
       .dian-bom {
-          color: #333333;
-          font-size: 0.875rem;
-          line-height: 1.25rem;
-          margin-top: 0.5rem
+        color: #333333;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        margin-top: 0.5rem;
       }
     }
   }
   button {
-      width: 100%;
-      height: 2.5rem;
-      border-radius: 0.25rem;
-      background-color: #F1F8F4;
-      text-align: center;
-      line-height: 2.5rem;
-      color: #20C466;
-      font-size: 0.9375rem;
-      font-weight: bold;
-      border: 0;
-      margin-bottom: 1.25rem;
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    background-color: #f1f8f4;
+    text-align: center;
+    line-height: 2.5rem;
+    color: #20c466;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    border: 0;
+    margin-bottom: 1.25rem;
   }
 }
 .wen {
-    padding: 0 4%;
-    h3 {
-        color: #131313;
-        font-size: 1rem;
+  padding: 0 4%;
+  h3 {
+    color: #131313;
+    font-size: 1rem;
+    padding: 1.125rem 0 1.5rem 0;
+    span {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: #646466;
+      float: right;
+      img {
+        width: 0.875rem;
+        margin-left: 0.25rem;
+        margin-bottom: -0.125rem;
+      }
     }
+  }
+  ul {
+    li {
+      margin-bottom: 1.25rem;
+      .con {
+        color: #323333;
+        font-size: 0.875rem;
+        line-height: 1.375rem;
+        span {
+          padding: 0.125rem 0.1875rem 0.1875rem 0.1875rem;
+          border-radius: 0.125rem;
+          background-color: #ff5454;
+          color: #fff;
+          font-size: 0.625rem;
+          margin-right: 0.4rem;
+        }
+      }
+      .num {
+        color: #9a9a9a;
+        font-size: 0.8125rem;
+      }
+    }
+  }
+  button {
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    line-height: 2.5rem;
+    font-weight: bold;
+    background-color: #f1f8f4;
+    color: #1fc365;
+    font-size: 0.9375rem;
+    border: 0;
+    margin-bottom: 1.25rem;
+  }
+}
+.nav {
+  position: fixed;
+  width: 92%;
+  height: 3.75rem;
+  background-color: #fff;
+  padding: 0 4%;
+  bottom: 0;
+  display: flex;
+  z-index: 1000;
+  align-items: center;
+  .nav-peo {
+    position: relative;
+    margin-right: 1.25rem;
+    margin-left: 0.625rem;
+    text-align: center;
+    img {
+      width: 1.5rem;
+    }
+    span {
+      display: block;
+      width: 0.8125rem;
+      height: 0.8125rem;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 0.8125rem;
+      font-size: 0.625rem;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #f34f4f;
+    }
+    p {
+      color: #626466;
+      font-size: 0.75rem;
+    }
+  }
+  .nav-msg {
+    margin-right: 1.25rem;
+    h5 {
+      color: #222324;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    p {
+      color: #696a6d;
+      font-size: 0.75rem;
+    }
+  }
+  button {
+    width: 8rem;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(270deg, #348aff, #6accff);
+    text-align: center;
+    line-height: 2.5rem;
+    color: #fff;
+    font-size: 0.9375rem;
+    border: 0;
+    img {
+      width: 0.9375rem;
+      margin-bottom: -0.125rem;
+      margin-right: 0.25rem;
+    }
+  }
+  .nav-tel {
+    margin-left: 0.625rem;
+    color: #fff;
+    background: linear-gradient(270deg, #1fc365, #3fd6a6);
+  }
 }
 </style>
