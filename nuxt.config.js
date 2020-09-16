@@ -42,6 +42,9 @@ export default {
       {
         src: '//cdn.bootcdn.net/ajax/libs/bootstrap-slider/10.6.1/bootstrap-slider.min.js'
       },
+      {
+        src: '//ll.edefang.net/getIp.php'
+      },
     ]
   },
   /*
@@ -76,7 +79,19 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {},
+  proxy: {
+    '/jy': {
+      target: 'http://39.98.227.114:9560/', // 你请求的第三方接口
+      // changeOrigin: true, // 在本地会创建一个虚拟服务端，然后发送请求的数据，并同时接收请求的数据，这样服务端和服务端进行数据的交互就不会有跨域问题
+      pathRewrite: { // 路径重写，
+        '^/jy': '/jy', // 替换target中的请求地址
+        changeOrigin: true
+      }
+    },
+  },
+  axios: {
+    proxy: true,
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
@@ -93,5 +108,6 @@ export default {
         }, 'vant']
       ],
     },
-  }
+  },
+  
 }

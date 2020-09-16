@@ -1,0 +1,358 @@
+<template>
+  <div id="home">
+    <div class="top">
+      <div class="tops">
+        <img src="~/assets/home-back.png" alt class="back" @click="back" />
+        <img src="~/assets/set.png" alt class="set" @click="set" />
+      </div>
+      <div class="name">
+        <img src="~/assets/loginpeo.png" alt />
+        <h4>点击登录</h4>
+      </div>
+      <ul class="li">
+        <li>
+          <nuxt-link :to="'/'+jkl+'/viewed'">
+            <div>
+              <p class="num">5</p>
+              <p class="msg">浏览足迹</p>
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/collection'">
+            <div>
+              <p class="num">0</p>
+              <p class="msg">我的收藏</p>
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/cancel'">
+            <div>
+              <p class="num">1</p>
+              <p class="msg">优惠卡券</p>
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/linkman'">
+            <div>
+              <p class="num">
+                3
+                <span>1</span>
+              </p>
+              <p class="msg">我的联系</p>
+            </div>
+          </nuxt-link>
+        </li>
+      </ul>
+      <ul class="ll">
+        <li>
+          <nuxt-link :to="'/'+jkl+'/help'">
+            <div>
+              <img src="~/assets/login-search.png" alt />
+              <p>帮我找房</p>
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/order'">
+            <div>
+              <img src="~/assets/login-yue.png" alt />
+              <p>预约看房</p>
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <img src="~/assets/home-map.png" alt />
+          <p>地图找房</p>
+        </li>
+        <li>
+          <img src="~/assets/home-jia.png" alt />
+          <p>城市加盟</p>
+        </li>
+      </ul>
+    </div>
+    <div class="con">
+      <ul class="col">
+        <li>
+          <nuxt-link :to="'/'+jkl+'/about'">
+            <div>
+              <img class="pp" src="~/assets/home-about.png" alt />
+              <p>关于家园</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+        <li @click="show=true">
+            <img class="pp" src="~/assets/home-tel.png" alt />
+            <p>联系我们</p>
+            <img class="more" src="~/assets/home-more.png" alt />
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/complaint'">
+            <div>
+              <img class="pp" src="~/assets/home-comment.png" alt />
+              <p>投诉建议</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+      </ul>
+      <ul class="col">
+        <li>
+          <nuxt-link :to="'/'+jkl+'/statement'">
+            <div>
+              <img class="pp" src="~/assets/home-vesion.png" alt />
+              <p>版权声明</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/disclaimer'">
+            <div>
+              <img class="pp" src="~/assets/home-mian.png" alt />
+              <p>免责协议</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/privacy'">
+            <div>
+              <img class="pp" src="~/assets/home-yin.png" alt />
+              <p>隐私政策</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+        <li>
+          <nuxt-link :to="'/'+jkl+'/protocol'">
+            <div>
+              <img class="pp" src="~/assets/home-xie.png" alt />
+              <p>服务协议</p>
+              <img class="more" src="~/assets/home-more.png" alt />
+            </div>
+          </nuxt-link>
+        </li>
+      </ul>
+    </div>
+    <!-- <van-popup v-model="show" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
+      <tan-view :id=45 :name="'士大夫'" :typenum="5" :typebtn="5"></tan-view>
+    </van-popup>-->
+    <van-popup v-model="show" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="box">
+        <h4>拨打电话</h4>
+        <p class="tit">400-718-6686</p>
+        <div class="btn">
+          <p @click="show=false">取消</p>
+          <a :href="'tel:'+tel">
+          <p class="yes">确定</p>
+          </a>
+        </div>
+      </div>
+    </van-popup>
+  </div>
+</template>
+<script>
+import tan from "@/components/tan.vue";
+export default {
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+      show: false,
+      tel:'400'
+    };
+  },
+  data() {
+    return {
+      show: true,
+      jkl: "",
+      tel: "400-688-965",
+    };
+  },
+  components: {
+    "tan-view": tan,
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+    set() {
+      this.$router.push("/" + this.jkl + "/set");
+    },
+  },
+};
+</script>
+<style lang="less" scoped>
+#home {
+  background-color: #f7f7f7;
+  height: 100vh;
+}
+.top {
+  padding: 0 4%;
+  padding-top: 0.875rem;
+  background: url(~assets/home1.png) no-repeat;
+  background-size: 100%;
+  .tops {
+    margin-bottom: 0.75rem;
+  }
+  .back {
+    width: 1.25rem;
+  }
+  .set {
+    width: 1.25rem;
+    float: right;
+  }
+  .name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    img {
+      width: 3.125rem;
+      height: 3.125rem;
+      border-radius: 50%;
+      margin-right: 0.875rem;
+    }
+    h4 {
+      color: #115c31;
+      font-size: 1.125rem;
+    }
+  }
+  .li {
+    display: flex;
+    li {
+      width: 25%;
+      .num {
+        color: #115c31;
+        font-size: 1.125rem;
+        margin-bottom: 0.375rem;
+        text-align: center;
+        font-weight: bold;
+        position: relative;
+        span {
+          display: block;
+          width: 0.8125rem;
+          height: 0.8125rem;
+          text-align: center;
+          line-height: 0.8125rem;
+          border-radius: 50%;
+          background-color: #c6fbdd;
+          color: #1c8749;
+          font-size: 0.625rem;
+          position: absolute;
+          top: 0;
+          right: 1rem;
+        }
+      }
+      .msg {
+        color: #115c31;
+        font-size: 0.75rem;
+        text-align: center;
+      }
+    }
+  }
+  .ll {
+    width: 100%;
+    margin-top: 0.875rem;
+    height: 5.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 0px 1.0625rem 0.1875rem rgba(6, 0, 1, 0.03);
+    background-color: #fff;
+    margin-bottom: 0.6875rem;
+    li {
+      width: 25%;
+      text-align: center;
+      img {
+        width: 2rem;
+      }
+      p {
+        color: #101214;
+        font-size: 0.8125rem;
+      }
+    }
+  }
+}
+.con {
+  padding: 0 4%;
+  .col {
+    width: 100%;
+    // height: 9.375rem;
+    background-color: #fff;
+    border-radius: 0.75rem;
+    margin-bottom: 0.9375rem;
+    li {
+      display: flex;
+      align-items: center;
+      height: 3.125rem;
+      padding: 0 0.9375rem;
+      a {
+        width: 100%;
+      }
+      div {
+        display: flex;
+        align-items: center;
+        height: 3.125rem;
+      }
+      .pp {
+        height: 1.25rem;
+        margin-right: 0.5rem;
+      }
+      p {
+        color: #101214;
+        font-size: 0.875rem;
+      }
+      .more {
+        margin-left: auto;
+        height: 0.75rem;
+      }
+    }
+  }
+}
+.box {
+  width: 17.8125rem;
+  height: 9.875rem;
+  border-radius: 0.625rem;
+  background-color: #fff;
+  h4 {
+    color: #666666;
+    font-size: 1rem;
+    padding-top: 1.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 400;
+  }
+  .tit {
+    color: #343434;
+    font-size: 1.125rem;
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  .btn {
+    border-top: 0.03125rem solid #f7f7f7;
+    display: flex;
+    padding-top: 0.5rem;
+    p {
+      color: #7d7e80;
+      font-size: 1rem;
+      width: 50%;
+      text-align: center;
+      line-height: 2rem;
+    }
+    a{
+        width: 50%;
+        p {
+            width: 100%;
+        }
+    }
+    .yes {
+      color: #2ac66d;
+      border-left: 0.03125rem solid #f2f2f2;
+    }
+  }
+}
+</style>

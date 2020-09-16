@@ -358,6 +358,45 @@
 <script>
 import { Popup, Loading } from "vant";
 export default {
+  async asyncData(context) {
+    let city = context.store.state.city;
+    // let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/search/conditions", {
+          params: {
+            city: city,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+      context.$axios
+        .get("/jy/phone/search/conditions", {
+          params: {
+            city: city,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      tops: res.tops,
+      stricts: res.stricts,
+      finishes: res.finishes,
+      articles: res.articles,
+      recommends: res.recommends,
+      discounts: res.discounts,
+      dynamics: res.dynamics,
+      jkl: jkl,
+    };
+  },
   data() {
     return {
       load: false,

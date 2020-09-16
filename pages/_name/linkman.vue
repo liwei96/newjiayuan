@@ -1,0 +1,32 @@
+<template>
+    <div id="linkman">
+        <top-view></top-view>
+        <div class="con">
+            <img src="~/assets/linkman.png" alt="">
+            <p>您还没有联系人</p>
+        </div>
+    </div>
+</template>
+<script>
+import topView from "@/components/header.vue";
+export default {
+  components: {
+    "top-view": topView,
+  },
+};
+</script>
+<style lang="less" scoped>
+.con {
+    padding-top: 2.75rem;
+    text-align: center;
+    img {
+        width: 10.875rem;
+        margin-top: 9.25rem;
+        // margin-bottom: 2.5rem;
+    }
+    p {
+        color: #7D7F80;
+        font-size: 0.8125rem;
+    }
+}
+</style>

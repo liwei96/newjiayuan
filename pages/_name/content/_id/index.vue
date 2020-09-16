@@ -1,26 +1,18 @@
 <template>
   <div id="content">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <img class="home" src="~/assets/mapcai.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-    </header>
+    <top-view></top-view>
     <div class="topimg">
       <div class="swiper-topimg">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item,key) in imgs" :key="key">
-            <img :src="item" alt />
+            <img :src="item.small" alt />
           </div>
         </div>
       </div>
       <!-- <img class="img-top" :src="basic.img" alt /> -->
       <!-- <span class="imgnum">共{{basic.img_num}}张</span> -->
       <div class="zhe"></div>
-      <p class="imgnum">共13张</p>
+      <p class="imgnum">共{{imgnum}}张</p>
       <div class="taps">
         <p
           v-for="(item,key) in imgmsg"
@@ -33,17 +25,17 @@
     <div class="intro">
       <div class="intro-top">
         <div class="top-left">
-          <h2>锦云澜天里</h2>
+          <h2>{{abstract.name}}</h2>
           <p>
-            <span class="active">在售</span>
-            <span>住宅</span>
-            <span>地铁沿线</span>
+            <span class="active">{{abstract.state}}</span>
+            <span>{{abstract.type}}</span>
+            <span v-for="(item,key) in abstract.features" :key="key">{{item}}</span>
           </p>
         </div>
         <div class="top-right">
           <div class="pk box">
             <div class="img">
-              <img src="~/assets/proheart.png" alt />
+              <img src="~/assets/content-pk.png" alt />
               <span>hot</span>
             </div>
             <p>对比</p>
@@ -60,7 +52,7 @@
         <p>
           均价:
           <span class="price">
-            17800
+            {{abstract.price}}
             <i>元/m²</i>
           </span>
         </p>
@@ -73,11 +65,11 @@
         </p>
         <p>
           开盘:
-          <span>2010年8月</span>
+          <span>{{abstract.opentime}}</span>
         </p>
-        <p>
+        <p class="address">
           地址:
-          <span>艮山西路凯旋交叉口</span>
+          <span>{{abstract.address}}</span>
           <img src="~/assets/map.png" alt />
         </p>
       </div>
@@ -92,7 +84,10 @@
       </div>
     </div>
     <div class="tel">
-      <img src="~/assets/132.png" alt />
+      <a :href="'tel:'+phone">
+        <img src="~/assets/tel.jpg" alt />
+        <p>{{phone}}</p>
+      </a>
     </div>
     <div class="line"></div>
     <div class="te">
@@ -210,7 +205,7 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="nav">
+    <div class="nav-icon">
       <div class="swiper-nav">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item,key) in navs" :key="key" @click="setnavnum(key)">
@@ -273,7 +268,7 @@
       <div class="con">
         <div id="leiecharts"></div>
         <div class="img">
-          <img src="~/assets/proheart.png" alt />
+          <img src="~/assets/content-lei.png" alt />
           <p>加入PK</p>
           <span>hot</span>
         </div>
@@ -286,52 +281,42 @@
         <tbody>
           <tr>
             <td>
-              价格
-              <span>8.2</span>
+              休闲
+              <span>{{scores.score.leisure}}</span>
             </td>
             <td>
-              价格
-              <span>8.2</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              价格
-              <span>8.2</span>
-            </td>
-            <td>
-              价格
-              <span>8.2</span>
+              户型
+              <span>{{scores.score.house_types}}</span>
             </td>
           </tr>
           <tr>
             <td>
-              价格
-              <span>8.2</span>
+              层高
+              <span>{{scores.score.height}}</span>
             </td>
             <td>
-              价格
-              <span>8.2</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              价格
-              <span>8.2</span>
-            </td>
-            <td>
-              价格
-              <span>8.2</span>
+              商业
+              <span>{{scores.score.commercial}}</span>
             </td>
           </tr>
           <tr>
             <td>
-              价格
-              <span>8.2</span>
+              交通
+              <span>{{scores.score.traffic}}</span>
             </td>
             <td>
-              价格
-              <span>8.2</span>
+              医疗
+              <span>{{scores.score.medical}}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              教育
+              <span>{{scores.score.education}}</span>
+            </td>
+            <td>
+              品质
+              <span>{{scores.score.quality}}</span>
             </td>
           </tr>
         </tbody>
@@ -340,48 +325,41 @@
     </div>
     <div class="line"></div>
     <div class="hus">
-      <h5>主力户型</h5>
+      <h5>
+        主力户型
+        <nuxt-link :to="'/'+jkl+'/hus/'+id">
+          <span>
+            全部户型
+            <img src="~/assets/home-more.png" alt />
+          </span>
+        </nuxt-link>
+      </h5>
       <div class="swiper-hu">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="hu-top">
-              <img src="~/assets/lun02.jpg" alt @click="look(item.img)" />
-            </div>
-            <p class="name">
-              3室2厅2卫
-              <span>在售</span>
-            </p>
-            <p class="type">
-              <span class="t1">建面 112m²</span>
-              <span>类型 平层</span>
-            </p>
-            <p class="huprice">
-              约
-              <span>282</span>万起
-            </p>
-            <button>
-              <img src="~/assets/zixun.png" alt />咨询户型底价
-            </button>
-          </div>
-          <div class="swiper-slide">
-            <div class="hu-top">
-              <img src="~/assets/lun02.jpg" alt @click="look(require('~/assets/lun02.jpg'))" />
-            </div>
-            <p class="name">
-              3室2厅2卫
-              <span>在售</span>
-            </p>
-            <p class="type">
-              <span class="t1">建面 112m²</span>
-              <span>类型 平层</span>
-            </p>
-            <p class="huprice">
-              约
-              <span>282</span>万起
-            </p>
-            <button>
-              <img src="~/assets/zixun.png" alt />咨询户型底价
-            </button>
+          <div class="swiper-slide" v-for="(item,key) in house_types" :key="key">
+            <nuxt-link :to="'/'+jkl+'/hu/'+item.id">
+              <div class="hu-top">
+                <img :src="item.small" alt @click="look(item.img)" />
+                <p>
+                  <img src="~/assets/home-heart.png" alt />42关注
+                </p>
+              </div>
+              <p class="name">
+                {{item.title}}
+                <span>{{item.state}}</span>
+              </p>
+              <p class="type">
+                <span class="t1">建面 {{item.area}}m²</span>
+                <span>类型 平层</span>
+              </p>
+              <p class="huprice">
+                约
+                <span>{{item.price}}</span>万起
+              </p>
+              <button>
+                <img src="~/assets/zixun.png" alt />咨询户型底价
+              </button>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -396,17 +374,12 @@
         </span>
       </h3>
       <ul>
-        <li>
-          <p>住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一价...</p>
-          <span>2019-04-08</span>
-          <div class="dynamicimgs">
-            <img src="~/assets/lun02.jpg" alt />
+        <li v-for="(item,key) in dynamics" :key="key">
+          <p>{{item.introduce}}</p>
+          <span>{{item.time}}</span>
+          <div class="dynamicimgs" v-if="item.img">
+            <img :src="item.img" alt />
           </div>
-        </li>
-        <li>
-          <p>住宅产品静待推出，均价18590元/㎡，主要户元/㎡，主要户元/㎡，主要户型为建筑面积80-115㎡三居（以上信息仅供参考，具体一房一价...</p>
-          <span>2019-04-08</span>
-          <div class="dynamicimgs"></div>
         </li>
       </ul>
       <button>订阅实时动态</button>
@@ -425,29 +398,19 @@
           <img src="~/assets/icon-pin.png" alt />户型分析
         </span>
       </p>
-      <div class="peo">
-        <img class="peoimg" src="~/assets/people.png" alt />
+      <div class="peo" v-for="(item,key) in staffs" :key="key">
+        <img class="peoimg" :src="item.head_img" alt />
         <div class="peo-msg">
           <h6>
-            张三
+            {{item.name}}
             <span>满意度5分</span>
           </h6>
           <p>了解房源特色，专业挑好房</p>
         </div>
         <img class="peoicon" src="~/assets/message.png" alt />
-        <img class="peoicon" src="~/assets/tel.png" alt />
-      </div>
-      <div class="peo">
-        <img class="peoimg" src="~/assets/people.png" alt />
-        <div class="peo-msg">
-          <h6>
-            张三
-            <span>满意度5分</span>
-          </h6>
-          <p>了解房源特色，专业挑好房</p>
-        </div>
-        <img class="peoicon" src="~/assets/message.png" alt />
-        <img class="peoicon" src="~/assets/tel.png" alt />
+        <a :href="'tel:'+phone">
+          <img class="peoicon" src="~/assets/tel.png" alt />
+        </a>
       </div>
     </div>
     <div class="line"></div>
@@ -463,13 +426,10 @@
           <span></span>
         </p>
       </div>
-      <div class="liao-msg" v-if="tabnum == 1">
-        <p>1、2017年杭州总价“地王”项目，打造体量约74万方TOD大盘，坐拥未来科技城地标</p>
-        <p>1、2017年杭州总价“地王”项目，打造体量约74万方TOD大盘，坐拥未来科技城地标</p>
-      </div>
-      <div class="liao-msg" v-if="tabnum == 2">
-        <p>1、2017年杭州总价“地王”项目，打造体量约74万方TOD大盘，坐拥未来科技城地标</p>
-        <p>1、2017年杭州总价“地王”项目，打造体量约74万方TOD大盘，坐拥未来科技城地标</p>
+      <div class="liao-msg">
+        <template v-for="(item,key) in analysis">
+          <p :key="key" v-if="item.type == tabnum">{{item.content}}</p>
+        </template>
       </div>
       <button @click="showbtn(41,'领取分析资料')">
         <img src="~/assets/ziliao.png" />领取分析资料
@@ -494,49 +454,9 @@
               <th>成交套数</th>
               <th>成交金额</th>
             </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
-              <td>***万</td>
-            </tr>
-            <tr>
-              <td>07-20</td>
-              <td>3套</td>
+            <tr v-for="(item,key) in deal_prices" :key="key">
+              <td>{{item.time}}</td>
+              <td>{{item.num}}套</td>
               <td>***万</td>
             </tr>
           </tbody>
@@ -641,39 +561,22 @@
         </span>
       </h3>
       <ul>
-        <li>
+        <li v-for="(item,key) in comments" :key="key">
           <div class="dian-top">
             <img src="~/assets/people.png" alt class="peo" />
             <div class="top-con">
               <h6>
-                154****3787
-                <span>删除</span>
+                {{item.mobile}}
+                <span v-if="item.mine">删除</span>
               </h6>
-              <p>2020-06-09</p>
+              <p>{{item.time}}</p>
             </div>
-            <div class="top-right active">
+            <div :class="item.my_like ==1?'top-right active':'top-right'">
               <img src="~/assets/noclick.png" alt />
-              赞(1)
+              赞({{item.like_num}})
             </div>
           </div>
-          <div class="dian-bom">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</div>
-        </li>
-        <li>
-          <div class="dian-top">
-            <img src="~/assets/people.png" alt class="peo" />
-            <div class="top-con">
-              <h6>
-                154****3787
-                <span>删除</span>
-              </h6>
-              <p>2020-06-09</p>
-            </div>
-            <div class="top-right">
-              <img src="~/assets/noclick.png" alt />
-              赞(1)
-            </div>
-          </div>
-          <div class="dian-bom">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</div>
+          <div class="dian-bom">{{item.content}}</div>
         </li>
       </ul>
       <button>我要点评</button>
@@ -688,15 +591,10 @@
         </span>
       </h3>
       <ul>
-        <li>
+        <li v-for="(item,key) in questions" :key="key">
           <p class="con">
-            <span>问</span>苕溪学府住宅是否可以安装防盗窗，是否可以封闭 阳台?
-          </p>
-          <p class="num">共1个专业回答</p>
-        </li>
-        <li>
-          <p class="con">
-            <span>问</span>苕溪学府住宅是否可以安装防盗窗，是否可以封闭 阳台?
+            <span>问</span>
+            {{item.question}}
           </p>
           <p class="num">共1个专业回答</p>
         </li>
@@ -704,68 +602,111 @@
       <button>我要提问</button>
     </div>
     <div class="line"></div>
-    <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
+      <div class="pro" v-for="(item,key) in recommends" :key="key">
+        <img :src="item.img" alt />
         <div class="pro-msg">
           <h5>
-            上课的龙卷风
-            <span>在售</span>
+            {{item.name}}
+            <span>{{item.status}}</span>
           </h5>
           <p class="pro-price">
-            <span>53000</span>
+            <span>{{item.single_price}}</span>
             <i>元/m²</i>起
           </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
+          <p class="attr">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</p>
           <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
+            <span class="pro-icon-zhuang">{{item.decorate}}</span>
+            <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
           </p>
         </div>
       </div>
     </div>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="btn"></span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a href="tel:400">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
-    </div>
+    <nav-view></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
     </div>
   </div>
 </template>
 <script>
+import topView from "@/components/header.vue";
+import nav from "@/components/nav.vue";
 import { NoticeBar } from "vant";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 export default {
   components: {
     NoticeBar,
+    "top-view": topView,
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/building/detail", {
+          params: {
+            id: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          data.prices = [];
+          for (let val in data.deal_prices) {
+            data.prices[val] = [
+              data.deal_prices[val].time.substr(5),
+              data.deal_prices[val].price,
+            ];
+          }
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      effects: res.imgs.img.effects,
+      examples: res.imgs.img.examples,
+      traffics: res.imgs.img.traffics,
+      imgnum: res.imgs.num,
+      abstract: res.abstract,
+      phone: res.common.phone,
+      scores: res.scores,
+      house_types: res.house_types,
+      dynamics: res.dynamics,
+      staffs: res.common.staffs,
+      analysis: res.analysis,
+      deal_prices: res.deal_prices,
+      prices: res.prices,
+      comments: res.comments,
+      questions: res.questions,
+      recommends: res.recommends,
+      jkl: jkl,
+    };
   },
   data() {
     return {
-      btn:false,
+      recommends: [],
+      questions: [],
+      comments: [],
+      deal_prices: [],
+      analysis: [],
+      staffs: [],
+      dynamics: [],
+      house_types: [],
+      scores: {},
+      phone: "",
+      abstract: {},
+      btn: false,
       mapnum: 0,
       tabnum: 1,
       isnull: false,
       morebtn: true,
-      imgs: [
-        require("~/assets/lun02.jpg"),
-        require("~/assets/lun02.jpg"),
-        require("~/assets/lun02.jpg"),
-      ],
+      imgs: [],
       imgmsg: ["效果图", "样板房", "交通图"],
       imgmsgnum: 0,
       morebtns: true,
@@ -774,11 +715,23 @@ export default {
       src: require("~/assets/lun02.jpg"),
       srctype: false,
       mapname: "地铁",
+      effects: [],
+      examples: [],
+      traffics: [],
+      imgnum: 0,
+      id: 0,
     };
   },
   methods: {
     setimgmsgnum(e) {
       this.imgmsgnum = e;
+      if (e == 0) {
+        this.imgs = this.effects;
+      } else if (e == 1) {
+        this.imgs = this.examples;
+      } else {
+        this.imgs = this.traffics;
+      }
     },
     showmores() {
       this.morebtns = false;
@@ -795,10 +748,10 @@ export default {
     mmap() {
       this.over = false;
       let that = this;
-      let baidu = [116.474408, 39.948795];
+      let baidu = [that.abstract.longitude, that.abstract.latitude];
       let img = require("~/assets/mappro.png");
-      let pro = "that.basic.name";
-      let add = "that.basic.address";
+      let pro = that.abstract.name;
+      let add = that.abstract.address;
       AMap.convertFrom(baidu, "baidu", function (status, result) {
         if (result.info === "ok") {
           var lnglats = result.locations; // Array.<LngLat>
@@ -888,6 +841,7 @@ export default {
       this.mmap();
     },
     drawlei() {
+      let that = this;
       var option = {
         textStyle: {
           color: ["#CCCCCC"],
@@ -921,15 +875,13 @@ export default {
             },
           },
           indicator: [
-            { name: "价格", max: 10 },
-            { name: "容积率", max: 10 },
-            { name: "交房", max: 10 },
-            { name: "交付", max: 10 },
+            { name: "休闲", max: 10 },
+            { name: "品质", max: 10 },
+            { name: "教育", max: 10 },
             { name: "医疗", max: 10 },
             { name: "交通", max: 10 },
             { name: "商业", max: 10 },
-            { name: "物业", max: 10 },
-            { name: "开放商", max: 10 },
+            { name: "层高", max: 10 },
             { name: "户型", max: 10 },
           ],
           radius: 60,
@@ -962,7 +914,16 @@ export default {
             data: [
               {
                 name: "能力值",
-                value: [8.2, 8.4, 9.4, 8.5, 8.8, 8.2, 8.4, 9.4, 8.5, 8.8],
+                value: [
+                  that.scores.score.leisure,
+                  that.scores.score.quality,
+                  that.scores.score.education,
+                  that.scores.score.medical,
+                  that.scores.score.traffic,
+                  that.scores.score.commercial,
+                  that.scores.score.height,
+                  that.scores.score.house_types,
+                ],
                 areaStyle: {
                   normal: {
                     color: "rgba(41,204,114,0.1)", // 选择区域颜色
@@ -1029,7 +990,7 @@ export default {
         ],
         series: [
           {
-            data: [20, 20, 20],
+            data: that.prices,
             // smooth: 0.6,
             // symbol: "circle",
             lineStyle: {
@@ -1051,6 +1012,8 @@ export default {
     },
   },
   mounted() {
+    this.id = this.$route.params.id;
+    this.imgs = this.effects;
     this.drawline();
     this.drawlei();
     this.mmap();
@@ -1060,7 +1023,6 @@ export default {
       observer: true,
       resistanceRatio: 0.1,
       autoplay: true,
-      loop: true,
     });
     var mySwiper3 = new Swiper(".swiper-nav", {
       slidesPerView: 5,
@@ -1351,6 +1313,17 @@ header {
     p:nth-of-type(3) {
       margin-bottom: 0.375rem;
     }
+    .address {
+      display: flex;
+      span {
+        display: block;
+        width: 14.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 1.625rem;
+      }
+    }
   }
   .detail {
     color: #2ac66e;
@@ -1383,8 +1356,16 @@ header {
 .tel {
   padding: 0 4%;
   margin-bottom: 1.25rem;
+  position: relative;
   img {
     width: 100%;
+  }
+  p {
+    color: #302e2a;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0.625rem;
+    left: 2.125rem;
   }
 }
 .line {
@@ -1518,7 +1499,7 @@ header {
     }
   }
 }
-.nav {
+.nav-icon {
   border-bottom: 0.03125rem solid #f5f5f5;
   .swiper-nav {
     overflow: hidden;
@@ -1673,12 +1654,14 @@ header {
       padding-right: 0.625rem;
       padding-top: 0.25rem;
       img {
-        width: 1.125rem;
+        width: 1.25rem;
       }
       p {
         color: #646566;
         font-size: 0.625rem;
         margin: 0;
+        position: relative;
+        top: -0.25rem;
       }
       span {
         display: block;
@@ -1756,6 +1739,17 @@ header {
     margin-top: 1.25rem;
     padding: 0 4%;
     margin-bottom: 1.375rem;
+    span {
+      float: right;
+      color: #646466;
+      font-size: 0.875rem;
+      font-weight: 400;
+      img {
+        width: 0.875rem;
+        margin-left: 0.25rem;
+        margin-bottom: -0.0625rem;
+      }
+    }
   }
   .hu-msg {
     overflow: hidden;
@@ -1771,6 +1765,28 @@ header {
       justify-content: center;
       align-items: center;
       margin-bottom: 1rem;
+      position: relative;
+      p {
+        width: 4.6875rem;
+        height: 1.0625rem;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: #63696e;
+        font-size: 0.5625rem;
+        text-align: right;
+        line-height: 1.0625rem;
+        background: linear-gradient(
+          -90deg,
+          rgba(0, 0, 0, 0.12),
+          rgba(205, 205, 205, 0)
+        );
+        img {
+          height: 0.75rem;
+          width: 0.75rem;
+          margin-bottom: -0.0625rem;
+        }
+      }
       img {
         height: 7.5rem;
         width: 5.1875rem;

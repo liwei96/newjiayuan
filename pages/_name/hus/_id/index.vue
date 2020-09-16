@@ -1,57 +1,80 @@
 <template>
   <div id="hus">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
-    </header>
+    <top-view></top-view>
     <div class="con">
-        <div class="li">
+      <template v-for="(item,key) in other_rooms">
+        <nuxt-link :to="'/'+jkl+'/hu/'+item.id" :key="key">
+          <div class="li" >
             <div class="left">
-                <img src="~/assets/hu.png" alt="">
+              <img :src="item.small" alt />
             </div>
             <div class="right">
-                <h4>3室2厅2卫<span>在售</span></h4>
-                <p>建面：<span>89m²</span></p>
-                <p>类型：<span>loft</span></p>
-                <p class="total">总价：<span>约<i>290</i>万/套</span></p>
+              <h4>
+                {{item.title}}
+                <span>{{item.state}}</span>
+              </h4>
+              <p>
+                建面：
+                <span>{{item.area}}m²</span>
+              </p>
+              <p>
+                类型：
+                <span>{{item.type}}</span>
+              </p>
+              <p class="total">
+                总价：
+                <span>
+                  约
+                  <i>{{item.price}}</i>万/套
+                </span>
+              </p>
             </div>
-        </div>
-        <div class="li">
-            <div class="left">
-                <img src="~/assets/hu.png" alt="">
-            </div>
-            <div class="right">
-                <h4>3室2厅2卫<span>在售</span></h4>
-                <p>建面：<span>89m²</span></p>
-                <p>类型：<span>loft</span></p>
-                <p class="total">总价：<span>约<i>290</i>万/套</span></p>
-            </div>
-        </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="true">1</span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a href="tel:400">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
-    </div>
+    <nav-view></nav-view>
   </div>
 </template>
 <script>
-export default {};
+import topView from "@/components/header.vue";
+import nav from "@/components/nav.vue";
+export default {
+  components: {
+    "top-view": topView,
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/room/list", {
+          params: {
+            id: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      other_rooms: res.other_rooms,
+    };
+  },
+  data() {
+    return {
+      other_rooms: [],
+    };
+  },
+};
 </script>
 <style lang="less" scoped>
 header {
@@ -103,64 +126,64 @@ header {
   }
 }
 .con {
-    padding-top: 3.5625rem;
-    .li {
-        display: flex;
-        margin: 0 4%;
-        padding-bottom: 0.875rem;
-        border-bottom: 0.03125rem solid #F3F3F3;
-        margin-bottom: 0.9375rem;
-        .left {
-            width: 6.875rem;
-            height: 5rem;
-            margin-right: 0.75rem;
-            background-color: #F5F5F5;
-            text-align: center;
-            img {
-                height: 100%;
-                max-width: 100%;
-            }
-        }
-        .right {
-            flex: 1;
-            h4 {
-                color: #323333;
-                font-size: 1rem;
-                font-weight: 400;
-                margin-bottom: 0.46rem;
-                span {
-                    float: right;
-                    padding: 0.1875rem 0.375rem;
-                    border-radius: 0.125rem;
-                    background-color: #2CD264;
-                    color: #fff;
-                    font-size: 0.6875rem;
-                }
-            }
-            p {
-                color: #7D7F80;
-                font-size: 0.75rem;
-                margin-bottom: 0.125rem;
-                span {
-                    color: #333334;
-                    font-size: 0.8125rem;
-                }
-            }
-            .total {
-                span {
-                    color: #FE5830;
-                    font-size: 0.625rem;
-                    i {
-                        font-style: normal;
-                        font-size: 1rem;
-                    }
-                }
-            }
-        }
+  padding-top: 3.5625rem;
+  .li {
+    display: flex;
+    margin: 0 4%;
+    padding-bottom: 0.875rem;
+    border-bottom: 0.03125rem solid #f3f3f3;
+    margin-bottom: 0.9375rem;
+    .left {
+      width: 6.875rem;
+      height: 5rem;
+      margin-right: 0.75rem;
+      background-color: #f5f5f5;
+      text-align: center;
+      img {
+        height: 100%;
+        max-width: 100%;
+      }
     }
-    .li:last-child{
-        border: 0
+    .right {
+      flex: 1;
+      h4 {
+        color: #323333;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0.46rem;
+        span {
+          float: right;
+          padding: 0.1875rem 0.375rem;
+          border-radius: 0.125rem;
+          background-color: #2cd264;
+          color: #fff;
+          font-size: 0.6875rem;
+        }
+      }
+      p {
+        color: #7d7f80;
+        font-size: 0.75rem;
+        margin-bottom: 0.125rem;
+        span {
+          color: #333334;
+          font-size: 0.8125rem;
+        }
+      }
+      .total {
+        span {
+          color: #fe5830;
+          font-size: 0.625rem;
+          i {
+            font-style: normal;
+            font-size: 1rem;
+          }
+        }
+      }
     }
+  }
+  .li:last-child {
+    border: 0;
+  }
 }
 .nav {
   position: fixed;

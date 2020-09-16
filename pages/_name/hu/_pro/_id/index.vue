@@ -1,31 +1,23 @@
 <template>
   <div id="hu">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
-    </header>
+    <top-view></top-view>
     <div class="topimg">
-      <img src="~/assets/hu.png" alt />
+      <img :src="now.small" alt />
       <p>共1张</p>
     </div>
     <div class="msg">
       <h3>
-        3室2厅2卫
-        <span>在售</span>
+        {{now.title}}
+        <span>{{now.state}}</span>
       </h3>
       <p class="pri">
         约
-        <span>450</span>万/套
+        <span>{{now.price}}</span>万/套
       </p>
       <div class="msgli">
         <div class="left">
           建面：
-          <span>80m²</span>
+          <span>{{now.area}}m²</span>
         </div>
         <div class="left">
           朝向：
@@ -35,22 +27,22 @@
       <div class="msgli">
         <div class="left">
           类型：
-          <span>平层</span>
+          <span>{{now.type}}</span>
         </div>
         <div class="left">
           层高：
-          <span>3m</span>
+          <span>{{Number(now.height)}}m</span>
         </div>
       </div>
       <div class="msgli">
         <div class="left">
           特色：
-          <span>小户型舒适、宜居</span>
+          <span>{{now.special}}</span>
         </div>
       </div>
       <p class="address">
         <img class="path" src="~/assets/icon-path.png" alt />
-        <span>艮山西路凯旋交叉口</span>
+        <span>{{now.address}}</span>
         <img src="~/assets/j-more.png" alt class="more" />
       </p>
       <div class="btn">
@@ -87,8 +79,7 @@
         <button>一键咨询</button>
       </div>
       <h4>户型分析</h4>
-      <p class="analy">1.双卧朝北，三口之家均可居住在南向卧室。有两个卫生间，可供三口之家同时洗漱。</p>
-      <p class="analy">1.双卧朝北，三口之家均可居住在南向卧室。有两个卫生间，可供三口之家同时洗漱。</p>
+      <p class="analy" v-html="now.analysis"></p>
     </div>
     <div class="line"></div>
     <div class="hui">
@@ -133,99 +124,102 @@
     <div class="line"></div>
     <div class="con">
       <h3>本楼盘其它户型</h3>
-      <div class="li">
+      <div class="li" v-for="(item,key) in other" :key="key">
         <div class="left">
-          <img src="~/assets/hu.png" alt />
+          <img :src="item.small" alt />
         </div>
         <div class="right">
           <h4>
-            3室2厅2卫
-            <span>在售</span>
+            {{item.title}}
+            <span>{{item.state}}</span>
           </h4>
           <p>
             建面：
-            <span>89m²</span>
+            <span>{{item.area}}m²</span>
           </p>
           <p>
             类型：
-            <span>loft</span>
+            <span>{{item.type}}</span>
           </p>
           <p class="total">
             总价：
             <span>
               约
-              <i>290</i>万/套
+              <i>{{item.price}}</i>万/套
             </span>
           </p>
         </div>
       </div>
-      <div class="li">
-        <div class="left">
-          <img src="~/assets/hu.png" alt />
-        </div>
-        <div class="right">
-          <h4>
-            3室2厅2卫
-            <span>在售</span>
-          </h4>
-          <p>
-            建面：
-            <span>89m²</span>
-          </p>
-          <p>
-            类型：
-            <span>loft</span>
-          </p>
-          <p class="total">
-            总价：
-            <span>
-              约
-              <i>290</i>万/套
-            </span>
-          </p>
-        </div>
-      </div>
+      
     </div>
     <div class="other">
       <h3>看了该楼盘的还看了</h3>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
+      <div class="pro" v-for="(item,key) in recommends" :key="key">
+        <img :src="item.img" alt />
         <div class="pro-msg">
           <h5>
-            上课的龙卷风
-            <span>在售</span>
+            {{item.name}}
+            <span>{{item.status}}</span>
           </h5>
           <p class="pro-price">
-            <span>53000</span>
+            <span>{{item.single_price}}</span>
             <i>元/m²</i>起
           </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
+          <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
           <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
+            <span class="pro-icon-zhuang">{{item.decorate}}</span>
+            <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
           </p>
         </div>
       </div>
     </div>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="true">1</span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a href="tel:400">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
-    </div>
+    <nav-view></nav-view>
   </div>
 </template>
 <script>
-export default {};
+import topView from "@/components/header.vue";
+import nav from "@/components/nav.vue";
+export default {
+  components: {
+    "top-view": topView,
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/room/single", {
+          params: {
+            id: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      now: res.one,
+      other:res.other_rooms,
+      recommends:res.recommends
+    };
+  },
+  data() {
+    return {
+      jkl: "",
+      now: {},
+      other:{},
+      recommends:{}
+    };
+  },
+};
 </script>
 <style lang="less" scoped>
 header {
@@ -340,6 +334,7 @@ header {
   .address {
     margin-top: 1.125rem;
     margin-bottom: 1.5rem;
+    display: flex;
     .path {
       width: 1rem;
       margin-right: 0.2rem;
@@ -348,11 +343,17 @@ header {
     span {
       color: #323333;
       font-size: 1rem;
+      display: block;
+      width: 18.75rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 0.9375rem;
+      line-height: 1rem;
     }
     .more {
       float: right;
       width: 1rem;
-      margin-bottom: -0.125rem;
     }
   }
   .btn {

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img class="back" src="~/assets/goback.png" alt />
+    <img class="back" src="~/assets/goback.png" alt @click="back"/>
     <img class="logo" src="~/assets/logo.png" alt />
     <div class="zixuns">
       <img src="~/assets/zixun.png" alt />
@@ -10,7 +10,13 @@
   </header>
 </template>
 <script>
-export default {};
+export default {
+  methods:{
+    back(){
+      this.$router.go(-1)
+    }
+  }
+};
 </script>
 <style lang="less" scoped>
 header {
@@ -23,6 +29,7 @@ header {
   background-color: #fff;
   position: fixed;
   top: 0;
+  z-index: 10;
   .back {
     width: 1.25rem;
     margin-left: 1rem;
