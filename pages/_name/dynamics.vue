@@ -1,0 +1,321 @@
+<template>
+  <div id="Dynamic">
+    <header>
+      <img class="back" src="~/assets/goback.png" alt @click="back" />
+      <img class="logo" src="~/assets/logo.png" alt />
+      <img src="~/assets/searchtop.png" alt class="search" />
+      <img src="~/assets/mapcai.png" alt class="list" />
+    </header>
+    <img src="~/assets/dynamics.png" alt class="topimg" />
+    <div class="con">
+      <div class="con-li" v-for="(item,key) in lists" :key="key">
+        <div class="con-li-top">
+          <img :src="item.img" alt />
+          <h6>{{item.name}}</h6>
+          <p>
+            {{item.country.substr(0,2)}}
+            <span>面积 {{item.area}}m²</span>
+            <span>均价：{{item.price}}元/m²</span>
+          </p>
+          <i v-if="key==0">最新</i>
+          <div class="zhe"></div>
+        </div>
+        <div class="con-li-bom">
+          <h6>{{item.title}}</h6>
+          <p class="txt">{{item.content}}</p>
+          <p class="time">{{item.time}}</p>
+          <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
+            <button>查看详细</button>
+          </nuxt-link>
+        </div>
+      </div>
+    </div>
+    <nav-view></nav-view>
+  </div>
+</template>
+<script>
+import { dynamics } from "@/api/api";
+import nav from "@/components/nav.vue";
+export default {
+  components: {
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let city = context.store.state.city;
+    let jkl = context.params.name;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/dynamic/info/phone", {
+          params: {
+            city: city,
+            page: 1,
+            limit: 10,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      lists: res.data,
+      ting: true,
+    };
+  },
+  data() {
+    return {
+      btn: true,
+      jkl: "",
+      lists: [],
+      ting: true,
+      page: 2,
+    };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+    getmore() {
+      let that = this;
+      let city = $cookies.get("city");
+      dynamics({ city: city, page: that.page, limit: 10 }).then((res) => {
+        // console.log(res);
+        that.lists = that.lists.concat(res.data.data)
+        that.ting = true
+      });
+    },
+  },
+  mounted() {
+    console.log(this.ting)
+    let that = this
+    $(document).on("scroll", function () {
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      // console.log(scrollTop,scrollHeight,windowHeight);
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.ting) {
+          // console.log(888)
+          that.ting = false
+          that.getmore();
+        }
+      }
+    });
+  },
+};
+</script>
+<style lang="less" scoped>
+header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 2.75rem;
+  z-index: 1;
+  background-color: #fff;
+  // position: relative;
+  .back {
+    width: 1.25rem;
+    margin-left: 1rem;
+  }
+  .logo {
+    width: 3.125rem;
+  }
+  .search {
+    width: 1.25rem;
+    position: absolute;
+    right: 3.5625rem;
+    top: 0.75rem;
+  }
+  .list {
+    width: 1.25rem;
+    margin-right: 4%;
+  }
+}
+.topimg {
+  width: 100%;
+  height: 6.25rem;
+  margin-top: 2.75rem;
+}
+.con {
+  padding: 1.5625rem 1.5625rem 3.75rem 1.5625rem;
+  .con-li {
+    width: 100%;
+    height: 19.0625rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.875rem;
+    box-shadow: 0px 0px 1.1875rem 0.09375rem rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    .con-li-top {
+      height: 7.5rem;
+      position: relative;
+      img {
+        width: 100%;
+        height: 7.5rem;
+      }
+      h6 {
+        color: #ffffff;
+        font-size: 1rem;
+        position: absolute;
+        left: 0.875rem;
+        bottom: 2.5rem;
+        z-index: 1;
+      }
+      p {
+        color: #ffffff;
+        font-size: 0.8125rem;
+        bottom: 0.625rem;
+        left: 0.875rem;
+        position: absolute;
+        z-index: 1;
+        span {
+          margin-left: 0.625rem;
+        }
+      }
+      i {
+        display: block;
+        position: absolute;
+        width: 2.5rem;
+        height: 1.125rem;
+        border-radius: 0.5rem 0 0.5rem 0;
+        text-align: center;
+        line-height: 1.125rem;
+        background: linear-gradient(270deg, #ff7c48, #ff4234);
+        color: #fff2f2;
+        font-size: 0.75rem;
+        font-style: normal;
+        left: 0;
+        top: 0;
+      }
+      .zhe {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0),
+          rgba(0, 0, 0, 0.4)
+        );
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    .con-li-bom {
+      height: 23.3125rem;
+      padding: 0 4%;
+      h6 {
+        color: #323333;
+        font-size: 0.9375rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.4rem;
+      }
+      .txt {
+        color: #646566;
+        font-size: 0.8125rem;
+        line-height: 1.1875rem;
+        margin-bottom: 0.375rem;
+        height: 3.5625rem;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+      }
+      .time {
+        color: #96989a;
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      button {
+        width: 15.625rem;
+        height: 2.25rem;
+        border-radius: 0.25rem;
+        text-align: center;
+        line-height: 2.25rem;
+        border: 0.03125rem solid #30c66e;
+        color: #20c466;
+        font-size: 0.9375rem;
+        background-color: #fff;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+  }
+}
+.nav {
+  position: fixed;
+  width: 92%;
+  height: 3.75rem;
+  background-color: #fff;
+  padding: 0 4%;
+  bottom: 0;
+  display: flex;
+  z-index: 1000;
+  align-items: center;
+  .nav-peo {
+    position: relative;
+    margin-right: 1.25rem;
+    margin-left: 0.625rem;
+    text-align: center;
+    img {
+      width: 1.5rem;
+    }
+    span {
+      display: block;
+      width: 0.8125rem;
+      height: 0.8125rem;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 0.8125rem;
+      font-size: 0.625rem;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #f34f4f;
+    }
+    p {
+      color: #626466;
+      font-size: 0.75rem;
+    }
+  }
+  .nav-msg {
+    margin-right: 1.25rem;
+    h5 {
+      color: #222324;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    p {
+      color: #696a6d;
+      font-size: 0.75rem;
+    }
+  }
+  button {
+    width: 8rem;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    background: linear-gradient(270deg, #348aff, #6accff);
+    text-align: center;
+    line-height: 2.5rem;
+    color: #fff;
+    font-size: 0.9375rem;
+    border: 0;
+    img {
+      width: 0.9375rem;
+      margin-bottom: -0.125rem;
+      margin-right: 0.25rem;
+    }
+  }
+  .nav-tel {
+    margin-left: 0.625rem;
+    color: #fff;
+    background: linear-gradient(270deg, #1fc365, #3fd6a6);
+  }
+}
+</style>

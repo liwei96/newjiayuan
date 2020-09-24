@@ -1,5 +1,6 @@
 <template>
   <div id="order">
+    <top-view></top-view>
     <div class="topimg">
       <img src="~/assets/order.jpg" alt />
     </div>
@@ -37,7 +38,7 @@
           想看的楼盘
           <span>（非必填）</span>
         </p>
-        <div class="txt">
+        <div class="txt" @click="gosou">
           <input type="text" placeholder="选择楼盘" disabled />
           <img src="~/assets/j-more.png" alt />
         </div>
@@ -63,21 +64,38 @@ export default {
   components: {
     "top-view": topView,
   },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    return {
+      jkl: jkl,
+    };
+  },
   data() {
     return {
       radio: "1",
-      activeIcon: "https://img.yzcdn.cn/vant/user-active.png",
-      inactiveIcon: "https://img.yzcdn.cn/vant/user-inactive.png",
+      activeIcon: require('~/assets/order-checked.png'),
+      inactiveIcon: require('~/assets/order-check.png'),
       minDate: new Date(),
       maxDate: new Date(2025, 10, 1),
       show: false,
       currentDate: "",
+      jkl:''
     };
   },
+  methods:{
+    gosou(){
+      sessionStorage.setItem('order',1)
+      this.$router.push('/'+this.jkl+'/searchname')
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
 .topimg {
+  padding-top: 2.75rem;
   img {
     width: 100%;
     height: 6.25rem;

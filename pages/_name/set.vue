@@ -13,7 +13,7 @@
         <p>官方公众号</p>
         <img src="~/assets/j-more.png" alt />
       </li>
-      <li class="tel">
+      <li class="tel" @click="show1=true">
         <img src="~/assets/j-more.png" alt />
         <span>400-966-9995</span>
         <p>举报电话</p>
@@ -30,6 +30,18 @@
         </div>
       </div>
     </van-popup>
+    <van-popup v-model="show1" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="box1">
+        <h4>拨打电话</h4>
+        <p class="tit">400-718-6686</p>
+        <div class="btn">
+          <p @click="show1=false">取消</p>
+          <a :href="'tel:'+tel">
+          <p class="yes">确定</p>
+          </a>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -38,6 +50,8 @@ export default {
     return {
       show: false,
       jkl: "",
+      show1:false,
+      tel:'400-966-9995'
     };
   },
   methods: {
@@ -151,5 +165,47 @@ export default {
       }
     }
   }
+  .box1 {
+  width: 17.8125rem;
+  height: 9.875rem;
+  border-radius: 0.625rem;
+  background-color: #fff;
+  h4 {
+    color: #666666;
+    font-size: 1rem;
+    padding-top: 1.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 400;
+  }
+  .tit {
+    color: #343434;
+    font-size: 1.125rem;
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  .btn {
+    border-top: 0.03125rem solid #f7f7f7;
+    display: flex;
+    padding-top: 0.5rem;
+    p {
+      color: #7d7e80;
+      font-size: 1rem;
+      width: 50%;
+      text-align: center;
+      line-height: 2rem;
+    }
+    a{
+        width: 50%;
+        p {
+            width: 100%;
+        }
+    }
+    .yes {
+      color: #2ac66d;
+      border-left: 0.03125rem solid #f2f2f2;
+    }
+  }
+}
 }
 </style>

@@ -11,7 +11,7 @@
       </div>
       <!-- <img class="img-top" :src="basic.img" alt /> -->
       <!-- <span class="imgnum">共{{basic.img_num}}张</span> -->
-      <div class="zhe"></div>
+      <div class="zhe" @click="goimg"></div>
       <p class="imgnum">共{{imgnum}}张</p>
       <div class="taps">
         <p
@@ -33,7 +33,7 @@
           </p>
         </div>
         <div class="top-right">
-          <div class="pk box">
+          <div class="pk box" @click="pk">
             <div class="img">
               <img src="~/assets/content-pk.png" alt />
               <span>hot</span>
@@ -73,7 +73,9 @@
           <img src="~/assets/map.png" alt />
         </p>
       </div>
-      <p class="detail">详细楼盘信息</p>
+      <nuxt-link :to="'/'+jkl+'/detail/'+id">
+        <p class="detail">详细楼盘信息</p>
+      </nuxt-link>
       <div class="btn">
         <button>
           <img src="~/assets/zhexian.png" />变价通知我
@@ -339,7 +341,7 @@
           <div class="swiper-slide" v-for="(item,key) in house_types" :key="key">
             <nuxt-link :to="'/'+jkl+'/hu/'+item.id">
               <div class="hu-top">
-                <img :src="item.small" alt @click="look(item.img)" />
+                <img :src="item.small" alt />
                 <p>
                   <img src="~/assets/home-heart.png" alt />42关注
                 </p>
@@ -368,10 +370,12 @@
     <div class="dynamic">
       <h3>
         实时动态
-        <span>
-          全部动态
-          <img src="~/assets/j-more.png" alt />
-        </span>
+        <nuxt-link :to="'/'+jkl+'/promsg/'+id">
+          <span>
+            全部动态
+            <img src="~/assets/j-more.png" alt />
+          </span>
+        </nuxt-link>
       </h3>
       <ul>
         <li v-for="(item,key) in dynamics" :key="key">
@@ -473,10 +477,12 @@
     <div class="zhou">
       <h4>
         周边配套
-        <span>
-          详细配套
-          <img src="~/assets/go.png" alt />
-        </span>
+        <nuxt-link :to="'/'+jkl+'/rim/'+id">
+          <span>
+            详细配套
+            <img src="~/assets/go.png" alt />
+          </span>
+        </nuxt-link>
       </h4>
       <div id="map"></div>
       <div id="panel" style="display:none"></div>
@@ -555,10 +561,12 @@
     <div class="dian">
       <h3>
         楼盘点评
-        <span>
-          更多点评
-          <img src="~/assets/go.png" alt />
-        </span>
+        <nuxt-link :to="'/'+jkl+'/comments/'+id">
+          <span>
+            更多点评
+            <img src="~/assets/go.png" alt />
+          </span>
+        </nuxt-link>
       </h3>
       <ul>
         <li v-for="(item,key) in comments" :key="key">
@@ -585,10 +593,12 @@
     <div class="wen">
       <h3>
         楼盘问答
-        <span>
-          全部问答
-          <img src="~/assets/go.png" alt />
-        </span>
+        <nuxt-link :to="'/'+jkl+'/questions/'+id">
+          <span>
+            全部问答
+            <img src="~/assets/go.png" alt />
+          </span>
+        </nuxt-link>
       </h3>
       <ul>
         <li v-for="(item,key) in questions" :key="key">
@@ -686,6 +696,7 @@ export default {
       questions: res.questions,
       recommends: res.recommends,
       jkl: jkl,
+      id: id,
     };
   },
   data() {
@@ -1010,6 +1021,18 @@ export default {
       };
       myChart.setOption(options);
     },
+    goimg() {
+      this.$router.push("/" + this.jkl + "/photos/" + this.$route.params.id);
+    },
+    pk() {
+      let arr = $cookies.get("ids");
+      if (!arr) {
+        this.$router.push("/" + this.jkl + "/pk");
+      } else {
+        let ids = arr.join(",");
+        this.$router.push("/" + this.jkl + "/pk/" + ids);
+      }
+    },
   },
   mounted() {
     this.id = this.$route.params.id;
@@ -1050,49 +1073,11 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 2.75rem;
-  .back {
-    width: 1.25rem;
-    margin-left: 1rem;
-  }
-  .logo {
-    width: 3.125rem;
-  }
-  .home {
-    width: 1.25rem;
-    margin-right: 1rem;
-  }
-  .zixuns {
-    position: absolute;
-    right: 3.375rem;
-    top: 0.6875rem;
-    img {
-      width: 1.5rem;
-    }
-    p {
-      position: absolute;
-      width: 0.8125rem;
-      height: 0.8125rem;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 0.8125rem;
-      background-color: #ff4040;
-      color: #fff;
-      font-size: 0.625rem;
-      top: -0.40625rem;
-      right: -0.1875rem;
-    }
-  }
-}
 .topimg {
   width: 100%;
   height: 13.125rem;
   position: relative;
+  padding-top: 2.75rem;
   .swiper-topimg {
     width: 100%;
     height: 100%;

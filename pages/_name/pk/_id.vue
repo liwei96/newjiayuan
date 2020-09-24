@@ -1,82 +1,115 @@
 <template>
   <div id="PK">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
-    </header>
-    <button class="add">添加楼盘</button>
-    <div class="isnull" v-if="false">
-      <img src="~/assets/lun02.jpg" alt />
+    <top-view></top-view>
+    <nuxt-link :to="'/'+jkl+'/addpro'">
+      <button class="add">添加楼盘</button>
+    </nuxt-link>
+    <div class="isnull" v-if="list.length == 0">
+      <img src="~/assets/pk-null.png" alt />
       <h5>您尚未添加楼盘</h5>
       <p>请点击添加</p>
     </div>
-    <div class="pks">
+    <div class="pks" v-if="list.length != 0">
       <van-checkbox-group v-model="result" :max="2">
-        <van-swipe-cell>
-          <van-checkbox name="a" checked-color="#1FC365">
+          <template v-for="(item,key) in list">
+        <van-swipe-cell :key="key">
+          <van-checkbox :name="item.id" checked-color="#1FC365">
             <div class="pro">
               <div class="left">
-                <img src="~/assets/lun02.jpg" alt />
+                <img :src="item.img" alt />
               </div>
               <div class="right">
-                <h6>锦云澜天里</h6>
+                <h6>{{item.name}}</h6>
                 <p class="pri">
-                  <span>17000</span>元/m²
+                  <span>{{item.price}}</span>元/m²
                 </p>
-                <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
+                <p class="msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</p>
                 <p class="type">
-                  <span class="zhuang">精装</span>
-                  <span>地铁楼盘</span>
+                  <span class="zhuang">{{item.decorate}}</span>
+                  <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
                 </p>
               </div>
             </div>
           </van-checkbox>
           <template #right>
-            <van-button square text="删除" type="danger" class="delete-button" />
+            <van-button square text="删除" type="danger" class="delete-button" @click="del(item.id)"/>
           </template>
         </van-swipe-cell>
-        <van-swipe-cell>
-          <van-checkbox name="b" checked-color="#1FC365">
-            <div class="pro">
-              <div class="left">
-                <img src="~/assets/lun02.jpg" alt />
-              </div>
-              <div class="right">
-                <h6>锦云澜天里</h6>
-                <p class="pri">
-                  <span>17000</span>元/m²
-                </p>
-                <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
-                <p class="type">
-                  <span class="zhuang">精装</span>
-                  <span>地铁楼盘</span>
-                </p>
-              </div>
-            </div>
-          </van-checkbox>
-          <template #right>
-            <van-button square text="删除" type="danger" class="delete-button" />
-          </template>
-        </van-swipe-cell>
+        </template>
+        
       </van-checkbox-group>
-      <button class="pkbtn">开始对比</button>
+      <button class="pkbtn" @click="gopk">开始对比</button>
       <div class="totast" v-if="isadd">已加入对比</div>
+      <div class="totast" v-if="isok">请选择两个楼盘</div>
     </div>
   </div>
 </template>
 <script>
+import top from "@/components/header";
 export default {
+  components: {
+    "top-view": top,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let res = {
+        data:[]
+    }
+    if (id) {
+      [res] = await Promise.all([
+        context.$axios
+          .get("/jy/base/compare", {
+            params: {
+              ids: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+    }
+    return {
+      jkl: jkl,
+      id: id,
+      list:res.data
+    };
+  },
   data() {
     return {
       checked: true,
       result: [],
       isadd: false,
+      list:[],
+      isok:false
     };
+  },
+  methods:{
+      gopk(){
+          let that = this
+          if(this.result.length == 2){
+              let ids = this.result.join(',')
+              this.$router.push('/'+this.jkl+'/pkdetail/'+ids)
+          }else{
+              this.isok=true
+              setTimeout(()=>{
+                  that.isok = false
+              },1500)
+          }
+      },
+      del(id){
+          let ids = $cookies.get('ids').split(',')
+          let kk =ids.splice(ids.indexOf(String(id)),1)
+          $cookies.set('ids',ids)
+          let k = ids.join(',')
+          this.$router.push('/'+this.jkl+'/pk/'+k)
+      }
   },
   watch: {
     result(val, old) {
@@ -150,21 +183,18 @@ header {
   text-align: center;
   line-height: 3rem;
   font-weight: bold;
-  margin-top: 1.5rem;
+  margin-top: 4rem;
   margin-left: 4%;
   margin-bottom: 1.5rem;
 }
 .isnull {
   padding: 0 4%;
-
   img {
     width: 11.625rem;
-    height: 7.75rem;
     left: 50%;
     margin-left: -5.8125rem;
     position: relative;
     margin-top: 11.6875rem;
-    margin-bottom: 2.125rem;
   }
   h5 {
     color: #323233;

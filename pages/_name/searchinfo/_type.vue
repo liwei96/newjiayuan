@@ -1,35 +1,18 @@
 <template>
   <div id="searchari">
     <div class="input">
-      <img src="~/assets/goback.png" alt class="back" @click="back"/>
+      <img src="~/assets/goback.png" alt class="back" />
       <input type="text" placeholder="搜搜你想要了解的房产知识吧" v-model="name" />
       <img class="search" src="~/assets/search.png" alt />
       <span>搜索</span>
     </div>
-    <div class="type" v-if="!isnull">
-      <h3>热门关键词</h3>
-      <p>
-        <span>新房</span>
-        <span>买房能力</span>
-        <span>新房</span>
-        <span>买房能力</span>
-        <span>新房</span>
-        <span>买房能力</span>
-        <span>新房</span>
-        <span>买房能力</span>
-        <span>新房</span>
-        <span>买房能力</span>
-      </p>
-    </div>
     <div class="con" v-if="!isnull">
-      <h3>猜你喜欢</h3>
+      <h3><img src="~/assets/search-hot.png">最近热搜</h3>
       <div class="pro">
         <div class="left">
           <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
           <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
+            家园新房 &nbsp;  2019-05-24
           </p>
         </div>
         <div class="right">
@@ -129,14 +112,12 @@
       </div>
     </div>
     <div class="con list" v-if="isnull">
-      <p class="tit">共为您搜索到<span>{{num}}</span>条关于“<span>{{name}}</span>”的知识</p>
+      <p class="tit">共为您搜索到<span>{{num}}</span>条关于“<span>{{name}}</span>”的资讯</p>
       <div class="pro" v-for="(item,key) in list" :key="key">
         <div class="left">
           <h5>{{item.title}}</h5>
           <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
+            家园新房 &nbsp;  2019-05-24
           </p>
         </div>
         <div class="right">
@@ -199,9 +180,6 @@ export default {
         this.isnull = false;
       }
     },
-    back(){
-      this.$router.go(-1)
-    }
   },
   watch: {
     name(val) {
@@ -262,37 +240,19 @@ li {
       margin-left: 1.25rem;
   }
 }
-.type {
-  padding: 0 4%;
-  margin-bottom: 1.4rem;
-  margin-top: 1.75rem;
-  h3 {
-    color: #101314;
-    font-size: 0.9375rem;
-    margin-bottom: 1.375rem;
-  }
-  p {
-    span {
-      color: #626466;
-      font-size: 0.8125rem;
-      padding: 0.4375rem 1rem;
-      background-color: #f7f7f7;
-      border-radius: 0.1875rem;
-      margin-right: 0.75rem;
-      margin-bottom: 0.75rem;
-      display: inline-block;
-    }
-    span:nth-of-type(4n) {
-      margin-right: 0;
-    }
-  }
-}
 .con {
   padding: 0 4%;
+  margin-top: 2.5rem;
   h3 {
-    color: #101314;
-    font-size: 1rem;
+    color: #191919;
+    font-size: 0.9375rem;
     margin-bottom: 1.375rem;
+    font-weight: 400;
+    img {
+        width: 1.125rem;
+        margin-bottom: -0.125rem;
+        margin-right: 0.375rem;
+    }
   }
   .tit {
     color: #2F3133;
@@ -321,14 +281,8 @@ li {
       p {
         position: absolute;
         bottom: 0.4375rem;
-        span {
-          padding: 0.15625rem 0.3125rem 0.1875rem 0.3125rem;
-          border-radius: 0.125rem;
-          background-color: #f5f5f5;
-          color: #626466;
-          font-size: 0.625rem;
-          margin-right: 0.5rem;
-        }
+        color: #959799;
+        font-size: 0.6875rem;
       }
     }
     .right {

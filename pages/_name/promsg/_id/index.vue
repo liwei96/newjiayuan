@@ -23,25 +23,16 @@
     </div>
     <div class="dynamic" v-if="navnum == 0">
       <ul>
-        <li>
-          <p class="time">2019-04-08</p>
+        <li v-for="(item,key) in dynamics" :key="key">
+          <p class="time">{{item.time}}</p>
           <div class="con">
-            <h4>锦云澜天里最新在售房源</h4>
-            <p>住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-建筑面积80-建筑面积80-115㎡三居（以上信息仅供参考，具体一房一...</p>
+            <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
+            <h4>{{item.title}}</h4>
+            <p>{{item.content}}</p>
+            </nuxt-link>
             <div class="imgbox">
-              <img src="~/assets/lun02.jpg" alt />
-              <img src="~/assets/lun02.jpg" alt />
-              <img src="~/assets/lun02.jpg" alt />
+              <img v-lazy="item.img" alt @click="big(item.img)"/>
             </div>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <p class="time">2019-04-08</p>
-          <div class="con">
-            <h4>锦云澜天里最新在售房源</h4>
-            <p>住宅产品静待推出，均价18590元/㎡，主要户型为建筑面积80-建筑面积80-建筑面积80-115㎡三居（以上信息仅供参考，具体一房一...</p>
-            <img src="~/assets/lun02.jpg" alt />
             <span></span>
           </div>
         </li>
@@ -49,49 +40,125 @@
     </div>
     <div class="push" v-if="navnum == 1">
       <ul>
-        <li>
-          <p></p>加推时间：2020-06-18
-        </li>
-        <li>
-          <p></p>加推时间：2020-06-18
+        <li v-for="(item,key) in push_times" :key="key">
+          <p></p>加推时间：{{item.time}}
         </li>
       </ul>
     </div>
     <div class="push" v-if="navnum == 2">
       <ul>
-        <li>
-          <p></p>交房时间：2020-06-18
-        </li>
-        <li>
-          <p></p>交房时间：2020-06-18
+        <li v-if="info.give_time">
+          <p></p>交房时间：{{info.give_time}}
         </li>
       </ul>
     </div>
     <div class="push" v-if="navnum == 3">
       <ul>
-        <li>
-          <p></p>临售许（2020）第00957-00960号
-        </li>
-        <li>
-          <p></p>临售许（2020）第00957-00960号
+        <li v-if="info.license">
+          <p></p>{{info.license}}
         </li>
       </ul>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone"></nav-view>
   </div>
 </template>
 <script>
+import { ImagePreview } from 'vant';
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import { dynamics } from '@/api/api'
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
   },
+  async asyncData(context) {
+    let id = context.params.id;
+    let other = context.query.other;
+    let jkl = context.params.name;
+    let token = context.store.state.cookie.token;
+    let [res,res1] = await Promise.all([
+      context.$axios
+        .get("/jy/dynamic/info/phone", {
+          params: {
+            id: id,
+            page: 1,
+            limit: 10,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+        context.$axios
+        .get("/jy/dynamic/condition/phone", {
+          params: {
+            id: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      dynamics:res.data,
+      push_times:res1.push_times,
+      phone:res1.common.phone,
+      info:res1.info,
+      id:id
+    };
+  },
   data() {
     return {
       navnum: 0,
+      dynamics:[],
+      push_times:[],
+      phone:'',
+      info:{},
+      isok:true,
+      page:2,
+      id:0
     };
+  },
+  methods:{
+    getmore() {
+      let that = this;
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.isok) {
+          that.isok = false;
+          let city = $cookies.get("city");
+          dynamics({
+            id: that.id,
+            page: that.page,
+            limit: 10,
+          }).then((res) => {
+            that.dynamics = that.dynamics.concat(res.data.data);
+            that.page = that.page + 1;
+            that.isok = true;
+          });
+        }
+      }
+    },
+    big(arr) {
+      ImagePreview({
+        images: [arr]
+      });
+    },
+  },
+  mounted(){
+    window.addEventListener("scroll", this.getmore);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getmore);
   },
 };
 </script>

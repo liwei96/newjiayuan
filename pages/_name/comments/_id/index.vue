@@ -2,13 +2,13 @@
   <div id="comments">
     <top-view></top-view>
     <ul class="con">
-      <li>
+      <li v-for="(item,key) in lists" :key="key">
         <div class="top">
           <img src="~/assets/jiapeo.png" alt />
           <div class="topright">
             <h5>154****3787</h5>
             <van-rate
-              v-model="value"
+              v-model="item.score"
               :size="12"
               color="#FF761A"
               void-icon="star"
@@ -17,39 +17,99 @@
           </div>
         </div>
         <div class="bom">
-          <p class="txt">马上要推出小户型了吧，感觉买个89平的楼盘就可以了，不知道公摊要多少</p>
+          <p class="txt">{{item.content}}</p>
           <div class="type">
-            <span class="time">2020-06-09</span>
-            <span class="del">删除</span>
+            <span class="time">{{item.time}}</span>
+            <span class="del" v-if="item.min==1">删除</span>
             <p class="btn">
               <span class="active">
                 <img src="~/assets/noclick.png" alt />
-                2
+                {{item.like_num}}
               </span>
               <span>
                 <img src="~/assets/zixun.png" alt />
-                0
+                {{item.children.length}}
               </span>
             </p>
           </div>
         </div>
       </li>
     </ul>
+    <nuxt-link :to="'/'+jkl+'/comment/'+id">
+      <img src="~/assets/comments-fixed.png" alt class="fixed" />
+    </nuxt-link>
     <nav-view></nav-view>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import { comments } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
   },
+  async asyncData(context) {
+    let other = context.query.other;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/comments/phone", {
+          params: {
+            id: id,
+            page: 1,
+            limit: 10,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      phone: res.common.phone,
+      lists: res.data,
+      id: id,
+    };
+  },
   data() {
     return {
       value: 3,
+      phone: "",
+      lists: [],
+      id: 0,
+      page: 2,
+      isok: true,
     };
+  },
+  methods: {
+    getmore() {
+      let that = this;
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.isok) {
+          that.isok = false;
+          comments({ id: id, page: that.page, limit: 10 }).then((res) => {
+            that.isok = true;
+            that.lists = that.lists.concat(res.data.data)
+          });
+        }
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.getmore);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getmore);
   },
 };
 </script>
@@ -96,11 +156,19 @@ export default {
             margin-bottom: -0.125rem;
           }
           .active {
-              color: #FF761A;
+            color: #ff761a;
           }
         }
       }
     }
   }
+}
+.fixed {
+  width: 3.125rem;
+  height: 3.125rem;
+  border-radius: 50%;
+  position: fixed;
+  right: 0.9375rem;
+  bottom: 8.125rem;
 }
 </style>

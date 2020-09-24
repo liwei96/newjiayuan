@@ -1,75 +1,93 @@
 <template>
   <div id="Dynamic">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
       <img src="~/assets/searchtop.png" alt class="search" />
       <img src="~/assets/mapcai.png" alt class="list" />
     </header>
-    <img src="~/assets/lun02.jpg" alt class="topimg" />
+    <img src="~/assets/success.jpg" alt class="topimg" />
     <div class="con">
-      <div class="con-li">
-        <div class="con-li-top">
-          <img src="~/assets/lun02.jpg" alt />
-          <h6>群升万国天地</h6>
-          <p>
-            余杭
-            <span>面积 42-60m²</span>
-            <span>均价：13500元/m²</span>
-          </p>
-          <div class="zhe"></div>
-        </div>
-        <div class="con-li-bom">
-          <h6>吴女士于 2019-05-01 购买群升万国天地</h6>
-          <p
-            class="txt"
-          >本人看房半年有余，从去年年底到今年五月，萧山、滨江、之江转塘的楼盘基本上都看过了，要么价格太高从去年年底到今年五月，萧山、滨江、之江转塘的楼盘基本上都看过了，要么价格太高，要么配套不好，一直没有看好...</p>
-          <p class="time">2019-05-01</p>
-          <button>查看详细</button>
-        </div>
-      </div>
-      <div class="con-li">
-        <div class="con-li-top">
-          <img src="~/assets/lun02.jpg" alt />
-          <h6>群升万国天地</h6>
-          <p>
-            余杭
-            <span>面积 42-60m²</span>
-            <span>均价：13500元/m²</span>
-          </p>
-          <div class="zhe"></div>
-        </div>
-        <div class="con-li-bom">
-          <h6>吴女士于 2019-05-01 购买群升万国天地</h6>
-          <p class="txt">本人看房半年有余，从去年年底到今年五月，萧山、滨江、之江转塘的楼盘基本上都看过了，要么价格太高，要么配套不好，一直没有看好...</p>
-          <p class="time">2019-05-01</p>
-          <button>查看详细</button>
-        </div>
+      <div class="con-li" v-for="(item,key) in lists" :key="key">
+        <nuxt-link :to="'/'+jkl+'/success/'+item.id">
+          <div class="con-li-top">
+            <img :src="item.img" alt />
+            <h6>{{item.project.name}}</h6>
+            <p>
+              {{item.project.country.substr(0,2)}}
+              <span>面积 {{item.project.area}}m²</span>
+              <span>均价：{{item.project.price}}元/m²</span>
+            </p>
+            <div class="zhe"></div>
+          </div>
+          <div class="con-li-bom">
+            <h6>{{item.title}}</h6>
+            <p class="txt">{{item.description}}</p>
+            <p class="time">{{item.begin}}</p>
+            <button>查看详细</button>
+          </div>
+        </nuxt-link>
       </div>
     </div>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="btn">1</span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a href="tel:400">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
-    </div>
+    <nav-view :phone="phone"></nav-view>
   </div>
 </template>
 <script>
+import nav from "@/components/nav.vue";
 export default {
+  components: {
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let city = context.store.state.city;
+    let jkl = context.params.name;
+    let token = context.store.state.cookie.token;
+    let other = context.query.other
+    let [res,res1] = await Promise.all([
+      context.$axios
+        .get("/jy/article/info", {
+          params: {
+            city: city,
+            position: 76,
+            limit: 10,
+            page: 1,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+        context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            other:other,
+            token:token
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      lists: res.data,
+      phone:res1.common.phone
+    };
+  },
   data() {
     return {
-        btn:true
+      btn: true,
+      lists: [],
     };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
   },
 };
 </script>
@@ -164,6 +182,10 @@ header {
         font-size: 0.9375rem;
         margin-top: 0.6rem;
         margin-bottom: 0.4rem;
+        height: 1.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .txt {
         color: #646566;

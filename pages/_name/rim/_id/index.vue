@@ -1,11 +1,11 @@
 <template>
   <div id="Zhou">
-      <top-view></top-view>
+    <top-view></top-view>
     <div class="map-con">
       <div id="map"></div>
       <div id="panel" style="display:none"></div>
       <div class="map-type tel">
-        <a :href="'tel:'+tel">
+        <a :href="'tel:'+phone">
           <p>电话</p>
           <p>咨询</p>
         </a>
@@ -93,8 +93,34 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import topView from "@/components/header.vue";
 export default {
-    components: {
+  components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let other = context.query.other;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let token = context.store.state.cookie.token
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/building/map", {
+          params: {
+            other: other,
+            id: id,
+            token:token
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      phone: res.common.phone,
+      building: res.building,
+    };
   },
   data() {
     return {
@@ -109,15 +135,17 @@ export default {
       tan: false,
       tel: "",
       proname: "",
+      building:{},
+      phone:''
     };
   },
   methods: {
     mmap() {
       this.over = false;
       let that = this;
-      let baidu = [120.232623, 30.298957];
+      let baidu = [that.building.longitude, that.building.latitude];
       let img = require("~/assets/mappro.png");
-      let pro = sessionStorage.getItem("buildname");
+      let pro = that.building.name;
       let add = sessionStorage.getItem("buildaddress");
       AMap.convertFrom(baidu, "baidu", function (status, result) {
         if (result.info === "ok") {
@@ -216,17 +244,11 @@ export default {
     },
   },
   mounted() {
-    this.proname = sessionStorage.getItem("buildname")
-      ? sessionStorage.getItem("buildname")
-      : "易得房";
-    this.tel = sessionStorage.getItem("tel")
-      ? sessionStorage.getItem("tel")
-      : "400-718-6686";
     this.mmap();
     var swiper08 = new Swiper(".swiper-map", {
       slidesPerView: 5.5,
       spaceBetween: 10,
-      slidesOffsetAfter: 12,
+      slidesOffsetAfter: 0,
       slidesOffsetBefore: 14,
     });
   },
@@ -312,13 +334,13 @@ header {
       font-size: 0.875rem;
     }
     .active {
-      color: #1FC365;
+      color: #1fc365;
       position: relative;
       i {
         width: 1.5625rem;
         height: 0.125rem;
         border-radius: 0.0625rem;
-        background-color: #1FC365;
+        background-color: #1fc365;
         position: absolute;
         display: block;
         bottom: -0.375rem;
@@ -339,6 +361,7 @@ header {
           color: #1a1a1a;
           font-size: 0.9375rem;
           margin-bottom: 0.5rem;
+          font-weight: 400;
         }
         /deep/ p {
           color: #999999;

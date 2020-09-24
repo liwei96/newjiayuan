@@ -2,10 +2,12 @@
   <div id="search">
     <header>
       <img class="back" src="~/assets/goback.png" alt />
+      <nuxt-link :to="'/'+jkl+'/address'">
       <p class="city">
         杭州
         <img src="~/assets/downsan.png" alt />
       </p>
+      </nuxt-link>
       <img class="logo" src="~/assets/logo.png" alt />
       <div class="zixuns">
         <img src="~/assets/zixun.png" alt />
@@ -13,7 +15,9 @@
       </div>
     </header>
     <div class="input">
-      <input type="text" placeholder="请输入楼盘名称" />
+      <nuxt-link :to="'/'+jkl+'/searchname'">
+        <input type="text" placeholder="请输入楼盘名称" />
+      </nuxt-link>
       <span>
         <img src="~/assets/dian.png" />地图
       </span>
@@ -57,24 +61,28 @@
             </div>
             <div class="area-right">
               <ul v-if="areanum == 0">
+                <li :class="area.length == 0 ?'active':''" @click="unlimited(0,citys)">不限</li>
                 <li
                   v-for="(item,key) in citys"
                   :key="key"
-                  :class="citynum == key ?'active':''"
-                >{{item}}</li>
+                  :class="item.btn == 1 ?'active':''"
+                  @click="set(citys,item.id,key,0)"
+                >{{item.name}}</li>
               </ul>
               <ul v-if="areanum == 1">
+                <li :class="railway.length == 0 ?'active':''" @click="unlimited(1,ties)">不限</li>
                 <li
                   v-for="(item,key) in ties"
                   :key="key"
-                  :class="tienum == key ?'active':''"
-                >{{item}}</li>
+                  :class="item.btn == 1 ?'active':''"
+                  @click="set(ties,item.id,key,1)"
+                >{{item.name}}</li>
               </ul>
             </div>
           </div>
           <div class="area-bom">
             <button>重置</button>
-            <button class="yes">确定</button>
+            <button class="yes" @click="yes">确定</button>
           </div>
         </div>
       </div>
@@ -93,37 +101,41 @@
             </div>
             <div class="area-right">
               <ul v-if="areanum == 0">
+                <li :class="price == 0 ?'active':''" @click="price = 0">不限</li>
                 <li
-                  v-for="(item,key) in citys"
+                  v-for="(item,key) in single_prices"
                   :key="key"
-                  :class="citynum == key ?'active':''"
-                >{{item}}</li>
+                  :class="price == item.id ?'active':''"
+                  @click="price = item.id"
+                >{{item.name}}</li>
               </ul>
               <ul v-if="areanum == 1">
+                <li :class="total == 0 ?'active':''" @click="total = 0">不限</li>
                 <li
-                  v-for="(item,key) in ties"
+                  v-for="(item,key) in total_prices"
                   :key="key"
-                  :class="tienum == key ?'active':''"
-                >{{item}}</li>
+                  :class="total == item.id ?'active':''"
+                  @click="total = item.id"
+                >{{item.name}}</li>
               </ul>
             </div>
           </div>
           <div class="area-bom">
             <button>重置</button>
-            <button class="yes">确定</button>
+            <button class="yes" @click="yes">确定</button>
           </div>
         </div>
       </div>
       <div class="hu">
         <ul>
           <li v-for="(item,key) in hus" :key="key">
-            <p>不限</p>
+            <p>{{item.name}}</p>
             <input type="checkbox" name="hu" v-model="husid" :value="key" />
           </li>
         </ul>
         <div class="hubtn">
           <button>重置</button>
-          <button class="yes">确定</button>
+          <button class="yes" @click="yes">确定</button>
         </div>
       </div>
       <div class="type">
@@ -131,34 +143,37 @@
           <div class="type-li">
             <h6>面积</h6>
             <p>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
+              <span
+                v-for="(item,key) in areas"
+                :key="key"
+                :class="region == item.id ?'active':''"
+                @click="region = item.id"
+              >{{item.name}}</span>
             </p>
           </div>
           <div class="type-li">
             <h6>类型</h6>
             <p>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
+              <span
+                v-for="(item,key) in types"
+                :key="key"
+                :class="type1 == item.type ?'active':''"
+                @click="type1 = item.type"
+              >{{item.type}}</span>
             </p>
           </div>
           <div class="type-li">
             <h6>特色</h6>
             <p>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
-              <span>50m²以下</span>
+              <span
+                v-for="(item,key) in features"
+                :key="key"
+                :class="item.btn == 1 ?'active':''"
+                @click="set(features,item.id,key,2)"
+              >{{item.name}}</span>
             </p>
           </div>
-          <div class="type-li">
+          <!-- <div class="type-li">
             <h6>装修</h6>
             <p>
               <span>50m²以下</span>
@@ -166,185 +181,84 @@
               <span>50m²以下</span>
               <span>50m²以下</span>
             </p>
-          </div>
+          </div>-->
         </div>
         <div class="typebtn">
           <button>重置</button>
-          <button class="yes">确定</button>
+          <button class="yes" @click="yes">确定</button>
         </div>
       </div>
       <div class="order">
         <ul>
-          <li>默认排序</li>
-          <li>默认排序</li>
-          <li>默认排序</li>
-          <li>默认排序</li>
-          <li>默认排序</li>
-          <li>默认排序</li>
+          <li @click="order(0)" :class="ordernum == 0 ? 'active':''">默认排序</li>
+          <li @click="order(1)" :class="ordernum == 1 ? 'active':''">单价从低到高</li>
+          <li @click="order(3)" :class="ordernum == 3 ? 'active':''">单价从高到低</li>
+          <li @click="order(4)" :class="ordernum == 4 ? 'active':''">开盘时间从近到远</li>
+          <li @click="order(2)" :class="ordernum == 2 ? 'active':''">开盘时间从远到近</li>
         </ul>
       </div>
       <div class="zhe" v-if="showtype" @click="cloase"></div>
     </div>
     <div class="icon">
-      <p>住宅</p>
-      <p>特价房</p>
-      <p>刚需</p>
-      <p>近地铁</p>
+      <p @click="zhu">住宅</p>
+      <p @click="te">特价房</p>
+      <p @click="gang">刚需</p>
+      <p @click="jin">近地铁</p>
     </div>
     <div class="con">
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
+      <template v-for="(item,key) in list">
+        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{item.name}}
+                <span>{{item.state}}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{item.price}}</span>
+                <i>元/m²</i>
+              </p>
+              <p
+                class="attr"
+              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
-    <div class="isnull">
+    <div class="isnull" v-if="isnull">
       <div class="nulltopimg">
-        <img src="~/assets/m-success.png" alt />
+        <img src="~/assets/search-null.png" alt />
       </div>
       <p class="nullmsg">
         没有找到相关内容，
-        <span>清空条件</span>再次搜索 或者让我们来为您推荐寻找合适的楼盘
+        <span @click="clearall">清空条件</span>再次搜索 或者让我们来为您推荐寻找合适的楼盘
       </p>
-      <button>帮我找房</button>
+      <button @click="help">帮我找房</button>
       <div class="other">
         <h3>猜你喜欢</h3>
-        <div class="pro">
-          <img src="~/assets/lun02.jpg" alt />
+        <div class="pro" v-for="(item,key) in other" :key="key">
+          <img :src="item.img" alt />
           <div class="pro-msg">
             <h5>
-              上课的龙卷风
-              <span>在售</span>
+              {{item.name}}
+              <span>{{item.state}}</span>
             </h5>
             <p class="pro-price">
-              <span>53000</span>
+              <span>{{item.price}}</span>
               <i>元/m²</i>起
             </p>
-            <p class="attr">住宅 | 杭州-临安 | 256m²</p>
+            <p
+              class="attr"
+            >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
             <p class="pro-icon">
-              <span class="pro-icon-zhuang">两个</span>
-              <span class="pro-icon-type">我的</span>
+              <span class="pro-icon-zhuang">{{item.decorate}}</span>
+              <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
             </p>
           </div>
         </div>
@@ -357,67 +271,195 @@
 </template>
 <script>
 import { Popup, Loading } from "vant";
+import { pros } from "@/api/api";
 export default {
   async asyncData(context) {
     let city = context.store.state.city;
-    // let token = context.store.state.cookie.token;
+    let token = context.store.state.cookie.token;
     let jkl = context.params.name;
-    let [res] = await Promise.all([
+    let area1 = 0;
+    let price1 = 0;
+    let type1 = 0;
+    let typenum = 0;
+    let shai1 = 0;
+    let area = [];
+    let railway = [];
+    let total = 0;
+    let price = 0;
+    let feature = [];
+    let husid = [];
+    let options = {
+      city: city,
+      phone: 1,
+      page: 1,
+      limit: 10,
+    };
+    let ordernum = 0;
+    let region = 0;
+    let isnull = false;
+    if (context.route.path.split("/").length == 4) {
+      let arr = context.route.path.split("/")[3].split("+");
+      for (let val of arr) {
+        let ll = val.split("-");
+        switch (ll[0]) {
+          case "country":
+            area1 = 1;
+            area = ll[1].split(",");
+            break;
+          case "railway":
+            area1 = 1;
+            railway = ll[1].split(",");
+            break;
+          case "total_price":
+            price1 = 1;
+            total = ll[1];
+            break;
+          case "single_price":
+            price1 = 1;
+            price = ll[1];
+            break;
+          case "house_type":
+            typenum = 1;
+            husid = ll[1].split(",");
+            break;
+          case "type":
+            shai1 = 1;
+            if (ll[1] == "公寓") {
+              type1 = "公寓";
+            } else if (ll[1] == "写字楼") {
+              type1 = "写字楼";
+            } else if (ll[1] == "住宅") {
+              type1 = "住宅";
+            } else if (ll[1] == "商铺") {
+              type1 = "商铺";
+            }
+            break;
+          case "feature":
+            shai1 = 1;
+            feature = ll[1].split(",");
+            break;
+          case "order":
+            shai1 = 1;
+            ordernum = ll[1];
+            break;
+          case "area":
+            shai1 = 1;
+            region = ll[1];
+            break;
+        }
+        options[ll[0]] = ll[1];
+      }
+    }
+    let [res, res1, res2] = await Promise.all([
       context.$axios
         .get("/jy/phone/search/conditions", {
           params: {
             city: city,
+            token: token,
           },
         })
         .then((resp) => {
-          let data = resp.data;
+          let data = resp.data.conditions;
+          for (let val of data.countries) {
+            val.btn = 0;
+            for (let v of area) {
+              if (val.id == v) {
+                val.btn = 1;
+              }
+            }
+          }
+          for (let val of data.railways) {
+            val.btn = 0;
+            for (let v of railway) {
+              if (val.id == v) {
+                val.btn = 1;
+              }
+            }
+          }
+          for (let val of data.features) {
+            val.btn = 0;
+            for (let v of feature) {
+              if (val.id == v) {
+                val.btn = 1;
+              }
+            }
+          }
           //   console.log(data)
           return data;
         }),
       context.$axios
-        .get("/jy/phone/search/conditions", {
-          params: {
-            city: city,
-          },
+        .get("/jy/search/info", {
+          params: options,
         })
         .then((resp) => {
-          let data = resp.data;
+          let data = resp.data.info;
+          if (data.length == 0) {
+            isnull = true;
+          }
           //   console.log(data)
           return data;
+        }),
+      context.$axios
+        .get("/jy/recommend", {
+          params: { city: city, count: 4 },
+        })
+        .then((res) => {
+          return res.data.recommends;
         }),
     ]);
     return {
-      tops: res.tops,
-      stricts: res.stricts,
-      finishes: res.finishes,
-      articles: res.articles,
-      recommends: res.recommends,
-      discounts: res.discounts,
-      dynamics: res.dynamics,
       jkl: jkl,
+      citys: res.countries,
+      ties: res.railways,
+      hus: res.house_types,
+      single_prices: res.single_prices,
+      total_prices: res.total_prices,
+      areas: res.areas,
+      types: res.types,
+      features: res.features,
+      list: res1,
+      type1: type1, //类型
+      area: area, //区域
+      husid: husid, //户型
+      railway: railway, //地铁
+      feature: feature, //特色
+      ordernum: ordernum, //排序
+      price: price, //单价
+      total: total, //总价
+      region: region, //面积
+      other: res2,
+      isnull: isnull,
     };
   },
   data() {
     return {
+      other: [],
       load: false,
       areanum: 0,
       citynum: 0,
-      citys: ["不限", "不限", "不限", "不限", "不限", "不限", "不限", "不限"],
-      ties: [
-        "一号线",
-        "一号线",
-        "一号线",
-        "一号线",
-        "一号线",
-        "一号线",
-        "一号线",
-        "一号线",
-      ],
+      citys: [],
+      ties: [],
       tienum: 0,
       showtype: false,
       type: 0,
-      hus: ["不限", "不限", "不限", "不限", "不限", "不限", "不限", "不限"],
+      hus: [],
       husid: [],
+      isnull: false,
+      page: 2,
+      country: "",
+      type1: "", //类型
+      total_price: "",
+      single_price: "",
+      area: [], //区域
+      house_type: "", //户型
+      railway: [], //地铁
+      feature: [], //特色
+      ordernum: 0, //排序
+      list: [],
+      isok: true,
+      price: 0, //单价
+      total: 0, //总价
+      region: 0, //面积
     };
   },
   components: {
@@ -490,13 +532,13 @@ export default {
     },
     showorder() {
       if (this.showtype) {
-        if (this.type == 4) {
+        if (this.type == 5) {
           this.showtype = false;
         }
       } else {
         this.showtype = true;
       }
-      this.type = 4;
+      this.type = 5;
       $(".area-con").hide();
       $(".pri-con").hide();
       $(".hu").hide();
@@ -504,12 +546,313 @@ export default {
       $(".order").slideToggle();
     },
     cloase() {
-      console.log("555");
       this.showtype = false;
       $(".area-con").slideUp();
+      $(".pri-con").slideUp();
+      $(".hu").slideUp();
+      $(".type").slideUp();
+      $(".order").slideUp();
     },
+    getmore() {
+      let that = this;
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      let city = $cookies.get("city");
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.isok) {
+          that.isok = false;
+          let d = {
+            phone: 1,
+            order: that.ordernum,
+            city: city,
+            page: that.page,
+            limit: 10,
+          };
+          if (that.area.length != 0) {
+            d.country = that.area.join(",");
+          }
+          if (that.type1) {
+            d.type = that.type1;
+          }
+          if (that.total) {
+            d.total_price = that.total;
+          }
+          if (that.price) {
+            d.single_price = that.price;
+          }
+          if (that.region) {
+            d.area = that.region;
+          }
+          if (that.husid.length != 0) {
+            d.house_type = that.husid.join(",");
+          }
+          if (that.railway.length != 0) {
+            d.railway = that.railway.join(",");
+          }
+          if (that.feature.length != 0) {
+            d.feature = that.feature.join(",");
+          }
+          pros(d).then((res) => {
+            that.list = that.list.concat(res.data.info);
+            that.isok = true;
+            that.page = that.page + 1;
+          });
+        }
+      }
+    },
+    order(id) {
+      console.log(id);
+      let type = $cookies.get("type");
+      type.order = id;
+      let url = this.$route.path;
+      let str = "";
+      for (let key in type) {
+        str += key + "-" + type[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    tostring(type, name, val) {
+      // let url = this.$route.path;
+      // let type = $cookies.get("type");
+      if (val == 0 || val.length == 0) {
+        if (type.hasOwnProperty(name)) {
+          delete type[name];
+        }
+      } else {
+        type[name] = val;
+      }
+      return type;
+      // $cookies.set("type", type, 0);
+      // let str = "";
+      // for (let key in type) {
+      //   str += key + "-" + type[key] + "+";
+      // }
+      // str = str.substring(0, str.length - 1);
+      // let arr = url.split("/");
+      // arr[3] = str;
+      // url = arr.join("/");
+      // this.$router.push(url);
+    },
+    start() {
+      let type = $cookies.get("type");
+      if (!type) {
+        type = {};
+      }
+      let url = this.$route.path;
+      if (url.split("/").length == 4) {
+        let arr = url.split("/")[3].split("+");
+        for (let val of arr) {
+          let ll = val.split("-");
+          type[ll[0]] = ll[1];
+        }
+        $cookies.set("type", type);
+      }else{
+        $cookies.set('type',{})
+      }
+    },
+    set(arr, id, key, type) {
+      let that = this;
+      for (let k in arr) {
+        if (k == key) {
+          if (!arr[k].btn) {
+            arr[k].btn = 1;
+          } else {
+            arr[k].btn = 0;
+          }
+        }
+      }
+      switch (type) {
+        case 0:
+          that.area = that.pu(that.area, id);
+          that.citynum = 1;
+          that.citys = arr;
+          break;
+        case 1:
+          that.railway = that.pu(that.railway, id);
+          that.tienum = 1;
+          that.ties = arr;
+          break;
+        case 2:
+          that.feature = that.pu(that.feature, id);
+          that.features = arr;
+          break;
+      }
+    },
+    pu(arr, id) {
+      if (arr.indexOf(id) == -1) {
+        arr.push(id);
+      } else {
+        arr.splice(arr.indexOf(id), 1);
+      }
+      return arr;
+    },
+    unlimited(id, arr) {
+      let that = this;
+      for (let val of arr) {
+        val.btn = 0;
+      }
+      switch (id) {
+        case 0:
+          that.area = [];
+          that.citynum = 0;
+          that.citys = arr;
+          break;
+        case 1:
+          that.railway = [];
+          that.tienum = 0;
+          that.ties = arr;
+          break;
+      }
+    },
+    yes() {
+      let that = this;
+      let d = $cookies.get("type");
+      if (that.area.length != 0) {
+        d.country = that.area.join(",");
+      } else {
+        d = that.tostring(d, "country", that.area);
+      }
+      if (that.type1) {
+        d.type = that.type1;
+      } else {
+        d = that.tostring(d, "type", that.type1);
+      }
+      if (that.total) {
+        d.total_price = that.total;
+      } else {
+        d = that.tostring(d, "total_price", that.total);
+      }
+      if (that.price) {
+        d.single_price = that.price;
+      } else {
+        d = that.tostring(d, "single_price", that.price);
+      }
+      if (that.region) {
+        d.area = that.region;
+      } else {
+        d = that.tostring(d, "area", that.region);
+      }
+      if (that.husid.length !=0) {
+        d.house_type = that.husid.join(",");
+      } else {
+        d = that.tostring(d, "house_type", that.husid);
+      }
+      if (that.railway.length != 0) {
+        d.railway = that.railway.join(",");
+      } else {
+        d = that.tostring(d, "railway", that.railway);
+      }
+
+      if (that.feature.length != 0) {
+        d.feature = that.feature.join(",");
+      } else {
+        d = that.tostring(d, "feature", that.feature);
+      }
+      console.log(d);
+      $cookies.set("type", d);
+      let url = this.$route.path;
+      let str = "";
+      for (let key in d) {
+        str += key + "-" + d[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    clearall() {
+      $cookies.remove("type");
+      let that = this;
+      this.$router.push("/" + that.jkl + "/search");
+    },
+    zhu() {
+      let type = $cookies.get("type");
+      if (!type) {
+        type = {};
+      }
+      type.type = "住宅";
+      $cookies.set("type", type);
+      let url = this.$route.path;
+      let str = "";
+      for (let key in type) {
+        str += key + "-" + type[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    te() {
+      let type = $cookies.get("type");
+      if (!type) {
+        type = {};
+      }
+      type.special_discount = 1;
+      $cookies.set("type", type);
+      let url = this.$route.path;
+      let str = "";
+      for (let key in type) {
+        str += key + "-" + type[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    gang() {
+      let type = $cookies.get("type");
+      if (!type) {
+        type = {};
+      }
+      type.feature = 3;
+      $cookies.set("type", type);
+      let url = this.$route.path;
+      let str = "";
+      for (let key in type) {
+        str += key + "-" + type[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    jin() {
+      let type = $cookies.get("type");
+      if (!type) {
+        type = {};
+      }
+      type.near_railway = 1;
+      $cookies.set("type", type);
+      let url = this.$route.path;
+      let str = "";
+      for (let key in type) {
+        str += key + "-" + type[key] + "+";
+      }
+      str = str.substring(0, str.length - 1);
+      let arr = url.split("/");
+      arr[3] = str;
+      url = arr.join("/");
+      this.$router.push(url);
+    },
+    help(){
+      this.$router.push('/'+this.jkl+'/help')
+    }
   },
   mounted() {
+    this.start();
+    // if(!this.list){
+    //   this.isnull = true
+    // }
+    // console.log(this.$route.path);
     // 滑动监控
     $(window).scroll(function () {
       var scrollTop =
@@ -519,11 +862,15 @@ export default {
       } else {
         $(".nav").css({ position: "relative", top: "0" });
       }
-      console.log(scrollTop);
+      // console.log(scrollTop);
     });
+    window.addEventListener("scroll", this.getmore);
   },
   watch: {
     showtype(val) {},
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getmore);
   },
 };
 </script>
@@ -604,12 +951,15 @@ header {
   }
   input::-webkit-input-placeholder {
     color: #969899;
+    font-size: 0.875rem;
   }
   input::-moz-input-placeholder {
     color: #969899;
+    font-size: 0.875rem;
   }
   input::-ms-input-placeholder {
     color: #969899;
+    font-size: 0.875rem;
   }
   span {
     color: #333334;
@@ -639,7 +989,7 @@ header {
       color: #323333;
       font-size: 0.875rem;
       width: 20%;
-      // text-align: center;
+      text-align: center;
       img {
         width: 1rem;
         margin-top: 5px;
@@ -890,7 +1240,7 @@ header {
     background-color: #fff;
     z-index: 2;
     .type-top {
-      height: 21.5625rem;
+      height: 19.5625rem;
       overflow: auto;
     }
     .type-li {
@@ -921,6 +1271,10 @@ header {
         }
         span:nth-of-type(4n) {
           margin: 0;
+        }
+        .active {
+          background-color: #e1faec;
+          color: #3ecb7b;
         }
       }
     }
@@ -965,6 +1319,9 @@ header {
         color: rgba(100, 101, 102, 1);
         font-size: 0.875rem;
         border-bottom: 0.03125rem solid rgba(247, 247, 247, 1);
+      }
+      .active {
+        color: #2ac66d;
       }
     }
   }
@@ -1026,6 +1383,7 @@ header {
         span {
           color: #fe582f;
           font-size: 0.9375rem;
+          font-weight: bold;
         }
         i {
           font-style: normal;
@@ -1072,7 +1430,7 @@ header {
     color: rgba(125, 127, 128, 1);
     font-size: 0.8125rem;
     line-height: 1.375rem;
-    width: 13.875rem;
+    width: 15rem;
     position: relative;
     left: 50%;
     transform: translateX(-50%);

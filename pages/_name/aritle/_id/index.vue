@@ -1,27 +1,25 @@
 <template>
   <div id="aritle">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
       <img src="~/assets/mapcai.png" alt class="list" />
     </header>
     <div class="con">
-      <h3>无法使用住房公积金贷款买房？一定要 注意这几种情况！</h3>
+      <h3>{{article.title}}</h3>
       <p class="time">
-        发布： 2019-05-24
-        <span>来源：允家</span>
-        <i>浏览： 167</i>
+        发布： {{article.begin}}
+        <span>来源：{{article.source}}</span>
+        <i>浏览： {{article.visit_num}}</i>
       </p>
       <div class="pop">
         <span>摘要：</span>
-        我们都知道公积金贷款利率远低于商业贷款，提前还贷也没有违约金等，是贷款买房的首选。但是，公积金贷款买房并非易事，一旦遇到以下这几种情况
+        {{article.description}}
       </div>
-      <div class="ari"></div>
+      <div class="ari" v-html="article.content"></div>
       <div class="type">
         标签：
-        <span>买房</span>
-        <span>买房</span>
-        <span>买房</span>
+        <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
       </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
@@ -29,7 +27,7 @@
       </p>
       <div class="agre">
         <img src="~/assets/noclick.png" alt />
-        <p>45</p>
+        <p>{{article.like_num}}</p>
       </div>
       <p class="free">
         <span>免责声明：</span>
@@ -37,64 +35,68 @@
       </p>
       <div class="other">
         <h4>大家都在看</h4>
-        <div class="pro">
-          <div class="left">
-            <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-            <p>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-            </p>
-          </div>
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt />
-          </div>
-        </div>
-        <div class="pro">
-          <div class="left">
-            <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-            <p>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-            </p>
-          </div>
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt />
-          </div>
-        </div>
-        <div class="pro">
-          <div class="left">
-            <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-            <p>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-            </p>
-          </div>
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt />
-          </div>
-        </div>
-        <div class="pro">
-          <div class="left">
-            <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-            <p>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-              <span>楼盘签约</span>
-            </p>
-          </div>
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt />
-          </div>
-        </div>
+        <template v-for="(item,key) in others">
+          <nuxt-link :key="key" :to="'/'+jkl+'/aritle/'+item.id">
+            <div class="pro">
+              <div class="left">
+                <h5>{{item.title}}</h5>
+                <p>
+                  <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                </p>
+              </div>
+              <div class="right">
+                <img :src="item.img" alt />
+              </div>
+            </div>
+          </nuxt-link>
+        </template>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  async asyncData(context) {
+    let other = context.query.other;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/article/detail", {
+          params: {
+            id: id,
+            other: other,
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          data.article.content = decodeURIComponent(data.article.content);
+          //   console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      article: res.article,
+      others: res.others,
+    };
+  },
+  data() {
+    return {
+      article: {},
+      others: [],
+    };
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+  },
+};
 </script>
 <style lang="less" scoped>
 header {
@@ -156,6 +158,17 @@ header {
     line-height: 1.5rem;
     span {
       color: rgba(64, 162, 244, 1);
+    }
+  }
+  /deep/.ari {
+    padding-top: 1.25rem;
+    p {
+      color: #2f3133;
+      font-size: 0.9375rem;
+      line-height: 1.75rem;
+    }
+    img {
+      width: 100%;
     }
   }
   .type {
@@ -220,6 +233,7 @@ header {
       .left {
         position: relative;
         margin-right: 1.25rem;
+        width: 14.0625rem;
         h5 {
           color: #2f3133;
           font-size: 0.875rem;
@@ -227,6 +241,11 @@ header {
           font-weight: 400;
           position: relative;
           top: -0.25rem;
+          height: 2.625rem;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          overflow: hidden;
         }
         p {
           position: absolute;

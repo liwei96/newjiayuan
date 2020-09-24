@@ -1,53 +1,32 @@
 <template>
   <div id="PK">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
-    </header>
+    <top-view></top-view>
     <div class="pks">
-      <van-checkbox-group v-model="result" :max="2">
-        <van-checkbox name="a" checked-color="#1FC365" class="new">
-          <div class="pro">
-            <div class="left">
-              <img src="~/assets/lun02.jpg" alt />
+      <van-checkbox-group v-model="result" :max="4">
+        <template v-for="(item,key) in list">
+          <van-checkbox :name="item.id" checked-color="#1FC365" class="new" :key="key">
+            <div class="pro">
+              <div class="left">
+                <img :src="item.img" alt />
+              </div>
+              <div class="right">
+                <h6>{{item.name}}</h6>
+                <p class="pri">
+                  <span>{{item.price}}</span>元/m²
+                </p>
+                <p
+                  class="msg"
+                >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+                <p class="type">
+                  <span class="zhuang">{{item.decorate}}</span>
+                  <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                </p>
+              </div>
+              <img class="newimg" v-if="key==0" src="~/assets/new-view.png" alt="">
             </div>
-            <div class="right">
-              <h6>锦云澜天里</h6>
-              <p class="pri">
-                <span>17000</span>元/m²
-              </p>
-              <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
-              <p class="type">
-                <span class="zhuang">精装</span>
-                <span>地铁楼盘</span>
-              </p>
-            </div>
-          </div>
-        </van-checkbox>
+          </van-checkbox>
+        </template>
         <div class="line"></div>
-        <van-checkbox name="b" checked-color="#1FC365">
-          <div class="pro">
-            <div class="left">
-              <img src="~/assets/lun02.jpg" alt />
-            </div>
-            <div class="right">
-              <h6>锦云澜天里</h6>
-              <p class="pri">
-                <span>17000</span>元/m²
-              </p>
-              <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
-              <p class="type">
-                <span class="zhuang">精装</span>
-                <span>地铁楼盘</span>
-              </p>
-            </div>
-          </div>
-        </van-checkbox>
         <div class="slid"></div>
         <h3>浏览足迹</h3>
         <van-checkbox name="c" checked-color="#1FC365">
@@ -71,18 +50,70 @@
       </van-checkbox-group>
     </div>
     <div class="bombtn">
-      <button class="pkbtn">添加楼盘</button>
+      <button class="pkbtn" @click="add">添加楼盘</button>
     </div>
   </div>
 </template>
 <script>
+import top from "@/components/header";
 export default {
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/base/compare", {
+          params: {
+            ids: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      id: id,
+      list: res.recommends,
+    };
+  },
   data() {
     return {
       checked: true,
       result: [],
       isadd: false,
+      list: [],
     };
+  },
+  components: {
+    "top-view": top,
+  },
+  methods: {
+    add() {
+      let id = $cookies.get("ids");
+      let ids;
+      if (id) {
+        let k = $cookies.get("ids").split(",").concat(this.result);
+        let kk = [];
+        for (let val of k) {
+          if (kk.indexOf(String(val)) == -1) {
+            kk.push(val);
+          }
+        }
+        ids = kk.join(",");
+        $cookies.set("ids", ids);
+      } else {
+        $cookies.set("ids", this.result);
+        ids = this.result.join(",");
+      }
+      this.$router.push("/" + this.jkl + "/pk/" + ids);
+    },
   },
   watch: {
     result(val, old) {
@@ -98,53 +129,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 2.75rem;
-  z-index: 1;
-  background-color: #fff;
-  position: fixed;
-  .back {
-    width: 1.25rem;
-    margin-left: 1rem;
-  }
-  .logo {
-    width: 3.125rem;
-  }
-  .home {
-    width: 1.25rem;
-    margin-right: 1rem;
-  }
-  .zixuns {
-    margin-right: 1.25rem;
-    position: absolute;
-    right: 9%;
-    top: 0.68rem;
-    img {
-      width: 1.5rem;
-    }
-    p {
-      position: absolute;
-      width: 0.8125rem;
-      height: 0.8125rem;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 0.8125rem;
-      background-color: #ff4040;
-      color: #fff;
-      font-size: 0.625rem;
-      top: -0.40625rem;
-      right: -0.1875rem;
-    }
-  }
-  .list {
-    width: 1.25rem;
-    margin-right: 4%;
-  }
-}
 .pks {
   padding-top: 4rem;
   /deep/.van-checkbox-group {
@@ -219,20 +203,28 @@ header {
         }
       }
     }
+    .newimg {
+      position: absolute;
+      width: 5rem;
+      transform: rotate(-45deg);
+      // height: 2.25rem;
+      top: 1.5rem;
+      right: -0.5625rem
+    }
   }
   h3 {
-        color: #323233;
-        font-size: 1rem;
-        margin-top: 1.25rem;
-        padding: 0 4%;
-        margin-bottom: 1.125rem;
-        font-weight: bold;
-    }
-    .slid {
-  width: 100%;
-  height: 0.625rem;
-  background-color: #f7f7f7;
-}
+    color: #323233;
+    font-size: 1rem;
+    margin-top: 1.25rem;
+    padding: 0 4%;
+    margin-bottom: 1.125rem;
+    font-weight: bold;
+  }
+  .slid {
+    width: 100%;
+    height: 0.625rem;
+    background-color: #f7f7f7;
+  }
 }
 .bombtn {
   width: 100%;

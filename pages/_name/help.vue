@@ -1,7 +1,7 @@
 <template>
   <div id="help">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="goback"/>
       <img class="logo" src="~/assets/logo.png" alt />
       <div class="zixuns">
         <img src="~/assets/zixun.png" alt />
@@ -13,8 +13,8 @@
     <div class="con">
       <p class="tit">您能接受的总价范围是多少？</p>
       <div class="sliderbox">
-        <p class="start">300万</p>
-        <p class="end">300万</p>
+        <p class="start">{{start}}万</p>
+        <p class="end">{{end}}万</p>
         <input
           id="ex2"
           type="text"
@@ -73,13 +73,20 @@
 <script>
 import { Popup } from "vant";
 export default {
-  data() {
-    return {
-      show: false,
-    };
-  },
   components: {
     Popup,
+  },
+  data(){
+    return {
+      start:200,
+      end:800,
+      show: false,
+    }
+  },
+  methods:{
+    goback(){
+      this.$router.go(-1)
+    }
   },
   mounted() {
     var slider = new Slider("#ex2", {});
@@ -87,8 +94,10 @@ export default {
     $("#ex2").on("slide", function () {
       var start = $(".min-slider-handle").attr("aria-valuenow");
       var end = $(".max-slider-handle").attr("aria-valuenow");
-      console.log(start, end);
-      // console.log(that.starts);
+      // console.log(start, end);
+      that.start=start;
+      that.end=end
+      // console.log(that.start);
       // console.log(end);
     });
   },

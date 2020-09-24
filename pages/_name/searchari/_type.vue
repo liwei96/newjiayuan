@@ -193,6 +193,7 @@ header {
     background-color: rgba(245, 245, 245, 1);
     text-align: center;
   }
+  
   img {
     width: 1rem;
     position: absolute;

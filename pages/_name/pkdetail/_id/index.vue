@@ -7,16 +7,18 @@
         <span>楼盘信息</span>
       </div>
       <div class="center">
-        <img class="topimg" src="~/assets/lun02.jpg" alt />
+        <img class="topimg" :src="one.img" alt />
         <div class="msg">
-          <h6>锦云澜天里</h6>
+          <h6>{{one.name}}</h6>
           <p class="type">
-            <span class="zhuang">在售</span>
-            <span>住宅</span>
+            <span class="zhuang">{{one.decorate}}</span>
+            <template v-for="(item,key) in one.features">
+            <span :key="key" v-if="key==0">{{item}}</span>
+            </template>
           </p>
           <p class="pri">
             约
-            <span>17500</span>元/m²
+            <span>{{one.price}}</span>元/m²
           </p>
           <button>
             <img src="~/assets/navtel.png" />电话咨询
@@ -24,16 +26,18 @@
         </div>
       </div>
       <div class="center">
-        <img class="topimg" src="~/assets/lun02.jpg" alt />
+        <img class="topimg" :src="two.img" alt />
         <div class="msg">
-          <h6>锦云澜天里</h6>
+          <h6>{{two.name}}</h6>
           <p class="type">
-            <span class="zhuang">在售</span>
-            <span>住宅</span>
+            <span class="zhuang">{{two.decorate}}</span>
+            <template v-for="(item,key) in two.features">
+            <span :key="key" v-if="key==0">{{item}}</span>
+            </template>
           </p>
           <p class="pri">
             约
-            <span>17500</span>元/m²
+            <span>{{two.price}}</span>元/m²
           </p>
           <button>
             <img src="~/assets/navtel.png" />电话咨询
@@ -47,57 +51,55 @@
           <td>楼盘地址</td>
           <td>
             <img src="~/assets/icon-path.png" alt />
-            <span>睦州大道与清溪大 道交叉口</span>
+            <span>{{one.address}}</span>
           </td>
           <td>
             <img src="~/assets/icon-path.png" alt />
-            <span>睦州大道与清溪大 道交叉口</span>
+            <span>{{two.address}}</span>
           </td>
         </tr>
         <tr>
           <td>项目特色</td>
           <td>
-            <span class="type">刚需楼盘</span>
-            <span class="type">刚需楼盘</span>
+            <span class="type" v-for="(item,key) in one.features" :key="key">{{item}}</span>
           </td>
           <td>
-            <span class="type">刚需楼盘</span>
-            <span class="type">刚需楼盘</span>
+            <span class="type" v-for="(item,key) in two.features" :key="key">{{item}}</span>
           </td>
         </tr>
         <tr>
           <td>销售状态</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.state}}</td>
+          <td>{{two.state}}</td>
         </tr>
         <tr>
           <td>建筑类型</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.type}}</td>
+          <td>{{two.type}}</td>
         </tr>
         <tr class="shou">
           <td>预售许可</td>
           <td>
-            <p>临售许字（2020） 第00013号</p>
+            <p>{{one.license||'待更新'}}</p>
           </td>
           <td>
-            <p>临售许字（2020） 第00013号</p>
+            <p>{{two.license||'待更新'}}</p>
           </td>
         </tr>
         <tr>
           <td>装修状况</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.decorate}}</td>
+          <td>{{two.decorate}}</td>
         </tr>
         <tr>
           <td>层高</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.height}}</td>
+          <td>{{two.height}}</td>
         </tr>
         <tr>
           <td>产权年限</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.year}}</td>
+          <td>{{one.year}}</td>
         </tr>
         <tr>
           <td>距地铁</td>
@@ -110,36 +112,36 @@
         <tr class="pri">
           <td>参考单价</td>
           <td>
-            <p>约15000元/m²</p>
+            <p>约{{one.price}}元/m²</p>
             <button>咨询底价</button>
           </td>
           <td>
-            <p>约15000元/m²</p>
+            <p>约{{two.price}}元/m²</p>
             <button>咨询底价</button>
           </td>
         </tr>
         <tr>
           <td>参考总价</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.total_price}}</td>
+          <td>{{two.total_price}}</td>
         </tr>
         <tr>
           <td>开盘时间</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.open_time}}</td>
+          <td>{{two.open_time}}</td>
         </tr>
         <tr>
           <td>交房时间</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.give_time}}</td>
+          <td>{{two.give_time}}</td>
         </tr>
         <tr class="shou">
           <td>开发商</td>
           <td>
-            <p>临售许字（2020） 第00013号</p>
+            <p>{{one.builder}}</p>
           </td>
           <td>
-            <p>临售许字（2020） 第00013号</p>
+            <p>{{two.builder}}</p>
           </td>
         </tr>
 
@@ -175,57 +177,61 @@
         </tr>
         <tr>
           <td>建筑面积</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.built_area}}</td>
+          <td>{{two.built_area}}</td>
         </tr>
         <tr>
           <td>物业费用</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.property_fee}}</td>
+          <td>{{two.property_fee}}</td>
         </tr>
         <tr>
           <td>容积率</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.capacity_rate}}</td>
+          <td>{{two.capacity_rate}}</td>
         </tr>
-        <tr>
+        <tr class="com">
           <td>物业公司</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.property_company}}</td>
+          <td>{{two.property_company}}</td>
         </tr>
         <tr>
           <td>绿化率</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.green}}</td>
+          <td>{{two.green}}</td>
         </tr>
         <tr>
           <td>车位情况</td>
-          <td>在售</td>
-          <td>在售</td>
+          <td>{{one.parking}}</td>
+          <td>{{two.parking}}</td>
         </tr>
       </table>
       <button class="btn">咨询详细楼盘信息</button>
     </div>
     <div class="other">
       <h3>猜你喜欢</h3>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
+      <template v-for="(item,key) in list">
+        <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{item.name}}
+                <span>{{item.state}}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{item.price}}</span>
+                <i>元/m²</i>起
+              </p>
+              <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <nav-view></nav-view>
   </div>
@@ -237,6 +243,34 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/base/compare", {
+          params: {
+            ids: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      id: id,
+      list: res.recommends,
+      one: res.data[0],
+      two: res.data[1],
+    };
   },
   data() {
     return {
@@ -371,6 +405,8 @@ export default {
       }
       td:nth-of-type(2) {
         border-right: 0.03125rem solid #e6e6e6;
+        width: 8rem;
+        padding: 0 .25rem;
       }
     }
     .address {
@@ -378,6 +414,7 @@ export default {
         color: #323233;
         text-align: left;
         padding: 0 0.5625rem;
+        width: 7rem;
         span {
           display: inline-block;
           width: 6.5rem;
@@ -405,14 +442,14 @@ export default {
     .shou {
       height: 3.75rem;
       td:nth-of-type(2) {
-        text-align: left;
+        text-align: center;
         p {
           width: 6.875rem;
           margin-left: 1.125rem;
         }
       }
       td:nth-of-type(3) {
-        text-align: left;
+        text-align: center;
         p {
           width: 6.875rem;
           margin-left: 1.125rem;
@@ -483,6 +520,12 @@ export default {
           margin-left: 1.125rem;
         }
       }
+    }
+    .com {
+      td:nth-of-type(2) {
+        padding: 0 0.25rem;
+      }
+      
     }
   }
   h3 {

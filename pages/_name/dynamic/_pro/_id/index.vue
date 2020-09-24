@@ -1,43 +1,44 @@
 <template>
   <div id="Dyna">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="back"/>
       <img class="logo" src="~/assets/logo.png" alt />
       <img src="~/assets/searchtop.png" alt class="search" />
       <img src="~/assets/mapcai.png" alt class="list" />
     </header>
     <div class="con">
-      <h5>吴女士于 2019-05-01 购买群升万国天地</h5>
-      <p class="name">客户：吴女士</p>
-      <p
-        class="txt"
-      >本人看房半年有余，从去年年底到今年五月，萧山、滨江、之江转塘的楼盘基本上都看过了，要么价格太高，要么配套不好，一直没有看好，那段时间看房子看的非常的累。偶然的一次机会，在网上寻找新楼盘的时候看到了家园新房网，上面写着杭州新房攻略大全，抱着试一试的想法，我点了进去，区域依然是选择的萧山、滨江、之江转塘这三个地方，一个新的楼盘出现在首页上——群升万国天地。当时心里想的是，这个楼盘怎么没听说过，会不会是假的，如果是真的，那这个家园新房网确实称得上杭州新房大全了，楼盘信息这么及时。于是第一时间打了电话过去，对方告知楼盘是刚刚首开没多久，很多人确实都还不知道，一番交流下来，觉得还不错，所以很快约好时间实地去看。五月一号当天，置业顾问小陈开车到城西这边来接的我，看完给我的感觉很不错，户型南北通透，又是6号线地铁上盖，商业综合体上盖，距离千年古城宋城旅游度假区也就5分钟左右路程，平时休闲度假购物都非常便利。但是价格一直谈不下来。这个时候小陈也看出了我的为难，他跟我确定一下房子是否满意，说价格他来想办法。后面他给他经理打了个电话，经理过来之后直接去找了售楼处的负责人，原来他们之间是有推广协议和团购优惠的，可以争取到2个点的折扣，但是距离我的预期还差了一万多，将近1个点的差距。最后还是通过小陈他们经理给公司老总打电话，请他们公司老板出面，售楼处卖了个人情把最后的差价给优惠了下来。虽然过程比较曲折，但是结果是比较完美的。感谢！</p>
-      <p class="time">2019-06-07</p>
+      <h5>{{info.title}}</h5>
+      <p class="txt">{{info.content}}</p>
+      <p class="time">{{info.time}}</p>
       <button class="btn">订阅实时动态</button>
-      <div class="ject-top">
-        <div class="top-left">
-          <img src="~/assets/lun02.jpg" alt />
+      <nuxt-link :to="'/'+jkl+'/content/'+building.id">
+        <div class="ject-top">
+          <div class="top-left">
+            <img :src="building.img" alt />
+          </div>
+          <div class="top-right">
+            <h4>
+              {{building.name}}
+              <span>{{building.state}}</span>
+            </h4>
+            <p class="pri">
+              <span>{{building.price}}</span>元/m²
+            </p>
+            <p
+              class="typemsg"
+            >{{building.type}} | {{building.cityname}}-{{building.country.substr(0,2)}} | {{building.area}}m²</p>
+            <p class="icon">
+              <span class="zu">{{building.decorate}}</span>
+              <span v-for="(item,key) in building.features" :key="key">{{item}}</span>
+            </p>
+          </div>
         </div>
-        <div class="top-right">
-          <h4>
-            荣盛檀越府
-            <span>在售</span>
-          </h4>
-          <p class="pri">
-            <span>17000</span>元/m²
-          </p>
-          <p class="typemsg">住宅 | 杭州-江干 | 地铁楼盘</p>
-          <p class="icon">
-            <span class="zu">精装</span>
-            <span>刚需楼盘</span>
-          </p>
-        </div>
-      </div>
+      </nuxt-link>
       <div class="peo">
-        <img src="~/assets/people.png" alt />
+        <img :src="staff.head_img" alt />
         <div class="peomsg">
           <h6>
-            李聪然
+            {{staff.name}}
             <span>满意度5分</span>
           </h6>
           <p>为客户提供专业的购房建议</p>
@@ -49,110 +50,90 @@
     <div class="other">
       <h3>本楼盘户型</h3>
       <ul>
-        <li>
-          <div class="left">
-            <img src="~/assets/hu.png" alt />
-          </div>
-          <div class="right">
-            <h5>
-              3室2厅2卫
-              <span>在售</span>
-            </h5>
-            <p>
-              建面：
-              <span>89m²</span>
-            </p>
-            <p class="type">
-              类型：
-              <span>loft</span>
-            </p>
-            <p>
-              总价：
-              <span class="pri">
-                约
-                <i>290</i>万/套
-              </span>
-            </p>
-          </div>
-        </li>
-        <li>
-          <div class="left">
-            <img src="~/assets/hu.png" alt />
-          </div>
-          <div class="right">
-            <h5>
-              3室2厅2卫
-              <span>在售</span>
-            </h5>
-            <p>
-              建面：
-              <span>89m²</span>
-            </p>
-            <p class="type">
-              类型：
-              <span>loft</span>
-            </p>
-            <p>
-              总价：
-              <span class="pri">
-                约
-                <i>290</i>万/套
-              </span>
-            </p>
-          </div>
-        </li>
-        <li>
-          <div class="left">
-            <img src="~/assets/hu.png" alt />
-          </div>
-          <div class="right">
-            <h5>
-              3室2厅2卫
-              <span>在售</span>
-            </h5>
-            <p>
-              建面：
-              <span>89m²</span>
-            </p>
-            <p class="type">
-              类型：
-              <span>loft</span>
-            </p>
-            <p>
-              总价：
-              <span class="pri">
-                约
-                <i>290</i>万/套
-              </span>
-            </p>
-          </div>
-        </li>
+        <template v-for="(item,key) in houses">
+          <nuxt-link :to="'/'+jkl+'/hu/'+item.id" :key="key">
+            <li>
+              <div class="left">
+                <img :src="item.img" alt />
+              </div>
+              <div class="right">
+                <h5>
+                  {{item.title}}
+                  <span>{{item.status}}</span>
+                </h5>
+                <p>
+                  建面：
+                  <span>{{item.area}}m²</span>
+                </p>
+                <p class="type">
+                  类型：
+                  <span>{{item.type}}</span>
+                </p>
+                <p>
+                  总价：
+                  <span class="pri">
+                    约
+                    <i>{{Number(item.price)}}</i>万/套
+                  </span>
+                </p>
+              </div>
+            </li>
+          </nuxt-link>
+        </template>
       </ul>
     </div>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="btn">1</span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a href="tel:400">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
-    </div>
+    <nav-view></nav-view>
   </div>
 </template>
 <script>
+import nav from "@/components/nav.vue";
 export default {
+  components: {
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let other = context.query.other;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/dynamic/phone/detail", {
+          params: {
+            id: id,
+            other: other,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      info: res.info,
+      building: res.building,
+      staff: res.common.staffs.staff,
+      phone: res.common.phone,
+      houses: res.house_types,
+    };
+  },
   data() {
     return {
       btn: true,
+      info: {},
+      jkl: "",
+      building: {},
     };
   },
+  methods:{
+    back(){
+      this.$router.go(-1)
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

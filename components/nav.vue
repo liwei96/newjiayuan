@@ -8,7 +8,7 @@
       <button>
         <img src="~/assets/time.png" />预约看房
       </button>
-      <a href="tel:400">
+      <a :href="'tel:'+phone">
         <button class="nav-tel">
           <img src="~/assets/bartel.png" />电话咨询
         </button>
@@ -17,6 +17,12 @@
 </template>
 <script>
 export default {
+  props: {
+    phone: {
+      type: String,
+      // required: true,
+    },
+  },
     data(){
         return {
 

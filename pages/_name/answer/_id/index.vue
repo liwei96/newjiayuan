@@ -3,48 +3,54 @@
     <top-view></top-view>
     <div class="topmsg">
       <p class="tit">
-        <span>问</span> 本项目厨房管道的排风原理和方式是什么？会不会出 现油烟倒灌情况?
+        <span>问</span>
+        {{answer.question}}
       </p>
-      <div class="ject-top">
-        <div class="top-left">
-          <img src="~/assets/lun02.jpg" alt />
+      <nuxt-link :to="'/'+jkl+'/content/'+building.id">
+        <div class="ject-top">
+          <div class="top-left">
+            <img :src="building.img" alt />
+          </div>
+          <div class="top-right">
+            <h4>
+              {{building.name}}
+              <span>{{building.state}}</span>
+            </h4>
+            <p class="pri">
+              <span>{{building.price}}</span>元/m²
+            </p>
+            <p
+              class="typemsg"
+            >{{building.type}} | {{building.city_name}}-{{building.country.substr(0,2)}} | {{building.area}}m²</p>
+            <p class="icon">
+              <span class="zu">{{building.decorate}}</span>
+              <span v-for="(item,key) in building.feature" :key="key">{{item}}</span>
+            </p>
+          </div>
         </div>
-        <div class="top-right">
-          <h4>
-            荣盛檀越府
-            <span>在售</span>
-          </h4>
-          <p class="pri">
-            <span>17000</span>元/m²
-          </p>
-          <p class="typemsg">住宅 | 杭州-江干 | 地铁楼盘</p>
-          <p class="icon">
-            <span class="zu">精装</span>
-            <span>刚需楼盘</span>
-          </p>
-        </div>
-      </div>
+      </nuxt-link>
     </div>
-    <div class="answer" v-if="false">
+    <div class="answer">
       <div class="top">
         <img src="~/assets/people.png" alt />
         <div class="promsg">
           <h5>
-            李聪然
+            {{staff.name}}
             <span>专业解答</span>
           </h5>
           <p>
             最近咨询
-            <span>147</span>人
+            <span>{{staff.ServeNum}}</span>人
           </p>
         </div>
         <button>免费咨询</button>
       </div>
-      <p class="msg">厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...</p>
+      <p class="msg">{{answer.answer}}</p>
       <p class="time">
-        2019-06-08
-        <span>
-          <img src="~/assets/noclick.png" />有用(12)
+        {{answer.time}}
+        <span :class="answer.my_like==1?'active':''">
+          <img src="~/assets/noclick.png" />
+          有用({{answer.like_num}})
         </span>
       </p>
     </div>
@@ -64,41 +70,51 @@
         </span>
       </p>
     </div>
-    <div class="btn">
+    <div class="btn" v-if="false">
       <button>我来回答</button>
     </div>
     <div class="line"></div>
     <div class="likes">
       <h4>相关楼盘问答</h4>
-      <p class="tit">
-        <span>问</span> 本项目厨房管道的排风原理和方式是什么？会不会出 现油烟倒灌情况?
-      </p>
-      <p class="tit">
-        <span>问</span> 本项目厨房管道的排风原理和方式是什么？会不会出 现油烟倒灌情况?
-      </p>
-      <button>查看杭州全部楼盘问答</button>
+      <template v-for="(item,key) in relevant">
+        <nuxt-link :key="key" :to="'/'+jkl+'/answer/'+item.id">
+          <p class="tit">
+            <span>问</span>
+            {{item.question}}
+          </p>
+        </nuxt-link>
+      </template>
+      <nuxt-link :to="'/'+jkl+'/questions'">
+      <button>查看{{cityname.substr(0,2)}}全部楼盘问答</button>
+      </nuxt-link>
     </div>
     <div class="line"></div>
     <div class="other">
       <h3>猜你喜欢</h3>
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
+      <template v-for="(item,key) in other">
+        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{item.name}}
+                <span>{{item.status}}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{item.single_price}}</span>
+                <i>元/m²</i>起
+              </p>
+              <p
+                class="attr"
+              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <nav-view></nav-view>
   </div>
@@ -111,9 +127,45 @@ export default {
     "top-view": topView,
     "nav-view": nav,
   },
+  async asyncData(context) {
+    let other = context.query.other;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/question/detail/phone", {
+          params: {
+            other: other,
+            id: id,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      phone: res.common.phone,
+      answer: res.data,
+      building: res.building,
+      other: res.recommends,
+      relevant: res.relevant,
+      staff: res.common.staff.staff,
+      cityname:res.common.city_info.current.city
+    };
+  },
   data() {
     return {
       navnum: 0,
+      relevant: [],
+      other: [],
+      building: {},
+      answer: {},
+      cityname:''
     };
   },
 };
@@ -264,13 +316,16 @@ export default {
     margin-bottom: 1.25rem;
     span {
       float: right;
-      color: #ff761a;
+      color: #96989a;
       font-size: 0.6875rem;
       img {
         width: 0.875rem;
         margin-right: 0.125rem;
         margin-bottom: -0.125rem;
       }
+    }
+    .active {
+      color: #ff761a;
     }
   }
 }

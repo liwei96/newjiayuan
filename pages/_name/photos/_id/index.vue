@@ -1,5 +1,5 @@
 <template>
-  <div class="Album" v-wechat-title="proname">
+  <div class="Album">
     <!-- 头部导航 -->
     <p id="allimg" @click="go">全部相册</p>
     <img src="~/assets/wightleft.png" alt id="back" @click="back" />
@@ -190,6 +190,37 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 export default {
   name: "Album",
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/imgs/phone", {
+          params: {
+            id: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      efects:res.imgs.effect,
+      traffics:res.imgs.traffic,
+      matching:res.imgs.matching,
+      reals:res.imgs.real,
+      templates:res.imgs.example,
+      apartments:res.imgs.departments,
+      phone:res.common.phone,
+      jkl: jkl,
+    };
+  },
   data() {
     return {
       baoming: "",
@@ -230,22 +261,8 @@ export default {
   },
   methods: {
     start() {
-      let id = this.$route.params.id;
-      this.id = id;
-      let that = this;
       let ip = ip_arr["ip"];
       this.ip = ip;
-      let token = this.$cookies.get('token');
-      getimgs({ id: id, token: token }).then((res) => {
-        console.log(res);
-        this.efects = res.data.imgs.effect;
-        this.traffics = res.data.imgs.traffic;
-        this.matching = res.data.imgs.matching;
-        this.reals = res.data.imgs.real;
-        this.templates = res.data.imgs.example;
-        this.apartments = res.data.imgs.departments;
-        this.tel = res.data.common.phone;
-      });
     },
     send() {
       let check = this.check;
@@ -344,7 +361,7 @@ export default {
       this.$router.go(-1);
     },
     go() {
-      this.$router.push("/photo/" + this.id);
+      this.$router.push('/'+this.jkl+"/imgs/" + this.$route.params.id);
     },
     gotalk() {
       let url = window.location.href;
@@ -358,9 +375,8 @@ export default {
     },
   },
   mounted() {
-    this.proname = sessionStorage.getItem('buildname') ? sessionStorage.getItem('buildname') : '易得房'
     let that = this;
-    that.baoming = this.$cookies.get('tel');
+    that.baoming = $cookies.get('tel');
     this.start();
   },
   updated() {

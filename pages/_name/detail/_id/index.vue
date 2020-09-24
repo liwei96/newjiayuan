@@ -2,11 +2,10 @@
   <div id="detail">
     <top-view></top-view>
     <div class="name">
-      <h2>锦云澜天里</h2>
+      <h2>{{building.name}}</h2>
       <p>
-        <span class="zhuang">在售</span>
-        <span>在售</span>
-        <span>在售</span>
+        <span class="zhuang">{{building.decorate}}</span>
+        <span v-for="(item,key) in building.features" :key="key">{{item}}</span>
       </p>
     </div>
     <div class="line"></div>
@@ -16,31 +15,31 @@
         <li class="pri">
           参考单价：
           <span>
-            <i>36800</i>元/m²
+            <i>{{building.price}}</i>元/m²
           </span>
         </li>
         <li class="pri">
           参考总价：
           <span>
-            <i>240</i>万起
+            <i>{{building.total_price}}</i>万起
           </span>
           <button>询底价</button>
         </li>
         <li>
           类 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
-          <span>住宅</span>
+          <span>{{building.type}}</span>
         </li>
         <li>
           户 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
-          <span>3室2厅2卫，2室2厅1卫</span>
+          <span>{{building.room_types}}</span>
           <p>
             更多户型
             <img src="~/assets/j-more.png" alt />
           </p>
         </li>
-        <li>
+        <li class="address">
           楼盘地址：
-          <span>睦州大道与清溪大道交叉口</span>
+          <span>{{building.address}}</span>
         </li>
       </ul>
     </div>
@@ -50,28 +49,28 @@
       <ul>
         <li>
           开盘时间：
-          <span>2019-07-03</span>
+          <span>{{building.open_time}}</span>
           <button>最新开盘通知</button>
         </li>
         <li>
           加推时间：
-          <span>2020-04-03</span>
+          <span>{{building.push_time}}</span>
         </li>
         <li>
           交房时间：
-          <span>2022-06-21</span>
+          <span>{{building.give_time}}</span>
         </li>
         <li>
-          预  售  证：
-          <span>萧预许字（2019）第01100号</span>
+          预 售 证：
+          <span>{{building.license}}</span>
         </li>
         <li>
           产权年限：
-          <span>70年</span>
+          <span>{{building.year}}年</span>
         </li>
         <li>
-          开  发  商：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          开 发 商：
+          <span>{{building.developer}}</span>
         </li>
       </ul>
     </div>
@@ -81,50 +80,54 @@
       <ul>
         <li>
           户型面积：
-          <span>40-58m²</span>
+          <span>{{building.area}}m²</span>
         </li>
         <li>
           建筑面积：
-          <span>210000m²</span>
+          <span>{{building.built_area}}m²</span>
         </li>
         <li>
-          容积率：
-          <span>3.50</span>
+          容&nbsp;积&nbsp;率：
+          <span>{{building.capacity_rate}}</span>
         </li>
         <li>
-         绿化率：
-          <span>萧预许字（2019）第01100号</span>
+          绿&nbsp;化&nbsp;率：
+          <span>{{parseInt(building.green_rate)}}%</span>
         </li>
         <li>
-          层高：
-          <span>70年</span>
+          层&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高：
+          <span>{{building.height}}</span>
         </li>
         <li>
           车位情况：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          <span>{{building.parking_num}}</span>
         </li>
         <li>
           装修状况：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          <span>{{building.decorate}}</span>
         </li>
-        <li>
+        <li  class="traffic">
           公交路线：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          <span>{{building.traffic}}</span>
         </li>
         <li>
           物业费用：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          <span>{{building.property_fee}}</span>
         </li>
         <li>
           物业公司：
-          <span>保亿临湖(杭州)置业有限公司</span>
+          <span>{{building.proprety_company}}</span>
         </li>
       </ul>
     </div>
     <div class="line"></div>
     <div class="intro">
-        <h3>项目介绍 </h3>
-        <p>印象苕溪城项目总用地面积82197.1㎡（含代建道路2526.1㎡），总建筑面积274469.8㎡，地上建筑面积197387.8㎡，地下建筑面积77082㎡。根据公示...<span>[展开]</span></p>
+      <h3>项目介绍</h3>
+      <p>
+        <i v-if="!showmore">{{building.introduce.substr(0,46)}}...</i>
+        <span @click="showmore=true" v-if="!showmore">[展开]</span>
+        <i v-if="showmore">{{building.introduce}}</i>
+      </p>
     </div>
     <nav-view></nav-view>
   </div>
@@ -133,10 +136,45 @@
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 export default {
-    components:{
-        "top-view": topView,
-        'nav-view':nav
-    }
+  components: {
+    "top-view": topView,
+    "nav-view": nav,
+  },
+  async asyncData(context) {
+    let other = context.query.other;
+    let city = context.store.state.city;
+    let jkl = context.params.name;
+    let position = context.params.id;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/project/base/phone", {
+          params: {
+            city: city,
+            position: position,
+            page: 1,
+            limit: 10,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      phone: res.common.phone,
+      building: res.building,
+    };
+  },
+  data() {
+    return {
+      jkl: "",
+      phone: "",
+      building: {},
+      showmore:false
+    };
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -352,6 +390,33 @@ header {
         margin-top: 0.625rem;
       }
     }
+    .address {
+      span {
+        width: 270px;
+        display: inline-block;
+        overflow: hidden;
+        height: 20px;
+        line-height: 26px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .traffic {
+      position: relative;
+      span {
+        display: block;
+        position: absolute;
+        width: 16.875rem;
+        height: 1.25rem;
+        line-height: 1.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        top: 0.75rem;
+        left: 4.5rem
+      }
+    }
   }
 }
 .line {
@@ -359,23 +424,26 @@ header {
   height: 0.625rem;
 }
 .intro {
-    padding:0 4%;
-    padding-bottom: 4.375rem;
-    h3 {
-        color: #2F3133;
-        font-size: 1rem;
-        padding-top: 1.125rem;
-        margin-bottom: 0.875rem;
+  padding: 0 4%;
+  padding-bottom: 4.375rem;
+  h3 {
+    color: #2f3133;
+    font-size: 1rem;
+    padding-top: 1.125rem;
+    margin-bottom: 0.875rem;
+  }
+  p {
+    color: #646566;
+    font-size: 0.875rem;
+    line-height: 1.625rem;
+    text-indent: 1.75rem;
+    span {
+      color: #5f7891;
+      font-size: 0.9375rem;
     }
-    p {
-        color: #646566;
-        font-size: 0.875rem;
-        line-height: 1.625rem;
-        text-indent: 1.75rem;
-        span {
-            color: #5F7891;
-            font-size: 0.9375rem;
-        }
+    i {
+      font-style: normal;
     }
+  }
 }
 </style>

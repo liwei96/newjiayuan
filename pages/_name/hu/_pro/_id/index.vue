@@ -34,17 +34,19 @@
           <span>{{Number(now.height)}}m</span>
         </div>
       </div>
-      <div class="msgli">
+      <div class="msgli tese">
         <div class="left">
           特色：
           <span>{{now.special}}</span>
         </div>
       </div>
+      <nuxt-link :to="'/'+jkl+'/rim/'+now.bid">
       <p class="address">
         <img class="path" src="~/assets/icon-path.png" alt />
         <span>{{now.address}}</span>
         <img src="~/assets/j-more.png" alt class="more" />
       </p>
+      </nuxt-link>
       <div class="btn">
         <button>咨询详细户型</button>
         <button>咨询楼盘底价</button>
@@ -65,15 +67,15 @@
         </span>
       </p>
       <div class="peo">
-        <img src="~/assets/people.png" alt />
+        <img :src="staff.head_img" alt />
         <div class="peomsg">
           <h5>
-            李聪然
-            <span>满意度5分</span>
+            {{staff.name}}
+            <span>满意度{{staff.num}}分</span>
           </h5>
           <p>
-            带看53次，已有
-            <span>134</span>人咨询
+            带看{{staff.ServeNum}}次，已有
+            <span>{{Number(staff.ServeNum)+44}}</span>人咨询
           </p>
         </div>
         <button>一键咨询</button>
@@ -94,14 +96,14 @@
           <h6>
             最高
             <span>5000</span>元购房优惠
-            <i>（7月24日截止）</i>
+            <i>（{{hui.dead_line}}截止）</i>
           </h6>
           <p>售楼处专供家园平台客户</p>
         </div>
         <div class="hui-right">
           <button>领取优惠</button>
           <p>
-            <span>125人</span>已领取
+            <span>{{hui.receive_num}}人</span>已领取
           </p>
         </div>
       </div>
@@ -109,14 +111,14 @@
         <div class="hui-left">
           <h6>
             免费看房专车券
-            <i>（剩余156张）</i>
+            <i>（剩余{{hui.remain_num}}张）</i>
           </h6>
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
           <button>免费领取</button>
           <p>
-            <span>68人</span>已领取
+            <span>{{hui.receive_num}}人</span>已领取
           </p>
         </div>
       </div>
@@ -124,54 +126,63 @@
     <div class="line"></div>
     <div class="con">
       <h3>本楼盘其它户型</h3>
-      <div class="li" v-for="(item,key) in other" :key="key">
-        <div class="left">
-          <img :src="item.small" alt />
-        </div>
-        <div class="right">
-          <h4>
-            {{item.title}}
-            <span>{{item.state}}</span>
-          </h4>
-          <p>
-            建面：
-            <span>{{item.area}}m²</span>
-          </p>
-          <p>
-            类型：
-            <span>{{item.type}}</span>
-          </p>
-          <p class="total">
-            总价：
-            <span>
-              约
-              <i>{{item.price}}</i>万/套
-            </span>
-          </p>
-        </div>
-      </div>
-      
+      <template v-for="(item,key) in other">
+        <nuxt-link :key="key" :to="'/'+jkl+'/hu/'+item.id">
+          <div class="li">
+            <div class="left">
+              <img :src="item.small" alt />
+            </div>
+            <div class="right">
+              <h4>
+                {{item.title}}
+                <span>{{item.state}}</span>
+              </h4>
+              <p>
+                建面：
+                <span>{{item.area}}m²</span>
+              </p>
+              <p>
+                类型：
+                <span>{{item.type}}</span>
+              </p>
+              <p class="total">
+                总价：
+                <span>
+                  约
+                  <i>{{item.price}}</i>万/套
+                </span>
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <div class="other">
       <h3>看了该楼盘的还看了</h3>
-      <div class="pro" v-for="(item,key) in recommends" :key="key">
-        <img :src="item.img" alt />
-        <div class="pro-msg">
-          <h5>
-            {{item.name}}
-            <span>{{item.status}}</span>
-          </h5>
-          <p class="pro-price">
-            <span>{{item.single_price}}</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">{{item.decorate}}</span>
-            <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
-          </p>
-        </div>
-      </div>
+      <template v-for="(item,key) in recommends">
+        <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{item.name}}
+                <span>{{item.status}}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{item.single_price}}</span>
+                <i>元/m²</i>起
+              </p>
+              <p
+                class="attr"
+              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <nav-view></nav-view>
   </div>
@@ -207,16 +218,21 @@ export default {
     return {
       jkl: jkl,
       now: res.one,
-      other:res.other_rooms,
-      recommends:res.recommends
+      other: res.other_rooms,
+      recommends: res.recommends,
+      hui:res.num,
+      id:id,
+      staff:res.common.staff
     };
   },
   data() {
     return {
       jkl: "",
       now: {},
-      other:{},
-      recommends:{}
+      other: {},
+      recommends: {},
+      id:0,
+      hui:{}
     };
   },
 };
@@ -329,6 +345,11 @@ header {
         color: #323333;
         font-size: 0.875rem;
       }
+    }
+  }
+  .tese {
+    .left {
+      width: 100%;
     }
   }
   .address {
