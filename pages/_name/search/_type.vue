@@ -1,7 +1,7 @@
 <template>
   <div id="search">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="back"/>
       <nuxt-link :to="'/'+jkl+'/address'">
       <p class="city">
         杭州
@@ -467,6 +467,9 @@ export default {
     Loading,
   },
   methods: {
+    back(){
+      this.$router.go(-1)
+    },
     setarea(n) {
       this.areanum = n;
     },
@@ -900,6 +903,10 @@ header {
     width: 1.25rem;
     margin-right: 1rem;
   }
+  a {
+    position: absolute;
+    height: 1.25rem;
+  }
   .zixuns {
     margin-right: 1.25rem;
     position: relative;
@@ -924,8 +931,9 @@ header {
     position: absolute;
     color: #323233;
     font-size: 0.875rem;
-    top: 0.7rem;
+    // top: 0.7rem;
     left: 3.3125rem;
+    width: 5.625rem;
     img {
       width: 1rem;
       position: relative;

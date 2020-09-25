@@ -59,18 +59,34 @@
         </li>
       </ul>
     </div>
-    <nav-view :phone="phone"></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import { ImagePreview } from 'vant';
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 import { dynamics } from '@/api/api'
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    'tan-view':tan
   },
   async asyncData(context) {
     let id = context.params.id;
@@ -123,7 +139,12 @@ export default {
       info:{},
       isok:true,
       page:2,
-      id:0
+      id:0,
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
     };
   },
   methods:{
@@ -152,6 +173,16 @@ export default {
       ImagePreview({
         images: [arr]
       });
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "动态页+预约看房";
+    },
+    cli(e) {
+      this.tan = e;
     },
   },
   mounted(){

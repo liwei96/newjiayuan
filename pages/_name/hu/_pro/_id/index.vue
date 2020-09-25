@@ -7,17 +7,18 @@
     </div>
     <div class="msg">
       <h3>
-        {{now.title}}
-        <span>{{now.state}}</span>
+        {{ now.title }}
+        <span>{{ now.state }}</span>
       </h3>
       <p class="pri">
         约
-        <span>{{now.price}}</span>万/套
+        <span>{{ now.price }}</span
+        >万/套
       </p>
       <div class="msgli">
         <div class="left">
           建面：
-          <span>{{now.area}}m²</span>
+          <span>{{ now.area }}m²</span>
         </div>
         <div class="left">
           朝向：
@@ -27,58 +28,53 @@
       <div class="msgli">
         <div class="left">
           类型：
-          <span>{{now.type}}</span>
+          <span>{{ now.type }}</span>
         </div>
         <div class="left">
           层高：
-          <span>{{Number(now.height)}}m</span>
+          <span>{{ Number(now.height) }}m</span>
         </div>
       </div>
       <div class="msgli tese">
         <div class="left">
           特色：
-          <span>{{now.special}}</span>
+          <span>{{ now.special }}</span>
         </div>
       </div>
-      <nuxt-link :to="'/'+jkl+'/rim/'+now.bid">
-      <p class="address">
-        <img class="path" src="~/assets/icon-path.png" alt />
-        <span>{{now.address}}</span>
-        <img src="~/assets/j-more.png" alt class="more" />
-      </p>
+      <nuxt-link :to="'/' + jkl + '/rim/' + now.bid">
+        <p class="address">
+          <img class="path" src="~/assets/icon-path.png" alt />
+          <span>{{ now.address }}</span>
+          <img src="~/assets/j-more.png" alt class="more" />
+        </p>
       </nuxt-link>
       <div class="btn">
-        <button>咨询详细户型</button>
-        <button>咨询楼盘底价</button>
+        <button  @click="pop('咨询详细户型',97,'详情页+咨询详细户型')">咨询详细户型</button>
+        <button  @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价')">咨询楼盘底价</button>
       </div>
     </div>
     <div class="line"></div>
     <div class="ana">
       <h3>家园咨询师</h3>
       <p class="xun-icon">
-        <span>
-          <img src="~/assets/save.png" alt />专业服务
-        </span>
-        <span>
-          <img src="~/assets/icon-path.png" alt />区域解读
-        </span>
-        <span>
-          <img src="~/assets/icon-pin.png" alt />户型分析
-        </span>
+        <span> <img src="~/assets/save.png" alt />专业服务 </span>
+        <span> <img src="~/assets/icon-path.png" alt />区域解读 </span>
+        <span> <img src="~/assets/icon-pin.png" alt />户型分析 </span>
       </p>
       <div class="peo">
         <img :src="staff.head_img" alt />
         <div class="peomsg">
           <h5>
-            {{staff.name}}
-            <span>满意度{{staff.num}}分</span>
+            {{ staff.name }}
+            <span>满意度{{ staff.num }}分</span>
           </h5>
           <p>
-            带看{{staff.ServeNum}}次，已有
-            <span>{{Number(staff.ServeNum)+44}}</span>人咨询
+            带看{{ staff.ServeNum }}次，已有
+            <span>{{ Number(staff.ServeNum) + 44 }}</span
+            >人咨询
           </p>
         </div>
-        <button>一键咨询</button>
+        <button @click="pop('一键咨询',104,'详情页+一键咨询')">一键咨询</button>
       </div>
       <h4>户型分析</h4>
       <p class="analy" v-html="now.analysis"></p>
@@ -87,23 +83,21 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span>
-          <img src="~/assets/ques.png" alt /> 活动规则
-        </span>
+        <span> <img src="~/assets/ques.png" alt /> 活动规则 </span>
       </h3>
       <div class="hui-con">
         <div class="hui-left">
           <h6>
             最高
             <span>5000</span>元购房优惠
-            <i>（{{hui.dead_line}}截止）</i>
+            <i>（{{ hui.dead_line }}截止）</i>
           </h6>
           <p>售楼处专供家园平台客户</p>
         </div>
         <div class="hui-right">
-          <button>领取优惠</button>
+          <button @click="pop('领取优惠',94,'详情页+领取优惠')">领取优惠</button>
           <p>
-            <span>{{hui.receive_num}}人</span>已领取
+            <span>{{ hui.receive_num }}人</span>已领取
           </p>
         </div>
       </div>
@@ -111,14 +105,14 @@
         <div class="hui-left">
           <h6>
             免费看房专车券
-            <i>（剩余{{hui.remain_num}}张）</i>
+            <i>（剩余{{ hui.remain_num }}张）</i>
           </h6>
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
-          <button>免费领取</button>
+          <button @click="pop('免费领取',95,'详情页+免费领取')">免费领取</button>
           <p>
-            <span>{{hui.receive_num}}人</span>已领取
+            <span>{{ hui.receive_num }}人</span>已领取
           </p>
         </div>
       </div>
@@ -126,30 +120,31 @@
     <div class="line"></div>
     <div class="con">
       <h3>本楼盘其它户型</h3>
-      <template v-for="(item,key) in other">
-        <nuxt-link :key="key" :to="'/'+jkl+'/hu/'+item.id">
+      <template v-for="(item, key) in other">
+        <nuxt-link :key="key" :to="'/' + jkl + '/hu/' + item.id">
           <div class="li">
             <div class="left">
               <img :src="item.small" alt />
             </div>
             <div class="right">
               <h4>
-                {{item.title}}
-                <span>{{item.state}}</span>
+                {{ item.title }}
+                <span>{{ item.state }}</span>
               </h4>
               <p>
                 建面：
-                <span>{{item.area}}m²</span>
+                <span>{{ item.area }}m²</span>
               </p>
               <p>
                 类型：
-                <span>{{item.type}}</span>
+                <span>{{ item.type }}</span>
               </p>
               <p class="total">
                 总价：
                 <span>
                   约
-                  <i>{{item.price}}</i>万/套
+                  <i>{{ item.price }}</i
+                  >万/套
                 </span>
               </p>
             </div>
@@ -159,44 +154,69 @@
     </div>
     <div class="other">
       <h3>看了该楼盘的还看了</h3>
-      <template v-for="(item,key) in recommends">
-        <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id">
+      <template v-for="(item, key) in recommends">
+        <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
-                {{item.name}}
-                <span>{{item.status}}</span>
+                {{ item.name }}
+                <span>{{ item.status }}</span>
               </h5>
               <p class="pro-price">
-                <span>{{item.single_price}}</span>
+                <span>{{ item.single_price }}</span>
                 <i>元/m²</i>起
               </p>
-              <p
-                class="attr"
-              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
               <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.features"
+                  :key="k"
+                  >{{ val }}</span
+                >
               </p>
             </div>
           </div>
         </nuxt-link>
       </template>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    "tan-view": tan,
   },
   async asyncData(context) {
     let id = context.params.id;
+    let pro = context.params.pro;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
@@ -220,9 +240,10 @@ export default {
       now: res.one,
       other: res.other_rooms,
       recommends: res.recommends,
-      hui:res.num,
-      id:id,
-      staff:res.common.staff
+      hui: res.num,
+      id: pro,
+      staff: res.common.staff,
+      phone: res.common.phone,
     };
   },
   data() {
@@ -231,9 +252,33 @@ export default {
       now: {},
       other: {},
       recommends: {},
-      id:0,
-      hui:{}
+      id: 0,
+      hui: {},
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
     };
+  },
+  methods: {
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "户型页+预约看房+"+this.now.title;
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    pop(name,position,txt){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt+'+'+this.now.title
+    },
   },
 };
 </script>

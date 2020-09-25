@@ -3,8 +3,10 @@
     <top-view></top-view>
     <div class="all">
       <div class="input">
-        <input type="text" placeholder="搜搜你想要了解的房产知识吧"  @click="gos"/>
+        <nuxt-link :to="'/'+jkl+'/searcharitype'">
+        <input type="text" placeholder="搜搜你想要了解的房产知识吧"  @click="gos" disabled/>
         <img src="~/assets/search.png" alt />
+        </nuxt-link>
       </div>
       <div class="nav">
         <ul>

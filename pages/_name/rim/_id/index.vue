@@ -10,7 +10,7 @@
           <p>咨询</p>
         </a>
       </div>
-      <div class="map-type" @click="showbox(82,'预约看房')">
+      <div class="map-type" @click="pop('预约看房',95,'周边详情页+预约看房')">
         <p>预约</p>
         <p>看房</p>
       </div>
@@ -86,15 +86,31 @@
         <p class="map-tishi" v-if="isnull">附近没有{{mapname}}，您可以看看其他信息</p>
       </div>
     </div>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import topView from "@/components/header.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
+    'tan-view':tan
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -136,7 +152,8 @@ export default {
       tel: "",
       proname: "",
       building:{},
-      phone:''
+      phone:'',
+      remark:''
     };
   },
   methods: {
@@ -236,11 +253,12 @@ export default {
     cli(e) {
       this.tan = e;
     },
-    showbox(id, name) {
-      this.typenum = id;
-      this.name = name;
-      this.tan = true;
-      this.typebtn = 1;
+    pop(name,position,txt){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt
     },
   },
   mounted() {
@@ -321,7 +339,7 @@ header {
   height: 15.3125rem;
   background-color: #fff;
   width: 100%;
-  z-index: 10000;
+  z-index: 1000;
   position: fixed;
   bottom: 0;
   .swiper-map {

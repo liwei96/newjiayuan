@@ -3,7 +3,7 @@
     <top-view></top-view>
     <div class="con">
       <template v-for="(item,key) in other_rooms">
-        <nuxt-link :to="'/'+jkl+'/hu/'+item.id" :key="key">
+        <nuxt-link :to="'/'+jkl+'/hu/'+id+'/'+item.id" :key="key">
           <div class="li" >
             <div class="left">
               <img :src="item.small" alt />
@@ -33,16 +33,21 @@
         </nuxt-link>
       </template>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
+      <tan-view :txt="remark" :typenum="typenum" :id="id" :name="name" @close="cli($event)" :typebtn="typebtn"></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    'tan-view':tan
   },
   async asyncData(context) {
     let id = context.params.id;
@@ -67,13 +72,33 @@ export default {
     return {
       jkl: jkl,
       other_rooms: res.other_rooms,
+      phone:res.common.phone,
+      id:id
     };
   },
   data() {
     return {
       other_rooms: [],
+      phone:'',
+      tan:false,
+      typenum:0,
+      typebtn:1,
+      name:'',
+      remark:'',
     };
   },
+  methods:{
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1
+      this.tan = true
+      this.remark='户型列表页+预约看房'
+    },
+    cli(e) {
+      this.tan = e;
+    },
+  }
 };
 </script>
 <style lang="less" scoped>

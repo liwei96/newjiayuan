@@ -2,56 +2,114 @@
   <div id="comment">
     <top-view></top-view>
     <div class="con">
-      <div class="ject-top">
+      <div class="ject-top" v-for="(item,key) in list" :key="key">
         <div class="top-left">
-          <img src="~/assets/lun02.jpg" alt />
+          <img :src="item.img" alt />
         </div>
         <div class="top-right">
           <h4>
-            荣盛檀越府
+            {{item.name}}
             <span>在售</span>
           </h4>
-          <p class="pri">
-            <span>17000</span>元/m²
-          </p>
-          <p class="typemsg">住宅 | 杭州-江干 | 地铁楼盘</p>
+          <p class="pri"><span>{{item.price}}</span>元/m²</p>
+          <p class="typemsg">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
           <p class="icon">
-            <span class="zu">精装</span>
-            <span>刚需楼盘</span>
+            <span class="zu">{{item.decorate}}</span>
+            <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
           </p>
         </div>
       </div>
       <p class="tit">您看过该楼盘吗？</p>
       <div class="type">
-        <p :class="typenum == 0?'zhuang':''" @click="typenum =0">未看房</p>
-        <p :class="typenum == 1?'zhuang':''" @click="typenum =1">已看房</p>
+        <p :class="typenum == 4 ? 'zhuang' : ''" @click="typenum = 4">未看房</p>
+        <p :class="typenum == 5 ? 'zhuang' : ''" @click="typenum = 5">已看房</p>
       </div>
-      <p class="tit">您看过该楼盘吗？</p>
+      <p class="tit">楼盘评价</p>
       <div class="ping">
-        <van-rate v-model="value" :size="22" color="#FF7519" void-icon="star" void-color="#E8EBED" />
-        <span>一般</span>
+        <van-rate
+          v-model="value"
+          :size="22"
+          color="#FF7519"
+          void-icon="star"
+          void-color="#E8EBED"
+        />
+        <span>{{ msg }}</span>
       </div>
       <div class="text">
-        <textarea v-model="text" placeholder="这个楼盘怎么样？我来说两句" maxlength="50"></textarea>
-        <p>{{textnum}}/50</p>
+        <textarea
+          v-model="text"
+          placeholder="这个楼盘怎么样？我来说两句"
+          maxlength="50"
+        ></textarea>
+        <p>{{ textnum }}/50</p>
       </div>
-      <button>发布提问</button>
+      <button @click="ask">发布点评</button>
     </div>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
+import { comm } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let city = context.store.state.city
+     let  [res] = await Promise.all([
+        context.$axios
+          .get("/jy/compare/cards", {
+            params: {
+              ids: id,
+              token: token,
+              city: city,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+    return {
+      jkl: jkl,
+      id: id,
+      list:res.data
+    };
   },
   data() {
     return {
       value: 3,
       text: "",
       textnum: 0,
-      typenum:0
+      typenum: 4,
+      msg: "一般",
+      list:[]
     };
+  },
+  methods: {
+    ask() {
+      let that = this;
+      let token = $cookies.get('token')
+      let id = this.$route.params.id
+      comm({
+        token: token,
+        bid: id,
+        content: that.text,
+        counsider_buy: that.typenum,
+        score: that.value,
+      }).then(res=>{
+        if(res.data.code == 200) {
+          this.toast('点评成功')
+          console.log(res)
+          that.$router.push('/'+that.jkl+'/comments/'+that.id)
+        }
+      })
+    },
   },
   watch: {
     text(val) {
@@ -59,6 +117,25 @@ export default {
         this.textnum = val.length;
       } else {
         this.textnum = 50;
+      }
+    },
+    value(val) {
+      switch (val) {
+        case 1:
+          this.msg = "极差";
+          break;
+        case 2:
+          this.msg = "差";
+          break;
+        case 3:
+          this.msg = "一般";
+          break;
+        case 4:
+          this.msg = "好";
+          break;
+        case 5:
+          this.msg = "非常好";
+          break;
       }
     },
   },
@@ -178,7 +255,7 @@ export default {
       background-color: #f7f7f7;
       border: 0;
       outline: none;
-      line-height: 1.625rem
+      line-height: 1.625rem;
     }
     input::-webkit-input-placeholder,
     textarea::-webkit-input-placeholder {
@@ -212,15 +289,15 @@ export default {
     }
   }
   button {
-      color: #2AC66D;
-      font-size: 0.9375rem;
-      font-weight: bold;
-      text-align: center;
-      line-height: 2.25rem;
-      width: 100%;
-      border-radius: 0.125rem;
-      background-color: #F1F8F4;
-      border: 0
+    color: #2ac66d;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 2.25rem;
+    width: 100%;
+    border-radius: 0.125rem;
+    background-color: #f1f8f4;
+    border: 0;
   }
 }
 </style>

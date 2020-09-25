@@ -30,18 +30,16 @@
     <div class="result" v-if="ll">
       <p class="tit">为您找到如下“{{name}}”相关搜索</p>
       <template v-for="(item,key) in list">
-        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
-          <div class="li">
+          <div class="li" @click="go(item.id,item.name)" :key="key">
             <h4>
               {{item.name}}
               <span>在售</span>
             </h4>
             <div class="msg">
               <p>{{item.country}} - {{item.address}}</p>
-              <span>46000元/m²起</span>
+              <span>{{item.price}}元/m²起</span>
             </div>
           </div>
-        </nuxt-link>
       </template>
     </div>
   </div>
@@ -100,6 +98,15 @@ export default {
     },
     back(){
       this.$router.go(-1)
+    },
+    go(id,name){
+      if(sessionStorage.getItem('order')){
+        sessionStorage.setItem('ordername',name)
+        sessionStorage.removeItem('order')
+        this.$router.push('/'+this.jkl+'/order')
+      }else{
+        this.$router.push('/'+this.jkl+'/content/'+id)
+      }
     }
   },
   watch: {

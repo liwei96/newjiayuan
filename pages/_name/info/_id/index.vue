@@ -47,7 +47,7 @@
           <a :href="'tel:'+phone">
             <button>电话咨询</button>
           </a>
-          <button class="wen">在线问</button>
+          <button class="wen" @click="pop('咨询服务', 104, '详情页+咨询服务')">在线问</button>
         </div>
       </div>
       <p class="icon">
@@ -81,10 +81,28 @@
         </template>
       </div>
     </div>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
+import tan from "@/components/tan.vue";
 export default {
+  components: {
+    'tan-view':tan
+  },
   async asyncData(context) {
     let other = context.query.other;
     let city = context.store.state.city;
@@ -121,11 +139,27 @@ export default {
       article: {},
       others: [],
       project: {},
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0'
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
     },
   },
 };

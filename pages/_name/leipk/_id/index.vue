@@ -4,38 +4,38 @@
     <div class="con">
       <div class="top">
         <div class="center fir">
-          <img class="topimg" src="~/assets/lun02.jpg" alt />
+          <img class="topimg" :src="list[0].img" alt />
           <div class="msg">
-            <h6>锦云澜天里</h6>
+            <h6>{{list[0].name}}</h6>
             <p class="type">
-              <span class="zhuang">在售</span>
-              <span>住宅</span>
+              <span class="zhuang">{{list[0].state}}</span>
+              <span>{{list[0].type}}</span>
             </p>
             <p class="pri">
               约
-              <span>17500</span>元/m²
+              <span>{{list[0].price}}</span>元/m²
             </p>
-            <button>
-              <img src="~/assets/navtel.png" />电话咨询
-            </button>
+            <a :href="'tel:'+phone">
+            <button><img src="~/assets/navtel.png" />电话咨询</button>
+            </a>
           </div>
         </div>
         <img src="~/assets/vs.png" alt class="vs" />
         <div class="center">
-          <img class="topimg" src="~/assets/lun02.jpg" alt />
+          <img class="topimg" :src="list[1].img" alt />
           <div class="msg">
-            <h6>锦云澜天里</h6>
+            <h6>{{list[1].name}}</h6>
             <p class="type">
-              <span class="zhuang">在售</span>
-              <span>住宅</span>
+              <span class="zhuang">{{list[1].state}}</span>
+              <span>{{list[1].type}}</span>
             </p>
             <p class="pri">
               约
-              <span>17500</span>元/m²
+              <span>{{list[1].price}}</span>元/m²
             </p>
-            <button>
-              <img src="~/assets/navtel.png" />电话咨询
-            </button>
+            <a :href="'tel:'+phone">
+            <button><img src="~/assets/navtel.png" />电话咨询</button>
+            </a>
           </div>
         </div>
       </div>
@@ -44,143 +44,200 @@
         <div class="line">
           <div class="left">
             <p class="l"></p>
-            <p class="name">锦云澜天里</p>
+            <p class="name">{{list[0].name}}</p>
           </div>
           <div class="left">
             <p class="l n"></p>
-            <p class="name">锦云澜天里</p>
+            <p class="name">{{list[1].name}}</p>
           </div>
         </div>
         <table>
           <tr>
             <td>
               <p class="name">休闲</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.leisure}}</p>
             </td>
             <td>
               <p class="name">休闲</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.leisure}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">品质</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.quality}}</p>
             </td>
             <td>
               <p class="name">品质</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.quality}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">教育</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.education}}</p>
             </td>
             <td>
               <p class="name">教育</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.education}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">医疗</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.medical}}</p>
             </td>
             <td>
               <p class="name">医疗</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.medical}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">交通</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.traffic}}</p>
             </td>
             <td>
               <p class="name">交通</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.traffic}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">商业</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.commercial}}</p>
             </td>
             <td>
               <p class="name">商业</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.commercial}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">层高</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.height}}</p>
             </td>
             <td>
               <p class="name">层高</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.height}}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">户型</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[0].scores.score.house_types}}</p>
             </td>
             <td>
               <p class="name">户型</p>
-              <p class="val">8.2</p>
+              <p class="val">{{list[1].scores.score.house_types}}</p>
             </td>
           </tr>
         </table>
         <div class="rate">
           <div class="cel">
             <p class="name">综合评分：</p>
-            <p class="pri">8.5</p>
+            <p class="pri">{{list[0].scores.avg}}</p>
           </div>
           <div class="cel">
             <p class="name">综合评分：</p>
-            <p class="pri">8.5</p>
+            <p class="pri">{{list[1].scores.avg}}</p>
           </div>
         </div>
-        <button>获取详细分析报告</button>
+        <button @click="pop('获取详细分析报告', 96, '雷达PK页+获取详细分析报告')">获取详细分析报告</button>
       </div>
       <div class="other">
         <h3>猜你喜欢</h3>
-        <div class="pro">
-          <img src="~/assets/lun02.jpg" alt />
-          <div class="pro-msg">
-            <h5>
-              上课的龙卷风
-              <span>在售</span>
-            </h5>
-            <p class="pro-price">
-              <span>53000</span>
-              <i>元/m²</i>起
-            </p>
-            <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-            <p class="pro-icon">
-              <span class="pro-icon-zhuang">两个</span>
-              <span class="pro-icon-type">我的</span>
-            </p>
-          </div>
-        </div>
+        <template v-for="(item, key) in other">
+          <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
+            <div class="pro">
+              <img :src="item.img" alt />
+              <div class="pro-msg">
+                <h5>
+                  {{item.name}}
+                  <span>{{item.state}}</span>
+                </h5>
+                <p class="pro-price">
+                  <span>{{item.price}}</span>
+                  <i>元/m²</i>起
+                </p>
+                <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+                <p class="pro-icon">
+                  <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                  <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                </p>
+              </div>
+            </div>
+          </nuxt-link>
+        </template>
       </div>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    'tan-view':tan
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.store.state.cookie.other;
+    let city = context.store.state.city;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/score/compare", {
+          params: {
+            ids: id,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      list: res.data,
+      other: res.recommends,
+      phone: res.common.phone,
+    };
   },
   data() {
     return {
       navnum: 0,
+      list: [],
+      other: [],
+      phone: "",
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      id:'0',
+      remark: "",
     };
   },
   methods: {
@@ -259,7 +316,16 @@ export default {
             data: [
               {
                 name: "能力值",
-                value: [3, 5, 6, 5, 6, 5, 6, 9],
+                value: [
+                  that.list[0].scores.score.leisure,
+                  that.list[0].scores.score.quality,
+                  that.list[0].scores.score.education,
+                  that.list[0].scores.score.medical,
+                  that.list[0].scores.score.traffic,
+                  that.list[0].scores.score.commercial,
+                  that.list[0].scores.score.height,
+                  that.list[0].scores.score.house_types,
+                ],
                 areaStyle: {
                   normal: {
                     color: "rgba(41,204,114,0.1)", // 选择区域颜色
@@ -291,7 +357,16 @@ export default {
             data: [
               {
                 name: "能力值",
-                value: [9, 5, 1, 3, 8, 4, 5, 1],
+                value: [
+                  that.list[1].scores.score.leisure,
+                  that.list[1].scores.score.quality,
+                  that.list[1].scores.score.education,
+                  that.list[1].scores.score.medical,
+                  that.list[1].scores.score.traffic,
+                  that.list[1].scores.score.commercial,
+                  that.list[1].scores.score.height,
+                  that.list[1].scores.score.house_types,
+                ],
                 areaStyle: {
                   normal: {
                     color: "rgba(83, 176, 255, 0.2)", // 选择区域颜色
@@ -304,6 +379,23 @@ export default {
       };
       var myChart = this.$echarts.init(document.getElementById("leiecharts"));
       myChart.setOption(option);
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "雷达PK页+预约看房";
+    },
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
     },
   },
   mounted() {

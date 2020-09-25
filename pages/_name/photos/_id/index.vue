@@ -151,11 +151,11 @@
       
       <a :href="'tel:'+tel">
         <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
+          <img src="~/assets/nav-tel.png" />电话咨询
         </button>
       </a>
       <button @click="tan=true">
-        <img src="~/assets/time.png" />预约看房
+        <img src="~/assets/nav-yue.png" />预约看房
       </button>
     </div>
     <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="type =false">
@@ -166,8 +166,8 @@
         <div class="one" v-show="!type">
           <input type="tel" placeholder="请输入手机号" v-model="baoming" />
           <p class="xiyi">
-            <input type="checkbox" v-model="check" />我已阅读并同意
-            <router-link :to="'/'">《家有用户协议》</router-link>
+            <input type="checkbox" v-model="check1" />我已阅读并同意
+            <router-link :to="'/'">《家园用户协议》</router-link>
           </p>
           <button @click="send">立即订阅</button>
           <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
@@ -188,6 +188,7 @@
 <script>
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
+import { put, check, send } from "~/api/api";
 export default {
   name: "Album",
   async asyncData(context) {
@@ -219,6 +220,7 @@ export default {
       apartments:res.imgs.departments,
       phone:res.common.phone,
       jkl: jkl,
+      id:id
     };
   },
   data() {
@@ -246,17 +248,17 @@ export default {
       description: "",
       keywords: "",
       ma: "",
-      check: true,
+      check1: true,
       tishi: "",
       type: false,
       str: "领取成功后优惠编码将与您手机号绑定，此优惠不与参团优惠叠加使用",
       id: "",
       name: "",
-      typenum: "",
+      typenum: "103",
       typebtn: "",
       tan: false,
       one: true,
-      proname:''
+      proname:'',
     };
   },
   methods: {
@@ -265,36 +267,38 @@ export default {
       this.ip = ip;
     },
     send() {
-      let check = this.check;
-      if (!check) {
-        this.$toast("请勾选用户协议");
+      let check1 = this.check1;
+      if (!check1) {
+        this.toast("请勾选用户协议");
         return;
       }
       var phone = this.baoming;
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         return;
       }
       let id = this.id;
       let typenum = this.typenum;
       let ip = ip_arr["ip"];
-      putmsg({
+      let city = $cookies.get('city')
+      put({
         tel: phone,
-        page: 9,
+        page: 4,
         project: id,
         ip:ip,
-        remark: "",
-        source: "线上推广3",
+        remark: "相册页+预约看房",
+        source: "线上推广1",
         name: "未知",
         position: typenum,
+        city:city
       }).then((res) => {
       });
 
-      sendmsg({ ip: ip, phone: phone, source: 3 }).then((res) => {
+      send({ ip: ip, phone: phone, source: 3 }).then((res) => {
         if (res.data.code == 200) {
           this.type = true;
           var time = 60;
@@ -319,35 +323,35 @@ export default {
       });
     },
     put() {
-      let check = this.check;
-      if (!check) {
-        this.$toast("请勾选用户协议");
+      let check1 = this.check1;
+      if (!check1) {
+        this.toast("请勾选用户协议");
         return;
       }
       var phone = this.baoming;
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         return;
       }
       if (!this.ma) {
-        this.$toast("请输入验证码");
+        this.toast("请输入验证码");
         return;
       }
       let ma = this.ma;
       let ip = ip_arr["ip"];
-      logsure({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
+      check({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
         if (res.data.code == 200) {
-          this.$toast.success("提交成功");
-          if (!this.$cookies.get("token")) {
-            this.$cookies.set("token", res.data.token, 21600);
-            this.$cookies.set("tel", phone, 21600);
+          this.toast("提交成功");
+          if (!$cookies.get("token")) {
+            $cookies.set("token", res.data.token, 21600);
+            $cookies.set("phone", phone, 21600);
           }
         } else {
-          this.$toast(res.data.message)
+          this.toast(res.data.message)
         }
         this.type= false
         this.tan = false
@@ -1202,7 +1206,7 @@ body {
         background-size: 90%;
       }
       a {
-        color: #d1a23d;
+        color: #7496BE;
       }
     }
     button {
@@ -1214,12 +1218,7 @@ body {
       color: #fff;
       font-size: 1rem;
       border: 0;
-      background: linear-gradient(
-        270deg,
-        rgba(223, 171, 59, 1),
-        rgba(244, 204, 119, 1)
-      );
-      box-shadow: 0px 3px 7.5px 0px rgba(223, 171, 59, 0.28);
+      background: #2AC66E;
       margin-bottom: 0.625rem;
     }
     .bomm {
@@ -1248,7 +1247,7 @@ body {
       margin-bottom: 2.75rem;
     }
     span {
-      color: #d1a23d;
+      color: #7496BE;
       font-size: 1rem;
       position: absolute;
       right: 2.25rem;
@@ -1263,12 +1262,7 @@ body {
       color: #fff;
       font-size: 1rem;
       border: 0;
-      background: linear-gradient(
-        270deg,
-        rgba(223, 171, 59, 1),
-        rgba(244, 204, 119, 1)
-      );
-      box-shadow: 0px 3px 7.5px 0px rgba(223, 171, 59, 0.28);
+      background: #2AC66E;
       margin-bottom: 0.625rem;
     }
   }

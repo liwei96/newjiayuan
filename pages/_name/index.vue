@@ -3,13 +3,15 @@
     <header>
       <img src="~/assets/logo.png" alt class="logo" />
       <div class="input">
-        <p>
+        <p @click="goadd">
           {{cityname}}
           <img src="~/assets/downsan.png" alt />
           <span>|</span>
           <img class="sou" src="~/assets/search.png" alt />
         </p>
-        <input type="text" placeholder="请输入楼盘名" />
+        <nuxt-link :to="'/'+jkl+'/searchname'">
+        <input type="text" placeholder="请输入楼盘名" disabled/>
+        </nuxt-link>
       </div>
       <nuxt-link :to="'/'+jkl+'/home'">
         <img src="~/assets/index-peo.png" alt class="peo" />
@@ -299,6 +301,9 @@ export default {
   methods:{
     gohelp(){
       this.$router.push('/'+this.jkl+'/help')
+    },
+    goadd(){
+      this.$router.push('/'+this.jkl+'/address')
     }
   },
   mounted() {

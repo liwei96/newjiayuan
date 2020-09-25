@@ -2,11 +2,11 @@
   <div id="comments">
     <top-view></top-view>
     <ul class="con">
-      <li v-for="(item,key) in lists" :key="key">
+      <li v-for="(item, key) in lists" :key="key">
         <div class="top">
           <img src="~/assets/jiapeo.png" alt />
           <div class="topright">
-            <h5>154****3787</h5>
+            <h5>{{ item.name }}</h5>
             <van-rate
               v-model="item.score"
               :size="12"
@@ -17,38 +17,54 @@
           </div>
         </div>
         <div class="bom">
-          <p class="txt">{{item.content}}</p>
+          <p class="txt">{{ item.content }}</p>
           <div class="type">
-            <span class="time">{{item.time}}</span>
-            <span class="del" v-if="item.min==1">删除</span>
+            <span class="time">{{ item.time }}</span>
+            <span class="del" v-if="item.mine == 1" @click="del(item.id,key)">删除</span>
             <p class="btn">
-              <span class="active">
-                <img src="~/assets/noclick.png" alt />
-                {{item.like_num}}
+              <span :class="item.my_like==1?'active':''" @click="like(item.id)">
+                <img :src="item.my_like == 1? img1:img" alt />
+                {{ item.like_num }}
               </span>
               <span>
                 <img src="~/assets/zixun.png" alt />
-                {{item.children.length}}
+                {{ item.children.length }}
               </span>
             </p>
           </div>
         </div>
       </li>
     </ul>
-    <nuxt-link :to="'/'+jkl+'/comment/'+id">
+    <nuxt-link :to="'/' + jkl + '/comment/' + id">
       <img src="~/assets/comments-fixed.png" alt class="fixed" />
     </nuxt-link>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
-import { comments } from "@/api/api";
+import tan from "@/components/tan.vue";
+import { comments,delcomm,likecomm } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    "tan-view": tan,
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -63,6 +79,7 @@ export default {
             id: id,
             page: 1,
             limit: 10,
+            token:token
           },
         })
         .then((resp) => {
@@ -86,6 +103,13 @@ export default {
       id: 0,
       page: 2,
       isok: true,
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      img:require('~/assets/noclick.png'),
+      img1:require('~/assets/checked.png')
     };
   },
   methods: {
@@ -99,11 +123,41 @@ export default {
           that.isok = false;
           comments({ id: id, page: that.page, limit: 10 }).then((res) => {
             that.isok = true;
-            that.lists = that.lists.concat(res.data.data)
+            that.lists = that.lists.concat(res.data.data);
           });
         }
       }
     },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "评论页+预约看房";
+    },
+    del(id,key){
+      let token = $cookies.get('token')
+      delcomm({token:token,id:id}).then(res=>{
+        if(res.data.code==200){
+          this.lists.slice(key,1)
+          this.toast('删除成功')
+          this.$router.go(0)
+        }
+      })
+    },
+    like(id){
+      let token = $cookies.get('token')
+      likecomm({token:token,id:id}).then(res=>{
+        if(res.data.code==200){
+          this.toast('点赞成功')
+          this.$router.go(0)
+        }
+      })
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.getmore);

@@ -9,6 +9,9 @@ export default function ({
     // $axios.defaults.baseURL = 'http://ll.edefang.net/'
   
     $axios.onRequest(config => {
+      if(config.method == 'get'){
+        config.params.token = store.state.cookie.token
+      }
         return config
     })
   }

@@ -45,6 +45,13 @@ export const pros = (msg) => {
     params: msg
   })
 }
+export const ask = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/jy/ask',
+    params: msg
+  })
+}
 export const souname = (name) => {
   return axios.request({
     method: 'get',
@@ -61,5 +68,53 @@ export const souari = (name) => {
     params: name
   })
 }
-
+export const put = (name) => {
+  return axios.request({
+    method: 'get',
+    url: '/front/flow/sign',
+    params: name
+  })
+}
+export const send = (name) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/send',
+    params: name
+  })
+}
+export const check = (name) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/sure',
+    params: name
+  })
+}
+export const jiameng = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/map/cooperate',
+    data: msg
+  })
+}
+export const comm = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/comment/save',
+    params: msg
+  })
+}
+export const delcomm = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/comment/delete',
+    params: msg
+  })
+}
+export const likecomm = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/comment/like',
+    params: msg
+  })
+}
 

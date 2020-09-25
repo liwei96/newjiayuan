@@ -5,15 +5,15 @@
         <img src="~/assets/home-back.png" alt class="back" @click="back" />
         <img src="~/assets/set.png" alt class="set" @click="set" />
       </div>
-      <div class="name">
+      <div class="name" @click="login">
         <img src="~/assets/loginpeo.png" alt />
-        <h4>点击登录</h4>
+        <h4>{{username}}</h4>
       </div>
       <ul class="li">
         <li>
           <nuxt-link :to="'/'+jkl+'/viewed'">
             <div>
-              <p class="num">5</p>
+              <p class="num">{{list.length}}</p>
               <p class="msg">浏览足迹</p>
             </div>
           </nuxt-link>
@@ -21,7 +21,7 @@
         <li>
           <nuxt-link :to="'/'+jkl+'/collection'">
             <div>
-              <p class="num">0</p>
+              <p class="num">{{colls.length}}</p>
               <p class="msg">我的收藏</p>
             </div>
           </nuxt-link>
@@ -29,7 +29,7 @@
         <li>
           <nuxt-link :to="'/'+jkl+'/cancel'">
             <div>
-              <p class="num">1</p>
+              <p class="num">{{cardnum}}</p>
               <p class="msg">优惠卡券</p>
             </div>
           </nuxt-link>
@@ -38,8 +38,8 @@
           <nuxt-link :to="'/'+jkl+'/linkman'">
             <div>
               <p class="num">
-                3
-                <span>1</span>
+                0
+                <span>0</span>
               </p>
               <p class="msg">我的联系</p>
             </div>
@@ -68,8 +68,10 @@
           <p>地图找房</p>
         </li>
         <li>
+          <nuxt-link :to="'/'+jkl+'/join'">
           <img src="~/assets/home-jia.png" alt />
           <p>城市加盟</p>
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -90,13 +92,11 @@
             <img class="more" src="~/assets/home-more.png" alt />
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/complaint'">
-            <div>
+            <div @click="jian">
               <img class="pp" src="~/assets/home-comment.png" alt />
               <p>投诉建议</p>
               <img class="more" src="~/assets/home-more.png" alt />
             </div>
-          </nuxt-link>
         </li>
       </ul>
       <ul class="col">
@@ -159,18 +159,65 @@
 import tan from "@/components/tan.vue";
 export default {
   async asyncData(context) {
+    let token = context.store.state.cookie.token;
     let jkl = context.params.name;
+    let other = context.store.state.cookie.other;
+    let city = context.store.state.cookie.city;
+    let [res,res1,res2] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+        context.$axios
+        .get("/jy/mine/foots", {
+          params: {
+            token: token,
+            page:1,
+            limit:50
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+        context.$axios
+        .get("/jy/mine/collect", {
+          params: {
+            token: token,
+            page:1,
+            limit:50
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
-      show: false,
-      tel:'400'
+      tel:res.common.phone,
+      list:res1.data,
+      colls:res2.data
     };
   },
   data() {
     return {
-      show: true,
+      show: false,
       jkl: "",
       tel: "400-688-965",
+      username:'点击登录',
+      cardnum:0
     };
   },
   components: {
@@ -183,7 +230,24 @@ export default {
     set() {
       this.$router.push("/" + this.jkl + "/set");
     },
+    login(){
+      if(!$cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    },
+    jian(){
+      if($cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/complaint')
+      }else{
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    }
   },
+  mounted(){
+    if($cookies.get('token')){
+      this.username = $cookies.get('username')
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -297,6 +361,7 @@ export default {
         display: flex;
         align-items: center;
         height: 3.125rem;
+        width: 100%;
       }
       .pp {
         height: 1.25rem;

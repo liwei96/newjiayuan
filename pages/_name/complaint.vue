@@ -2,20 +2,57 @@
   <div id="complaint">
     <top-view></top-view>
     <div class="con">
-      <textarea placeholder="输入您的宝贵建议"></textarea>
+      <textarea placeholder="输入您的宝贵建议" v-model="txt"></textarea>
       <p>
         您有任何问题需要帮助可以写在这里，我们的人员将在最短时间
         内回复您，感谢您对允家新房的支持！
       </p>
-      <button>确定</button>
+      <button @click="btn">确定</button>
     </div>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
+import { put } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
+  },
+  data() {
+    return {
+      txt: "",
+    };
+  },
+  methods: {
+    btn() {
+      let txt = this.txt;
+      if (!txt) {
+        this.toast("不能为空");
+        return;
+      }
+      let tel = $cookies.get("phone");
+      let ip = ip_arr["ip"];
+      let city = $cookies.get("city");
+      let kid = $cookies.get("kid");
+      let other = $cookies.get("other");
+      put({
+        tel: tel,
+        city: city,
+        page: 4,
+        source: "线上推广1",
+        kid: kid,
+        other: other,
+        position: 107,
+        remark: txt,
+        ip: ip,
+        staff_id: 106,
+      }).then(res=>{
+        if(res.data.code == 200){
+          console.log(res)
+          this.toast('提交成功')
+        }
+      })
+    },
   },
 };
 </script>

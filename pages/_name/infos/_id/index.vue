@@ -3,7 +3,7 @@
     <top-view></top-view>
     <div class="input">
       <nuxt-link :to="'/'+jkl+'/searchinfo'">
-      <input type="text" placeholder="搜搜你想要了解的房产咨询吧" />
+      <input type="text" placeholder="搜搜你想要了解的房产咨询吧" disabled/>
       <img src="~/assets/search.png" alt />
       </nuxt-link>
     </div>

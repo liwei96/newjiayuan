@@ -1,7 +1,7 @@
 <template>
   <div id="PK">
     <top-view></top-view>
-    <nuxt-link :to="'/'+jkl+'/addpro'">
+    <nuxt-link :to="'/' + jkl + '/addpro'">
       <button class="add">添加楼盘</button>
     </nuxt-link>
     <div class="isnull" v-if="list.length == 0">
@@ -11,32 +11,43 @@
     </div>
     <div class="pks" v-if="list.length != 0">
       <van-checkbox-group v-model="result" :max="2">
-          <template v-for="(item,key) in list">
-        <van-swipe-cell :key="key">
-          <van-checkbox :name="item.id" checked-color="#1FC365">
-            <div class="pro">
-              <div class="left">
-                <img :src="item.img" alt />
+        <template v-for="(item, key) in list">
+          <van-swipe-cell :key="key">
+            <van-checkbox :name="item.id" checked-color="#1FC365">
+              <div class="pro">
+                <div class="left">
+                  <img :src="item.img" alt />
+                </div>
+                <div class="right">
+                  <h6>{{ item.name }}</h6>
+                  <p class="pri">
+                    <span>{{ item.price }}</span
+                    >元/m²
+                  </p>
+                  <p class="msg">
+                    {{ item.type }} | {{ item.city }}-{{ item.country }} |
+                    {{ item.area }}m²
+                  </p>
+                  <p class="type">
+                    <span class="zhuang">{{ item.decorate }}</span>
+                    <span v-for="(val, k) in item.feature" :key="k">{{
+                      val
+                    }}</span>
+                  </p>
+                </div>
               </div>
-              <div class="right">
-                <h6>{{item.name}}</h6>
-                <p class="pri">
-                  <span>{{item.price}}</span>元/m²
-                </p>
-                <p class="msg">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</p>
-                <p class="type">
-                  <span class="zhuang">{{item.decorate}}</span>
-                  <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
-                </p>
-              </div>
-            </div>
-          </van-checkbox>
-          <template #right>
-            <van-button square text="删除" type="danger" class="delete-button" @click="del(item.id)"/>
-          </template>
-        </van-swipe-cell>
+            </van-checkbox>
+            <template #right>
+              <van-button
+                square
+                text="删除"
+                type="danger"
+                class="delete-button"
+                @click="del(item.id)"
+              />
+            </template>
+          </van-swipe-cell>
         </template>
-        
       </van-checkbox-group>
       <button class="pkbtn" @click="gopk">开始对比</button>
       <div class="totast" v-if="isadd">已加入对比</div>
@@ -55,17 +66,18 @@ export default {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
+    let city = context.store.state.city;
     let res = {
-        data:[]
-    }
+      data: [],
+    };
     if (id) {
       [res] = await Promise.all([
         context.$axios
-          .get("/jy/base/compare", {
+          .get("/jy/compare/cards", {
             params: {
               ids: id,
               token: token,
-              other: other,
+              city: city,
             },
           })
           .then((resp) => {
@@ -78,7 +90,7 @@ export default {
     return {
       jkl: jkl,
       id: id,
-      list:res.data
+      list: res.data,
     };
   },
   data() {
@@ -86,30 +98,34 @@ export default {
       checked: true,
       result: [],
       isadd: false,
-      list:[],
-      isok:false
+      list: [],
+      isok: false,
     };
   },
-  methods:{
-      gopk(){
-          let that = this
-          if(this.result.length == 2){
-              let ids = this.result.join(',')
-              this.$router.push('/'+this.jkl+'/pkdetail/'+ids)
-          }else{
-              this.isok=true
-              setTimeout(()=>{
-                  that.isok = false
-              },1500)
-          }
-      },
-      del(id){
-          let ids = $cookies.get('ids').split(',')
-          let kk =ids.splice(ids.indexOf(String(id)),1)
-          $cookies.set('ids',ids)
-          let k = ids.join(',')
-          this.$router.push('/'+this.jkl+'/pk/'+k)
+  methods: {
+    gopk() {
+      let that = this;
+      if (this.result.length == 2) {
+        let ids = this.result.join(",");
+        if(sessionStorage.getItem('pktype') == 1){
+          this.$router.push("/" + this.jkl + "/pkdetail/" + ids);
+        }else{
+          this.$router.push("/" + this.jkl + "/leipk/" + ids);
+        }
+      } else {
+        this.isok = true;
+        setTimeout(() => {
+          that.isok = false;
+        }, 1500);
       }
+    },
+    del(id) {
+      let ids = $cookies.get("ids").split(",");
+      let kk = ids.splice(ids.indexOf(String(id)), 1);
+      $cookies.set("ids", ids);
+      let k = ids.join(",");
+      this.$router.push("/" + this.jkl + "/pk/" + k);
+    },
   },
   watch: {
     result(val, old) {

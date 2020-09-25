@@ -1,13 +1,13 @@
 <template>
   <div id="Popup">
     <img src="~/assets/w-del.png" alt class="close" @click="close" />
-    <h3>{{name}}</h3>
-    <p class="type">{{str}}</p>
+    <h3>{{ name }}</h3>
+    <p class="type">{{ str }}</p>
     <div class="one" v-show="!type">
       <input type="tel" placeholder="请输入手机号" v-model="baoming" />
       <p class="xiyi">
-        <input type="checkbox" v-model="check" />我已阅读并同意
-        <router-link :to="'/'">《家有用户协议》</router-link>
+        <input type="checkbox" v-model="checks" />我已阅读并同意
+        <router-link :to="'/'">《家园用户协议》</router-link>
       </p>
       <button @click="send">立即订阅</button>
       <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
@@ -21,15 +21,15 @@
       <span class="t-b-scode">57秒后重发</span>
       <button @click="put">确定</button>
     </div>
-    <p class="tishimsg" v-if="show">{{msg}}</p>
+    <p class="tishimsg" v-if="show">{{ msg }}</p>
   </div>
 </template>
 <script>
-// import { putmsg, logsure, sendmsg } from "~/api/api";
+import { put, check, send } from "~/api/api";
 export default {
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
     typenum: {
@@ -44,50 +44,60 @@ export default {
       type: Number,
       required: true,
     },
+    txt: {
+      type: String,
+    },
   },
   data() {
     return {
-        show:false,
+      show: false,
       baoming: "",
       ma: "",
-      check: true,
+      checks: true,
       tishi: "",
       type: false,
-      str: "领取成功后优惠编码将与您手机号绑定，此优惠不与参团优惠叠加使用",
-      msg:'请输入正确手机号'
+      str: "提前预约看房，我们将提供免费专车接送和专业楼盘讲解",
+      msg: "请输入正确手机号",
     };
   },
   methods: {
     send() {
-      let check = this.check;
-      if (!check) {
-        this.$toast("请勾选用户协议");
+      let checks = this.checks;
+      if (!checks) {
+        this.toast("请勾选用户协议");
         return;
       }
       var phone = this.baoming;
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         return;
       }
-      let id = this.$route.params.id;
+      let id = this.id;
       let typenum = this.typenum;
       let ip = ip_arr["ip"];
-      putmsg({
+      let city = $cookies.get("city");
+      let kid = $cookies.get("kid");
+      let other = $cookies.get("other");
+      let txt = this.txt;
+      put({
         ip: ip,
         tel: phone,
-        page: 9,
+        page: 4,
         project: id,
-        remark: "",
-        source: "线上推广3",
+        city: city,
+        remark: txt,
+        source: "线上推广1",
         name: "未知",
         position: typenum,
+        kid: kid,
+        other: other,
       }).then((res) => {});
 
-      sendmsg({ ip: ip, phone: phone, source: 3 }).then((res) => {
+      send({ ip: ip, phone: phone, source: 3 }).then((res) => {
         if (res.data.code == 200) {
           this.type = true;
           var time = 60;
@@ -112,35 +122,35 @@ export default {
       });
     },
     put() {
-      let check = this.check;
-      if (!check) {
-        this.$toast("请勾选用户协议");
+      let checks = this.checks;
+      if (!checks) {
+        this.toast("请勾选用户协议");
         return;
       }
       var phone = this.baoming;
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         return;
       }
       if (!this.ma) {
-        this.$toast("请输入验证码");
+        this.toast("请输入验证码");
         return;
       }
       let ma = this.ma;
       let ip = ip_arr["ip"];
-      logsure({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
+      check({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
         if (res.data.code == 200) {
-          this.$toast.success("提交成功");
-          if (!this.$cookies.get("token")) {
-            this.$cookies.set("token", res.data.token, 21600);
-            this.$cookies.set("tel", phone, 21600);
+          this.toast("提交成功");
+          if (!$cookies.get("token")) {
+            $cookies.set("token", res.data.token, 21600);
+            $cookies.set("phone", phone, 21600);
           }
         } else {
-          this.$toast(res.data.message);
+          this.toast(res.data.message);
         }
         this.type = false;
         this.$emit("close", false);
@@ -152,10 +162,8 @@ export default {
     },
   },
   mounted() {
-    // this.baoming = this.$cookies.get("tel");
-  },
-  updated() {
     let type = this.name;
+    console.log(type)
     if (type == "变价通知我") {
       this.str =
         "价格变动这么快？订阅楼盘变价通知，楼盘变价我们将第一时间通知您";
@@ -163,17 +171,34 @@ export default {
       this.str = "一键订阅最新开盘通知，我们会第一时间通知,不再错过开盘时间";
     } else if (type == "预约看房") {
       this.str = "提前预约看房，我们将提供免费专车接送和专业楼盘讲解";
-    } else if (type == "订阅最新动态") {
+    } else if (type == "订阅实时动态") {
       this.str = "订阅最新动态，楼盘最新情报抢先知道，帮您找准买房好时机";
     } else if (type == "获取详细周边配套") {
-      this.str =
-        "附近有学区或商业街吗？想了解更多周边配套信息？立即获取全面周边配套详解";
+      this.str = "想了解更多周边配套信息？立即获取全面周边配套详解";
     } else if (type == "获取最新成交价") {
       this.str = "获取最新成交价格，看看房友都是什么价格买的房";
-    } else if (type == "咨询详细户型") {
+    } else if (type == "咨询户型底价") {
       this.str = "好楼盘户型是关键，咨询详细户型信息，安安心心买房";
     } else if (type == "领取分析资料") {
       this.str = "最新楼盘分析资料，看看房产专家对楼盘的投资分析和宜居分析解读";
+    } else if (type == "咨询特价房") {
+      this.str = "一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘";
+    } else if (type == "领取优惠") {
+      this.str = "专享限时优惠折扣，家园专场推出，早抢早优惠";
+    } else if (type == "免费领取") {
+      this.str = "精准匹配房源，免费接送一次看完好房";
+    } else if (type == "获取详细分析报告") {
+      this.str = "向允家咨询师免费领取分析报告,内附有购房流程全盘解读";
+    } else if (type == "咨询户型底价") {
+      this.str = "好楼盘户型是关键，咨询户型底价，安安心心买房";
+    } else if (type == "咨询服务") {
+      this.str = "立即报名，专业人员为你解惑!";
+    } else if (type == "领取分析资料") {
+      this.str = "最新楼盘分析资料，看看房产专家对楼盘的投资分析和宜居分析解读";
+    } else if (type == "一键咨询") {
+      this.str = "立即报名，专业人员为你解惑!";
+    } else if (type == "免费咨询") {
+      this.str = "立即报名，专业人员为你解惑!";
     }
   },
   watch: {

@@ -43,7 +43,7 @@
             <span>{{staff.ServeNum}}</span>人
           </p>
         </div>
-        <button>免费咨询</button>
+        <button @click="pop('免费咨询',104,'问答详情页+免费咨询')">免费咨询</button>
       </div>
       <p class="msg">{{answer.answer}}</p>
       <p class="time">
@@ -116,16 +116,32 @@
         </nuxt-link>
       </template>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    "tan-view":tan
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -155,7 +171,8 @@ export default {
       other: res.recommends,
       relevant: res.relevant,
       staff: res.common.staff.staff,
-      cityname:res.common.city_info.current.city
+      cityname:res.common.city_info.current.city,
+      phone:res.common.phone
     };
   },
   data() {
@@ -165,9 +182,35 @@ export default {
       other: [],
       building: {},
       answer: {},
-      cityname:''
+      cityname:'',
+      phone:'',
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
     };
   },
+  methods:{
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "问答详情页+预约看房";
+    },
+    pop(name,position,txt){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt
+    },
+  }
 };
 </script>
 <style lang="less" scoped>

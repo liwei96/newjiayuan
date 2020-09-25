@@ -30,20 +30,38 @@
         </div>
       </div>
     </div>
-    <nav-view></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
   </div>
 </template>
 <script>
 import { dynamics } from "@/api/api";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "nav-view": nav,
+    'tan-view':tan
   },
   async asyncData(context) {
     let city = context.store.state.city;
     let jkl = context.params.name;
-    let [res] = await Promise.all([
+    let token = context.store.state.cookie.token
+    let other = context.store.state.cookie.other
+    let [res,res1] = await Promise.all([
       context.$axios
         .get("/jy/dynamic/info/phone", {
           params: {
@@ -57,11 +75,26 @@ export default {
           //   console.log(data)
           return data;
         }),
+        context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data)
+          return data;
+        }),
     ]);
     return {
       jkl: jkl,
       lists: res.data,
       ting: true,
+      phone:res1.common.phone,
+      
     };
   },
   data() {
@@ -71,6 +104,13 @@ export default {
       lists: [],
       ting: true,
       page: 2,
+      phone:'',
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0'
     };
   },
   methods: {
@@ -86,9 +126,18 @@ export default {
         that.ting = true
       });
     },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "动态列表页+预约看房";
+    },
   },
   mounted() {
-    console.log(this.ting)
     let that = this
     $(document).on("scroll", function () {
       var scrollTop = window.scrollY;

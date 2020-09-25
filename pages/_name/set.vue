@@ -15,11 +15,11 @@
       </li>
       <li class="tel" @click="show1=true">
         <img src="~/assets/j-more.png" alt />
-        <span>400-966-9995</span>
+        <span>{{tel}}</span>
         <p>举报电话</p>
       </li>
     </ul>
-    <button @click="show=true">退出登录</button>
+    <button @click="show=true" v-if="deng">退出登录</button>
     <van-popup v-model="show" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
       <div class="box">
         <h4>确定退出</h4>
@@ -33,11 +33,11 @@
     <van-popup v-model="show1" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
       <div class="box1">
         <h4>拨打电话</h4>
-        <p class="tit">400-718-6686</p>
+        <p class="tit">{{tel}}</p>
         <div class="btn">
           <p @click="show1=false">取消</p>
           <a :href="'tel:'+tel">
-          <p class="yes">确定</p>
+          <p class="yes" @click="out">确定</p>
           </a>
         </div>
       </div>
@@ -46,12 +46,38 @@
 </template>
 <script>
 export default {
+  async asyncData(context) {
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.store.state.cookie.other;
+    let city = context.store.state.cookie.city;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      tel:res.common.phone,
+    };
+  },
   data() {
     return {
       show: false,
       jkl: "",
       show1:false,
-      tel:'400-966-9995'
+      tel:'',
+      deng:false
     };
   },
   methods: {
@@ -64,9 +90,16 @@ export default {
     back() {
       this.$router.go(-1);
     },
+    out(){
+      $cookies.remove('token')
+      $cookies.remove('phone')
+    }
   },
   mounted() {
     this.jkl = this.$route.params.name;
+    if($cookies.get('token')){
+      this.deng= true
+    }
   },
 };
 </script>

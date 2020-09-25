@@ -5,10 +5,10 @@
       <img src="~/assets/questions.jpg" alt />
     </div>
     <ul>
-      <li v-for="(item,key) in lists" :key="key">
+      <li v-for="(item, key) in lists" :key="key">
         <p class="tit">
           <span>问</span>
-          {{item.question}}
+          {{ item.question }}
         </p>
         <div class="answer" v-if="item.answer">
           <div class="top">
@@ -21,17 +21,17 @@
               <p>咨询师帮您在线解答</p>
             </div>
           </div>
-          <nuxt-link :to="'/'+jkl+'/answer/'+item.id">
+          <nuxt-link :to="'/' + jkl + '/answer/' + item.id">
             <p class="msg">
-              {{item.answer.substr(0,40)}}
-              <i v-if="item.answer.length>40">...</i>
-              <span v-if="item.answer.length>40">[全文]</span>
+              {{ item.answer.substr(0, 40) }}
+              <i v-if="item.answer.length > 40">...</i>
+              <span v-if="item.answer.length > 40">[全文]</span>
             </p>
           </nuxt-link>
         </div>
         <div class="btn" v-if="!item.answer">
-            <nuxt-link :to="'/'+jkl+'/response/'+item.id">
-          <button>我来回答</button>
+          <nuxt-link :to="'/' + jkl + '/response/' + item.id">
+            <button>我来回答</button>
           </nuxt-link>
         </div>
         <div class="answer" v-if="false">
@@ -43,50 +43,57 @@
             </div>
           </div>
           <p class="msg">
-            {{item.answer}}
+            {{ item.answer }}
             <span>[全文]</span>
           </p>
         </div>
       </li>
     </ul>
     <div class="fix">
+      <nuxt-link :to="'/' + jkl + '/quiz/' + id">
       <img src="~/assets/questions-fixed.png" alt />
+      </nuxt-link>
     </div>
-    <nav-view :phone="phone"></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
+      <tan-view :txt="remark" :typenum="typenum" :id="id" :name="name" @close="cli($event)" :typebtn="typebtn"></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 import { questions } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    "tan-view":tan
   },
   async asyncData(context) {
     let other = context.query.other;
     let jkl = context.params.name;
     let id = context.params.id;
-    let city = context.store.state.city
-    let dd 
+    let city = context.store.state.city;
+    let dd;
     let token = context.store.state.cookie.token;
-    if(id){
-        dd = {
-            other: other,
-            project: id,
-            page: 1,
-            limit: 10,
-            token: token,
-          }
-    }else{
-        dd ={
-            other: other,
-            city: city,
-            page: 1,
-            limit: 10,
-            token: token,
-          }
+    if (id) {
+      dd = {
+        other: other,
+        project: id,
+        page: 1,
+        limit: 10,
+        token: token,
+      };
+    } else {
+      dd = {
+        other: other,
+        city: city,
+        page: 1,
+        limit: 10,
+        token: token,
+      };
     }
     let [res] = await Promise.all([
       context.$axios
@@ -115,6 +122,11 @@ export default {
       id: 0,
       page: 2,
       isok: true,
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
     };
   },
   methods: {
@@ -140,6 +152,17 @@ export default {
           });
         }
       }
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "问答页+预约看房";
     },
   },
   mounted() {

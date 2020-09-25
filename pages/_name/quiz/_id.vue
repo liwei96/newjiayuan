@@ -2,27 +2,59 @@
   <div id="response">
     <top-view></top-view>
     <div class="con">
-      <p class="tit">
-        家园在线咨询师帮您解答
-      </p>
+      <p class="tit">家园在线咨询师帮您解答</p>
       <div class="text">
-        <textarea v-model="text" placeholder="在这里输入您的问题" maxlength="50"></textarea>
-        <p>{{textnum}}/50</p>
+        <textarea
+          v-model="text"
+          placeholder="在这里输入您的问题"
+          maxlength="50"
+        ></textarea>
+        <p>{{ textnum }}/50</p>
       </div>
-      <button>发布提问</button>
+      <button @click="put">发布提问</button>
     </div>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
+import { ask } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
   },
-  data(){
-      return{
-          textnum:0
-      }
+  async asyncData(context) {
+    let jkl = context.params.name;
+    let id = context.params.id;
+    return {
+      jkl: jkl,
+      id: id,
+    };
+  },
+  data() {
+    return {
+      textnum: 0,
+      text: "",
+      jkl: "",
+      id: "",
+    };
+  },
+  methods: {
+    put() {
+      let that = this;
+      let token = $cookies.get("token");
+      let city = $cookies.get("city");
+      ask({
+        token: token,
+        project: that.id,
+        city: city,
+        question: that.text,
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.toast("提交成功");
+          this.$router.push("/" + that.jkl + "/questions/" + that.id);
+        }
+      });
+    },
   },
   watch: {
     text(val) {
@@ -57,7 +89,7 @@ export default {
       background-color: #f7f7f7;
       border: 0;
       outline: none;
-      line-height: 1.625rem
+      line-height: 1.625rem;
     }
     input::-webkit-input-placeholder,
     textarea::-webkit-input-placeholder {
@@ -91,15 +123,15 @@ export default {
     }
   }
   button {
-      color: #2AC66D;
-      font-size: 0.9375rem;
-      font-weight: bold;
-      text-align: center;
-      line-height: 2.25rem;
-      width: 100%;
-      border-radius: 0.125rem;
-      background-color: #F1F8F4;
-      border: 0
+    color: #2ac66d;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 2.25rem;
+    width: 100%;
+    border-radius: 0.125rem;
+    background-color: #f1f8f4;
+    border: 0;
   }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div id="searchari">
     <div class="input">
-      <img src="~/assets/goback.png" alt class="back" @click="back"/>
+      <img src="~/assets/goback.png" alt class="back" @click="back" />
       <input type="text" placeholder="搜搜你想要了解的房产知识吧" v-model="name" />
       <img class="search" src="~/assets/search.png" alt />
       <span>搜索</span>
     </div>
-    <div class="type" v-if="!isnull">
+    <!-- <div class="type" v-if="!isnull">
       <h3>热门关键词</h3>
       <p>
         <span>新房</span>
@@ -20,129 +20,46 @@
         <span>新房</span>
         <span>买房能力</span>
       </p>
-    </div>
+    </div>-->
     <div class="con" v-if="!isnull">
       <h3>猜你喜欢</h3>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
+      <template v-for="(item,key) in recommends">
+        <nuxt-link :to="'/'+jkl+'/aritle/'+item.id" :key="key">
+          <div class="pro">
+            <div class="left">
+              <h5>{{item.title}}</h5>
+              <p>
+                <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+              </p>
+            </div>
+            <div class="right">
+              <img :src="item.img" alt />
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <div class="con list" v-if="isnull">
-      <p class="tit">共为您搜索到<span>{{num}}</span>条关于“<span>{{name}}</span>”的知识</p>
-      <div class="pro" v-for="(item,key) in list" :key="key">
-        <div class="left">
-          <h5>{{item.title}}</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
+      <p class="tit">
+        共为您搜索到
+        <span>{{num}}</span>条关于“
+        <span>{{name}}</span>”的知识
+      </p>
+      <template v-for="(item,key) in list">
+        <nuxt-link :to="'/'+jkl+'/aritle/'+item.id" :key="key">
+          <div class="pro">
+            <div class="left">
+              <h5 v-html="item.replace.title"></h5>
+              <p>
+                <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+              </p>
+            </div>
+            <div class="right">
+              <img :src="item.img" alt />
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
   </div>
 </template>
@@ -152,15 +69,17 @@ export default {
   async asyncData(context) {
     let id = context.params.id;
     let token = context.store.state.cookie.token;
+    let city = context.store.state.city;
     let jkl = context.params.name;
     let other = context.query.other;
     let [res] = await Promise.all([
       context.$axios
-        .get("/jy/building/detail", {
+        .get("/jy/article/recommends", {
           params: {
-            id: id,
+            city: city,
             token: token,
-            other: other,
+            limit: 10,
+            page: 1,
           },
         })
         .then((resp) => {
@@ -171,6 +90,7 @@ export default {
     return {
       jkl: jkl,
       id: id,
+      recommends: res.recommends,
     };
   },
   data() {
@@ -180,32 +100,33 @@ export default {
       id: 0,
       name: "",
       isnull: false,
-      num:0
+      num: 0,
+      recommends: [],
     };
   },
   methods: {
     sou() {
-      let that = this
+      let that = this;
       let name = this.name;
       if (name) {
         this.isnull = true;
-        souari({name:name,page:1,limit:10}).then(res=>{
-          if(res.data.code == 200){
-            that.list = res.data.data
-            that.num = res.data.total
+        souari({ name: name, page: 1, limit: 10 }).then((res) => {
+          if (res.data.code == 200) {
+            that.list = res.data.data;
+            that.num = res.data.total;
           }
-        })
+        });
       } else {
         this.isnull = false;
       }
     },
-    back(){
-      this.$router.go(-1)
-    }
+    back() {
+      this.$router.go(-1);
+    },
   },
   watch: {
     name(val) {
-      this.sou()
+      this.sou();
     },
   },
 };
@@ -218,7 +139,7 @@ li {
   height: 2.5rem;
   padding: 0.25rem 4%;
   position: relative;
-  
+
   input {
     border: 0;
     outline: none;
@@ -257,9 +178,9 @@ li {
     margin-right: 0.625rem;
   }
   span {
-      color: #181819;
-      font-size: 1rem;
-      margin-left: 1.25rem;
+    color: #181819;
+    font-size: 1rem;
+    margin-left: 1.25rem;
   }
 }
 .type {
@@ -289,24 +210,25 @@ li {
 }
 .con {
   padding: 0 4%;
+  margin-top: 1.875rem;
   h3 {
     color: #101314;
     font-size: 1rem;
     margin-bottom: 1.375rem;
   }
   .tit {
-    color: #2F3133;
+    color: #2f3133;
     font-size: 0.875rem;
     margin-bottom: 1.125rem;
     span {
-      color: #FF3F3F;
+      color: #ff3f3f;
     }
   }
   .pro {
     display: flex;
     height: 4.375rem;
     margin-bottom: 0.625rem;
-    .left {
+    /deep/.left {
       position: relative;
       margin-right: 1.25rem;
       width: 14.0625rem;
@@ -317,6 +239,15 @@ li {
         font-weight: 400;
         position: relative;
         top: -0.25rem;
+        height: 2.625rem;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        em {
+          font-style: normal;
+          color: #ff3f3f;
+        }
       }
       p {
         position: absolute;

@@ -16,7 +16,7 @@
                   <p class="msg">最 高</p>
                   <p class="num">¥5000</p>
                 </div>
-                <button>抢优惠</button>
+                <button @click="pop('领取优惠', 94, '特价房页+领取优惠')">抢优惠</button>
               </div>
               <nuxt-link :to="'/'+jkl+'/content/'+item.id">
               <div class="bg-top">
@@ -56,7 +56,7 @@
                   <span v-for="(val,k) in item.features" :key="k">{{val}}</span>
                 </p>
               </div>
-              <p class="num">立省{{parseInt(item.diff/1000)}}万</p>
+              <p class="num">立省{{parseInt(item.diff/10000)}}万</p>
             </div>
             </nuxt-link>
             <div class="bom">
@@ -66,19 +66,35 @@
                 background="#F7F7F7"
                 :text="item.dynamic"
               />
-              <button>马上抢</button>
+              <button @click="pop('领取优惠', 94, '特价房页+领取优惠')">马上抢</button>
             </div>
           </li>
         </ul>
       </div>
     </div>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import top from "@/components/header.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": top,
+    'tan-view':tan
   },
   async asyncData(context) {
     let city = context.store.state.city;
@@ -107,9 +123,27 @@ export default {
   data() {
     return {
       specials: [],
-      discounts:[]
+      discounts:[],
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0'
     };
   },
+  methods:{
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+    },
+    cli(e) {
+      this.tan = e;
+    },
+  }
 };
 </script>
 <style lang="less" scoped>

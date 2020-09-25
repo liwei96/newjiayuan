@@ -1,22 +1,124 @@
 <template>
   <div id="login">
     <header>
-      <img class="back" src="~/assets/goback.png" alt />
+      <img class="back" src="~/assets/goback.png" alt @click="back"/>
       <img class="logo" src="~/assets/logo.png" alt />
     </header>
     <div class="con">
       <img src="~/assets/login.png" alt />
       <div class="input">
-        <input type="text" placeholder="输入手机号" />
-        <p>验证码</p>
+        <input type="text" placeholder="输入手机号" v-model="tel" />
+        <p @click="getcode">{{msg}}</p>
       </div>
-      <input type="text" placeholder="输入验证码" />
-      <button>登录</button>
+      <input type="text" placeholder="输入验证码" v-model="code" />
+      <button @click="login">登录</button>
     </div>
   </div>
 </template>
 <script>
-export default {};
+import { put, send, check } from "@/api/api";
+export default {
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
+  data() {
+    return {
+      code: "",
+      tel: "",
+      msg:'验证码',
+      isnull:true,
+      jkl:''
+    };
+  },
+  methods: {
+    getcode() {
+      if (!this.tel) {
+        this.toast("手机号不能为空");
+        return;
+      }
+      let that = this;
+      let pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (!pattern_phone.test(that.tel)) {
+        this.toast("手机号不正确");
+        return;
+      }
+      if(!this.isnull){
+        return
+      }
+      let ip = ip_arr["ip"];
+      let city = $cookies.get("city");
+      let other = $cookies.get('other');
+      let kid = $cookies.get('kid');
+      put({
+        ip: ip,
+        page: 4,
+        city: city,
+        position: 106,
+        remark: "家园会员",
+        source: "线上推广1",
+        other: other,
+        kid: kid,
+        tel: that.tel,
+      }).then((res) => {
+        console.log(res);
+      });
+      send({ phone: that.tel, source: 3,ip:ip }).then((res) => {
+        if(res.data.code == 200){
+          that.isnull = false
+          let num = 60
+          let time = setInterval(()=>{
+            num--
+            if(num<=0){
+              clearInterval(time)
+              that.msg = '验证码'
+              that.isnull=true
+            }else{
+              that.msg= num+'秒后'
+            }
+          },1000)
+        }
+        console.log(res);
+      });
+    },
+    login() {
+      if (!this.tel) {
+        this.toast("手机号不能为空");
+        return;
+      }
+      let that = this;
+      let pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (!pattern_phone.test(that.tel)) {
+        this.toast("手机号不正确");
+        return;
+      }
+      if(!this.code){
+        this.toast('验证码不能为空')
+        return
+      }
+      let ip = ip_arr["ip"];
+      check({ phone: that.tel, code: that.code, channel: 4,ip:ip }).then(res=>{
+        if(res.data.code == 200){
+          console.log(res)
+          // localStorage.setItem('token',res.data.token)
+          $cookies.set('phone',that.tel)
+          $cookies.set('token',res.data.token)
+          
+          // localStorage.setItem('phone',that.tel)
+          let tel = that.tel.substr(0,3)+'****'+that.tel.substr(8)
+          $cookies.set('username',tel)
+          // localStorage.setItem('username',tel)
+          that.$router.push('/'+that.jkl+'/home')
+        }
+      })
+    },
+    back(){
+      this.$router.go(-1)
+    }
+  },
+};
 </script>
 <style lang="less" scoped>
 header {

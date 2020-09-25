@@ -1,7 +1,7 @@
 <template>
   <div id="help">
     <header>
-      <img class="back" src="~/assets/goback.png" alt @click="goback"/>
+      <img class="back" src="~/assets/goback.png" alt @click="goback" />
       <img class="logo" src="~/assets/logo.png" alt />
       <div class="zixuns">
         <img src="~/assets/zixun.png" alt />
@@ -31,62 +31,239 @@
       </div>
       <p class="tit">您意向购买哪种户型？</p>
       <div class="type">
-        <span class="active">一室</span>
-        <span>二室</span>
-        <span>三室</span>
-        <span>四室</span>
-        <span>五室及以上</span>
+        <span
+          :class="huid==item.name?'active':''"
+          v-for="(item,key) in house_types"
+          :key="key"
+          @click="huid=item.name"
+        >{{item.name}}</span>
       </div>
       <p class="tit">您意向购买的区域是？</p>
       <div class="area" @click="show = true">
-        <span>不限</span>
+        <span>{{areaid}}</span>
         <img src="~/assets/j-more.png" alt />
       </div>
       <p class="tit">您意向购买多大面积？</p>
       <div class="type">
-        <span class="active">50m²以下</span>
-        <span>50-70m²</span>
-        <span>70-100m²</span>
-        <span>100m²以上</span>
+        <span
+          :class="qid == item.name?'active':''"
+          v-for="(item,key) in areas"
+          :key="key"
+          @click="qid=item.name"
+        >{{item.name}}</span>
       </div>
       <p class="tit">您还有其它要求吗？</p>
-      <textarea placeholder="说说您的想法，让我们更好的服务您"></textarea>
-      <button>提交</button>
+      <textarea placeholder="说说您的想法，让我们更好的服务您" v-model="txt"></textarea>
+      <button @click="btn">提交</button>
     </div>
     <popup v-model="show" position="bottom" :style="{ height: '14.375rem' }">
       <div class="bomm">
         <div class="top">
-          <span class="no">取消</span>
-          <span class="yes">确定</span>
+          <span class="no" @click="areano">取消</span>
+          <span class="yes" @click="show = false">确定</span>
         </div>
         <div class="bom">
-          <span class="active">不限</span>
-          <span>西湖区</span>
-          <span>西湖区</span>
-          <span>西湖区</span>
-          <span>西湖区</span>
+          <span
+            :class="areaid == item.name ? 'active':''"
+            v-for="(item,key) in countries"
+            :key="key"
+            @click="areaid = item.name"
+          >{{item.name}}</span>
+        </div>
+      </div>
+    </popup>
+    <popup v-model="show1" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="telbox">
+        <div class="top">
+          <img src="~/assets/w-del.png" alt class="close" @click="ll" />
+          <h5>帮我找房</h5>
+        </div>
+        <div class="one" v-if="!isok">
+          <input class="txt" type="text" placeholder="请输入手机号" v-model="tel" />
+          <p class="xiyi">
+            <input type="checkbox" v-model="check" />我已阅读并同意
+            <nuxt-link :to="'/'">《家有用户协议》</nuxt-link>
+          </p>
+          <button @click="sendmsg">确定</button>
+        </div>
+        <div class="two" v-if="isok">
+          <p class="msg">验证码已发送到187****4376 请注意查看</p>
+          <input class="txt" type="text" placeholder="请输入验证码" v-model="code" />
+          <span @click="sendmsg">{{msg}}</span>
+          <button @click="sure">确定</button>
         </div>
       </div>
     </popup>
   </div>
 </template>
 <script>
+import { send, check, put } from "@/api/api";
 import { Popup } from "vant";
 export default {
   components: {
     Popup,
   },
-  data(){
+  async asyncData(context) {
+    //   console.log(context.$axios)
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/help/condition", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          return data;
+        }),
+    ]);
     return {
-      start:200,
-      end:800,
-      show: false,
-    }
+      jkl: jkl,
+      countries: res.countries,
+      areas: res.areas,
+      house_types: res.house_types,
+    };
   },
-  methods:{
-    goback(){
-      this.$router.go(-1)
-    }
+  data() {
+    return {
+      start: 200,
+      end: 800,
+      show: false,
+      show1: false,
+      house_types: [],
+      areas: [],
+      countries: [],
+      huid: 0,
+      areaid: "不限",
+      qid: 0,
+      txt: "",
+      isok: false,
+      check: true,
+      msg: "获取验证码",
+      tel: "",
+      code: "",
+      isnull: true,
+    };
+  },
+  methods: {
+    goback() {
+      this.$router.go(-1);
+    },
+    btn() {
+      this.show1 = true;
+    },
+    ll() {
+      this.show1 = false;
+      this.isok = false;
+    },
+    sendmsg() {
+      if (!this.tel) {
+        this.toast("手机号不能为空");
+        return;
+      }
+      let that = this;
+      let pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (!pattern_phone.test(that.tel)) {
+        this.toast("手机号不正确");
+        return;
+      }
+      if(!that.check){
+        this.toast("请勾选用户协议");
+        return;
+      }
+      if (!that.isnull) {
+        return;
+      }
+      let ip = ip_arr["ip"];
+      let city = $cookies.get("city");
+      let other = $cookies.get("other");
+      let kid = $cookies.get("kid");
+      let txt = `客户想找总价为：${that.start}万到${that.end}万`;
+      if (that.huid) {
+        txt = txt + `；户型为：${that.huid}`;
+      }
+      if (that.areaid) {
+        txt += `；区域为：${that.areaid}`;
+      }
+      if (that.qid) {
+        txt += `；面积为：${that.qid}`;
+      }
+      txt += "的房子";
+      if (that.txt) {
+        txt += `；客户留言：${that.txt}`;
+      }
+      put({
+        ip: ip,
+        page: 4,
+        city: city,
+        position: 110,
+        remark: txt,
+        source: "线上推广1",
+        other: other,
+        kid: kid,
+        tel: that.tel,
+      }).then((res) => {
+        console.log(res);
+      });
+      send({ phone: that.tel, source: 3, ip: ip }).then((res) => {
+        if (res.data.code == 200) {
+          that.isok = true;
+          let num = 60;
+          that.isnull = false;
+          let time = setInterval(() => {
+            num--;
+            if (num <= 0) {
+              clearInterval(time);
+              that.msg = "获取验证码";
+              that.isnull = true;
+            } else {
+              that.msg = num + "秒后重发";
+            }
+          }, 1000);
+        }
+        console.log(res);
+      });
+    },
+    sure() {
+      if (!this.tel) {
+        this.toast("手机号不能为空");
+        return;
+      }
+      let that = this;
+      let pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (!pattern_phone.test(that.tel)) {
+        this.toast("手机号不正确");
+        return;
+      }
+      if (!this.code) {
+        this.toast("验证码不能为空");
+        return;
+      }
+      let ip = ip_arr["ip"];
+      check({ phone: that.tel, code: that.code, channel: 4, ip: ip }).then(
+        (res) => {
+          if (res.data.code == 200) {
+            if (!$cookies.get("token")) {
+              $cookies.set("phone", that.tel);
+              $cookies.set("token", res.data.token);
+              let tel = that.tel.substr(0, 3) + "****" + that.tel.substr(8);
+              $cookies.set("username", tel);
+            }
+            that.toast("提交成功");
+            that.show1 = false;
+            that.isok = false;
+          }
+        }
+      );
+    },
+    areano() {
+      this.show = false;
+      this.areaid = "不限";
+    },
   },
   mounted() {
     var slider = new Slider("#ex2", {});
@@ -95,11 +272,13 @@ export default {
       var start = $(".min-slider-handle").attr("aria-valuenow");
       var end = $(".max-slider-handle").attr("aria-valuenow");
       // console.log(start, end);
-      that.start=start;
-      that.end=end
+      that.start = start;
+      that.end = end;
       // console.log(that.start);
       // console.log(end);
     });
+
+    
   },
 };
 </script>
@@ -319,6 +498,89 @@ header {
     .active {
       background-color: #f1f8f4;
       color: #2ac66d;
+    }
+  }
+}
+.telbox {
+  width: 18.125rem;
+  height: 13.75rem;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  text-align: center;
+  position: relative;
+  .close {
+    width: 0.875rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  h5 {
+    color: #333333;
+    font-size: 1.375rem;
+    padding-top: 1.125rem;
+    margin-bottom: 1.125rem;
+  }
+  .txt {
+    width: 15rem;
+    height: 3.125rem;
+    border-radius: 0.25rem;
+    border: 0;
+    outline: none;
+    background-color: #f7f7f7;
+    margin-bottom: 0.625rem;
+    padding-left: 0.625rem;
+  }
+  .xiyi {
+    color: #626466;
+    font-size: 0.6875rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    padding-left: 1.25rem;
+    input {
+      width: 0.6875rem;
+      height: 0.6875rem;
+      -webkit-appearance: none;
+      border: 0.03125rem solid #e6e6e6;
+      margin-right: 0.3125rem;
+    }
+    input:checked {
+      background: url("~assets/checkbox_icon.png") no-repeat 50%;
+      background-size: 90%;
+    }
+    a {
+      color: #7495bd;
+    }
+  }
+  button {
+    width: 15.625rem;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    line-height: 2.5rem;
+    border: 0;
+    background-color: #2ac66d;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: bold;
+  }
+  .msg {
+    color: #999999;
+    font-size: 0.6875rem;
+    text-align: left;
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .two {
+    position: relative;
+    .txt {
+      margin-bottom: 1.3rem;
+    }
+    span {
+      color: #7495bd;
+      font-size: 1rem;
+      position: absolute;
+      right: 2rem;
+      top: 2.5625rem;
     }
   }
 }

@@ -1,129 +1,46 @@
 <template>
   <div id="searchari">
     <div class="input">
-      <img src="~/assets/goback.png" alt class="back" />
+      <img src="~/assets/goback.png" alt class="back" @click="back"/>
       <input type="text" placeholder="搜搜你想要了解的房产知识吧" v-model="name" />
       <img class="search" src="~/assets/search.png" alt />
       <span>搜索</span>
     </div>
     <div class="con" v-if="!isnull">
       <h3><img src="~/assets/search-hot.png">最近热搜</h3>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            家园新房 &nbsp;  2019-05-24
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
-      <div class="pro">
-        <div class="left">
-          <h5>学区房可不是那么好买的！这篇防坑 指南请收好</h5>
-          <p>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-            <span>楼盘签约</span>
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
+      <template v-for="(item,key) in recommends">
+        <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key">
+          <div class="pro">
+            <div class="left">
+              <h5>{{item.title}}</h5>
+              <p>
+                {{item.source}} &nbsp; {{item.begin.substr(0,10)}}
+              </p>
+            </div>
+            <div class="right">
+              <img :src="item.img" alt />
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <div class="con list" v-if="isnull">
       <p class="tit">共为您搜索到<span>{{num}}</span>条关于“<span>{{name}}</span>”的资讯</p>
-      <div class="pro" v-for="(item,key) in list" :key="key">
-        <div class="left">
-          <h5>{{item.title}}</h5>
-          <p>
-            家园新房 &nbsp;  2019-05-24
-          </p>
-        </div>
-        <div class="right">
-          <img src="~/assets/lun02.jpg" alt />
-        </div>
-      </div>
+      <template v-for="(item,key) in list">
+        <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key">
+          <div class="pro">
+            <div class="left">
+              <h5 v-html="item.replace.title"></h5>
+              <p>
+                {{item.source}} &nbsp; {{item.time.substr(0,10)}}
+              </p>
+            </div>
+            <div class="right">
+              <img :src="item.img" alt />
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
   </div>
 </template>
@@ -133,15 +50,17 @@ export default {
   async asyncData(context) {
     let id = context.params.id;
     let token = context.store.state.cookie.token;
+    let city = context.store.state.city;
     let jkl = context.params.name;
     let other = context.query.other;
     let [res] = await Promise.all([
       context.$axios
-        .get("/jy/building/detail", {
+        .get("/jy/article/recommends", {
           params: {
-            id: id,
+            city: city,
             token: token,
-            other: other,
+            limit: 10,
+            page: 1,
           },
         })
         .then((resp) => {
@@ -152,6 +71,7 @@ export default {
     return {
       jkl: jkl,
       id: id,
+      recommends: res.recommends,
     };
   },
   data() {
@@ -165,6 +85,9 @@ export default {
     };
   },
   methods: {
+    back(){
+      this.$router.go(-1)
+    },
     sou() {
       let that = this
       let name = this.name;
@@ -266,7 +189,7 @@ li {
     display: flex;
     height: 4.375rem;
     margin-bottom: 0.625rem;
-    .left {
+    /deep/.left {
       position: relative;
       margin-right: 1.25rem;
       width: 14.0625rem;
@@ -277,6 +200,15 @@ li {
         font-weight: 400;
         position: relative;
         top: -0.25rem;
+        height: 2.625rem;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        em {
+          font-style: normal;
+          color: #ff3f3f;
+        }
       }
       p {
         position: absolute;

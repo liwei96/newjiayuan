@@ -27,8 +27,8 @@
           </van-checkbox>
         </template>
         <div class="line"></div>
-        <div class="slid"></div>
-        <h3>浏览足迹</h3>
+        <!-- <div class="slid"></div> -->
+        <!-- <h3>浏览足迹</h3>
         <van-checkbox name="c" checked-color="#1FC365">
           <div class="pro">
             <div class="left">
@@ -46,7 +46,7 @@
               </p>
             </div>
           </div>
-        </van-checkbox>
+        </van-checkbox> -->
       </van-checkbox-group>
     </div>
     <div class="bombtn">
@@ -60,13 +60,14 @@ export default {
   async asyncData(context) {
     let id = context.params.id;
     let token = context.store.state.cookie.token;
+    let city = context.store.state.city;
     let jkl = context.params.name;
     let other = context.query.other;
     let [res] = await Promise.all([
       context.$axios
-        .get("/jy/base/compare", {
+        .get("/jy/compare/some", {
           params: {
-            ids: id,
+            city: city,
             token: token,
             other: other,
           },
@@ -80,7 +81,7 @@ export default {
     return {
       jkl: jkl,
       id: id,
-      list: res.recommends,
+      list: res.data,
     };
   },
   data() {
@@ -131,6 +132,7 @@ export default {
 <style lang="less" scoped>
 .pks {
   padding-top: 4rem;
+  padding-bottom: 3.75rem;
   /deep/.van-checkbox-group {
     position: relative;
     .van-checkbox {

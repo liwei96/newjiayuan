@@ -10,7 +10,7 @@
       <h5>{{info.title}}</h5>
       <p class="txt">{{info.content}}</p>
       <p class="time">{{info.time}}</p>
-      <button class="btn">订阅实时动态</button>
+      <button class="btn" @click="pop('订阅实时动态', 98, '动态页+订阅实时动态')">订阅实时动态</button>
       <nuxt-link :to="'/'+jkl+'/content/'+building.id">
         <div class="ject-top">
           <div class="top-left">
@@ -43,7 +43,7 @@
           </h6>
           <p>为客户提供专业的购房建议</p>
         </div>
-        <button>免费咨询</button>
+        <button @click="pop('免费咨询', 104, '动态页+免费咨询')">免费咨询</button>
       </div>
     </div>
     <div class="line"></div>
@@ -83,13 +83,30 @@
       </ul>
     </div>
     <nav-view></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
   </div>
 </template>
 <script>
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "nav-view": nav,
+    'tan-view':tan
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -119,6 +136,7 @@ export default {
       staff: res.common.staffs.staff,
       phone: res.common.phone,
       houses: res.house_types,
+      id:'0'
     };
   },
   data() {
@@ -127,12 +145,35 @@ export default {
       info: {},
       jkl: "",
       building: {},
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0'
     };
   },
   methods:{
     back(){
       this.$router.go(-1)
-    }
+    },
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "动态页+预约看房";
+    },
   }
 };
 </script>

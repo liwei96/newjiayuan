@@ -4,7 +4,7 @@
     <div class="topimg">
       <div class="swiper-topimg">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in imgs" :key="key">
+          <div class="swiper-slide" v-for="(item, key) in imgs" :key="key">
             <img :src="item.small" alt />
           </div>
         </div>
@@ -12,24 +12,28 @@
       <!-- <img class="img-top" :src="basic.img" alt /> -->
       <!-- <span class="imgnum">共{{basic.img_num}}张</span> -->
       <div class="zhe" @click="goimg"></div>
-      <p class="imgnum">共{{imgnum}}张</p>
+      <p class="imgnum">共{{ imgnum }}张</p>
       <div class="taps">
         <p
-          v-for="(item,key) in imgmsg"
+          v-for="(item, key) in imgmsg"
           :key="key"
-          :class="imgmsgnum == key ? 'active':''"
+          :class="imgmsgnum == key ? 'active' : ''"
           @click="setimgmsgnum(key)"
-        >{{item}}</p>
+        >
+          {{ item }}
+        </p>
       </div>
     </div>
     <div class="intro">
       <div class="intro-top">
         <div class="top-left">
-          <h2>{{abstract.name}}</h2>
+          <h2>{{ abstract.name }}</h2>
           <p>
-            <span class="active">{{abstract.state}}</span>
-            <span>{{abstract.type}}</span>
-            <span v-for="(item,key) in abstract.features" :key="key">{{item}}</span>
+            <span class="active">{{ abstract.state }}</span>
+            <span>{{ abstract.type }}</span>
+            <span v-for="(item, key) in abstract.features" :key="key">{{
+              item
+            }}</span>
           </p>
         </div>
         <div class="top-right">
@@ -52,52 +56,52 @@
         <p>
           均价:
           <span class="price">
-            {{abstract.price}}
+            {{ abstract.single_price }}
             <i>元/m²</i>
           </span>
         </p>
         <p>
           总价:
           <span class="total">
-            160
+            {{ abstract.total_price }}
             <i>万起</i>
           </span>
         </p>
         <p>
           开盘:
-          <span>{{abstract.opentime}}</span>
+          <span>{{ abstract.opentime }}</span>
         </p>
         <p class="address">
           地址:
-          <span>{{abstract.address}}</span>
+          <span>{{ abstract.address }}</span>
           <img src="~/assets/map.png" alt />
         </p>
       </div>
-      <nuxt-link :to="'/'+jkl+'/detail/'+id">
+      <nuxt-link :to="'/' + jkl + '/detail/' + id">
         <p class="detail">详细楼盘信息</p>
       </nuxt-link>
       <div class="btn">
-        <button>
+        <button @click="pop('变价通知我', 91, '详情页+变价通知我')">
           <img src="~/assets/zhexian.png" />变价通知我
         </button>
-        <button>
+        <button @click="pop('开盘提醒我', 92, '详情页+开盘提醒我')">
           <img src="~/assets/msg.png" />开盘提醒我
         </button>
       </div>
     </div>
     <div class="tel">
-      <a :href="'tel:'+phone">
+      <a :href="'tel:' + phone">
         <img src="~/assets/tel.jpg" alt />
-        <p>{{phone}}</p>
+        <p>{{ phone }}</p>
       </a>
     </div>
     <div class="line"></div>
-    <div class="te">
+    <div class="te" v-if="specials.data">
       <h3>
         今日特价房
-        <span>4小时前更新</span>
+        <span>{{ hour }}小时前更新</span>
       </h3>
-      <span class="teprice">6000</span>
+      <span class="teprice">{{ specials.max_diff }}</span>
       <img src="~/assets/tit.png" alt class="te-tit" />
       <div class="tabs">
         <table border>
@@ -111,85 +115,15 @@
               <th>立减</th>
             </tr>
           </thead>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-          </tr>
-          <tr>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
-            <td>304</td>
+          <tr v-for="(item, key) in specials.data" :key="key">
+            <td>
+              {{ item.number.split("-")[item.number.split("-").length - 1] }}
+            </td>
+            <td>{{ parseInt(item.area) }}</td>
+            <td>{{ parseInt(item.original_single) }}</td>
+            <td>{{ parseInt(item.single) }}</td>
+            <td>{{ parseInt(item.total) }}</td>
+            <td>{{ parseInt(item.diff) }}</td>
           </tr>
         </table>
       </div>
@@ -201,18 +135,25 @@
           color="#807D7D"
           background="rgba(0,0,0,0)"
           left-icon="volume-o"
-          text="在代码阅读过程中人们说脏话的频率是衡量代码质量的唯一标准。"
+          :text="specials.dynamic"
         />
-        <button>咨询特价房</button>
+        <button @click="pop('咨询特价房', 93, '详情页+咨询特价房')">
+          咨询特价房
+        </button>
       </div>
     </div>
-    <div class="line"></div>
+    <div class="line" v-if="specials.data"></div>
     <div class="nav-icon">
       <div class="swiper-nav">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in navs" :key="key" @click="setnavnum(key)">
-            <p :class="navnum == key ? 'active':''">
-              {{item}}
+          <div
+            class="swiper-slide"
+            v-for="(item, key) in navs"
+            :key="key"
+            @click="setnavnum(key)"
+          >
+            <p :class="navnum == key ? 'active' : ''">
+              {{ item }}
               <span></span>
             </p>
           </div>
@@ -222,7 +163,7 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span @click="huomsg = true">
+        <span @click="huo = true">
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
       </h3>
@@ -231,14 +172,16 @@
           <h6>
             最高
             <span>5000</span>元购房优惠
-            <i>（7月24日截止）</i>
+            <i>{{ time }}（截止）</i>
           </h6>
           <p>售楼处专供家园平台客户</p>
         </div>
         <div class="hui-right">
-          <button @click="showbtn(37,'领取优惠')">领取优惠</button>
+          <button @click="pop('领取优惠', 94, '详情页+领取优惠')">
+            领取优惠
+          </button>
           <p>
-            <span>52人</span>已领取
+            <span>{{ count.sign_count }}人</span>已领取
           </p>
         </div>
       </div>
@@ -246,14 +189,16 @@
         <div class="hui-left">
           <h6>
             免费看房专车券
-            <i>（剩余156张）</i>
+            <i>（剩余{{ count.input_count }}张）</i>
           </h6>
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
-          <button @click="showbtn(37,'领取优惠')">免费领取</button>
+          <button @click="pop('免费领取', 95, '详情页+免费领取')">
+            免费领取
+          </button>
           <p>
-            <span>123人</span>已领取
+            <span>{{ count.travel_count }}人</span>已领取
           </p>
         </div>
       </div>
@@ -262,21 +207,23 @@
     <div class="lei">
       <h3>
         雷达图分析
-        <span @click="huomsg = true">
-          <img src="~/assets/ques.png" alt /> 评分规则
-        </span>
+        <nuxt-link :to="'/' + jkl + '/rule'">
+          <span @click="huomsg = true">
+            <img src="~/assets/ques.png" alt /> 评分规则
+          </span>
+        </nuxt-link>
       </h3>
       <p>家园通过多个角度对比（10分制）进行楼盘专业评分</p>
       <div class="con">
         <div id="leiecharts"></div>
-        <div class="img">
+        <div class="img" @click="leipk">
           <img src="~/assets/content-lei.png" alt />
           <p>加入PK</p>
           <span>hot</span>
         </div>
         <p class="pingfen">
           综合评分：
-          <span>8.5</span>
+          <span>{{ scores.avg }}</span>
         </p>
       </div>
       <table>
@@ -284,52 +231,54 @@
           <tr>
             <td>
               休闲
-              <span>{{scores.score.leisure}}</span>
+              <span>{{ scores.score.leisure }}</span>
             </td>
             <td>
               户型
-              <span>{{scores.score.house_types}}</span>
+              <span>{{ scores.score.house_types }}</span>
             </td>
           </tr>
           <tr>
             <td>
               层高
-              <span>{{scores.score.height}}</span>
+              <span>{{ scores.score.height }}</span>
             </td>
             <td>
               商业
-              <span>{{scores.score.commercial}}</span>
+              <span>{{ scores.score.commercial }}</span>
             </td>
           </tr>
           <tr>
             <td>
               交通
-              <span>{{scores.score.traffic}}</span>
+              <span>{{ scores.score.traffic }}</span>
             </td>
             <td>
               医疗
-              <span>{{scores.score.medical}}</span>
+              <span>{{ scores.score.medical }}</span>
             </td>
           </tr>
           <tr>
             <td>
               教育
-              <span>{{scores.score.education}}</span>
+              <span>{{ scores.score.education }}</span>
             </td>
             <td>
               品质
-              <span>{{scores.score.quality}}</span>
+              <span>{{ scores.score.quality }}</span>
             </td>
           </tr>
         </tbody>
       </table>
-      <button>获取详细分析报告</button>
+      <button @click="pop('获取详细分析报告', 96, '详情页+获取详细分析报告')">
+        获取详细分析报告
+      </button>
     </div>
     <div class="line"></div>
     <div class="hus">
       <h5>
         主力户型
-        <nuxt-link :to="'/'+jkl+'/hus/'+id">
+        <nuxt-link :to="'/' + jkl + '/hus/' + id">
           <span>
             全部户型
             <img src="~/assets/home-more.png" alt />
@@ -338,30 +287,37 @@
       </h5>
       <div class="swiper-hu">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in house_types" :key="key">
-            <nuxt-link :to="'/'+jkl+'/hu/'+item.id">
+          <div
+            class="swiper-slide"
+            v-for="(item, key) in house_types"
+            :key="key"
+          >
+            <nuxt-link :to="'/' + jkl + '/hu/' + item.id">
               <div class="hu-top">
                 <img :src="item.small" alt />
                 <p>
-                  <img src="~/assets/home-heart.png" alt />42关注
+                  <img src="~/assets/home-heart.png" alt />{{
+                    item.like_num
+                  }}关注
                 </p>
               </div>
               <p class="name">
-                {{item.title}}
-                <span>{{item.state}}</span>
+                {{ item.title }}
+                <span>{{ item.state }}</span>
               </p>
               <p class="type">
-                <span class="t1">建面 {{item.area}}m²</span>
-                <span>类型 平层</span>
+                <span class="t1">建面 {{ item.area }}m²</span>
+                <span>类型 {{ item.type }}</span>
               </p>
               <p class="huprice">
                 约
-                <span>{{item.price}}</span>万起
+                <span>{{ item.price }}</span
+                >万起
               </p>
-              <button>
-                <img src="~/assets/zixun.png" alt />咨询户型底价
-              </button>
             </nuxt-link>
+            <button @click="pop('咨询户型底价', 97, '详情页+咨询户型底价')">
+              <img src="~/assets/zixun.png" alt />咨询户型底价
+            </button>
           </div>
         </div>
       </div>
@@ -370,7 +326,7 @@
     <div class="dynamic">
       <h3>
         实时动态
-        <nuxt-link :to="'/'+jkl+'/promsg/'+id">
+        <nuxt-link :to="'/' + jkl + '/promsg/' + id">
           <span>
             全部动态
             <img src="~/assets/j-more.png" alt />
@@ -378,41 +334,42 @@
         </nuxt-link>
       </h3>
       <ul>
-        <li v-for="(item,key) in dynamics" :key="key">
-          <p>{{item.introduce}}</p>
-          <span>{{item.time}}</span>
+        <li v-for="(item, key) in dynamics" :key="key">
+          <p>{{ item.introduce }}</p>
+          <span>{{ item.time }}</span>
           <div class="dynamicimgs" v-if="item.img">
             <img :src="item.img" alt />
           </div>
         </li>
       </ul>
-      <button>订阅实时动态</button>
+      <button @click="pop('订阅实时动态', 98, '详情页+订阅实时动态')">
+        订阅实时动态
+      </button>
     </div>
     <div class="line"></div>
     <div class="zixun">
       <h3>家园咨询师</h3>
       <p class="xun-icon">
-        <span>
-          <img src="~/assets/save.png" alt />专业服务
-        </span>
-        <span>
-          <img src="~/assets/icon-path.png" alt />区域解读
-        </span>
-        <span>
-          <img src="~/assets/icon-pin.png" alt />户型分析
-        </span>
+        <span> <img src="~/assets/save.png" alt />专业服务 </span>
+        <span> <img src="~/assets/icon-path.png" alt />区域解读 </span>
+        <span> <img src="~/assets/icon-pin.png" alt />户型分析 </span>
       </p>
-      <div class="peo" v-for="(item,key) in staffs" :key="key">
+      <div class="peo" v-for="(item, key) in staffs" :key="key">
         <img class="peoimg" :src="item.head_img" alt />
         <div class="peo-msg">
           <h6>
-            {{item.name}}
+            {{ item.name }}
             <span>满意度5分</span>
           </h6>
           <p>了解房源特色，专业挑好房</p>
         </div>
-        <img class="peoicon" src="~/assets/message.png" alt />
-        <a :href="'tel:'+phone">
+        <img
+          class="peoicon"
+          src="~/assets/message.png"
+          alt
+          @click="pop('咨询服务', 100, '详情页+咨询服务')"
+        />
+        <a :href="'tel:' + phone">
           <img class="peoicon" src="~/assets/tel.png" alt />
         </a>
       </div>
@@ -421,21 +378,21 @@
     <div class="ziliao">
       <h3>楼盘分析资料</h3>
       <div class="tab">
-        <p :class="tabnum ==1?'active':''" @click="tabnum = 1">
+        <p :class="tabnum == 1 ? 'active' : ''" @click="tabnum = 1">
           投资分析
           <span></span>
         </p>
-        <p @click="tabnum = 2" :class="tabnum == 2?'active':''">
+        <p @click="tabnum = 2" :class="tabnum == 2 ? 'active' : ''">
           宜居分析
           <span></span>
         </p>
       </div>
       <div class="liao-msg">
-        <template v-for="(item,key) in analysis">
-          <p :key="key" v-if="item.type == tabnum">{{item.content}}</p>
+        <template v-for="(item, key) in analysis">
+          <p :key="key" v-if="item.type == tabnum">{{ item.content }}</p>
         </template>
       </div>
-      <button @click="showbtn(41,'领取分析资料')">
+      <button @click="pop('领取分析资料', 99, '详情页+领取分析资料')">
         <img src="~/assets/ziliao.png" />领取分析资料
       </button>
     </div>
@@ -448,7 +405,7 @@
           <span>125</span>人查询
         </p>
       </h3>
-      <div id="chart" style="width:100%;height:250px"></div>
+      <div id="chart" style="width: 100%; height: 250px"></div>
       <p>2020年</p>
       <div class="tab">
         <table>
@@ -458,9 +415,9 @@
               <th>成交套数</th>
               <th>成交金额</th>
             </tr>
-            <tr v-for="(item,key) in deal_prices" :key="key">
-              <td>{{item.time}}</td>
-              <td>{{item.num}}套</td>
+            <tr v-for="(item, key) in deal_prices" :key="key">
+              <td>{{ item.time }}</td>
+              <td>{{ item.num }}套</td>
               <td>***万</td>
             </tr>
           </tbody>
@@ -469,7 +426,7 @@
           <img src="~/assets/huo-down.png" alt />
         </div>
       </div>
-      <button>
+      <button @click="pop('获取最新成交价', 101, '详情页+获取最新成交价')">
         <img src="~/assets/geticon.png" />获取最新成交价
       </button>
     </div>
@@ -477,7 +434,7 @@
     <div class="zhou">
       <h4>
         周边配套
-        <nuxt-link :to="'/'+jkl+'/rim/'+id">
+        <nuxt-link :to="'/' + jkl + '/rim/' + id">
           <span>
             详细配套
             <img src="~/assets/go.png" alt />
@@ -485,47 +442,68 @@
         </nuxt-link>
       </h4>
       <div id="map"></div>
-      <div id="panel" style="display:none"></div>
+      <div id="panel" style="display: none"></div>
       <div class="swiper-map">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <div :class="mapnum === 0 ? 'tegood active' : 'tegood'" @click="setmap(0, '地铁')">
+            <div
+              :class="mapnum === 0 ? 'tegood active' : 'tegood'"
+              @click="setmap(0, '地铁')"
+            >
               地铁
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 1 ? 'tegood active' : 'tegood'" @click="setmap(1 ,'公交')">
+            <div
+              :class="mapnum === 1 ? 'tegood active' : 'tegood'"
+              @click="setmap(1, '公交')"
+            >
               公交
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 2 ? 'tegood active' : 'tegood'" @click="setmap(2, '教育')">
+            <div
+              :class="mapnum === 2 ? 'tegood active' : 'tegood'"
+              @click="setmap(2, '教育')"
+            >
               教育
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 3 ? 'tegood active' : 'tegood'" @click="setmap(3, '医院')">
+            <div
+              :class="mapnum === 3 ? 'tegood active' : 'tegood'"
+              @click="setmap(3, '医院')"
+            >
               医院
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 4 ? 'tegood active' : 'tegood'" @click="setmap(4, '购物')">
+            <div
+              :class="mapnum === 4 ? 'tegood active' : 'tegood'"
+              @click="setmap(4, '购物')"
+            >
               购物
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 5 ? 'tegood active' : 'tegood'" @click="setmap(5, '美食')">
+            <div
+              :class="mapnum === 5 ? 'tegood active' : 'tegood'"
+              @click="setmap(5, '美食')"
+            >
               美食
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 6 ? 'tegood active' : 'tegood'" @click="setmap(6, '娱乐')">
+            <div
+              :class="mapnum === 6 ? 'tegood active' : 'tegood'"
+              @click="setmap(6, '娱乐')"
+            >
               娱乐
               <i></i>
             </div>
@@ -538,30 +516,33 @@
             <h6>武林广场</h6>
             <p>
               地铁1号线
-              <span>
-                <img src="~/assets/dian.png" />800m
-              </span>
+              <span> <img src="~/assets/dian.png" />800m </span>
             </p>
           </li>
           <li>
             <h6>武林广场</h6>
             <p>
               地铁1号线
-              <span>
-                <img src="~/assets/dian.png" />800m
-              </span>
+              <span> <img src="~/assets/dian.png" />800m </span>
             </p>
           </li>
         </ul>
-        <p class="map-tishi" v-if="isnull">附近没有{{mapname}}，您可以看看其他信息</p>
+        <p class="map-tishi" v-if="isnull">
+          附近没有{{ mapname }}，您可以看看其他信息
+        </p>
       </div>
-      <button class="btnicon">获取详细周边配套</button>
+      <button
+        class="btnicon"
+        @click="pop('获取详细周边配套', 102, '详情页+获取详细周边配套')"
+      >
+        获取详细周边配套
+      </button>
     </div>
     <div class="line"></div>
     <div class="dian">
       <h3>
         楼盘点评
-        <nuxt-link :to="'/'+jkl+'/comments/'+id">
+        <nuxt-link :to="'/' + jkl + '/comments/' + id">
           <span>
             更多点评
             <img src="~/assets/go.png" alt />
@@ -569,31 +550,33 @@
         </nuxt-link>
       </h3>
       <ul>
-        <li v-for="(item,key) in comments" :key="key">
+        <li v-for="(item, key) in comments" :key="key">
           <div class="dian-top">
-            <img src="~/assets/people.png" alt class="peo" />
+            <img src="~/assets/jiapeo.png" alt class="peo" />
             <div class="top-con">
               <h6>
-                {{item.mobile}}
-                <span v-if="item.mine">删除</span>
+                {{ item.mobile }}
+                <span v-if="item.mine" @click="del(item.id,key)">删除</span>
               </h6>
-              <p>{{item.time}}</p>
+              <p>{{ item.time }}</p>
             </div>
-            <div :class="item.my_like ==1?'top-right active':'top-right'">
-              <img src="~/assets/noclick.png" alt />
-              赞({{item.like_num}})
+            <div :class="item.my_like == 1 ? 'top-right active' : 'top-right'" @click="like(item.id)">
+              <img :src="item.my_like == 1? img1:img" alt />
+              赞({{ item.like_num }})
             </div>
           </div>
-          <div class="dian-bom">{{item.content}}</div>
+          <div class="dian-bom">{{ item.content }}</div>
         </li>
       </ul>
+      <nuxt-link :to="'/' + jkl + '/comment/' + id">
       <button>我要点评</button>
+      </nuxt-link>
     </div>
     <div class="line"></div>
     <div class="wen">
       <h3>
         楼盘问答
-        <nuxt-link :to="'/'+jkl+'/questions/'+id">
+        <nuxt-link :to="'/' + jkl + '/questions/' + id">
           <span>
             全部问答
             <img src="~/assets/go.png" alt />
@@ -601,48 +584,105 @@
         </nuxt-link>
       </h3>
       <ul>
-        <li v-for="(item,key) in questions" :key="key">
+        <li v-for="(item, key) in questions" :key="key">
           <p class="con">
             <span>问</span>
-            {{item.question}}
+            {{ item.question }}
           </p>
           <p class="num">共1个专业回答</p>
         </li>
       </ul>
+      <nuxt-link :to="'/' + jkl + '/quiz/' + id">
       <button>我要提问</button>
+      </nuxt-link>
     </div>
     <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
-      <div class="pro" v-for="(item,key) in recommends" :key="key">
+      <div class="pro" v-for="(item, key) in recommends" :key="key">
         <img :src="item.img" alt />
         <div class="pro-msg">
           <h5>
-            {{item.name}}
-            <span>{{item.status}}</span>
+            {{ item.name }}
+            <span>{{ item.status }}</span>
           </h5>
           <p class="pro-price">
-            <span>{{item.single_price}}</span>
+            <span>{{ item.single_price }}</span>
             <i>元/m²</i>起
           </p>
-          <p class="attr">{{item.type}} | {{item.city}}-{{item.country}} | {{item.area}}m²</p>
+          <p class="attr">
+            {{ item.type }} | {{ item.city }}-{{ item.country }} |
+            {{ item.area }}m²
+          </p>
           <p class="pro-icon">
-            <span class="pro-icon-zhuang">{{item.decorate}}</span>
-            <span class="pro-icon-type" v-for="(val,k) in item.features" :key="k">{{val}}</span>
+            <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+            <span
+              class="pro-icon-type"
+              v-for="(val, k) in item.features"
+              :key="k"
+              >{{ val }}</span
+            >
           </p>
         </div>
       </div>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
     </div>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
+    <van-popup v-model="huo" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="huo-msg">
+        <div class="msg-con">
+          <h4>活动规则</h4>
+          <img @click="huo = false" src="~/assets/w-del.png" alt />
+          <div>
+            <p>
+              1、本次团购活动以分档累计补发的方案执行，通过家园网站成交该项目具体团购费用如下所示：
+            </p>
+            <p>0-5套---------每套1000元</p>
+            <p>6-10套--------每套2000元</p>
+            <p>11-15套-------每套3000元</p>
+            <p>16-20套-------每套4000元</p>
+            <p>21套以上------每套5000元</p>
+            <p>
+              2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+            </p>
+            <p>
+              3、核算方式：由开发商或代理公司判定为家园平台客户即可享受这个优惠
+            </p>
+            <p>
+              4、结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户
+            </p>
+            <p>
+              详细活动方案请致电家园客服电话：
+              <span>400-966-9995</span> 注：活动最终解释权归家园所有
+            </p>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
+import tan from "@/components/tan.vue";
 import nav from "@/components/nav.vue";
 import { NoticeBar } from "vant";
+import { delcomm,likecomm } from "@/api/api";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 export default {
@@ -650,6 +690,7 @@ export default {
     NoticeBar,
     "top-view": topView,
     "nav-view": nav,
+    "tan-view": tan,
   },
   async asyncData(context) {
     let id = context.params.id;
@@ -697,10 +738,19 @@ export default {
       recommends: res.recommends,
       jkl: jkl,
       id: id,
+      specials: res.specials,
+      count: res.count,
     };
   },
   data() {
     return {
+      time: "7月24日",
+      count: {},
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
       recommends: [],
       questions: [],
       comments: [],
@@ -731,9 +781,32 @@ export default {
       traffics: [],
       imgnum: 0,
       id: 0,
+      specials: {},
+      hour: 0,
+      huo: false,
+      img:require('~/assets/noclick.png'),
+      img1:require('~/assets/checked.png')
     };
   },
   methods: {
+    del(id,key){
+      let token = $cookies.get('token')
+      delcomm({token:token,id:id}).then(res=>{
+        if(res.data.code==200){
+          this.toast('删除成功')
+          this.$router.go(0)
+        }
+      })
+    },
+    like(id){
+      let token = $cookies.get('token')
+      likecomm({token:token,id:id}).then(res=>{
+        if(res.data.code==200){
+          this.toast('点赞成功')
+          this.$router.go(0)
+        }
+      })
+    },
     setimgmsgnum(e) {
       this.imgmsgnum = e;
       if (e == 0) {
@@ -1026,16 +1099,75 @@ export default {
     },
     pk() {
       let arr = $cookies.get("ids");
+      sessionStorage.setItem('pktype',1)
       if (!arr) {
         this.$router.push("/" + this.jkl + "/pk");
       } else {
-        let ids = arr.join(",");
-        this.$router.push("/" + this.jkl + "/pk/" + ids);
+        this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
+    },
+    leipk(){
+      let arr = $cookies.get("ids");
+      sessionStorage.setItem('pktype',2)
+      if (!arr) {
+        this.$router.push("/" + this.jkl + "/pk");
+      } else {
+        this.$router.push("/" + this.jkl + "/pk/" + arr);
+      }
+    },
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+    },
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "详情页+预约看房";
     },
   },
   mounted() {
+    if (localStorage.getItem(this.$route.params.id)) {
+      this.hour = localStorage.getItem(this.$route.params.id);
+    } else {
+      this.hour = Math.floor(Math.random() * 10) + 1;
+      localStorage.setItem(this.$route.params.id, this.hour);
+    }
+    if (localStorage.getItem(this.$route.params.id + "time")) {
+      this.time = localStorage.getItem(this.$route.params.id + "time");
+    } else {
+      var date1 = new Date()
+      var date2 = new Date(date1);
+      date2.setDate(date1.getDate() + 7);
+      var time2 =(date2.getMonth() + 1) +
+        "月" +
+        date2.getDate()
+        +'日';
+      localStorage.setItem(this.$route.params.id + "time", time2);
+      this.time = time2;
+    }
     this.id = this.$route.params.id;
+    let foot = $cookies.get("foot");
+    let that = this;
+    if (foot) {
+      foot = foot + "," + that.id;
+      foot = foot.split(",");
+      let arr = new Set(foot);
+      arr = [...arr];
+      arr = arr.join(",");
+      foot = arr;
+    } else {
+      foot = that.id;
+    }
+    $cookies.set("foot", foot);
     this.imgs = this.effects;
     this.drawline();
     this.drawlei();
@@ -1384,7 +1516,7 @@ export default {
     position: absolute;
     color: #ff761a;
     font-size: 1rem;
-    right: 2.0625rem;
+    right: 1.6rem;
     top: 1.1875rem;
     font-weight: bold;
   }
@@ -2448,76 +2580,37 @@ export default {
     margin-bottom: 1.25rem;
   }
 }
-.nav {
-  position: fixed;
-  width: 92%;
-  height: 3.75rem;
+.huo-msg .msg-con {
+  width: 74vw;
+  border-radius: 0.75rem;
+  padding: 1.5625rem;
   background-color: #fff;
-  padding: 0 4%;
-  bottom: 0;
-  display: flex;
-  z-index: 1000;
-  align-items: center;
-  .nav-peo {
-    position: relative;
-    margin-right: 1.25rem;
-    margin-left: 0.625rem;
-    text-align: center;
-    img {
-      width: 1.5rem;
-    }
-    span {
-      display: block;
-      width: 0.8125rem;
-      height: 0.8125rem;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 0.8125rem;
-      font-size: 0.625rem;
-      color: #fff;
-      position: absolute;
-      top: 0;
-      right: 0;
-      background-color: #f34f4f;
-    }
-    p {
-      color: #626466;
-      font-size: 0.75rem;
-    }
-  }
-  .nav-msg {
-    margin-right: 1.25rem;
-    h5 {
-      color: #222324;
-      font-size: 1rem;
-      font-weight: bold;
-      margin-bottom: 0.25rem;
-    }
-    p {
-      color: #696a6d;
-      font-size: 0.75rem;
-    }
-  }
-  button {
-    width: 8rem;
-    height: 2.5rem;
-    border-radius: 0.25rem;
-    background: linear-gradient(270deg, #348aff, #6accff);
-    text-align: center;
-    line-height: 2.5rem;
-    color: #fff;
-    font-size: 0.9375rem;
-    border: 0;
-    img {
-      width: 0.9375rem;
-      margin-bottom: -0.125rem;
-      margin-right: 0.25rem;
-    }
-  }
-  .nav-tel {
-    margin-left: 0.625rem;
-    color: #fff;
-    background: linear-gradient(270deg, #1fc365, #3fd6a6);
-  }
+  z-index: 300;
+}
+.huo-msg .msg-con div {
+  max-height: 280px;
+  overflow-x: auto;
+}
+.huo-msg h4 {
+  color: #2f3133;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  font-weight: bold;
+}
+.huo-msg p {
+  color: #626466;
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
+  margin-bottom: 0.625rem;
+}
+.huo-msg p span {
+  font-weight: bold;
+}
+.huo-msg img {
+  width: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 </style>

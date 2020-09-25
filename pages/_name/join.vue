@@ -12,15 +12,11 @@
           <p class="msg">人均1500客户</p>
         </li>
         <li>
-          <p class="tit">
-            <span>20</span>万客户
-          </p>
+          <p class="tit"><span>20</span>万客户</p>
           <p class="msg">月均120客户</p>
         </li>
         <li>
-          <p class="tit">
-            <span>2</span>千万业绩
-          </p>
+          <p class="tit"><span>2</span>千万业绩</p>
           <p class="msg">人均100万业绩</p>
         </li>
       </ul>
@@ -30,28 +26,26 @@
         <p>About us</p>
       </h2>
       <p class="txt">
-        <i
-          v-if="type"
-        >家园新房隶属杭州亚汉网络科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、</i>
-        <i
-          v-if="!type"
-        >家园新房隶属杭州易得房科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、重庆、成都 。公司注重技术开发，最大程度的节省获客时间，最大程度简化与优化客户维护流程，用技术手段无限提高客户的利用率，给购房者带来更加便捷 真实 及时 全面的房产信息平台</i>
-        <span @click="type=false" v-if="type">[展开]</span>
+        <i v-if="type"
+          >家园新房隶属杭州亚汉网络科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、</i
+        >
+        <i v-if="!type"
+          >家园新房隶属杭州易得房科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、重庆、成都
+          。公司注重技术开发，最大程度的节省获客时间，最大程度简化与优化客户维护流程，用技术手段无限提高客户的利用率，给购房者带来更加便捷
+          真实 及时 全面的房产信息平台</i
+        >
+        <span @click="type = false" v-if="type">[展开]</span>
       </p>
       <ul class="icons">
         <li>
           <img src="~/assets/jia-serve.png" alt />
           <p class="name">服务客户</p>
-          <p class="num">
-            <span>60</span>万+
-          </p>
+          <p class="num"><span>60</span>万+</p>
         </li>
         <li>
           <img src="~/assets/jia-jing.png" alt />
           <p class="name">精准展现</p>
-          <p class="num">
-            <span>2.3</span>亿次
-          </p>
+          <p class="num"><span>2.3</span>亿次</p>
         </li>
         <li>
           <img src="~/assets/jia-huo.png" alt />
@@ -64,9 +58,7 @@
         <li>
           <img src="~/assets/jia-success.png" alt />
           <p class="name">累计成交</p>
-          <p class="num">
-            <span>60</span>千单+
-          </p>
+          <p class="num"><span>60</span>千单+</p>
         </li>
       </ul>
       <h2>
@@ -78,15 +70,10 @@
     <div class="swiper-advantage">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <h4>
-            <span>“0”</span>加盟费
-          </h4>
+          <h4><span>“0”</span>加盟费</h4>
           <div class="line"></div>
-          <p>
-            减少客户的前期投入成本，低
-            成本启动城市运营
-          </p>
-          <button @click="show=true">申请加盟</button>
+          <p>减少客户的前期投入成本，低 成本启动城市运营</p>
+          <button @click="show = true">申请加盟</button>
         </div>
         <div class="swiper-slide">
           <h4>全网全渠道投放</h4>
@@ -95,27 +82,19 @@
             提升客户量并且客户
             <br />精准度高
           </p>
-          <button @click="show=true">申请加盟</button>
+          <button @click="show = true">申请加盟</button>
         </div>
         <div class="swiper-slide">
-          <h4>
-            <span>“0”</span>成本获客途径
-          </h4>
+          <h4><span>“0”</span>成本获客途径</h4>
           <div class="line"></div>
-          <p>
-            SEO优化 +微信项目分享+新媒
-            体运营+头条小程序
-          </p>
-          <button @click="show=true">申请加盟</button>
+          <p>SEO优化 +微信项目分享+新媒 体运营+头条小程序</p>
+          <button @click="show = true">申请加盟</button>
         </div>
         <div class="swiper-slide">
           <h4>增值服务</h4>
           <div class="line"></div>
-          <p>
-            网站建模 +一对一到服务+数据ppt
-            分析+培训及视频的教程
-          </p>
-          <button @click="show=true">申请加盟</button>
+          <p>网站建模 +一对一到服务+数据ppt 分析+培训及视频的教程</p>
+          <button @click="show = true">申请加盟</button>
         </div>
       </div>
     </div>
@@ -132,13 +111,16 @@
             <h4>三大平台</h4>
             <ul>
               <li>
-                <p></p>每月超1000万+用户访问量
+                <p></p>
+                每月超1000万+用户访问量
               </li>
               <li>
-                <p></p>1.2亿+年度访客
+                <p></p>
+                1.2亿+年度访客
               </li>
               <li>
-                <p></p>精准客户资源，流量持续增长
+                <p></p>
+                精准客户资源，流量持续增长
               </li>
             </ul>
           </div>
@@ -149,13 +131,16 @@
             <h4>专业团队</h4>
             <ul>
               <li>
-                <p></p>十年经验的SEM、SEO团队
+                <p></p>
+                十年经验的SEM、SEO团队
               </li>
               <li>
-                <p></p>行业顶尖软件研发团队
+                <p></p>
+                行业顶尖软件研发团队
               </li>
               <li>
-                <p></p>新媒体团队
+                <p></p>
+                新媒体团队
               </li>
             </ul>
           </div>
@@ -166,13 +151,16 @@
             <h4>SaaS系统</h4>
             <ul>
               <li>
-                <p></p>客户管理：高效管理客户
+                <p></p>
+                客户管理：高效管理客户
               </li>
               <li>
-                <p></p>楼盘管理：管理更多楼盘
+                <p></p>
+                楼盘管理：管理更多楼盘
               </li>
               <li>
-                <p></p>员工管理，统计分析等一目了然
+                <p></p>
+                员工管理，统计分析等一目了然
               </li>
             </ul>
           </div>
@@ -183,13 +171,16 @@
             <h4>培训支持</h4>
             <ul>
               <li>
-                <p></p>获客、转盘、成交技能培训
+                <p></p>
+                获客、转盘、成交技能培训
               </li>
               <li>
-                <p></p>SaaS系统使用培训
+                <p></p>
+                SaaS系统使用培训
               </li>
               <li>
-                <p></p>小程序及微信项目分享使用培训
+                <p></p>
+                小程序及微信项目分享使用培训
               </li>
             </ul>
           </div>
@@ -217,8 +208,10 @@
                 <img src="~/assets/jia-ren2.png" alt />
               </div>
             </div>
-            <p class="info">大大减少人员成本，减少招人成本，减少公司办公成本，减少人员管理成本，提高人效，从而提高利润</p>
-            <button @click="show=true">加入我们</button>
+            <p class="info">
+              大大减少人员成本，减少招人成本，减少公司办公成本，减少人员管理成本，提高人效，从而提高利润
+            </p>
+            <button @click="show = true">加入我们</button>
           </div>
         </div>
         <div class="swiper-slide">
@@ -236,7 +229,7 @@
               </div>
             </div>
             <p class="info">提高市场知名度，提高抗风险能力，提高业绩和稳定性</p>
-            <button @click="show=true">加入我们</button>
+            <button @click="show = true">加入我们</button>
           </div>
         </div>
         <div class="swiper-slide">
@@ -253,8 +246,10 @@
                 <img src="~/assets/jia-li2.png" alt />
               </div>
             </div>
-            <p class="info">促进扁平化管理发展，提高个岗位收益和利润，提高人效管理</p>
-            <button @click="show=true">加入我们</button>
+            <p class="info">
+              促进扁平化管理发展，提高个岗位收益和利润，提高人效管理
+            </p>
+            <button @click="show = true">加入我们</button>
           </div>
         </div>
       </div>
@@ -300,24 +295,24 @@
           姓名
           <span>*</span>
         </p>
-        <input type="text" placeholder="请输入姓名（必填）" />
+        <input type="text" placeholder="请输入姓名（必填）" v-model="name"/>
       </div>
       <div class="li">
         <p>
           电话
           <span>*</span>
         </p>
-        <input type="text" placeholder="请输入手机号码（必填）" />
+        <input type="text" placeholder="请输入手机号码（必填）" v-model="phone"/>
       </div>
       <div class="li">
         <p>公司</p>
-        <input type="text" placeholder="请输入公司全称" />
+        <input type="text" placeholder="请输入公司全称" v-model="company"/>
       </div>
       <div class="li">
         <p>城市</p>
-        <input type="text" placeholder="输入意向合作城市" />
+        <input type="text" placeholder="输入意向合作城市" v-model="city"/>
       </div>
-      <button>提交</button>
+      <button @click="push">提交</button>
     </div>
     <div class="code">
       <img src="~/assets/jia-code.jpg" alt />
@@ -328,35 +323,39 @@
       <a href="#">
         <button>电话咨询</button>
       </a>
-      <button class="btn" @click="show=true">申请加盟</button>
+      <button class="btn" @click="show = true">申请加盟</button>
     </div>
-    <van-popup v-model="show" :style="{background:'rgba(0,0,0,0)'}">
+    <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
       <div class="formbox">
-        <img src="~/assets/w-del.png" alt @click="show=false" />
+        <img src="~/assets/w-del.png" alt @click="show = false" />
         <h4>申请加盟</h4>
         <div class="li">
           <p>
             姓名
             <span>*</span>
           </p>
-          <input type="text" placeholder="请输入姓名（必填）" />
+          <input type="text" placeholder="请输入姓名（必填）" v-model="name" />
         </div>
         <div class="li">
           <p>
             电话
             <span>*</span>
           </p>
-          <input type="text" placeholder="请输入手机号码（必填）" />
+          <input
+            type="text"
+            placeholder="请输入手机号码（必填）"
+            v-model="phone"
+          />
         </div>
         <div class="li">
           <p>公司</p>
-          <input type="text" placeholder="请输入公司全称" />
+          <input type="text" placeholder="请输入公司全称" v-model="company" />
         </div>
         <div class="li">
           <p>城市</p>
-          <input type="text" placeholder="输入意向合作城市" />
+          <input type="text" placeholder="输入意向合作城市" v-model="city" />
         </div>
-        <button>提交</button>
+        <button @click="push">提交</button>
       </div>
     </van-popup>
   </div>
@@ -365,6 +364,7 @@
 import topView from "@/components/header.vue";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
+import { jiameng } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
@@ -373,7 +373,70 @@ export default {
     return {
       show: false,
       type: true,
+      name: "",
+      city: "",
+      phone: "",
+      company: "",
     };
+  },
+  methods: {
+    push() {
+      let name = this.name;
+      let phone = this.phone;
+      let company = this.company;
+      let city = this.city;
+      var pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (this.phone == "") {
+        console.log(this.phone, this.isok);
+        this.phone = "";
+        // this.phonemsg = "手机号不能为空";
+        this.toast("手机号不能为空");
+        this.isok = false;
+        return;
+      } else if (!pattern_phone.test(phone)) {
+        this.isok = false;
+        this.phone = "";
+        // this.phonemsg = "请输入正确的号码";
+        this.toast("请输入正确的号码");
+        return;
+      } else {
+        this.isok = true;
+      }
+      if (city == "") {
+        this.isok = false;
+        // this.citymsg = "不能为空";
+        this.toast("城市不能为空");
+        return;
+      } else {
+        this.isok = true;
+      }
+      if (name == "") {
+        this.isok = false;
+        // this.namemsg = "不能为空";
+        this.toast("名字不能为空");
+        return;
+      } else {
+        this.isok = true;
+      }
+      if (company == "") {
+        this.isok = false;
+        // this.companymsg = "不能为空";
+        this.toast("公司不能为空");
+        return;
+      } else {
+        this.isok = true;
+      }
+      if (this.isok) {
+        jiameng({ city: city, name: name, phone: phone, company: company })
+          .then((res) => {
+            if (res.data.code == 200) {
+              this.show = false;
+              this.toast('提交成功')
+            }
+          })
+          .catch((error) => {});
+      }
+    },
   },
   mounted() {
     var swiper08 = new Swiper(".swiper-advantage", {

@@ -34,6 +34,30 @@ export default {
   components: {
     "top-view": topView,
   },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/mine/foots", {
+          params: {
+            token: token,
+            page:1,
+            limit:10
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      list:res.data
+    };
+  },
 };
 </script>
 <style lang="less" scoped>

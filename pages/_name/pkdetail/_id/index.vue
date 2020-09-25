@@ -20,9 +20,11 @@
             约
             <span>{{one.price}}</span>元/m²
           </p>
+          <a :href="'tel:'+phone">
           <button>
             <img src="~/assets/navtel.png" />电话咨询
           </button>
+          </a>
         </div>
       </div>
       <div class="center">
@@ -39,9 +41,11 @@
             约
             <span>{{two.price}}</span>元/m²
           </p>
+          <a :href="'tel:'+phone">
           <button>
             <img src="~/assets/navtel.png" />电话咨询
           </button>
+          </a>
         </div>
       </div>
     </div>
@@ -233,16 +237,32 @@
         </nuxt-link>
       </template>
     </div>
-    <nav-view></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    "tan-view": tan,
   },
   async asyncData(context) {
     let id = context.params.id;
@@ -266,17 +286,36 @@ export default {
     ]);
     return {
       jkl: jkl,
-      id: id,
       list: res.recommends,
       one: res.data[0],
       two: res.data[1],
+      phone:res.common.phone
     };
   },
   data() {
     return {
       navnum: 0,
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0'
     };
   },
+  methods:{
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "楼盘PK页+预约看房";
+    },
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -21,7 +21,8 @@ export default {
   },
   data(){
       return{
-          textnum:0
+          textnum:0,
+          text:''
       }
   },
   watch: {

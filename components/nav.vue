@@ -1,19 +1,16 @@
 <template>
-    <div class="nav">
-      <div class="nav-peo">
-        <img src="~/assets/ke_h.png" alt />
-        <span v-if="true">1</span>
-        <p>在线咨询</p>
-      </div>
-      <button>
-        <img src="~/assets/time.png" />预约看房
-      </button>
-      <a :href="'tel:'+phone">
-        <button class="nav-tel">
-          <img src="~/assets/bartel.png" />电话咨询
-        </button>
-      </a>
+  <div class="nav">
+    <div class="nav-peo" @click="gotalk">
+      <img src="~/assets/ke_h.png" alt />
+      <span v-if="true">1</span>
+      <p>在线咨询</p>
     </div>
+    
+    <a :href="'tel:' + phone">
+      <button class="nav-tel"><img src="~/assets/nav-tel.png" />电话咨询</button>
+    </a>
+    <button @click="show(103,'预约看房')"><img src="~/assets/nav-yue.png" />预约看房</button>
+  </div>
 </template>
 <script>
 export default {
@@ -23,12 +20,38 @@ export default {
       // required: true,
     },
   },
-    data(){
-        return {
-
-        }
+  data() {
+    return {
+      url: "",
+      btn:false
+    };
+  },
+   methods: {
+    show(id, name) {
+      this.$emit("fot", { position: id, name: name });
+    },
+    gotalk() {
+      window.location.href =
+        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
+    },
+  },
+  mounted() {
+    let url = window.location.href;
+    let newurl = url.split("?")[0];
+    let id = this.$route.params.id;
+    let name = sessionStorage.getItem("buildname");
+    newurl += `?proid=${id}&name=${name}`;
+    newurl = encodeURIComponent(newurl);
+    this.url = newurl;
+    setTimeout(() => {
+      this.btn = true;
+    }, 2000);
+    url = url.split("?")[1];
+    if (url && url.indexOf("token") != -1) {
+      localStorage.setItem("wstoken", url.split("=")[1]);
     }
-}
+  },
+};
 </script>
 <style lang="less" scoped>
 .nav {
@@ -98,8 +121,8 @@ export default {
     }
   }
   .nav-tel {
-    margin-left: 0.625rem;
     color: #fff;
+    margin-right: 0.625rem;
     background: linear-gradient(270deg, #1fc365, #3fd6a6);
   }
 }
