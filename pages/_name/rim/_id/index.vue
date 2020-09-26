@@ -1,6 +1,6 @@
 <template>
   <div id="Zhou">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="map-con">
       <div id="map"></div>
       <div id="panel" style="display:none"></div>

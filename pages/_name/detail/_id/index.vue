@@ -1,6 +1,6 @@
 <template>
   <div id="detail">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="name">
       <h2>{{building.name}}</h2>
       <p>

@@ -1,29 +1,75 @@
 <template>
   <div id="response">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <p class="tit">
-        <span>问</span> 本项目厨房管道的排风原理和方式是什么？会不会出 现油烟倒灌情况?
+        <span>问</span> {{question.question}}
+        
       </p>
       <div class="text">
-        <textarea v-model="text" placeholder="在这里输入您的解答" maxlength="50"></textarea>
-        <p>{{textnum}}/50</p>
+        <textarea
+          v-model="text"
+          placeholder="在这里输入您的解答"
+          maxlength="50"
+        ></textarea>
+        <p>{{ textnum }}/50</p>
       </div>
-      <button>提交回答</button>
+      <button @click="put">提交回答</button>
     </div>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
+import { answer } from '@/api/api'
 export default {
   components: {
     "top-view": topView,
   },
-  data(){
-      return{
-          textnum:0,
-          text:''
-      }
+  async asyncData(context) {
+    let other = context.query.other;
+    let jkl = context.params.name;
+    let id = context.params.id;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/want/answer", {
+          params: {
+            id: id,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      phone: res.common.phone,
+      question: res.data,
+      id: id,
+    };
+  },
+  data() {
+    return {
+      textnum: 0,
+      text: "",
+      question:{},
+      phone:''
+    };
+  },
+  methods:{
+    put(){
+      let that = this
+      answer({id:that.question.id,answer:that.text}).then(res=>{
+        if(res.data.code == 200){
+          that.toast('回答成功')
+          that.$router.go(-1)
+        }
+      })
+    }
   },
   watch: {
     text(val) {
@@ -66,7 +112,7 @@ export default {
       background-color: #f7f7f7;
       border: 0;
       outline: none;
-      line-height: 1.625rem
+      line-height: 1.625rem;
     }
     input::-webkit-input-placeholder,
     textarea::-webkit-input-placeholder {
@@ -100,15 +146,15 @@ export default {
     }
   }
   button {
-      color: #2AC66D;
-      font-size: 0.9375rem;
-      font-weight: bold;
-      text-align: center;
-      line-height: 2.25rem;
-      width: 100%;
-      border-radius: 0.125rem;
-      background-color: #F1F8F4;
-      border: 0
+    color: #2ac66d;
+    font-size: 0.9375rem;
+    font-weight: bold;
+    text-align: center;
+    line-height: 2.25rem;
+    width: 100%;
+    border-radius: 0.125rem;
+    background-color: #f1f8f4;
+    border: 0;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="PK">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <nuxt-link :to="'/' + jkl + '/addpro'">
       <button class="add">添加楼盘</button>
     </nuxt-link>

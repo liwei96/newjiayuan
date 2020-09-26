@@ -1,26 +1,24 @@
 <template>
   <div id="cancel">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <div class="hui-con" v-if="false">
+      <div class="hui-con" v-if="have">
         <div class="hui-left">
           <h6>
             最高
             <span>5000</span>元购房优惠
-            <i>（7月24日截止）</i>
+            <i>（{{time}}截止）</i>
           </h6>
           <p>家园新房专供平台客户</p>
         </div>
         <div class="hui-right">
           <button>已领取</button>
-          <p>
-            <span>123人</span>已领取
-          </p>
+          <p><span>123人</span>已领取</p>
         </div>
       </div>
-      <div class="isnull">
-          <img src="~/assets/cancel.png" alt="">
-          <p>您还没有领取的优惠券</p>
+      <div class="isnull" v-if="!have">
+        <img src="~/assets/cancel.png" alt="" />
+        <p>您还没有领取的优惠券</p>
       </div>
     </div>
   </div>
@@ -30,6 +28,28 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
+  data() {
+    return {
+      time: "",
+      have:false
+    };
+  },
+  mounted() {
+    var date1 = new Date();
+    var date2 = new Date(date1);
+    date2.setDate(date1.getDate() + 7);
+    var time2 = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
+    this.time = time2;
+    if($cookies.get('have')){
+      this.have = true
+    }
   },
 };
 </script>
@@ -44,7 +64,8 @@ export default {
     margin-top: 1.25rem;
     background: url("~assets/b1.png") no-repeat;
     background-size: 100%;
-    // display: flex;
+    justify-content: space-between;
+    display: flex;
     .hui-left {
       padding-left: 1rem;
       padding-top: 0.625rem;
@@ -92,15 +113,15 @@ export default {
     }
   }
   .isnull {
-      text-align: center;
-      img{
-          width: 12.5rem;
-          margin-top: 6.25rem
-      }
-      p {
-          color: #7D7F80;
-          font-size: 0.8125rem;
-      }
+    text-align: center;
+    img {
+      width: 12.5rem;
+      margin-top: 6.25rem;
+    }
+    p {
+      color: #7d7f80;
+      font-size: 0.8125rem;
+    }
   }
 }
 </style>

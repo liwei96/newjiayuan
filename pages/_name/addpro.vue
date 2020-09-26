@@ -1,6 +1,6 @@
 <template>
   <div id="PK">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="pks">
       <van-checkbox-group v-model="result" :max="4">
         <template v-for="(item,key) in list">

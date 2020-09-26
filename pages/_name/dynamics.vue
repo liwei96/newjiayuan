@@ -3,28 +3,61 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/searchtop.png" alt class="search" />
-      <img src="~/assets/mapcai.png" alt class="list" />
+      <img src="~/assets/searchtop.png" alt class="search" @click="search"/>
+      <img src="~/assets/mapcai.png" alt class="list" @click="btns" />
+      <ul class="cailist" v-if="list">
+        <li class="cmn">
+          <router-link :to="'/' + jkl">
+            <span></span>
+            <img src="~/assets/barhome.png" />
+            <p>首 页</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/search'">
+            <img src="~/assets/barsearch.png" />
+            <p>楼盘查询</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/home'">
+            <img src="~/assets/barsearch.png" />
+            <p>个人中心</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/weike/before/56'">
+            <img src="~/assets/barke.png" />
+            <p>买房百科</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/infos/46'">
+            <img src="~/assets/barxun.png" />
+            <p>房产资讯</p>
+          </router-link>
+        </li>
+      </ul>
     </header>
     <img src="~/assets/dynamics.png" alt class="topimg" />
     <div class="con">
-      <div class="con-li" v-for="(item,key) in lists" :key="key">
+      <div class="con-li" v-for="(item, key) in lists" :key="key">
         <div class="con-li-top">
           <img :src="item.img" alt />
-          <h6>{{item.name}}</h6>
+          <h6>{{ item.name }}</h6>
           <p>
-            {{item.country.substr(0,2)}}
-            <span>面积 {{item.area}}m²</span>
-            <span>均价：{{item.price}}元/m²</span>
+            {{ item.country.substr(0, 2) }}
+            <span>面积 {{ item.area }}m²</span>
+            <span>均价：{{ item.price }}元/m²</span>
           </p>
-          <i v-if="key==0">最新</i>
+          <i v-if="key == 0">最新</i>
           <div class="zhe"></div>
         </div>
         <div class="con-li-bom">
-          <h6>{{item.title}}</h6>
-          <p class="txt">{{item.content}}</p>
-          <p class="time">{{item.time}}</p>
-          <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
+          <h6>{{ item.title }}</h6>
+          <p class="txt">{{ item.content }}</p>
+          <p class="time">{{ item.time }}</p>
+          <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
             <button>查看详细</button>
           </nuxt-link>
         </div>
@@ -54,14 +87,14 @@ import tan from "@/components/tan.vue";
 export default {
   components: {
     "nav-view": nav,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
     let city = context.store.state.city;
     let jkl = context.params.name;
-    let token = context.store.state.cookie.token
-    let other = context.store.state.cookie.other
-    let [res,res1] = await Promise.all([
+    let token = context.store.state.cookie.token;
+    let other = context.store.state.cookie.other;
+    let [res, res1] = await Promise.all([
       context.$axios
         .get("/jy/dynamic/info/phone", {
           params: {
@@ -75,7 +108,7 @@ export default {
           //   console.log(data)
           return data;
         }),
-        context.$axios
+      context.$axios
         .get("/jy/phone/head/foot", {
           params: {
             city: city,
@@ -93,8 +126,7 @@ export default {
       jkl: jkl,
       lists: res.data,
       ting: true,
-      phone:res1.common.phone,
-      
+      phone: res1.common.phone,
     };
   },
   data() {
@@ -104,13 +136,14 @@ export default {
       lists: [],
       ting: true,
       page: 2,
-      phone:'',
+      phone: "",
       tan: false,
       typenum: 0,
       typebtn: 1,
       name: "",
       remark: "",
-      id:'0'
+      id: "0",
+      list: false,
     };
   },
   methods: {
@@ -122,8 +155,8 @@ export default {
       let city = $cookies.get("city");
       dynamics({ city: city, page: that.page, limit: 10 }).then((res) => {
         // console.log(res);
-        that.lists = that.lists.concat(res.data.data)
-        that.ting = true
+        that.lists = that.lists.concat(res.data.data);
+        that.ting = true;
       });
     },
     cli(e) {
@@ -136,9 +169,19 @@ export default {
       this.tan = true;
       this.remark = "动态列表页+预约看房";
     },
+    btns() {
+      if (this.list) {
+        this.list = false;
+      } else {
+        this.list = true;
+      }
+    },
+    search(){
+      this.$router.push('/'+this.jkl+'/search')
+    }
   },
   mounted() {
-    let that = this
+    let that = this;
     $(document).on("scroll", function () {
       var scrollTop = window.scrollY;
       var scrollHeight = window.screen.availHeight;
@@ -147,7 +190,7 @@ export default {
       if (scrollTop + scrollHeight >= windowHeight) {
         if (that.ting) {
           // console.log(888)
-          that.ting = false
+          that.ting = false;
           that.getmore();
         }
       }
@@ -183,6 +226,48 @@ header {
   .list {
     width: 1.25rem;
     margin-right: 4%;
+  }
+  .cailist {
+    width: 9.375rem;
+    background: rgba(41, 41, 41, 0.9);
+    position: absolute;
+    top: 2.5rem;
+    border-radius: 0.375rem;
+    z-index: 20000;
+    right: 4%;
+    li {
+      position: relative;
+      color: #e6e6e6;
+      font-size: 0.9375rem;
+      line-height: 3.125rem;
+      a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+      p {
+        border-bottom: 0.5px solid #545454;
+        flex: 1;
+        color: #e6e6e6;
+      }
+      img {
+        width: 1.125rem;
+        margin: 0;
+        margin-left: 1.625rem;
+        margin-right: 0.875rem;
+        height: 1.125rem;
+      }
+    }
+    .cmn {
+      span {
+        display: block;
+        border: 0.4375rem solid transparent;
+        border-bottom-color: rgba(41, 41, 41, 0.9);
+        position: absolute;
+        top: -0.875rem;
+        right: 0.625rem;
+      }
+    }
   }
 }
 .topimg {
@@ -261,6 +346,10 @@ header {
         font-size: 0.9375rem;
         margin-top: 0.6rem;
         margin-bottom: 0.4rem;
+        height: 1.25rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .txt {
         color: #646566;

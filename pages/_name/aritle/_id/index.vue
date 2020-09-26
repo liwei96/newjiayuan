@@ -3,23 +3,56 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/mapcai.png" alt class="list" />
+      <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
+      <ul class="cailist" v-if="list">
+        <li class="cmn">
+          <router-link :to="'/' + jkl">
+            <span></span>
+            <img src="~/assets/barhome.png" />
+            <p>首 页</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/search'">
+            <img src="~/assets/barsearch.png" />
+            <p>楼盘查询</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/home'">
+            <img src="~/assets/barsearch.png" />
+            <p>个人中心</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/weike/before/56'">
+            <img src="~/assets/barke.png" />
+            <p>买房百科</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/infos/46'">
+            <img src="~/assets/barxun.png" />
+            <p>房产资讯</p>
+          </router-link>
+        </li>
+      </ul>
     </header>
     <div class="con">
-      <h3>{{article.title}}</h3>
+      <h3>{{ article.title }}</h3>
       <p class="time">
-        发布： {{article.begin}}
-        <span>来源：{{article.source}}</span>
-        <i>浏览： {{article.visit_num}}</i>
+        发布： {{ article.begin }}
+        <span>来源：{{ article.source }}</span>
+        <i>浏览： {{ article.visit_num }}</i>
       </p>
       <div class="pop">
         <span>摘要：</span>
-        {{article.description}}
+        {{ article.description }}
       </div>
       <div class="ari" v-html="article.content"></div>
       <div class="type">
         标签：
-        <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
+        <span v-for="(item, key) in article.tags" :key="key">{{ item }}</span>
       </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
@@ -27,21 +60,22 @@
       </p>
       <div class="agre">
         <img src="~/assets/noclick.png" alt />
-        <p>{{article.like_num}}</p>
+        <p>{{ article.like_num }}</p>
       </div>
       <p class="free">
         <span>免责声明：</span>
-        凡本站注明 “来自：XXX(非家园网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-966-9995
+        凡本站注明
+        “来自：XXX(非家园网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-966-9995
       </p>
       <div class="other">
         <h4>大家都在看</h4>
-        <template v-for="(item,key) in others">
-          <nuxt-link :key="key" :to="'/'+jkl+'/aritle/'+item.id">
+        <template v-for="(item, key) in others">
+          <nuxt-link :key="key" :to="'/' + jkl + '/aritle/' + item.id">
             <div class="pro">
               <div class="left">
-                <h5>{{item.title}}</h5>
+                <h5>{{ item.title }}</h5>
                 <p>
-                  <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
                 </p>
               </div>
               <div class="right">
@@ -57,7 +91,7 @@
 <script>
 export default {
   async asyncData(context) {
-    let other = context.query.other;
+    let other = context.store.state.cookie.other;
     let city = context.store.state.city;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
@@ -69,12 +103,11 @@ export default {
             id: id,
             other: other,
             city: city,
-            token: token,
           },
         })
         .then((resp) => {
           let data = resp.data;
-          data.article.content = decodeURIComponent(data.article.content);
+          // data.article.content = decodeURIComponent(data.article.content);
           //   console.log(data)
           return data;
         }),
@@ -89,12 +122,20 @@ export default {
     return {
       article: {},
       others: [],
+      list:false
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
+    btn(){
+      if(this.list){
+        this.list=false
+      }else{
+        this.list= true
+      }
+    }
   },
 };
 </script>
@@ -124,6 +165,48 @@ header {
   .list {
     width: 1.25rem;
     margin-right: 4%;
+  }
+  .cailist {
+    width: 9.375rem;
+    background: rgba(41, 41, 41, 0.9);
+    position: absolute;
+    top: 2.5rem;
+    border-radius: 0.375rem;
+    z-index: 20000;
+    right: 4%;
+    li {
+      position: relative;
+      color: #e6e6e6;
+      font-size: 0.9375rem;
+      line-height: 3.125rem;
+      a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+      p {
+        border-bottom: 0.5px solid #545454;
+        flex: 1;
+        color: #e6e6e6;
+      }
+      img {
+        width: 1.125rem;
+        margin: 0;
+        margin-left: 1.625rem;
+        margin-right: 0.875rem;
+        height: 1.125rem;
+      }
+    }
+    .cmn {
+      span {
+        display: block;
+        border: 0.4375rem solid transparent;
+        border-bottom-color: rgba(41, 41, 41, 0.9);
+        position: absolute;
+        top: -0.875rem;
+        right: 0.625rem;
+      }
+    }
   }
 }
 .con {

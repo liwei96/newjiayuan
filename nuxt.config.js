@@ -60,6 +60,7 @@ export default {
     {src: '~plugins/cookies',ssr: false}, 
     {src: '~plugins/lazy',ssr: false}, 
     {src: '~plugins/toast',ssr: false}, 
+    {src: '~plugins/map',ssr: false}, 
     {src: '~plugins/vant',ssr: true}, 
   ],
   /*

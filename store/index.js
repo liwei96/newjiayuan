@@ -65,7 +65,8 @@ const store = () => new Vuex.Store({
           'cookie': obj
         })
       }
-      switch (req.url) {
+      let name=req.url.split('/')[1]
+      switch (name) {
         case 'xuzhou':
           if (process.server == false) {
             localStorage.setItem('city', 112)

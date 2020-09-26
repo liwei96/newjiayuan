@@ -1,6 +1,6 @@
 <template>
   <div id="answer">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topmsg">
       <p class="tit">
         <span>问</span>
@@ -189,6 +189,7 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
+      id:'0'
     };
   },
   methods:{
@@ -198,10 +199,10 @@ export default {
     chang(data) {
       this.typenum = data.position;
       this.name = data.name;
-
       this.typebtn = 1;
       this.tan = true;
       this.remark = "问答详情页+预约看房";
+      this.id = this.building.id
     },
     pop(name,position,txt){
       this.name = name
@@ -209,6 +210,7 @@ export default {
       this.typenum = position
       this.tan = true
       this.remark=txt
+      this.id = this.building.id
     },
   }
 };

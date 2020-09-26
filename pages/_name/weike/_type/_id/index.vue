@@ -1,6 +1,6 @@
 <template>
   <div id="weiki">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="all">
       <div class="input">
         <nuxt-link :to="'/'+jkl+'/searcharitype'">

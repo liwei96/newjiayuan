@@ -1,6 +1,6 @@
 <template>
   <div id="special">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <img src="~/assets/special.jpg" alt class="topimg" />
       <div class="box">

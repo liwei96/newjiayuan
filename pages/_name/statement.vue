@@ -1,6 +1,6 @@
 <template>
     <div id="privacy">
-        <top-view></top-view>
+        <top-view :jkl="jkl"></top-view>
         <div class="con">
             <h2>家园新房版权声明</h2>
             <p>1、家园新房转载的或者任何信息发布人通过家园新房平台发布的信息或内容，并不代表家有新房的意见及观点，也不意味着本网赞同其观点或证实其内容的真实性。</p>
@@ -17,6 +17,12 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
 };
 </script>

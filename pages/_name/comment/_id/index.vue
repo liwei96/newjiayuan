@@ -1,6 +1,6 @@
 <template>
   <div id="comment">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <div class="ject-top" v-for="(item,key) in list" :key="key">
         <div class="top-left">

@@ -1,6 +1,6 @@
 <template>
   <div id="hu">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topimg">
       <img :src="now.small" alt />
       <p>共1张</p>

@@ -9,18 +9,20 @@
       </p>
       </nuxt-link>
       <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
+      <div class="zixuns" @click="gotalk">
         <img src="~/assets/zixun.png" alt />
-        <p>3</p>
+        <p></p>
       </div>
     </header>
     <div class="input">
       <nuxt-link :to="'/'+jkl+'/searchname'">
         <input type="text" placeholder="请输入楼盘名称" />
       </nuxt-link>
+      <nuxt-link :to="'/'+jkl+'/map'">
       <span>
         <img src="~/assets/dian.png" />地图
       </span>
+      </nuxt-link>
       <img src="~/assets/search.png" alt class="sea" />
     </div>
     <div class="nav">
@@ -359,8 +361,8 @@ export default {
           },
         })
         .then((resp) => {
-          let data = resp.data.conditions;
-          for (let val of data.countries) {
+          let data = resp.data;
+          for (let val of data.conditions.countries) {
             val.btn = 0;
             for (let v of area) {
               if (val.id == v) {
@@ -368,7 +370,7 @@ export default {
               }
             }
           }
-          for (let val of data.railways) {
+          for (let val of data.conditions.railways) {
             val.btn = 0;
             for (let v of railway) {
               if (val.id == v) {
@@ -376,7 +378,7 @@ export default {
               }
             }
           }
-          for (let val of data.features) {
+          for (let val of data.conditions.features) {
             val.btn = 0;
             for (let v of feature) {
               if (val.id == v) {
@@ -409,14 +411,14 @@ export default {
     ]);
     return {
       jkl: jkl,
-      citys: res.countries,
-      ties: res.railways,
-      hus: res.house_types,
-      single_prices: res.single_prices,
-      total_prices: res.total_prices,
-      areas: res.areas,
-      types: res.types,
-      features: res.features,
+      citys: res.conditions.countries,
+      ties: res.conditions.railways,
+      hus: res.conditions.house_types,
+      single_prices: res.conditions.single_prices,
+      total_prices: res.conditions.total_prices,
+      areas: res.conditions.areas,
+      types: res.conditions.types,
+      features: res.conditions.features,
       list: res1,
       type1: type1, //类型
       area: area, //区域
@@ -429,6 +431,7 @@ export default {
       region: region, //面积
       other: res2,
       isnull: isnull,
+      cityname:res.common.city_info.current.short
     };
   },
   data() {
@@ -468,7 +471,7 @@ export default {
   },
   methods: {
     back(){
-      this.$router.go(-1)
+      this.$router.push('/'+this.jkl)
     },
     setarea(n) {
       this.areanum = n;
@@ -848,15 +851,34 @@ export default {
     },
     help(){
       this.$router.push('/'+this.jkl+'/help')
-    }
+    },
+    gotalk() {
+      window.location.href =
+        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
+    },
   },
   mounted() {
     this.start();
+    let url = window.location.href;
+    let newurl = url.split("?")[0];
+    let id = this.$route.params.id;
+    let name = sessionStorage.getItem("buildname");
+    newurl += `?proid=${id}&name=${name}`;
+    newurl = encodeURIComponent(newurl);
+    this.url = newurl;
+    setTimeout(() => {
+      this.btn = true;
+    }, 2000);
+    url = url.split("?")[1];
+    if (url && url.indexOf("token") != -1) {
+      localStorage.setItem("wstoken", url.split("=")[1]);
+    }
     // if(!this.list){
     //   this.isnull = true
     // }
     // console.log(this.$route.path);
     // 滑动监控
+    localStorage.setItem('cityname',this.cityname)
     $(window).scroll(function () {
       var scrollTop =
         document.documentElement.scrollTop || document.body.scrollTop;

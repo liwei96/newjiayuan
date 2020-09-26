@@ -45,10 +45,24 @@ export const pros = (msg) => {
     params: msg
   })
 }
+export const answer = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/jy/question/answer',
+    params: msg
+  })
+}
 export const ask = (msg) => {
   return axios.request({
     method: 'get',
     url: '/jy/ask',
+    params: msg
+  })
+}
+export const collect = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/jy/collect',
     params: msg
   })
 }
@@ -115,6 +129,41 @@ export const likecomm = (msg) => {
     method: 'post',
     url: '/flow/comment/like',
     params: msg
+  })
+}
+export const search_start = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/project/search',
+    data: msg
+  })
+}
+export const mapSearch = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/map/area',
+    data: msg
+  })
+}
+export const index_start = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/first/index_mobile',
+    data: msg
+  })
+}
+export const content_data = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/project/detail',
+    data: msg
+  })
+}
+export const mapProject = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/map/detail',
+    data: msg
   })
 }
 

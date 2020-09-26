@@ -4,7 +4,40 @@
       <img class="back" src="~/assets/goback.png" alt />
       <img class="logo" src="~/assets/logo.png" alt />
       <img src="~/assets/searchtop.png" alt class="search" />
-      <img src="~/assets/mapcai.png" alt class="list" />
+      <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
+      <ul class="cailist" v-if="list">
+      <li class="cmn">
+        <router-link :to="'/' + jkl">
+          <span></span>
+          <img src="~/assets/barhome.png" />
+          <p>首 页</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/search'">
+          <img src="~/assets/barsearch.png" />
+          <p>楼盘查询</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/home'">
+          <img src="~/assets/barsearch.png" />
+          <p>个人中心</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/weike/before/56'">
+          <img src="~/assets/barke.png" />
+          <p>买房百科</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/infos/46'">
+          <img src="~/assets/barxun.png" />
+          <p>房产资讯</p>
+        </router-link>
+      </li>
+    </ul>
     </header>
     <img src="~/assets/lun02.jpg" alt class="topimg" />
     <div class="con">
@@ -66,11 +99,27 @@
 </template>
 <script>
 export default {
-  data() {
+  async asyncData(context) {
+    let jkl = context.params.name;
     return {
-        btn:true
+      jkl: jkl,
     };
   },
+  data() {
+    return {
+        btn:true,
+        list:false
+    };
+  },
+  methods:{
+    btns(){
+      if(this.list){
+        this.list=false
+      }else{
+        this.list= true
+      }
+    }
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -101,6 +150,48 @@ header {
   .list {
     width: 1.25rem;
     margin-right: 4%;
+  }
+  .cailist {
+    width: 9.375rem;
+    background: rgba(41, 41, 41, 0.9);
+    position: absolute;
+    top: 2.5rem;
+    border-radius: 0.375rem;
+    z-index: 20000;
+    right: 4%;
+    li {
+      position: relative;
+      color: #e6e6e6;
+      font-size: 0.9375rem;
+      line-height: 3.125rem;
+      a {
+        width: 100%;
+        display: flex;
+        align-items: center;
+      }
+      p {
+        border-bottom: 0.5px solid #545454;
+        flex: 1;
+        color: #e6e6e6;
+      }
+      img {
+        width: 1.125rem;
+        margin: 0;
+        margin-left: 1.625rem;
+        margin-right: 0.875rem;
+        height: 1.125rem;
+      }
+    }
+    .cmn {
+      span {
+        display: block;
+        border: 0.4375rem solid transparent;
+        border-bottom-color: rgba(41, 41, 41, 0.9);
+        position: absolute;
+        top: -0.875rem;
+        right: 0.625rem;
+      }
+    }
   }
 }
 .topimg {

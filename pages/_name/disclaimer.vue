@@ -1,6 +1,6 @@
 <template>
   <div id="privacy">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <h2>家园新房免责协议</h2>
       <p>家园新房对于本网服务包含的或用户经由或从任何与本网服务有关的途径所获得的任何内容、信息或广告，不声明或保证其正确性或可靠性；并且对于用户经本服务上的广告、展示而购买、取得的任何产品、信息或资料，本网不负保证责任。用户自行承担担使用本服务的风险。本网有权但无义务，改善或更正本服务任何部分之任何疏漏、错误。本网不保证以下事项（包括但不限于）：</p>
@@ -24,6 +24,12 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
 };
 </script>

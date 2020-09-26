@@ -1,6 +1,6 @@
 <template>
   <div id="leipk">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <div class="top">
         <div class="center fir">

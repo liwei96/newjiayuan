@@ -1,6 +1,6 @@
 <template>
   <div id="order">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topimg">
       <img src="~/assets/order.jpg" alt />
     </div>

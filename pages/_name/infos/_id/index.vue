@@ -1,6 +1,6 @@
 <template>
   <div id="info">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="input">
       <nuxt-link :to="'/'+jkl+'/searchinfo'">
       <input type="text" placeholder="搜搜你想要了解的房产咨询吧" disabled/>

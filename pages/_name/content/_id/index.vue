@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topimg">
       <div class="swiper-topimg">
         <div class="swiper-wrapper">
@@ -44,9 +44,9 @@
             </div>
             <p>对比</p>
           </div>
-          <div class="fork box">
+          <div class="fork box" @click="shou">
             <div class="img">
-              <img src="~/assets/proheart.png" alt />
+              <img :src="heart" alt />
             </div>
             <p>收藏</p>
           </div>
@@ -181,7 +181,7 @@
             领取优惠
           </button>
           <p>
-            <span>{{ count.sign_count }}人</span>已领取
+            <span>{{ count.sign_count + 100 }}人</span>已领取
           </p>
         </div>
       </div>
@@ -189,7 +189,7 @@
         <div class="hui-left">
           <h6>
             免费看房专车券
-            <i>（剩余{{ count.input_count }}张）</i>
+            <i>（剩余{{ count.input_count + 102 }}张）</i>
           </h6>
           <p>免费专车1对1服务限时劵</p>
         </div>
@@ -198,7 +198,7 @@
             免费领取
           </button>
           <p>
-            <span>{{ count.travel_count }}人</span>已领取
+            <span>{{ count.travel_count + 112 }}人</span>已领取
           </p>
         </div>
       </div>
@@ -556,12 +556,15 @@
             <div class="top-con">
               <h6>
                 {{ item.mobile }}
-                <span v-if="item.mine" @click="del(item.id,key)">删除</span>
+                <span v-if="item.mine" @click="del(item.id, key)">删除</span>
               </h6>
               <p>{{ item.time }}</p>
             </div>
-            <div :class="item.my_like == 1 ? 'top-right active' : 'top-right'" @click="like(item.id)">
-              <img :src="item.my_like == 1? img1:img" alt />
+            <div
+              :class="item.my_like == 1 ? 'top-right active' : 'top-right'"
+              @click="like(item.id)"
+            >
+              <img :src="item.my_like == 1 ? img1 : img" alt />
               赞({{ item.like_num }})
             </div>
           </div>
@@ -569,7 +572,7 @@
         </li>
       </ul>
       <nuxt-link :to="'/' + jkl + '/comment/' + id">
-      <button>我要点评</button>
+        <button>我要点评</button>
       </nuxt-link>
     </div>
     <div class="line"></div>
@@ -584,16 +587,20 @@
         </nuxt-link>
       </h3>
       <ul>
-        <li v-for="(item, key) in questions" :key="key">
-          <p class="con">
-            <span>问</span>
-            {{ item.question }}
-          </p>
-          <p class="num">共1个专业回答</p>
-        </li>
+        <template v-for="(item, key) in questions">
+          <nuxt-link :to="'/' + jkl + '/answer/' + item.id" :key="key">
+            <li>
+              <p class="con">
+                <span>问</span>
+                {{ item.question }}
+              </p>
+              <p class="num">共1个专业回答</p>
+            </li>
+          </nuxt-link>
+        </template>
       </ul>
       <nuxt-link :to="'/' + jkl + '/quiz/' + id">
-      <button>我要提问</button>
+        <button>我要提问</button>
       </nuxt-link>
     </div>
     <div class="line"></div>
@@ -682,7 +689,7 @@ import topView from "@/components/header.vue";
 import tan from "@/components/tan.vue";
 import nav from "@/components/nav.vue";
 import { NoticeBar } from "vant";
-import { delcomm,likecomm } from "@/api/api";
+import { delcomm, likecomm, collect } from "@/api/api";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 export default {
@@ -784,28 +791,30 @@ export default {
       specials: {},
       hour: 0,
       huo: false,
-      img:require('~/assets/noclick.png'),
-      img1:require('~/assets/checked.png')
+      img: require("~/assets/noclick.png"),
+      img1: require("~/assets/checked.png"),
+      heart: require("~/assets/proheart.png"),
+      hearted: require("~/assets/collected.png"),
     };
   },
   methods: {
-    del(id,key){
-      let token = $cookies.get('token')
-      delcomm({token:token,id:id}).then(res=>{
-        if(res.data.code==200){
-          this.toast('删除成功')
-          this.$router.go(0)
+    del(id, key) {
+      let token = $cookies.get("token");
+      delcomm({ token: token, id: id }).then((res) => {
+        if (res.data.code == 200) {
+          this.toast("删除成功");
+          this.$router.go(0);
         }
-      })
+      });
     },
-    like(id){
-      let token = $cookies.get('token')
-      likecomm({token:token,id:id}).then(res=>{
-        if(res.data.code==200){
-          this.toast('点赞成功')
-          this.$router.go(0)
+    like(id) {
+      let token = $cookies.get("token");
+      likecomm({ token: token, id: id }).then((res) => {
+        if (res.data.code == 200) {
+          this.toast("点赞成功");
+          this.$router.go(0);
         }
-      })
+      });
     },
     setimgmsgnum(e) {
       this.imgmsgnum = e;
@@ -824,6 +833,29 @@ export default {
     },
     setnavnum(e) {
       this.navnum = e;
+      switch(e){
+        case 0:
+          scroll(0,970)
+          break;
+        case 1:
+          scroll(0,1178)
+          break;
+        case 2:
+          scroll(0,1600)
+          break;
+        case 3:
+          scroll(0,2300)
+          break;
+        case 4:
+          scroll(0,3400)
+          break;
+        case 5:
+          scroll(0,3800)
+          break;
+        case 6:
+          scroll(0,4000)
+          break;
+      }
     },
     showmore() {
       this.morebtn = false;
@@ -1099,16 +1131,16 @@ export default {
     },
     pk() {
       let arr = $cookies.get("ids");
-      sessionStorage.setItem('pktype',1)
+      sessionStorage.setItem("pktype", 1);
       if (!arr) {
         this.$router.push("/" + this.jkl + "/pk");
       } else {
         this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
     },
-    leipk(){
+    leipk() {
       let arr = $cookies.get("ids");
-      sessionStorage.setItem('pktype',2)
+      sessionStorage.setItem("pktype", 2);
       if (!arr) {
         this.$router.push("/" + this.jkl + "/pk");
       } else {
@@ -1133,6 +1165,43 @@ export default {
       this.tan = true;
       this.remark = "详情页+预约看房";
     },
+    shou() {
+      if ($cookies.get("token")) {
+        let that = this;
+        collect({ id: that.id, type: 1, token: $cookies.get("token") }).then(
+          (res) => {
+            if (res.data.code == 200) {
+              that.toast("收藏成功");
+              that.heart = that.hearted;
+            }
+          }
+        );
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
+    setnav() {
+      var top = window.scrollY;
+      if (top >= 970) {
+        $(".nav-icon").css({ position: "fixed", top: "2.75rem" });
+        if (top >= 1178&&top<1600) {
+          this.navnum = 1;
+        }else if(top>=1600&&top<2000){
+          this.navnum = 2
+        }else if(top>=2000&&top<2300){
+          this.navnum = 3
+        }else if(top>=2300&&top<3400){
+          this.navnum = 4
+        }else if(top>=3800&&top<4000){
+          this.navnum = 5
+        }else if(top>=4000){
+          this.navnum = 6
+        }
+      } else if (top < 970) {
+        $(".nav-icon").css({ position: "relative", top: "0" });
+        this.navnum = 0
+      }
+    },
   },
   mounted() {
     if (localStorage.getItem(this.$route.params.id)) {
@@ -1144,13 +1213,10 @@ export default {
     if (localStorage.getItem(this.$route.params.id + "time")) {
       this.time = localStorage.getItem(this.$route.params.id + "time");
     } else {
-      var date1 = new Date()
+      var date1 = new Date();
       var date2 = new Date(date1);
       date2.setDate(date1.getDate() + 7);
-      var time2 =(date2.getMonth() + 1) +
-        "月" +
-        date2.getDate()
-        +'日';
+      var time2 = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
       localStorage.setItem(this.$route.params.id + "time", time2);
       this.time = time2;
     }
@@ -1201,6 +1267,10 @@ export default {
       slidesOffsetBefore: 14,
       slidesOffsetAfter: 12,
     });
+    window.addEventListener("scroll", this.setnav);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.setnav);
   },
 };
 </script>
@@ -1618,6 +1688,8 @@ export default {
 }
 .nav-icon {
   border-bottom: 0.03125rem solid #f5f5f5;
+  background-color: #fff;
+  z-index: 10;
   .swiper-nav {
     overflow: hidden;
     .swiper-slide {

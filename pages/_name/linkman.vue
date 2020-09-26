@@ -1,6 +1,6 @@
 <template>
     <div id="linkman">
-        <top-view></top-view>
+        <top-view :jkl="jkl"></top-view>
         <div class="con">
             <img src="~/assets/linkman.png" alt="">
             <p>您还没有联系人</p>
@@ -12,6 +12,12 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
 };
 </script>

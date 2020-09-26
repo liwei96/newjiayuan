@@ -1,6 +1,6 @@
 <template>
   <div id="questions">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topimg">
       <img src="~/assets/questions.jpg" alt />
     </div>
@@ -15,13 +15,13 @@
             <img :src="item.staff.head_img" alt />
             <div class="promsg">
               <h5>
-                李聪然
+                {{item.staff.name}}
                 <span>专业解答</span>
               </h5>
               <p>咨询师帮您在线解答</p>
             </div>
           </div>
-          <nuxt-link :to="'/' + jkl + '/answer/' + item.id">
+          <nuxt-link :to="id?'/' + jkl + '/answer/' + item.id+'/'+id:'/' + jkl + '/answer/' + item.id">
             <p class="msg">
               {{ item.answer.substr(0, 40) }}
               <i v-if="item.answer.length > 40">...</i>
@@ -50,9 +50,7 @@
       </li>
     </ul>
     <div class="fix">
-      <nuxt-link :to="'/' + jkl + '/quiz/' + id">
-      <img src="~/assets/questions-fixed.png" alt />
-      </nuxt-link>
+      <img src="~/assets/questions-fixed.png" alt @click="click"/>
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
@@ -164,6 +162,14 @@ export default {
       this.tan = true;
       this.remark = "问答页+预约看房";
     },
+    click(){
+      if(this.id){
+        this.$router.push('/' + this.jkl + '/quiz/' + id)
+      }else{
+        this.$router.push('/' + this.jkl + '/quiz')
+      }
+      
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.getmore);

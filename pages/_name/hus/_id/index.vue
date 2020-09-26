@@ -1,6 +1,6 @@
 <template>
   <div id="hus">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <template v-for="(item,key) in other_rooms">
         <nuxt-link :to="'/'+jkl+'/hu/'+id+'/'+item.id" :key="key">

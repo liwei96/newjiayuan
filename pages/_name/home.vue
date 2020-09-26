@@ -10,32 +10,25 @@
         <h4>{{username}}</h4>
       </div>
       <ul class="li">
-        <li>
-          <nuxt-link :to="'/'+jkl+'/viewed'">
+        <li @click="viewed">
             <div>
               <p class="num">{{list.length}}</p>
               <p class="msg">浏览足迹</p>
             </div>
-          </nuxt-link>
         </li>
-        <li>
-          <nuxt-link :to="'/'+jkl+'/collection'">
+        <li @click="collection">
             <div>
               <p class="num">{{colls.length}}</p>
               <p class="msg">我的收藏</p>
             </div>
-          </nuxt-link>
         </li>
-        <li>
-          <nuxt-link :to="'/'+jkl+'/cancel'">
+        <li @click="cancel">
             <div>
               <p class="num">{{cardnum}}</p>
               <p class="msg">优惠卡券</p>
             </div>
-          </nuxt-link>
         </li>
-        <li>
-          <nuxt-link :to="'/'+jkl+'/linkman'">
+        <li @click="linkman">
             <div>
               <p class="num">
                 0
@@ -43,7 +36,6 @@
               </p>
               <p class="msg">我的联系</p>
             </div>
-          </nuxt-link>
         </li>
       </ul>
       <ul class="ll">
@@ -64,8 +56,10 @@
           </nuxt-link>
         </li>
         <li>
+          <nuxt-link :to="'/'+jkl+'/map'">
           <img src="~/assets/home-map.png" alt />
           <p>地图找房</p>
+          </nuxt-link>
         </li>
         <li>
           <nuxt-link :to="'/'+jkl+'/join'">
@@ -225,7 +219,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      this.$router.push('/'+this.jkl);
     },
     set() {
       this.$router.push("/" + this.jkl + "/set");
@@ -241,11 +235,42 @@ export default {
       }else{
         this.$router.push('/'+this.jkl+'/login')
       }
+    },
+    viewed(){
+      if($cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/viewed')
+      }else{
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    },
+    collection(){
+      if($cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/collection')
+      }else{
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    },
+    cancel(){
+      if($cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/cancel')
+      }else{
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    },
+    linkman(){
+      if($cookies.get('token')){
+        this.$router.push('/'+this.jkl+'/linkman')
+      }else{
+        this.$router.push('/'+this.jkl+'/login')
+      }
     }
   },
   mounted(){
     if($cookies.get('token')){
       this.username = $cookies.get('username')
+    }
+    if($cookies.get('have')){
+      this.cardnum = 1
     }
   }
 };

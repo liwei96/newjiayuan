@@ -1,6 +1,6 @@
 <template>
   <div id="complaint">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <textarea placeholder="输入您的宝贵建议" v-model="txt"></textarea>
       <p>
@@ -17,6 +17,12 @@ import { put } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
   data() {
     return {

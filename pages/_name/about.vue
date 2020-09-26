@@ -1,6 +1,6 @@
 <template>
   <div id="about">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <h2>
         关于我们
@@ -20,6 +20,12 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
 };
 </script>

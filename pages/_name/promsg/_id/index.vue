@@ -1,6 +1,6 @@
 <template>
   <div id="promsg">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="topnav">
       <ul>
         <li :class="navnum == 0?'active':''" @click="navnum = 0">

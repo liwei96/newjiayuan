@@ -1,6 +1,6 @@
 <template>
   <div id="pkdetail">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="top">
       <div class="left">
         <p>楼盘对比</p>

@@ -1,6 +1,6 @@
 <template>
   <div class="Address">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="current">
       <img src="~/assets/cur.png" alt class="cur" />
       <span class="city">{{city}}</span>
@@ -211,7 +211,7 @@ export default {
    let ip=context.store.state.cookie.ip;
     let city = context.store.state.cookie.city;
     let token=context.store.state.cookie.token;
-    let jkl = context.store.state.cookie.pinyin;
+    let jkl = context.params.name;
     let kid = context.store.state.cookie.kid ? context.store.state.cookie.kid : ''
     let other = context.store.state.cookie.other ? context.store.state.cookie.other : ''
     let [res]= await Promise.all([

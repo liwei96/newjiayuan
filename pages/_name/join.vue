@@ -1,6 +1,6 @@
 <template>
   <div id="join">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <img src="~/assets/jia-top.jpg" alt class="topimg" />
     <div class="con">
       <ul class="topmsg">
@@ -366,6 +366,12 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import { jiameng } from "@/api/api";
 export default {
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
   components: {
     "top-view": topView,
   },

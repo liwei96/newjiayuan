@@ -1,6 +1,6 @@
 <template>
   <div id="imgs">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <div class="imgs">
         <h4>效果图(4）</h4>

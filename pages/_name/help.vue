@@ -1,14 +1,6 @@
 <template>
   <div id="help">
-    <header>
-      <img class="back" src="~/assets/goback.png" alt @click="goback" />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns">
-        <img src="~/assets/zixun.png" alt />
-        <p>3</p>
-      </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
-    </header>
+    <top-view :jkl="jkl"></top-view>
     <img src="~/assets/lun02.jpg" alt class="topimg" />
     <div class="con">
       <p class="tit">您能接受的总价范围是多少？</p>
@@ -99,9 +91,11 @@
 <script>
 import { send, check, put } from "@/api/api";
 import { Popup } from "vant";
+import top from '@/components/header'
 export default {
   components: {
     Popup,
+    'top-view':top
   },
   async asyncData(context) {
     //   console.log(context.$axios)
@@ -284,57 +278,11 @@ export default {
 </script>
 <style lang="less" scoped>
 @import url("https://cdn.bootcss.com/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css");
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 2.75rem;
-  z-index: 1;
-  background-color: #fff;
-  // position: relative;
-  .back {
-    width: 1.25rem;
-    margin-left: 1rem;
-  }
-  .logo {
-    width: 3.125rem;
-  }
-  .home {
-    width: 1.25rem;
-    margin-right: 1rem;
-  }
-  .zixuns {
-    margin-right: 1.25rem;
-    position: absolute;
-    right: 9%;
-    top: 0.68rem;
-    img {
-      width: 1.5rem;
-    }
-    p {
-      position: absolute;
-      width: 0.8125rem;
-      height: 0.8125rem;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 0.8125rem;
-      background-color: #ff4040;
-      color: #fff;
-      font-size: 0.625rem;
-      top: -0.40625rem;
-      right: -0.1875rem;
-    }
-  }
-  .list {
-    width: 1.25rem;
-    margin-right: 4%;
-  }
-}
 .topimg {
   width: 100%;
   height: 6.25rem;
   margin-bottom: 1.25rem;
+  padding-top:2.75rem
 }
 .con {
   padding: 0 4%;

@@ -185,6 +185,7 @@ export default {
       this.str = "一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘";
     } else if (type == "领取优惠") {
       this.str = "专享限时优惠折扣，家园专场推出，早抢早优惠";
+      $cookies.set('have',1)
     } else if (type == "免费领取") {
       this.str = "精准匹配房源，免费接送一次看完好房";
     } else if (type == "获取详细分析报告") {

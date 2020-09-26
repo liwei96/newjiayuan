@@ -1,6 +1,6 @@
 <template>
   <div id="response">
-    <top-view></top-view>
+    <top-view :jkl="jkl"></top-view>
     <div class="con">
       <p class="tit">家园在线咨询师帮您解答</p>
       <div class="text">

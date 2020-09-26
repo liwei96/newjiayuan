@@ -7,7 +7,40 @@
         <img src="~/assets/zixun.png" alt />
         <p>3</p>
       </div>
-      <img src="~/assets/mapcai.png" alt class="list" />
+      <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
+      <ul class="cailist" v-if="list">
+      <li class="cmn">
+        <router-link :to="'/' + jkl">
+          <span></span>
+          <img src="~/assets/barhome.png" />
+          <p>首 页</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/search'">
+          <img src="~/assets/barsearch.png" />
+          <p>楼盘查询</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/home'">
+          <img src="~/assets/barsearch.png" />
+          <p>个人中心</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/weike/before/56'">
+          <img src="~/assets/barke.png" />
+          <p>买房百科</p>
+        </router-link>
+      </li>
+      <li>
+        <router-link :to="'/' + jkl + '/infos/46'">
+          <img src="~/assets/barxun.png" />
+          <p>房产资讯</p>
+        </router-link>
+      </li>
+    </ul>
     </header>
     <div class="input">
       <input type="text" placeholder="搜搜你想要了解的房产知识吧" />

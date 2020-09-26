@@ -1,7 +1,7 @@
 <template>
   <div id="account">
     <div class="container-fluid m">
-      <top-view></top-view>
+      <top-view :jkl="jkl"></top-view>
       <p>关注公众号了解更多新房资讯</p>
       <img src="~/assets/serve.jpg" alt class="two" />
       <button @click="down">保存二维码图片</button>
@@ -15,6 +15,12 @@
 <script>
 import topView from "@/components/header.vue";
 export default {
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
   data() {
     return {
       imgs: "http://test.jy8006.com/_nuxt/img/4525797.png",

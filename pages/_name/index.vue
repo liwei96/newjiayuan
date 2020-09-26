@@ -46,7 +46,9 @@
           <p>资讯</p>
         </li>
         <li>
+          <nuxt-link :to="'/'+jkl+'/map'">
           <img src="~/assets/index-map.png" alt />
+          </nuxt-link>
           <p>地图</p>
         </li>
       </ul>
@@ -113,7 +115,7 @@
               <div class="swper-con">
                 <h5>{{item.title}}</h5>
                 <p>
-                  {{item.content.substr(0,34)}}...
+                  {{item.content.substr(0,30)}}...
                   <span>详细</span>
                 </p>
                 <span>{{item.time}}</span>
@@ -283,6 +285,7 @@ export default {
       discounts: res.discounts,
       dynamics: res.dynamics,
       jkl: jkl,
+      cityname:res.common.city_info.current.short
     };
   },
   data() {
@@ -307,7 +310,8 @@ export default {
     }
   },
   mounted() {
-    this.cityname = $cookies.get('cityname')
+    // this.cityname = $cookies.get('cityname')
+    localStorage.setItem('cityname',this.cityname)
     var swiper08 = new Swiper(".swiper-dynamic", {
       slidesPerView: 1,
       spaceBetween: 0,

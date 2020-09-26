@@ -1,6 +1,6 @@
 <template>
     <div id="privacy">
-        <top-view></top-view>
+        <top-view :jkl="jkl"></top-view>
         <div class="con">
             <h2>家园新房隐私保护</h2>
             <p>隐私权是用户的重要权利，对于家园新房的所有用户，我们均会以负责的态度对待您的个人信息，特此制定家园新房对用户相关信息所采取的收</p>
@@ -15,6 +15,12 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
   },
 };
 </script>

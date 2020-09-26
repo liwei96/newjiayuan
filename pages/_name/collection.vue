@@ -1,30 +1,46 @@
 <template>
   <div id="collection">
-    <top-view></top-view>
-    <div class="other" v-if="false">
-      <div class="pro">
-        <img src="~/assets/lun02.jpg" alt />
-        <div class="pro-msg">
-          <h5>
-            上课的龙卷风
-            <span>在售</span>
-          </h5>
-          <p class="pro-price">
-            <span>53000</span>
-            <i>元/m²</i>起
-          </p>
-          <p class="attr">住宅 | 杭州-临安 | 256m²</p>
-          <p class="pro-icon">
-            <span class="pro-icon-zhuang">两个</span>
-            <span class="pro-icon-type">我的</span>
-          </p>
-        </div>
-      </div>
+    <top-view :jkl="jkl"></top-view>
+    <div class="other" v-if="list.length">
+      <template v-for="(item, key) in list">
+        <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{ item.name }}
+                <span>{{ item.status }}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{ item.price }}</span>
+                <i>元/m²</i>起
+              </p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.feature"
+                  :key="k"
+                  >{{ val }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </nuxt-link>
+      </template>
     </div>
     <div class="isnull">
         <img src="~/assets/collection.png" alt="">
         <p>您暂无收藏记录，快去逛逛吧</p>
+        <nuxt-link :to="'/' + jkl + '/search'">
         <button>去看房</button>
+        </nuxt-link>
     </div>
   </div>
 </template>
@@ -33,6 +49,30 @@ import topView from "@/components/header.vue";
 export default {
   components: {
     "top-view": topView,
+  },
+  async asyncData(context) {
+    let id = context.params.id;
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    let other = context.query.other;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/mine/collect", {
+          params: {
+            token: token,
+            page: 1,
+            limit: 10,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      list: res.data,
+    };
   },
 };
 </script>
