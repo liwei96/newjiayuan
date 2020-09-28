@@ -3,10 +3,10 @@
     <img class="back" src="~/assets/goback.png" alt @click="back" />
     <img class="logo" src="~/assets/logo.png" alt />
     <div class="zixuns" @click="gotalk">
-      <img src="~/assets/zixun.png" alt />
+      <img src="~/assets/header-talk.png" alt />
       <p></p>
     </div>
-    <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
+    <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
     <ul class="cailist" v-if="list">
       <li class="cmn">
         <router-link :to="'/' + jkl">
@@ -58,7 +58,7 @@ export default {
     back() {
       this.$router.go(-1);
     },
-    btn(){
+    btns(){
       if(this.list){
         this.list=false
       }else{
@@ -78,9 +78,6 @@ export default {
     newurl += `?proid=${id}&name=${name}`;
     newurl = encodeURIComponent(newurl);
     this.url = newurl;
-    setTimeout(() => {
-      this.btn = true;
-    }, 2000);
     url = url.split("?")[1];
     if (url && url.indexOf("token") != -1) {
       localStorage.setItem("wstoken", url.split("=")[1]);
@@ -99,7 +96,7 @@ header {
   background-color: #fff;
   position: fixed;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
   .back {
     width: 1.25rem;
     margin-left: 1rem;

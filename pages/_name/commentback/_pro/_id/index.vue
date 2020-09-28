@@ -2,37 +2,58 @@
   <div id="response">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <p class="tit">家园在线咨询师帮您解答</p>
+      <p class="tit">
+        {{ question.content }}
+      </p>
       <div class="text">
         <textarea
           v-model="text"
-          placeholder="在这里输入您的问题"
+          placeholder="在这里输入您的回复"
           maxlength="50"
         ></textarea>
         <p>{{ textnum }}/50</p>
       </div>
-      <button @click="put">发布提问</button>
+      <button @click="put">提交回复</button>
     </div>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
-import { ask } from "@/api/api";
+import { commentback } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
   },
   async asyncData(context) {
+    let other = context.query.other;
     let jkl = context.params.name;
     let id = context.params.id;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/comment/single", {
+          params: {
+            id: id,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          //   console.log(data);
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
+      phone: res.common.phone,
+      question: res.comment,
       id: id,
     };
   },
   head() {
     return {
-      title: "家园新房-提交问题页",
+      title: "家园新房-点评回复",
       meta: [
         {
           name: "description",
@@ -50,26 +71,31 @@ export default {
     return {
       textnum: 0,
       text: "",
-      jkl: "",
-      id: "",
+      question: {},
+      phone: "",
     };
   },
   methods: {
     put() {
       let that = this;
       let token = $cookies.get("token");
-      let city = $cookies.get("city");
-      ask({
-        token: token,
-        project: that.id,
-        city: city,
-        question: that.text,
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.toast("提交成功");
-          this.$router.push("/" + that.jkl + "/questions/" + that.id);
-        }
-      });
+      if (token) {
+        commentback({
+          pid: that.question.id,
+          content: that.text,
+          bid: that.$route.params.pro,
+          token: token,
+        }).then((res) => {
+          if (res.data.code == 200) {
+            that.toast("回复成功");
+            that.$router.go(-1);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
     },
   },
   watch: {
@@ -89,8 +115,16 @@ export default {
   padding-top: 3.625rem;
   .tit {
     color: #323333;
-    font-size: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.40625rem;
     margin-bottom: 1.25rem;
+    span {
+      padding: 0.1875rem;
+      border-radius: 0.125rem;
+      background-color: #ff5454;
+      color: #fff;
+      font-size: 0.625rem;
+    }
   }
   .text {
     position: relative;

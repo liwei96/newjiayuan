@@ -8,22 +8,22 @@
       <div class="swiper-container" id="nav">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <span class="active">效果图({{efects.length}})</span>
+            <span class="active">效果图({{ efects.length }})</span>
           </div>
           <div class="swiper-slide">
-            <span>实景图({{reals.length}})</span>
+            <span>实景图({{ reals.length }})</span>
           </div>
           <div class="swiper-slide">
-            <span>样板图({{templates.length}})</span>
+            <span>样板图({{ templates.length }})</span>
           </div>
           <div class="swiper-slide">
-            <span>交通图({{traffics.length}})</span>
+            <span>交通图({{ traffics.length }})</span>
           </div>
           <div class="swiper-slide">
-            <span>户型图({{apartments.length}})</span>
+            <span>户型图({{ apartments.length }})</span>
           </div>
           <div class="swiper-slide">
-            <span>配套图({{matchings.length}})</span>
+            <span>配套图({{ matchings.length }})</span>
           </div>
           <!-- <div class="bar">
         <div class="color"></div>
@@ -41,7 +41,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in efects" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in efects"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -60,7 +64,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in reals" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in reals"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -77,7 +85,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in templates" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in templates"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -94,7 +106,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in traffics" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in traffics"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -111,7 +127,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in apartments" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in apartments"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -128,7 +148,11 @@
               <div class="swiper-slide slidescroll">
                 <div class="swiper-container banner">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide" v-for="(item,key) in matchings" :key="key">
+                    <div
+                      class="swiper-slide"
+                      v-for="(item, key) in matchings"
+                      :key="key"
+                    >
                       <img v-lazy="item.big" />
                     </div>
                   </div>
@@ -148,17 +172,21 @@
         <span>1</span>
         <p>在线咨询</p>
       </div>
-      
-      <a :href="'tel:'+tel">
+
+      <a :href="'tel:' + tel">
         <button class="nav-tel">
           <img src="~/assets/nav-tel.png" />电话咨询
         </button>
       </a>
-      <button @click="tan=true">
+      <button @click="tan = true">
         <img src="~/assets/nav-yue.png" />预约看房
       </button>
     </div>
-    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="type =false">
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="type = false"
+    >
       <div id="Popup">
         <img src="~/assets/w-del.png" alt class="close" @click="close" />
         <h3>预约看房</h3>
@@ -212,15 +240,31 @@ export default {
         }),
     ]);
     return {
-      efects:res.imgs.effect,
-      traffics:res.imgs.traffic,
-      matching:res.imgs.matching,
-      reals:res.imgs.real,
-      templates:res.imgs.example,
-      apartments:res.imgs.departments,
-      phone:res.common.phone,
+      efects: res.imgs.effect,
+      traffics: res.imgs.traffic,
+      matching: res.imgs.matching,
+      reals: res.imgs.real,
+      templates: res.imgs.example,
+      apartments: res.imgs.departments,
+      phone: res.common.phone,
       jkl: jkl,
-      id:id
+      id: id,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-楼盘相册",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {
@@ -258,7 +302,7 @@ export default {
       typebtn: "",
       tan: false,
       one: true,
-      proname:'',
+      proname: "",
     };
   },
   methods: {
@@ -284,19 +328,18 @@ export default {
       let id = this.id;
       let typenum = this.typenum;
       let ip = ip_arr["ip"];
-      let city = $cookies.get('city')
+      let city = $cookies.get("city");
       put({
         tel: phone,
         page: 4,
         project: id,
-        ip:ip,
+        ip: ip,
         remark: "相册页+预约看房",
         source: "线上推广1",
         name: "未知",
         position: typenum,
-        city:city
-      }).then((res) => {
-      });
+        city: city,
+      }).then((res) => {});
 
       send({ ip: ip, phone: phone, source: 3 }).then((res) => {
         if (res.data.code == 200) {
@@ -317,8 +360,8 @@ export default {
           fn();
           var interval = setInterval(fn, 1000);
           $("#ytel").html(tel);
-        }else{
-          this.$toast.fail(res.data.message)
+        } else {
+          this.toast(res.data.message);
         }
       });
     },
@@ -349,12 +392,14 @@ export default {
           if (!$cookies.get("token")) {
             $cookies.set("token", res.data.token, 21600);
             $cookies.set("phone", phone, 21600);
+            let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+            $cookies.set("username", tel);
           }
         } else {
-          this.toast(res.data.message)
+          this.toast(res.data.message);
         }
-        this.type= false
-        this.tan = false
+        this.type = false;
+        this.tan = false;
       });
     },
     close() {
@@ -365,7 +410,7 @@ export default {
       this.$router.go(-1);
     },
     go() {
-      this.$router.push('/'+this.jkl+"/imgs/" + this.$route.params.id);
+      this.$router.push("/" + this.jkl + "/imgs/" + this.$route.params.id);
     },
     gotalk() {
       let url = window.location.href;
@@ -380,7 +425,7 @@ export default {
   },
   mounted() {
     let that = this;
-    that.baoming = $cookies.get('tel');
+    that.baoming = $cookies.get("tel");
     this.start();
   },
   updated() {
@@ -1101,7 +1146,7 @@ body {
       background-color: #f34f4f;
     }
     p {
-      color: #D4D7D9;
+      color: #d4d7d9;
       font-size: 0.75rem;
       bottom: 0;
     }
@@ -1111,11 +1156,11 @@ body {
     height: 2.5rem;
     border-radius: 0.1875rem;
     text-align: center;
-    background: linear-gradient(270deg, #1FC365, #3FD6A6);
+    background: linear-gradient(270deg, #1fc365, #3fd6a6);
     box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(78, 169, 255, 0.2);
     border: 0;
     line-height: 2.5rem;
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 0.9375rem;
     img {
       width: 0.90625rem;
@@ -1126,7 +1171,7 @@ body {
   .nav-tel {
     margin-right: 0.625rem;
     color: #fff;
-    background: linear-gradient(270deg, #348AFF, #6ACCFF);
+    background: linear-gradient(270deg, #348aff, #6accff);
     box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(78, 169, 255, 0.2);
   }
 }
@@ -1206,7 +1251,7 @@ body {
         background-size: 90%;
       }
       a {
-        color: #7496BE;
+        color: #7496be;
       }
     }
     button {
@@ -1218,7 +1263,7 @@ body {
       color: #fff;
       font-size: 1rem;
       border: 0;
-      background: #2AC66E;
+      background: #2ac66e;
       margin-bottom: 0.625rem;
     }
     .bomm {
@@ -1247,7 +1292,7 @@ body {
       margin-bottom: 2.75rem;
     }
     span {
-      color: #7496BE;
+      color: #7496be;
       font-size: 1rem;
       position: absolute;
       right: 2.25rem;
@@ -1262,7 +1307,7 @@ body {
       color: #fff;
       font-size: 1rem;
       border: 0;
-      background: #2AC66E;
+      background: #2ac66e;
       margin-bottom: 0.625rem;
     }
   }

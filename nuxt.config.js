@@ -55,13 +55,34 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [
-    {src: '~plugins/echarts',ssr: false}, 
-    {src: '~plugins/cookies',ssr: false}, 
-    {src: '~plugins/lazy',ssr: false}, 
-    {src: '~plugins/toast',ssr: false}, 
-    {src: '~plugins/map',ssr: false}, 
-    {src: '~plugins/vant',ssr: true}, 
+  plugins: [{
+      src: '~plugins/echarts',
+      ssr: false
+    },
+    {
+      src: '~plugins/cookies',
+      ssr: false
+    },
+    {
+      src: '~plugins/lazy',
+      ssr: false
+    },
+    {
+      src: '~plugins/toast',
+      ssr: false
+    },
+    {
+      src: '~plugins/map',
+      ssr: false
+    },
+    {
+      src: '~plugins/vant',
+      ssr: true
+    },
+    {
+      src: '~plugins/route',
+      ssr: true
+    },
   ],
   /*
    ** Auto import components
@@ -137,5 +158,5 @@ export default {
       ],
     },
   },
-  
+
 }

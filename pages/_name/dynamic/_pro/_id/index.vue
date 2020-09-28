@@ -3,7 +3,7 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back"/>
       <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/searchtop.png" alt class="search" />
+      <img src="~/assets/searchtop.png" alt class="search" @click="search"/>
       <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
       <ul class="cailist" v-if="list">
       <li class="cmn">
@@ -106,7 +106,7 @@
                   总价：
                   <span class="pri">
                     约
-                    <i>{{Number(item.price)}}</i>万/套
+                    <i>{{parseInt(item.price)}}</i>万/套
                   </span>
                 </p>
               </div>
@@ -172,6 +172,22 @@ export default {
       id:'0'
     };
   },
+ head() {
+    return {
+      title: this.info.title,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       btn: true,
@@ -216,6 +232,9 @@ export default {
       }else{
         this.list= true
       }
+    },
+    search(){
+      this.$router.push('/'+this.jkl+'/search')
     }
   }
 };

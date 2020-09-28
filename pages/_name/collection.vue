@@ -74,6 +74,22 @@ export default {
       list: res.data,
     };
   },
+  head() {
+    return {
+      title: "家园新房-我的收藏",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
 };
 </script>
 <style lang="less" scoped>

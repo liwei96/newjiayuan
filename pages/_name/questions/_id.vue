@@ -15,13 +15,19 @@
             <img :src="item.staff.head_img" alt />
             <div class="promsg">
               <h5>
-                {{item.staff.name}}
+                {{ item.staff.name }}
                 <span>专业解答</span>
               </h5>
               <p>咨询师帮您在线解答</p>
             </div>
           </div>
-          <nuxt-link :to="id?'/' + jkl + '/answer/' + item.id+'/'+id:'/' + jkl + '/answer/' + item.id">
+          <nuxt-link
+            :to="
+              id
+                ? '/' + jkl + '/answer/' + item.id + '/' + id
+                : '/' + jkl + '/answer/' + item.id
+            "
+          >
             <p class="msg">
               {{ item.answer.substr(0, 40) }}
               <i v-if="item.answer.length > 40">...</i>
@@ -50,11 +56,23 @@
       </li>
     </ul>
     <div class="fix">
-      <img src="~/assets/questions-fixed.png" alt @click="click"/>
+      <img src="~/assets/questions-fixed.png" alt @click="click" />
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
-    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
-      <tan-view :txt="remark" :typenum="typenum" :id="id" :name="name" @close="cli($event)" :typebtn="typebtn"></tan-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+        :proname="proname"
+      ></tan-view>
     </van-popup>
   </div>
 </template>
@@ -67,7 +85,7 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    "tan-view":tan
+    "tan-view": tan,
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -111,6 +129,22 @@ export default {
       id: id,
     };
   },
+  head() {
+    return {
+      title: "家园新房-楼盘问答",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,
@@ -125,6 +159,7 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
+      proname:''
     };
   },
   methods: {
@@ -162,16 +197,16 @@ export default {
       this.tan = true;
       this.remark = "问答页+预约看房";
     },
-    click(){
-      if(this.id){
-        this.$router.push('/' + this.jkl + '/quiz/' + id)
-      }else{
-        this.$router.push('/' + this.jkl + '/quiz')
+    click() {
+      if (this.id) {
+        this.$router.push("/" + this.jkl + "/quiz/" + this.id);
+      } else {
+        this.$router.push("/" + this.jkl + "/quiz");
       }
-      
-    }
+    },
   },
   mounted() {
+    this.proname = $cookies.get('proname')
     window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {

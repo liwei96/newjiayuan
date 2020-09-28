@@ -98,6 +98,7 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
+        :proname="building.name"
       ></tan-view>
     </van-popup>
   </div>
@@ -138,6 +139,22 @@ export default {
       building: res.building,
     };
   },
+  head() {
+    return {
+      title: "家园新房-"+this.building.name+'-周边详情',
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       mapname: "地铁",
@@ -163,7 +180,7 @@ export default {
       let baidu = [that.building.longitude, that.building.latitude];
       let img = require("~/assets/mappro.png");
       let pro = that.building.name;
-      let add = sessionStorage.getItem("buildaddress");
+      let add = that.building.address;
       AMap.convertFrom(baidu, "baidu", function (status, result) {
         if (result.info === "ok") {
           var lnglats = result.locations; // Array.<LngLat>

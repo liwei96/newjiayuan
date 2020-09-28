@@ -292,6 +292,22 @@ export default {
       phone:res.common.phone
     };
   },
+  head() {
+    return {
+      title: "家园新房-PK详情-"+this.one.name+'PK'+this.two.name,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,

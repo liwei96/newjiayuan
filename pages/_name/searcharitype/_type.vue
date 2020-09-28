@@ -93,6 +93,22 @@ export default {
       recommends: res.recommends,
     };
   },
+  head() {
+    return {
+      title: "家园新房-文章搜索",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       list: [],

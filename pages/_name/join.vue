@@ -372,6 +372,22 @@ export default {
       jkl: jkl,
     };
   },
+  head() {
+    return {
+      title: "家园新房-城市加盟",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   components: {
     "top-view": topView,
   },

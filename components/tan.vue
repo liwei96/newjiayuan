@@ -1,31 +1,44 @@
 <template>
   <div id="Popup">
-    <img src="~/assets/w-del.png" alt class="close" @click="close" />
-    <h3>{{ name }}</h3>
-    <p class="type">{{ str }}</p>
-    <div class="one" v-show="!type">
-      <input type="tel" placeholder="请输入手机号" v-model="baoming" />
-      <p class="xiyi">
-        <input type="checkbox" v-model="checks" />我已阅读并同意
-        <router-link :to="'/'">《家园用户协议》</router-link>
-      </p>
-      <button @click="send">立即订阅</button>
-      <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
+    <div v-show="!ishengda">
+      <img src="~/assets/w-del.png" alt class="close" @click="close" />
+      <h3>{{ name }}</h3>
+      <p class="type">{{ str }}</p>
+      <div class="one" v-show="!type">
+        <input type="tel" placeholder="请输入手机号" v-model="baoming" />
+        <p class="xiyi">
+          <input type="checkbox" v-model="checks" />我已阅读并同意
+          <router-link :to="'/'">《家园用户协议》</router-link>
+        </p>
+        <button @click="send">立即订阅</button>
+        <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
+      </div>
+      <div class="two" v-show="type">
+        <p>
+          验证码已发送到
+          <i id="ytel">187****4376</i> 请注意查看
+        </p>
+        <input type="number" placeholder="输入验证码" v-model="ma" />
+        <span class="t-b-scode" @click="send">57秒后重发</span>
+        <button @click="put">确定</button>
+      </div>
     </div>
-    <div class="two" v-show="type">
-      <p>
-        验证码已发送到
-        <i id="ytel">187****4376</i> 请注意查看
-      </p>
-      <input type="number" placeholder="输入验证码" v-model="ma" />
-      <span class="t-b-scode">57秒后重发</span>
-      <button @click="put">确定</button>
+    <div v-show="ishengda">
+      <div class="hengda">
+        <img src="~/assets/hengda-del.png" alt="" class="del" @click="close" />
+        <img class="top" src="~/assets/hengda.jpg" alt="" />
+        <input type="text" v-model="IDcode" placeholder="输入身份证号后6位" />
+        <p class="tishi">
+          注: 根据本楼盘售楼处规定，实地看房需先提前报备 身份证后6位
+        </p>
+        <button @click="daput">申请报备</button>
+      </div>
     </div>
     <p class="tishimsg" v-if="show">{{ msg }}</p>
   </div>
 </template>
 <script>
-import { put, check, send } from "~/api/api";
+import { put, check, send, heng } from "~/api/api";
 export default {
   props: {
     id: {
@@ -47,6 +60,9 @@ export default {
     txt: {
       type: String,
     },
+    proname: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -58,6 +74,8 @@ export default {
       type: false,
       str: "提前预约看房，我们将提供免费专车接送和专业楼盘讲解",
       msg: "请输入正确手机号",
+      ishengda: false,
+      IDcode: "",
     };
   },
   methods: {
@@ -117,7 +135,7 @@ export default {
           var interval = setInterval(fn, 1000);
           $("#ytel").html(tel);
         } else {
-          this.$toast.fail(res.data.message);
+          this.toast(res.data.message)
         }
       });
     },
@@ -143,27 +161,49 @@ export default {
       let ma = this.ma;
       let ip = ip_arr["ip"];
       check({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
+        console.log(res)
         if (res.data.code == 200) {
-          this.toast("提交成功");
-          if (!$cookies.get("token")) {
-            $cookies.set("token", res.data.token, 21600);
-            $cookies.set("phone", phone, 21600);
+          if (this.proname.indexOf("恒大") == -1) {
+            this.toast("提交成功");
+            if (!$cookies.get("token")) {
+              $cookies.set("token", res.data.token, 21600);
+              $cookies.set("phone", phone, 21600);
+              let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+              $cookies.set("username", tel);
+            }
+            this.type = false;
+            this.$emit("close", false);
+          } else {
+            this.ishengda = true;
           }
         } else {
-          this.toast(res.data.message);
+          this.toast(res.data.message)
         }
-        this.type = false;
-        this.$emit("close", false);
       });
     },
     close() {
       this.type = false;
       this.$emit("close", false);
     },
+    daput() {
+      let that = this;
+      if(!that.IDcode){
+        that.toast('请填写后六位')
+        return
+      }
+      if(that.IDcode.length != 6){
+        that.toast('请填写后六位')
+        return
+      }
+      heng({ identity: that.IDcode, phone: that.baoming }).then((res) => {
+        that.toast("提交成功");
+        this.type = false;
+        this.$emit("close", false);
+      });
+    },
   },
   mounted() {
     let type = this.name;
-    console.log(type)
     if (type == "变价通知我") {
       this.str =
         "价格变动这么快？订阅楼盘变价通知，楼盘变价我们将第一时间通知您";
@@ -185,7 +225,7 @@ export default {
       this.str = "一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘";
     } else if (type == "领取优惠") {
       this.str = "专享限时优惠折扣，家园专场推出，早抢早优惠";
-      $cookies.set('have',1)
+      $cookies.set("have", 1);
     } else if (type == "免费领取") {
       this.str = "精准匹配房源，免费接送一次看完好房";
     } else if (type == "获取详细分析报告") {
@@ -218,6 +258,7 @@ export default {
   height: 23.4375rem;
   background-color: #fff;
   border-radius: 0.75rem;
+  overflow: hidden;
   position: relative;
   .close {
     width: 1rem;
@@ -338,6 +379,48 @@ export default {
     top: 46%;
     left: 50%;
     margin-left: -5.625rem;
+  }
+  .hengda {
+    .top {
+      width: 100%;
+    }
+    .del {
+      width: 0.875rem;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+    }
+    input {
+      height: 3.4375rem;
+      border-radius: 0.375rem;
+      border: 0.09375rem solid #b3b3b3;
+      padding-left: 0.9375rem;
+      width: 16.625rem;
+      margin-top: 2.3125rem;
+      margin-left: 1.625rem;
+    }
+    .tishi {
+      width: 17rem;
+      color: #ff3333;
+      font-size: 0.75rem;
+      line-height: 1.125rem;
+      margin-left: 1.625rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    button {
+      background-color: #2ac66d;
+      width: 16.9375rem;
+      height: 2.75rem;
+      border-radius: 0.25rem;
+      text-align: center;
+      line-height: 2.75rem;
+      border: 0;
+      font-weight: bold;
+      color: #fff;
+      font-size: 0.875rem;
+      margin-left: 1.625rem;
+    }
   }
 }
 </style>

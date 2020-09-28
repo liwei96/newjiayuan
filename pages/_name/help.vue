@@ -1,7 +1,7 @@
 <template>
   <div id="help">
     <top-view :jkl="jkl"></top-view>
-    <img src="~/assets/lun02.jpg" alt class="topimg" />
+    <img src="~/assets/healp-top.jpg" alt class="topimg" />
     <div class="con">
       <p class="tit">您能接受的总价范围是多少？</p>
       <div class="sliderbox">
@@ -120,6 +120,22 @@ export default {
       countries: res.countries,
       areas: res.areas,
       house_types: res.house_types,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-帮我找房",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {

@@ -46,7 +46,7 @@
           </div>
           <div class="fork box" @click="shou">
             <div class="img">
-              <img :src="heart" alt />
+              <img :src="collect == 0 ? heart : hearted" alt />
             </div>
             <p>收藏</p>
           </div>
@@ -92,7 +92,7 @@
     <div class="tel">
       <a :href="'tel:' + phone">
         <img src="~/assets/tel.jpg" alt />
-        <p>{{ phone }}</p>
+        <p>{{ phonemsg }}</p>
       </a>
     </div>
     <div class="line"></div>
@@ -558,6 +558,7 @@
                 {{ item.mobile }}
                 <span v-if="item.mine" @click="del(item.id, key)">删除</span>
               </h6>
+
               <p>{{ item.time }}</p>
             </div>
             <div
@@ -568,7 +569,9 @@
               赞({{ item.like_num }})
             </div>
           </div>
-          <div class="dian-bom">{{ item.content }}</div>
+          <nuxt-link :to="'/' + jkl + '/commentdetail/' + id + '/' + item.id">
+            <div class="dian-bom">{{ item.content }}</div>
+          </nuxt-link>
         </li>
       </ul>
       <nuxt-link :to="'/' + jkl + '/comment/' + id">
@@ -649,6 +652,7 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
+        :proname="abstract.name"
       ></tan-view>
     </van-popup>
     <van-popup v-model="huo" :style="{ background: 'rgba(0,0,0,0)' }">
@@ -676,7 +680,7 @@
             </p>
             <p>
               详细活动方案请致电家园客服电话：
-              <span>400-966-9995</span> 注：活动最终解释权归家园所有
+              <span>400-718-6686</span> 注：活动最终解释权归家园所有
             </p>
           </div>
         </div>
@@ -747,6 +751,24 @@ export default {
       id: id,
       specials: res.specials,
       count: res.count,
+      collect: res.collect,
+      cityname:res.common.city_info.current.short
+    };
+  },
+  head() {
+    return {
+      title: this.abstract.name+'-'+this.cityname,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {
@@ -795,26 +817,39 @@ export default {
       img1: require("~/assets/checked.png"),
       heart: require("~/assets/proheart.png"),
       hearted: require("~/assets/collected.png"),
+      phonemsg:''
     };
   },
   methods: {
     del(id, key) {
       let token = $cookies.get("token");
-      delcomm({ token: token, id: id }).then((res) => {
-        if (res.data.code == 200) {
-          this.toast("删除成功");
-          this.$router.go(0);
-        }
-      });
+      if (token) {
+        delcomm({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            this.lists.slice(key, 1);
+            this.toast("删除成功");
+            this.$router.go(0);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
     },
     like(id) {
       let token = $cookies.get("token");
-      likecomm({ token: token, id: id }).then((res) => {
-        if (res.data.code == 200) {
-          this.toast("点赞成功");
-          this.$router.go(0);
-        }
-      });
+      if (token) {
+        likecomm({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            this.$router.go(0);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
     },
     setimgmsgnum(e) {
       this.imgmsgnum = e;
@@ -833,27 +868,27 @@ export default {
     },
     setnavnum(e) {
       this.navnum = e;
-      switch(e){
+      switch (e) {
         case 0:
-          scroll(0,970)
+          scroll(0, 970);
           break;
         case 1:
-          scroll(0,1178)
+          scroll(0, 1178);
           break;
         case 2:
-          scroll(0,1600)
+          scroll(0, 1600);
           break;
         case 3:
-          scroll(0,2300)
+          scroll(0, 2300);
           break;
         case 4:
-          scroll(0,3400)
+          scroll(0, 3400);
           break;
         case 5:
-          scroll(0,3800)
+          scroll(0, 3800);
           break;
         case 6:
-          scroll(0,4000)
+          scroll(0, 4000);
           break;
       }
     },
@@ -1171,8 +1206,13 @@ export default {
         collect({ id: that.id, type: 1, token: $cookies.get("token") }).then(
           (res) => {
             if (res.data.code == 200) {
-              that.toast("收藏成功");
-              that.heart = that.hearted;
+              if (that.collect == 0) {
+                that.toast("收藏成功");
+                that.collect = 1;
+              } else {
+                that.toast("取消成功");
+                that.collect = 0;
+              }
             }
           }
         );
@@ -1184,26 +1224,28 @@ export default {
       var top = window.scrollY;
       if (top >= 970) {
         $(".nav-icon").css({ position: "fixed", top: "2.75rem" });
-        if (top >= 1178&&top<1600) {
+        if (top >= 1178 && top < 1600) {
           this.navnum = 1;
-        }else if(top>=1600&&top<2000){
-          this.navnum = 2
-        }else if(top>=2000&&top<2300){
-          this.navnum = 3
-        }else if(top>=2300&&top<3400){
-          this.navnum = 4
-        }else if(top>=3800&&top<4000){
-          this.navnum = 5
-        }else if(top>=4000){
-          this.navnum = 6
+        } else if (top >= 1600 && top < 2000) {
+          this.navnum = 2;
+        } else if (top >= 2000 && top < 2300) {
+          this.navnum = 3;
+        } else if (top >= 2300 && top < 3400) {
+          this.navnum = 4;
+        } else if (top >= 3800 && top < 4000) {
+          this.navnum = 5;
+        } else if (top >= 4000) {
+          this.navnum = 6;
         }
       } else if (top < 970) {
         $(".nav-icon").css({ position: "relative", top: "0" });
-        this.navnum = 0
+        this.navnum = 0;
       }
     },
   },
   mounted() {
+    this.phonemsg = this.phone.split(',')[0]+'转'+this.phone.split(',')[1]
+    $cookies.set('proname',this.abstract.name)
     if (localStorage.getItem(this.$route.params.id)) {
       this.hour = localStorage.getItem(this.$route.params.id);
     } else {
@@ -1551,7 +1593,7 @@ export default {
     color: #302e2a;
     font-size: 1.5rem;
     position: absolute;
-    top: 0.625rem;
+    top: 0.3rem;
     left: 2.125rem;
   }
 }
@@ -1689,7 +1731,7 @@ export default {
 .nav-icon {
   border-bottom: 0.03125rem solid #f5f5f5;
   background-color: #fff;
-  z-index: 10;
+  z-index: 1000;
   .swiper-nav {
     overflow: hidden;
     .swiper-slide {
@@ -1737,6 +1779,8 @@ export default {
     height: 4.375rem;
     border-radius: 0.0625rem;
     background-color: #ffeded;
+    background: url("~assets/b1.png") no-repeat;
+    background-size: 100%;
     margin-top: 1.25rem;
     // display: flex;
     .hui-left {
@@ -1785,6 +1829,8 @@ export default {
     }
   }
   .two {
+    background: url("~assets/b2.png") no-repeat;
+    background-size: 100%;
     .hui-left {
       h6 {
         font-size: 1rem;

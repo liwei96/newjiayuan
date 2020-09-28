@@ -72,6 +72,7 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
+        :proname="info.name"
       ></tan-view>
     </van-popup>
   </div>
@@ -128,6 +129,22 @@ export default {
       phone:res1.common.phone,
       info:res1.info,
       id:id
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-楼盘动态详情-"+this.info.name,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {

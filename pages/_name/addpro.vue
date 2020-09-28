@@ -92,6 +92,22 @@ export default {
       list: [],
     };
   },
+  head() {
+    return {
+      title: "家园新房-PK添加楼盘",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   components: {
     "top-view": top,
   },

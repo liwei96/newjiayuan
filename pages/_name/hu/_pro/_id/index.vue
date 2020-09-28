@@ -200,6 +200,7 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
+        :proname="now.name"
       ></tan-view>
     </van-popup>
   </div>
@@ -244,6 +245,22 @@ export default {
       id: pro,
       staff: res.common.staff,
       phone: res.common.phone,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-"+this.now.name+'-户型详情-'+this.now.title,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {

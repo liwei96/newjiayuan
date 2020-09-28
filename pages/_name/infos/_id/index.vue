@@ -108,6 +108,22 @@ export default {
       tops:res1.tops
     };
   },
+  head() {
+    return {
+      title: "家园新房-咨询列表",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,
@@ -352,7 +368,7 @@ li {
         font-size: 0.875rem;
         line-height: 1.25rem;
         font-weight: 400;
-        height: 1.25rem;
+        height: 2.5rem;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;

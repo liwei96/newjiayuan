@@ -32,7 +32,7 @@
       <template v-for="(item,key) in list">
           <div class="li" @click="go(item.id,item.name)" :key="key">
             <h4>
-              {{item.name}}
+              {{item.name}} <i>{{item.city}}</i>
               <span>在售</span>
             </h4>
             <div class="msg">
@@ -69,6 +69,38 @@ export default {
     return {
       jkl: jkl,
       hots: res.hot_search,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-楼盘名搜索",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-楼盘搜索",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房-楼盘搜索"
+        },
+        {
+          name: "keywords",
+          content: "家园新房-楼盘搜索"
+        }
+      ]
     };
   },
   data() {
@@ -259,6 +291,10 @@ header {
         font-size: 0.6875rem;
         background-color: #ebf7f0;
         border-radius: 0.125rem;
+      }
+      i {
+        font-style: normal;
+        font-size: 0.75rem;
       }
     }
     .msg {

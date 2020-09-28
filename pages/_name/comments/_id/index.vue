@@ -17,16 +17,23 @@
           </div>
         </div>
         <div class="bom">
-          <p class="txt">{{ item.content }}</p>
+          <nuxt-link :to="'/' + jkl + '/commentdetail/' + id + '/' + item.id">
+            <p class="txt">{{ item.content }}</p>
+          </nuxt-link>
           <div class="type">
             <span class="time">{{ item.time }}</span>
-            <span class="del" v-if="item.mine == 1" @click="del(item.id,key)">删除</span>
+            <span class="del" v-if="item.mine == 1" @click="del(item.id, key)"
+              >删除</span
+            >
             <p class="btn">
-              <span :class="item.my_like==1?'active':''" @click="like(item.id)">
-                <img :src="item.my_like == 1? img1:img" alt />
+              <span
+                :class="item.my_like == 1 ? 'active' : ''"
+                @click="like(item.id)"
+              >
+                <img :src="item.my_like == 1 ? img1 : img" alt />
                 {{ item.like_num }}
               </span>
-              <span>
+              <span @click="talk(item.id)">
                 <img src="~/assets/zixun.png" alt />
                 {{ item.children.length }}
               </span>
@@ -51,6 +58,7 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
+        :proname="proname"
       ></tan-view>
     </van-popup>
   </div>
@@ -59,7 +67,7 @@
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 import tan from "@/components/tan.vue";
-import { comments,delcomm,likecomm } from "@/api/api";
+import { comments, delcomm, likecomm } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
@@ -79,7 +87,7 @@ export default {
             id: id,
             page: 1,
             limit: 10,
-            token:token
+            token: token,
           },
         })
         .then((resp) => {
@@ -95,6 +103,22 @@ export default {
       id: id,
     };
   },
+  head() {
+    return {
+      title: "家园新房-点评列表",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       value: 3,
@@ -108,8 +132,9 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      img:require('~/assets/noclick.png'),
-      img1:require('~/assets/checked.png')
+      img: require("~/assets/noclick.png"),
+      img1: require("~/assets/checked.png"),
+      proname:''
     };
   },
   methods: {
@@ -121,7 +146,7 @@ export default {
       if (scrollTop + scrollHeight >= windowHeight) {
         if (that.isok) {
           that.isok = false;
-          comments({ id: id, page: that.page, limit: 10 }).then((res) => {
+          comments({ id: that.id, page: that.page, limit: 10 }).then((res) => {
             that.isok = true;
             that.lists = that.lists.concat(res.data.data);
           });
@@ -139,27 +164,42 @@ export default {
       this.tan = true;
       this.remark = "评论页+预约看房";
     },
-    del(id,key){
-      let token = $cookies.get('token')
-      delcomm({token:token,id:id}).then(res=>{
-        if(res.data.code==200){
-          this.lists.slice(key,1)
-          this.toast('删除成功')
-          this.$router.go(0)
-        }
-      })
+    del(id, key) {
+      let token = $cookies.get("token");
+      if (token) {
+        delcomm({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            this.lists.slice(key, 1);
+            this.toast("删除成功");
+            this.$router.go(0);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
     },
-    like(id){
-      let token = $cookies.get('token')
-      likecomm({token:token,id:id}).then(res=>{
-        if(res.data.code==200){
-          this.toast('点赞成功')
-          this.$router.go(0)
-        }
-      })
-    }
+    like(id) {
+      let token = $cookies.get("token");
+      if (token) {
+        likecomm({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            this.$router.go(0);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
+    talk(kid) {
+      this.$router.push("/" + this.jkl + "/commentback/" + this.id + "/" + kid);
+    },
   },
   mounted() {
+    this.proname = $cookies.get('proname')
     window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {
@@ -171,6 +211,7 @@ export default {
 .con {
   padding: 3.6875rem 4% 3.75rem 4%;
   li {
+    margin-bottom: 1.25rem;
     .top {
       display: flex;
       margin-bottom: 0.625rem;

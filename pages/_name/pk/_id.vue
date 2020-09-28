@@ -93,6 +93,22 @@ export default {
       list: res.data,
     };
   },
+  head() {
+    return {
+      title: "家园新房-楼盘PK",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       checked: true,

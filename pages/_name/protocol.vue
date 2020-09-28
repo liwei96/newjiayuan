@@ -21,6 +21,22 @@ export default {
       jkl: jkl,
     };
   },
+  head() {
+    return {
+      title: "家园新房-家园服务",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
 };
 </script>
 <style lang="less" scoped>

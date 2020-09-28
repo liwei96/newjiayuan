@@ -44,6 +44,22 @@
 </template>
 <script>
 export default {
+  head() {
+    return {
+      title: "家园新房-雷达图评分规则",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {};
   },

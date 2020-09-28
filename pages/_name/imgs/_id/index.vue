@@ -119,6 +119,22 @@ export default {
       jkl: jkl,
     };
   },
+  head() {
+    return {
+      title: "家园新房-楼盘相册",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,

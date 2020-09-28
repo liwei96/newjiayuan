@@ -4,7 +4,7 @@
       <img class="back" src="~/assets/goback.png" alt @click="back"/>
       <nuxt-link :to="'/'+jkl+'/address'">
       <p class="city">
-        杭州
+        {{cityname}}
         <img src="~/assets/downsan.png" alt />
       </p>
       </nuxt-link>
@@ -244,26 +244,30 @@
       <button @click="help">帮我找房</button>
       <div class="other">
         <h3>猜你喜欢</h3>
-        <div class="pro" v-for="(item,key) in other" :key="key">
-          <img :src="item.img" alt />
-          <div class="pro-msg">
-            <h5>
-              {{item.name}}
-              <span>{{item.state}}</span>
-            </h5>
-            <p class="pro-price">
-              <span>{{item.price}}</span>
-              <i>元/m²</i>起
-            </p>
-            <p
-              class="attr"
-            >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
-            <p class="pro-icon">
-              <span class="pro-icon-zhuang">{{item.decorate}}</span>
-              <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
-            </p>
+        <template v-for="(item,key) in other">
+        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{item.name}}
+                <span>{{item.state}}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{item.price}}</span>
+                <i>元/m²</i>
+              </p>
+              <p
+                class="attr"
+              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{item.decorate}}</span>
+                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+              </p>
+            </div>
           </div>
-        </div>
+        </nuxt-link>
+      </template>
       </div>
     </div>
     <div class="load" v-if="load">
@@ -434,6 +438,22 @@ export default {
       cityname:res.common.city_info.current.short
     };
   },
+  head() {
+    return {
+      title: "家园新房-"+this.cityname+'-楼盘查询',
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       other: [],
@@ -562,6 +582,11 @@ export default {
     getmore() {
       let that = this;
       var scrollTop = window.scrollY;
+      if (scrollTop >= 44) {
+        $(".nav").css({ position: "fixed", top: "2.75rem" });
+      } else {
+        $(".nav").css({ position: "relative", top: "0" });
+      }
       var scrollHeight = window.screen.availHeight;
       var windowHeight = document.body.scrollHeight;
       let city = $cookies.get("city");
@@ -879,16 +904,16 @@ export default {
     // console.log(this.$route.path);
     // 滑动监控
     localStorage.setItem('cityname',this.cityname)
-    $(window).scroll(function () {
-      var scrollTop =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop >= 44) {
-        $(".nav").css({ position: "fixed", top: "2.75rem" });
-      } else {
-        $(".nav").css({ position: "relative", top: "0" });
-      }
-      // console.log(scrollTop);
-    });
+    // $(window).scroll(function () {
+    //   var scrollTop =
+    //     document.documentElement.scrollTop || document.body.scrollTop;
+    //   if (scrollTop >= 44) {
+    //     $(".nav").css({ position: "fixed", top: "2.75rem" });
+    //   } else {
+    //     $(".nav").css({ position: "relative", top: "0" });
+    //   }
+    //   // console.log(scrollTop);
+    // });
     window.addEventListener("scroll", this.getmore);
   },
   watch: {
@@ -1013,6 +1038,7 @@ header {
   padding: 0 4%;
   width: 92%;
   background-color: #fff;
+  z-index: 1000;
   .nn {
     display: flex;
     li {

@@ -205,6 +205,22 @@ export default {
       colls:res2.data
     };
   },
+  head() {
+    return {
+      title: "家园新房-个人主页",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       show: false,

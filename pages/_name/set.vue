@@ -71,6 +71,22 @@ export default {
       tel:res.common.phone,
     };
   },
+  head() {
+    return {
+      title: "家园新房-个人设置",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       show: false,

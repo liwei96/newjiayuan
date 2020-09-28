@@ -226,6 +226,22 @@ export default {
       phone: res.common.phone,
     };
   },
+  head() {
+    return {
+      title: "家园新房-雷达图PK-"+this.list[0].name+'PK'+this.list[1].name,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,

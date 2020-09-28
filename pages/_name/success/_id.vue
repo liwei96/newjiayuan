@@ -76,7 +76,7 @@
           </h6>
           <p>为客户提供专业的购房建议</p>
         </div>
-        <button>免费咨询</button>
+        <button @click="pop('免费咨询',104,'成交案例详情页+免费咨询')">免费咨询</button>
       </div>
     </div>
     <div class="line"></div>
@@ -170,6 +170,22 @@ export default {
       staff: res.common.staff.staff,
     };
   },
+  head() {
+    return {
+      title: "家园新房-"+this.article.title,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       btn: true,
@@ -198,7 +214,7 @@ export default {
       this.name = data.name;
       this.typebtn = 1;
       this.tan = true;
-      this.remark = "动态列表页+预约看房";
+      this.remark = "成交案例详情页+预约看房";
     },
     btns(){
       if(this.list){
@@ -206,7 +222,14 @@ export default {
       }else{
         this.list= true
       }
-    }
+    },
+    pop(name,position,txt){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt
+    },
   },
 };
 </script>

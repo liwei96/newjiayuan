@@ -66,7 +66,7 @@
     <div class="help" @click="gohelp">
       <button>帮我找房</button>
     </div>
-    <div class="te">
+    <div class="te" v-if="discounts.length">
       <div class="top">
         <img class="topimg" src="~/assets/index-jinte.png" alt />
         <nuxt-link :to="'/'+jkl+'/special'">
@@ -127,15 +127,16 @@
         <div class="swiper-pagination"></div>
       </div>
     </div>
-    <div class="strict">
+    <div class="strict" v-if="stricts.length">
       <h3>
         家园严选
         <span class="n">必看好房</span>
-
+        <nuxt-link :to="'/'+jkl+'/search'">
         <span class="more">
           全部楼盘
           <img src="~/assets/j-more.png" alt />
         </span>
+        </nuxt-link>
       </h3>
       <div class="swiper-strict">
         <div class="swiper-wrapper">
@@ -155,7 +156,7 @@
         </div>
       </div>
     </div>
-    <div class="success">
+    <div class="success" v-if="finishes.length">
       <h3>
         成交案例
         <span class="n">成交故事</span>
@@ -260,7 +261,6 @@ export default {
   async asyncData(context) {
     //   console.log(context.$axios)
     let city = context.store.state.city;
-    console.log(city)
     // let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let [res] = await Promise.all([
@@ -286,6 +286,22 @@ export default {
       dynamics: res.dynamics,
       jkl: jkl,
       cityname:res.common.city_info.current.short
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-"+this.cityname,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {

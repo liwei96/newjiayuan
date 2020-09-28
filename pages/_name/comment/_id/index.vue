@@ -2,20 +2,26 @@
   <div id="comment">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <div class="ject-top" v-for="(item,key) in list" :key="key">
+      <div class="ject-top" v-for="(item, key) in list" :key="key">
         <div class="top-left">
           <img :src="item.img" alt />
         </div>
         <div class="top-right">
           <h4>
-            {{item.name}}
+            {{ item.name }}
             <span>在售</span>
           </h4>
-          <p class="pri"><span>{{item.price}}</span>元/m²</p>
-          <p class="typemsg">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+          <p class="pri">
+            <span>{{ item.price }}</span
+            >元/m²
+          </p>
+          <p class="typemsg">
+            {{ item.type }} | {{ item.city }}-{{ item.country.substr(0, 2) }} |
+            {{ item.area }}m²
+          </p>
           <p class="icon">
-            <span class="zu">{{item.decorate}}</span>
-            <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+            <span class="zu">{{ item.decorate }}</span>
+            <span v-for="(val, k) in item.feature" :key="k">{{ val }}</span>
           </p>
         </div>
       </div>
@@ -59,26 +65,42 @@ export default {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
-    let city = context.store.state.city
-     let  [res] = await Promise.all([
-        context.$axios
-          .get("/jy/compare/cards", {
-            params: {
-              ids: id,
-              token: token,
-              city: city,
-            },
-          })
-          .then((resp) => {
-            let data = resp.data;
-            // console.log(data)
-            return data;
-          }),
-      ]);
+    let city = context.store.state.city;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/compare/cards", {
+          params: {
+            ids: id,
+            token: token,
+            city: city,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
       id: id,
-      list:res.data
+      list: res.data,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-楼盘点评",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {
@@ -88,27 +110,33 @@ export default {
       textnum: 0,
       typenum: 4,
       msg: "一般",
-      list:[]
+      list: [],
     };
   },
   methods: {
     ask() {
       let that = this;
-      let token = $cookies.get('token')
-      let id = this.$route.params.id
-      comm({
-        token: token,
-        bid: id,
-        content: that.text,
-        counsider_buy: that.typenum,
-        score: that.value,
-      }).then(res=>{
-        if(res.data.code == 200) {
-          this.toast('点评成功')
-          console.log(res)
-          that.$router.push('/'+that.jkl+'/comments/'+that.id)
-        }
-      })
+      let token = $cookies.get("token");
+      let id = this.$route.params.id;
+      if (token) {
+        comm({
+          token: token,
+          bid: id,
+          content: that.text,
+          counsider_buy: that.typenum,
+          score: that.value,
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.toast("点评成功");
+            console.log(res);
+            that.$router.push("/" + that.jkl + "/comments/" + that.id);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
     },
   },
   watch: {

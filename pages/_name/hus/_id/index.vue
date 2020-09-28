@@ -2,30 +2,31 @@
   <div id="hus">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <template v-for="(item,key) in other_rooms">
-        <nuxt-link :to="'/'+jkl+'/hu/'+id+'/'+item.id" :key="key">
-          <div class="li" >
+      <template v-for="(item, key) in other_rooms">
+        <nuxt-link :to="'/' + jkl + '/hu/' + id + '/' + item.id" :key="key">
+          <div class="li">
             <div class="left">
               <img :src="item.small" alt />
             </div>
             <div class="right">
               <h4>
-                {{item.title}}
-                <span>{{item.state}}</span>
+                {{ item.title }}
+                <span>{{ item.state }}</span>
               </h4>
               <p>
                 建面：
-                <span>{{item.area}}m²</span>
+                <span>{{ item.area }}m²</span>
               </p>
               <p>
                 类型：
-                <span>{{item.type}}</span>
+                <span>{{ item.type }}</span>
               </p>
               <p class="total">
                 总价：
                 <span>
                   约
-                  <i>{{item.price}}</i>万/套
+                  <i>{{ item.price }}</i
+                  >万/套
                 </span>
               </p>
             </div>
@@ -34,8 +35,20 @@
       </template>
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
-    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
-      <tan-view :txt="remark" :typenum="typenum" :id="id" :name="name" @close="cli($event)" :typebtn="typebtn"></tan-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+        :proname='proname'
+      ></tan-view>
     </van-popup>
   </div>
 </template>
@@ -47,7 +60,7 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
     let id = context.params.id;
@@ -72,33 +85,53 @@ export default {
     return {
       jkl: jkl,
       other_rooms: res.other_rooms,
-      phone:res.common.phone,
-      id:id
+      phone: res.common.phone,
+      id: id,
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-户型列表",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {
     return {
       other_rooms: [],
-      phone:'',
-      tan:false,
-      typenum:0,
-      typebtn:1,
-      name:'',
-      remark:'',
+      phone: "",
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      proname: "",
     };
   },
-  methods:{
+  methods: {
     chang(data) {
       this.typenum = data.position;
       this.name = data.name;
-      this.typebtn = 1
-      this.tan = true
-      this.remark='户型列表页+预约看房'
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "户型列表页+预约看房";
     },
     cli(e) {
       this.tan = e;
     },
-  }
+  },
+  mounted() {
+    this.proname = $cookies.get("proname");
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -23,7 +23,7 @@
           <span>
             <i>{{building.total_price}}</i>万起
           </span>
-          <button>询底价</button>
+          <button @click="pop('询底价',105,'楼盘详情内页+询底价')">询底价</button>
         </li>
         <li>
           类 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
@@ -32,10 +32,12 @@
         <li>
           户 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
           <span>{{building.room_types}}</span>
+          <nuxt-link :to="'/'+jkl+'/hus/'+id">
           <p>
             更多户型
             <img src="~/assets/j-more.png" alt />
           </p>
+          </nuxt-link>
         </li>
         <li class="address">
           楼盘地址：
@@ -50,7 +52,7 @@
         <li>
           开盘时间：
           <span>{{building.open_time}}</span>
-          <button>最新开盘通知</button>
+          <button @click="pop('最新开盘通知',92,'楼盘详情内页+最新开盘通知')">最新开盘通知</button>
         </li>
         <li>
           加推时间：
@@ -129,16 +131,32 @@
         <i v-if="showmore">{{building.introduce}}</i>
       </p>
     </div>
-    <nav-view></nav-view>
+     <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
+    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
   </div>
 </template>
 <script>
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
+import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    'tan-view':tan
   },
   async asyncData(context) {
     let other = context.query.other;
@@ -165,6 +183,23 @@ export default {
       jkl: jkl,
       phone: res.common.phone,
       building: res.building,
+      id:position
+    };
+  },
+  head() {
+    return {
+      title: "家园新房-"+this.building.name+'-楼盘详情页',
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
     };
   },
   data() {
@@ -172,9 +207,34 @@ export default {
       jkl: "",
       phone: "",
       building: {},
-      showmore:false
+      showmore:false,
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0',
     };
   },
+  methods:{
+    cli(e) {
+      this.tan = e;
+    },
+    chang(data) {
+      this.typenum = data.position;
+      this.name = data.name;
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "成交案例详情页+预约看房";
+    },
+    pop(name,position,txt){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt
+    },
+  }
 };
 </script>
 <style lang="less" scoped>

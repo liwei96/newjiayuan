@@ -50,11 +50,11 @@
         {{article.description}}
       </div>
       <div class="ari" v-html="article.content"></div>
-      <div class="type">
+      <div class="type" v-if="article.tags.length">
         标签：
         <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
       </div>
-      <div class="project" v-if="project.length">
+      <div class="project" v-if="true">
         <div class="ject-top">
           <div class="top-left">
             <img :src="project.img" alt />
@@ -87,13 +87,13 @@
         <img src="~/assets/typeicon.png" alt />
         买房资格
       </p>
-      <div class="agre">
+      <div class="agre" @click="like">
         <img src="~/assets/noclick.png" alt />
         <p>{{article.like_num}}</p>
       </div>
       <p class="free">
         <span>免责声明：</span>
-        凡本站注明 “来自：XXX(非家园网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-966-9995
+        凡本站注明 “来自：XXX(非家园网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-718-6686
       </p>
       <div class="other">
         <h4>大家都在看</h4>
@@ -131,6 +131,7 @@
   </div>
 </template>
 <script>
+import { infolike } from '@/api/api'
 import tan from "@/components/tan.vue";
 export default {
   components: {
@@ -166,6 +167,22 @@ export default {
       phone: res.common.phone,
     };
   },
+  head() {
+    return {
+      title: "家园新房-"+this.article.title,
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       article: {},
@@ -199,6 +216,29 @@ export default {
         this.list=false
       }else{
         this.list= true
+      }
+    },
+    like(){
+      let token = $cookies.get("token");
+      let id = this.article.id
+      if (token) {
+        infolike({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            if(this.article.my_like){
+              this.article.like_num = this.article.like_num-1
+              this.article.my_like = 0
+              this.toast('取消成功')
+            }else{
+              this.article.like_num = this.article.like_num+1
+              this.article.my_like = 1
+              this.toast('点赞成功')
+            }
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
       }
     }
   },
@@ -323,7 +363,7 @@ header {
     color: rgba(47, 49, 51, 1);
     font-size: 0.9375rem;
     margin-top: 1.25rem;
-    margin-bottom: 1.125rem;
+    
     span {
       color: rgba(150, 151, 153, 1);
       margin-right: 0.6875rem;
@@ -332,6 +372,7 @@ header {
   .project {
     margin: 0 4%;
     height: 9.375rem;
+    margin-top: 1.125rem;
     padding: 0.75rem;
     padding-bottom: 0;
     box-shadow: 0px 0px 1.1875rem 0.09375rem rgba(0, 0, 0, 0.03);

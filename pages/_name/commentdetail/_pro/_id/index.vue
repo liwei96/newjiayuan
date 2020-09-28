@@ -2,10 +2,46 @@
   <div id="answer">
     <top-view :jkl="jkl"></top-view>
     <div class="topmsg">
+      <div class="user">
+        <img src="~/assets/jiapeo.png" alt="" />
+        <div class="right">
+          <h5>{{ answer.name }}</h5>
+          <van-rate
+            v-model="answer.score"
+            :size="12"
+            color="#FF7519"
+            void-icon="star"
+            void-color="#E8EBED"
+          />
+        </div>
+      </div>
       <p class="tit">
-        <span>问</span>
-        {{ answer.question }}
+        {{ answer.content }}
       </p>
+      <p class="time">
+        {{ answer.time }}
+
+        <span @click="talk(answer.id)">
+          <img src="~/assets/zixun.png" alt />
+          {{ answer.children.length }}
+        </span>
+        <span
+          :class="answer.my_like == 1 ? 'active' : ''"
+          @click="like(answer.id)"
+        >
+          <img :src="answer.my_like == 1 ? img1 : img" alt />
+          {{ answer.like_num }}
+        </span>
+      </p>
+      <div class="msg" v-if="answer.children.length">
+        <div v-for="(item, key) in answer.children" :key="key">
+          <span class="name">{{ item.name }}:</span>{{ answer.content }}
+          <p>
+            {{ item.time }}
+            <span v-if="item.mine" @click="del(item.id, key)">删除</span>
+          </p>
+        </div>
+      </div>
       <nuxt-link :to="'/' + jkl + '/content/' + building.id">
         <div class="ject-top">
           <div class="top-left">
@@ -21,7 +57,7 @@
               >元/m²
             </p>
             <p class="typemsg">
-              {{ building.type }} | {{ building.city_name }}-{{
+              {{ building.type }} | {{ building.cityname }}-{{
                 building.country.substr(0, 2)
               }}
               | {{ building.area }}m²
@@ -54,51 +90,6 @@
           免费咨询
         </button>
       </div>
-      <p class="msg">{{ answer.answer }}</p>
-      <p class="time">
-        {{ answer.time }}
-        <span
-          :class="answer.my_like == 1 ? 'active' : ''"
-          @click="like(answer.id)"
-        >
-          <img :src="answer.my_like == 1 ? img1 : img" alt />
-          有用({{ answer.like_num }})
-        </span>
-      </p>
-    </div>
-    <div class="answer" v-if="false">
-      <div class="top">
-        <img src="~/assets/jiapeo.png" alt />
-        <div class="promsg">
-          <h5>138****3845</h5>
-          <p>家园房友</p>
-        </div>
-      </div>
-      <p class="msg">
-        厨房排气道采用等截面变压式排气道，并在进气口设置可调变压防火止回阀，在管道内部，气...
-      </p>
-      <p class="time">
-        2019-06-08
-        <span> <img src="~/assets/noclick.png" />有用(12) </span>
-      </p>
-    </div>
-    <div class="btn" v-if="false">
-      <button>我来回答</button>
-    </div>
-    <div class="line"></div>
-    <div class="likes">
-      <h4>相关楼盘问答</h4>
-      <template v-for="(item, key) in relevant">
-        <nuxt-link :key="key" :to="'/' + jkl + '/answer/' + item.id">
-          <p class="tit">
-            <span>问</span>
-            {{ item.question }}
-          </p>
-        </nuxt-link>
-      </template>
-      <nuxt-link :to="'/' + jkl + '/questions'">
-        <button>查看{{ cityname.substr(0, 2) }}全部楼盘问答</button>
-      </nuxt-link>
     </div>
     <div class="line"></div>
     <div class="other">
@@ -149,7 +140,6 @@
         :name="name"
         @close="cli($event)"
         :typebtn="typebtn"
-        :proname="building.name"
       ></tan-view>
     </van-popup>
   </div>
@@ -158,7 +148,7 @@
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 import tan from "@/components/tan.vue";
-import { agreeanswer } from "@/api/api";
+import { likecomm, delcomm } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
@@ -172,7 +162,7 @@ export default {
     let token = context.store.state.cookie.token;
     let [res] = await Promise.all([
       context.$axios
-        .get("/jy/question/detail/phone", {
+        .get("/jy/comment/phone", {
           params: {
             other: other,
             id: id,
@@ -188,18 +178,17 @@ export default {
     return {
       jkl: jkl,
       phone: res.common.phone,
-      answer: res.data,
+      answer: res.comment,
       building: res.building,
       other: res.recommends,
-      relevant: res.relevant,
-      staff: res.common.staff.staff,
+      staff: res.common.staff,
       cityname: res.common.city_info.current.city,
       phone: res.common.phone,
     };
   },
   head() {
     return {
-      title: "家园新房-"+this.answer.question,
+      title: "家园新房-点评详情",
       meta: [
         {
           name: "description",
@@ -230,6 +219,7 @@ export default {
       id: "0",
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
+      value: 3,
     };
   },
   methods: {
@@ -252,19 +242,38 @@ export default {
       this.remark = txt;
       this.id = this.building.id;
     },
+    talk(kid) {
+      this.$router.push("/" + this.jkl + "/commentback/" + this.building.id + "/" + kid);
+    },
     like(id) {
       let token = $cookies.get("token");
       if (token) {
-        agreeanswer({ token: token, id: id }).then((res) => {
+        likecomm({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
-            this.toast(res.data.message);
+            this.toast("点赞成功");
             this.$router.go(0);
           }
         });
       } else {
         let url = this.$route.path;
         sessionStorage.setItem("path", url);
-        this.$router.push("/" + this.jkl + "/login");
+        this.$router.push('/'+this.jkl+'/login')
+      }
+    },
+    del(id, key) {
+      let token = $cookies.get("token");
+      if (token) {
+        delcomm({ token: token, id: id }).then((res) => {
+          if (res.data.code == 200) {
+            this.toast("删除成功");
+            this.$router.go(0);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        console.log(url);
+        return;
+        sessionStorage.setItem("path", url);
       }
     },
   },
@@ -274,18 +283,65 @@ export default {
 .topmsg {
   padding: 0 4%;
   padding-top: 4rem;
-  padding-bottom: 1.25rem;
   .tit {
-    color: #323333;
+    color: #333333;
     font-size: 0.875rem;
     line-height: 1.40625rem;
     margin-bottom: 1rem;
+  }
+  .user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.625rem;
+    img {
+      width: 2.25rem;
+      margin-right: 0.625rem;
+    }
+    h4 {
+      color: #323233;
+      font-size: 0.875rem;
+    }
+  }
+  .time {
+    color: #96989a;
+    font-size: 0.75rem;
+    margin-bottom: 1.25rem;
     span {
-      padding: 0.1875rem;
-      border-radius: 0.125rem;
-      background-color: #ff5454;
-      color: #fff;
-      font-size: 0.625rem;
+      float: right;
+      color: #96989a;
+      font-size: 0.6875rem;
+      margin-left: 0.375rem;
+      img {
+        width: 0.875rem;
+        margin-right: 0.125rem;
+        margin-bottom: -0.125rem;
+      }
+    }
+    .active {
+      color: #ff761a;
+    }
+  }
+  .msg {
+    color: #646566;
+    font-size: 0.875rem;
+    margin-top: 0.875rem;
+    background-color: #f7f7f7;
+    padding: 0.875rem;
+    margin-bottom: 1.25rem;
+    .name {
+      color: #2e3033;
+      font-weight: bold;
+      font-size: 0.875rem;
+    }
+    p {
+      color: #7d7e80;
+      font-size: 0.8125rem;
+      margin-top: 0.5rem;
+      span {
+        color: #5f7891;
+        font-size: 0.75rem;
+        margin-left: 0.625rem;
+      }
     }
   }
   .ject-top {
@@ -352,7 +408,6 @@ export default {
   }
 }
 .answer {
-  border-top: 0.03125rem solid #f3f3f3;
   padding: 0 4%;
   .top {
     display: flex;
@@ -402,32 +457,6 @@ export default {
       margin-left: auto;
     }
   }
-  .msg {
-    color: #646566;
-    font-size: 0.875rem;
-    margin-top: 0.875rem;
-    background-color: #f7f7f7;
-    padding: 0.875rem;
-    margin-bottom: 1.25rem;
-  }
-  .time {
-    color: #96989a;
-    font-size: 0.75rem;
-    margin-bottom: 1.25rem;
-    span {
-      float: right;
-      color: #96989a;
-      font-size: 0.6875rem;
-      img {
-        width: 0.875rem;
-        margin-right: 0.125rem;
-        margin-bottom: -0.125rem;
-      }
-    }
-    .active {
-      color: #ff761a;
-    }
-  }
 }
 .btn {
   padding: 0 4%;
@@ -448,41 +477,6 @@ export default {
   width: 100%;
   height: 0.625rem;
   background-color: #f7f7f7;
-}
-.likes {
-  padding: 0 4%;
-  h4 {
-    color: #323333;
-    font-size: 1.0625rem;
-    font-weight: 400;
-    margin-top: 1.125rem;
-    margin-bottom: 1.25rem;
-  }
-  .tit {
-    color: #323333;
-    font-size: 0.875rem;
-    line-height: 1.40625rem;
-    margin-bottom: 1rem;
-    span {
-      padding: 0.1875rem;
-      border-radius: 0.125rem;
-      background-color: #ff5454;
-      color: #fff;
-      font-size: 0.625rem;
-    }
-  }
-  button {
-    width: 100%;
-    height: 2.25rem;
-    border-radius: 0.125rem;
-    background-color: #f1f8f4;
-    border: 0;
-    text-align: center;
-    line-height: 2.25rem;
-    color: #2ac66e;
-    font-size: 0.9375rem;
-    margin-bottom: 1.25rem;
-  }
 }
 .other {
   padding: 0 4%;

@@ -61,7 +61,7 @@ export const ask = (msg) => {
 }
 export const collect = (msg) => {
   return axios.request({
-    method: 'get',
+    method: 'post',
     url: '/jy/collect',
     params: msg
   })
@@ -166,4 +166,31 @@ export const mapProject = (msg) => {
     data: msg
   })
 }
-
+export const agreeanswer = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/jy/question/like',
+    params: msg
+  })
+}
+export const commentback = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/flow/comment/save',
+    params: msg
+  })
+}
+export const heng = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/api/custom/identity',
+    params: msg
+  })
+}
+export const infolike = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/jy/article/like',
+    params: msg
+  })
+}

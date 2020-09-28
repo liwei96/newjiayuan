@@ -100,6 +100,22 @@ export default {
       position: position,
     };
   },
+  head() {
+    return {
+      title: "家园新房-楼盘百科",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       navnum: 0,

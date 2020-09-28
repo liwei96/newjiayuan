@@ -97,6 +97,22 @@ export default {
       jkl: jkl,
     };
   },
+  head() {
+    return {
+      title: "家园新房-预约看房",
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       radio: "男",

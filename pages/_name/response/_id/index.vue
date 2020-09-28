@@ -2,10 +2,7 @@
   <div id="response">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <p class="tit">
-        <span>问</span> {{question.question}}
-        
-      </p>
+      <p class="tit"><span>问</span> {{ question.question }}</p>
       <div class="text">
         <textarea
           v-model="text"
@@ -20,7 +17,7 @@
 </template>
 <script>
 import topView from "@/components/header.vue";
-import { answer } from '@/api/api'
+import { answer } from "@/api/api";
 export default {
   components: {
     "top-view": topView,
@@ -52,24 +49,47 @@ export default {
       id: id,
     };
   },
+  head() {
+    return {
+      title: "家园新房-"+this.question.question+'-回答问题',
+      meta: [
+        {
+          name: "description",
+          content:
+            "家园新房"
+        },
+        {
+          name: "keywords",
+          content: "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       textnum: 0,
       text: "",
-      question:{},
-      phone:''
+      question: {},
+      phone: "",
     };
   },
-  methods:{
-    put(){
-      let that = this
-      answer({id:that.question.id,answer:that.text}).then(res=>{
-        if(res.data.code == 200){
-          that.toast('回答成功')
-          that.$router.go(-1)
-        }
-      })
-    }
+  methods: {
+    put() {
+      let that = this;
+      let token = $cookies.get("token");
+      if (token) {
+        answer({ id: that.question.id, answer: that.text }).then((res) => {
+          if (res.data.code == 200) {
+            that.toast("回答成功");
+            that.$router.go(-1);
+          }
+        });
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
   },
   watch: {
     text(val) {
