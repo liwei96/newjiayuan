@@ -89,6 +89,13 @@ export default ({
         }
         store.state.city = 149
         break;
+      case 'zhaoqing':
+        if (process.server == false) {
+          localStorage.setItem('city', 181)
+          $cookies.set('city', 181)
+        }
+        store.state.city = 181
+        break;
     }
     next()
   })

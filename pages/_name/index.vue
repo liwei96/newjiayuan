@@ -88,7 +88,7 @@
               <div class="li-bom">
                 <p class="xx">原价: {{(item.original/1000).toFixed(2)}}万</p>
                 <div class="pri">
-                  <p>省￥{{Number(item.diff)}}</p>
+                  <p>省￥{{Number(item.diff)>99999?(item.diff/10000).toFixed(0)+'万':Number(item.diff)}}</p>
                 </div>
               </div>
             </li>

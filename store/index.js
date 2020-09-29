@@ -65,7 +65,7 @@ const store = () => new Vuex.Store({
           'cookie': obj
         })
       }
-      let name=req.url.split('/')[1]
+      let name = req.url.split('/')[1]
       switch (name) {
         case 'xuzhou':
           if (process.server == false) {
@@ -151,10 +151,17 @@ const store = () => new Vuex.Store({
           }
           commit('setcity', 149)
           break;
+        case 'zhaoqing':
+          if (process.server == false) {
+            localStorage.setItem('city', 181)
+            $cookies.set('city', 181)
+          }
+          commit('setcity', 181)
+          break;
       }
     },
-    setoken(context,data){
-      context.commit('settoken',data)
+    setoken(context, data) {
+      context.commit('settoken', data)
     }
   },
 })
