@@ -200,6 +200,7 @@
 </template>
 <script>
 import { address_start, ip } from "~/api/api";
+import '@/static/css/foot.css'
 import top from '@/components/header'
 import axios from "axios";
 export default {

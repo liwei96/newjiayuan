@@ -9,10 +9,10 @@
       </p>
       </nuxt-link>
       <img class="logo" src="~/assets/logo.png" alt />
-      <div class="zixuns" @click="gotalk">
+      <!-- <div class="zixuns" @click="gotalk" v-show="false">
         <img src="~/assets/zixun.png" alt />
         <p></p>
-      </div>
+      </div> -->
     </header>
     <div class="input">
       <nuxt-link :to="'/'+jkl+'/searchname'">
@@ -278,6 +278,7 @@
 <script>
 import { Popup, Loading } from "vant";
 import { pros } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let city = context.store.state.city;
@@ -933,7 +934,7 @@ header {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 100%;
   height: 2.75rem;
   z-index: 1;
@@ -945,6 +946,7 @@ header {
   }
   .logo {
     width: 3.125rem;
+    margin-left: 8.75rem;
   }
   .home {
     width: 1.25rem;

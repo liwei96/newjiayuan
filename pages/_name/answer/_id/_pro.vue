@@ -199,18 +199,17 @@ export default {
   },
   head() {
     return {
-      title: "家园新房-"+this.answer.question,
+      title: "家园新房-" + this.answer.question,
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -259,6 +258,10 @@ export default {
           if (res.data.code == 200) {
             this.toast(res.data.message);
             this.$router.go(0);
+          } else {
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {

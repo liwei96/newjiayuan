@@ -16,6 +16,7 @@
   </div>
 </template>
 <script>
+import '@/static/css/foot.css'
 import topView from "@/components/header.vue";
 export default {
   components: {

@@ -18,7 +18,7 @@
               </p>
             </div>
             <div class="right">
-              <img :src="item.img" alt />
+              <img :src="item.img?item.img:img" alt />
             </div>
           </div>
         </nuxt-link>
@@ -30,13 +30,13 @@
         <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key">
           <div class="pro">
             <div class="left">
-              <h5 v-html="item.replace.title"></h5>
+              <h5 v-html="item.replace.title.indexOf('em')!=-1?item.replace.title:item.replace.description"></h5>
               <p>
                 {{item.source}} &nbsp; {{item.time.substr(0,10)}}
               </p>
             </div>
             <div class="right">
-              <img :src="item.img" alt />
+              <img :src="item.img?item.img:img" alt />
             </div>
           </div>
         </nuxt-link>
@@ -46,6 +46,7 @@
 </template>
 <script>
 import { souari } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let id = context.params.id;
@@ -97,7 +98,10 @@ export default {
       id: 0,
       name: "",
       isnull: false,
-      num:0
+      num:0,
+      img:require('~/assets/default-info.png'),
+      page:2,
+      isok:true
     };
   },
   methods: {
@@ -119,6 +123,28 @@ export default {
         this.isnull = false;
       }
     },
+    getmore() {
+      let that = this;
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.isok &&that.name) {
+          that.isok = false;
+          souari({ name: that.name, page: that.page, limit: 10 }).then((res) => {
+            that.isok = true;
+            that.list = that.list.concat(res.data.data);
+            that.page = that.page+1
+          });
+        }
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.getmore);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getmore);
   },
   watch: {
     name(val) {

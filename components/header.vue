@@ -2,9 +2,9 @@
   <header>
     <img class="back" src="~/assets/goback.png" alt @click="back" />
     <img class="logo" src="~/assets/logo.png" alt />
-    <div class="zixuns" @click="gotalk">
+    <div class="zixuns" @click="gotalk" v-if="kk">
       <img src="~/assets/header-talk.png" alt />
-      <p></p>
+      <!-- <p></p> -->
     </div>
     <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
     <ul class="cailist" v-if="list">
@@ -52,11 +52,19 @@ export default {
   data() {
     return {
       list: false,
+      kk:true
     };
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      if(this.$route.path.indexOf('weike') !=-1 || this.$route.path.indexOf('infos') !=-1){
+        this.$router.push('/'+this.jkl)
+      }else if(this.$route.path.indexOf('order') != -1){
+        this.$router.push('/'+this.jkl+'/home')
+      }else{
+        this.$router.go(-1);
+      }
+      
     },
     btns(){
       if(this.list){
@@ -72,6 +80,9 @@ export default {
   },
   mounted() {
     let url = window.location.href;
+    if(url.indexOf('content')==-1){
+      this.kk = false
+    }
     let newurl = url.split("?")[0];
     let id = this.$route.params.id;
     let name = sessionStorage.getItem("buildname");
@@ -96,7 +107,7 @@ header {
   background-color: #fff;
   position: fixed;
   top: 0;
-  z-index: 1000;
+  z-index: 10000;
   .back {
     width: 1.25rem;
     margin-left: 1rem;

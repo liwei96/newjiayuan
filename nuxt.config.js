@@ -50,6 +50,10 @@ export default {
   /*
    ** Global CSS
    */
+  loading: {
+    color: '#6ACCFF',
+    height: '2px'
+  },
   css: [],
   /*
    ** Plugins to load before mounting the App
@@ -81,6 +85,10 @@ export default {
     },
     {
       src: '~plugins/route',
+      ssr: true
+    },
+    {
+      src: '~plugins/axios',
       ssr: true
     },
   ],

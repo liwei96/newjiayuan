@@ -92,6 +92,7 @@
 import { send, check, put } from "@/api/api";
 import { Popup } from "vant";
 import top from '@/components/header'
+import '@/static/css/foot.css'
 export default {
   components: {
     Popup,

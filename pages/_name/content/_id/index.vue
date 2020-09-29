@@ -71,7 +71,7 @@
           开盘:
           <span>{{ abstract.opentime }}</span>
         </p>
-        <p class="address">
+        <p class="address" @click="gorim">
           地址:
           <span>{{ abstract.address }}</span>
           <img src="~/assets/map.png" alt />
@@ -100,9 +100,9 @@
       <h3>
         今日特价房
         <span>{{ hour }}小时前更新</span>
+        <!-- <img src="~/assets/tit.png" alt class="te-tit" /> -->
       </h3>
-      <span class="teprice">{{ specials.max_diff }}</span>
-      <img src="~/assets/tit.png" alt class="te-tit" />
+      <i class="teprice">最高立减 <span>{{ specials.max_diff }}</span> 元</i>
       <div class="tabs">
         <table border>
           <thead>
@@ -396,18 +396,18 @@
         <img src="~/assets/ziliao.png" />领取分析资料
       </button>
     </div>
-    <div class="line"></div>
-    <div class="newprice">
-      <h3>
+    <div class="line" v-if="deal_prices.length"></div>
+    <div class="newprice" >
+      <h3 v-show="deal_prices.length">
         最新成交价
         <p>
           已有
           <span>125</span>人查询
         </p>
       </h3>
-      <div id="chart" style="width: 100%; height: 250px"></div>
-      <p>2020年</p>
-      <div class="tab">
+      <div id="chart" style="width: 100%; height: 250px" v-show="deal_prices.length"></div>
+      <p v-show="deal_prices.length">2020年</p>
+      <div class="tab" v-show="deal_prices.length">
         <table>
           <tbody>
             <tr>
@@ -426,7 +426,7 @@
           <img src="~/assets/huo-down.png" alt />
         </div>
       </div>
-      <button @click="pop('获取最新成交价', 101, '详情页+获取最新成交价')">
+      <button @click="pop('获取最新成交价', 101, '详情页+获取最新成交价')" v-show="deal_prices.length">
         <img src="~/assets/geticon.png" />获取最新成交价
       </button>
     </div>
@@ -549,7 +549,7 @@
           </span>
         </nuxt-link>
       </h3>
-      <ul>
+      <ul v-if="comments.length">
         <li v-for="(item, key) in comments" :key="key">
           <div class="dian-top">
             <img src="~/assets/jiapeo.png" alt class="peo" />
@@ -574,6 +574,7 @@
           </nuxt-link>
         </li>
       </ul>
+      <p class="tishi" v-if="!comments.length">暂无点评，快来点评吧</p>
       <nuxt-link :to="'/' + jkl + '/comment/' + id">
         <button>我要点评</button>
       </nuxt-link>
@@ -589,7 +590,7 @@
           </span>
         </nuxt-link>
       </h3>
-      <ul>
+      <ul v-if="questions.length">
         <template v-for="(item, key) in questions">
           <nuxt-link :to="'/' + jkl + '/answer/' + item.id" :key="key">
             <li>
@@ -602,6 +603,7 @@
           </nuxt-link>
         </template>
       </ul>
+      <p class="tishi" v-if="!questions.length">暂无问答，快来提问吧</p>
       <nuxt-link :to="'/' + jkl + '/quiz/' + id">
         <button>我要提问</button>
       </nuxt-link>
@@ -752,23 +754,22 @@ export default {
       specials: res.specials,
       count: res.count,
       collect: res.collect,
-      cityname:res.common.city_info.current.short
+      cityname: res.common.city_info.current.short,
     };
   },
   head() {
     return {
-      title: this.abstract.name+'-'+this.cityname,
+      title: this.abstract.name + "-" + this.cityname,
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -817,7 +818,7 @@ export default {
       img1: require("~/assets/checked.png"),
       heart: require("~/assets/proheart.png"),
       hearted: require("~/assets/collected.png"),
-      phonemsg:''
+      phonemsg: "",
     };
   },
   methods: {
@@ -829,6 +830,10 @@ export default {
             this.lists.slice(key, 1);
             this.toast("删除成功");
             this.$router.go(0);
+          } else {
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -843,6 +848,10 @@ export default {
         likecomm({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
             this.$router.go(0);
+          } else {
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -895,6 +904,9 @@ export default {
     showmore() {
       this.morebtn = false;
       $(".tab").css("height", "auto");
+    },
+    gorim() {
+      this.$router.push("/" + this.jkl + "/rim/" + this.id);
     },
     mmap() {
       this.over = false;
@@ -1168,7 +1180,9 @@ export default {
       let arr = $cookies.get("ids");
       sessionStorage.setItem("pktype", 1);
       if (!arr) {
-        this.$router.push("/" + this.jkl + "/pk");
+        arr = this.id;
+        $cookies.set("ids", arr);
+        this.$router.push("/" + this.jkl + "/pk/" + this.id);
       } else {
         this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
@@ -1177,7 +1191,9 @@ export default {
       let arr = $cookies.get("ids");
       sessionStorage.setItem("pktype", 2);
       if (!arr) {
-        this.$router.push("/" + this.jkl + "/pk");
+        arr = this.id;
+        $cookies.set("ids", arr);
+        this.$router.push("/" + this.jkl + "/pk/" + this.id);
       } else {
         this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
@@ -1244,8 +1260,14 @@ export default {
     },
   },
   mounted() {
-    this.phonemsg = this.phone.split(',')[0]+'转'+this.phone.split(',')[1]
-    $cookies.set('proname',this.abstract.name)
+    if (this.phone.split(",").length == 2) {
+      this.phonemsg =
+        this.phone.split(",")[0] + "转" + this.phone.split(",")[1];
+    } else {
+      this.phonemsg = this.phone;
+    }
+
+    $cookies.set("proname", this.abstract.name);
     if (localStorage.getItem(this.$route.params.id)) {
       this.hour = localStorage.getItem(this.$route.params.id);
     } else {
@@ -1479,7 +1501,7 @@ export default {
           margin-bottom: 0.25rem;
           position: relative;
           img {
-            width: 1.125rem;
+            width: 1.5rem;
           }
           span {
             position: absolute;
@@ -1606,8 +1628,7 @@ export default {
   position: relative;
   padding: 0 4%;
   .te-tit {
-    position: absolute;
-    width: 12.375rem;
+    width: 5rem;
     right: 0.6875rem;
     top: 1.0625rem;
   }
@@ -1625,12 +1646,17 @@ export default {
     }
   }
   .teprice {
-    position: absolute;
     color: #ff761a;
-    font-size: 1rem;
+    position: absolute;
+    font-size: 0.875rem;
     right: 1.6rem;
     top: 1.1875rem;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 400;
+    span {
+      font-weight: bold;
+      font-size: 1rem;
+    }
   }
   .tabs {
     height: 9.375rem;
@@ -1642,7 +1668,7 @@ export default {
       border-collapse: collapse;
       border-spacing: 0;
       width: 100%;
-      border: 0.03125rem solid #cccccc;
+      border: 0.03125rem solid #f7f7f7;
       thead {
         tr {
           height: 1.875rem;
@@ -1889,7 +1915,7 @@ export default {
       padding-right: 0.625rem;
       padding-top: 0.25rem;
       img {
-        width: 1.25rem;
+        width: 1.5rem;
       }
       p {
         color: #646566;
@@ -2487,7 +2513,7 @@ export default {
   }
 }
 .other {
-  padding: 1.25rem 4% 2rem 4%;
+  padding: 1.25rem 4% 0 4%;
   h3 {
     color: #1f1f1f;
     font-size: 1.0625rem;
@@ -2630,6 +2656,12 @@ export default {
       }
     }
   }
+  .tishi {
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
+  }
   button {
     width: 100%;
     height: 2.5rem;
@@ -2683,6 +2715,12 @@ export default {
         font-size: 0.8125rem;
       }
     }
+  }
+  .tishi {
+    font-size: 0.875rem;
+    text-align: center;
+    margin-top: 0.625rem;
+    margin-bottom: 0.625rem;
   }
   button {
     width: 100%;

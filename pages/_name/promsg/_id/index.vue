@@ -28,11 +28,11 @@
           <div class="con">
             <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
             <h4>{{item.title}}</h4>
-            <p>{{item.content}}</p>
+            <p>{{item.content.substr(0,46)}}<i v-if="item.content.length>50">...</i><i v-if="item.content.length>50">[查看更多]</i></p>
             </nuxt-link>
-            <div class="imgbox">
+            <!-- <div class="imgbox">
               <img v-lazy="item.img" alt @click="big(item.img)"/>
-            </div>
+            </div> -->
             <span></span>
           </div>
         </li>
@@ -270,6 +270,10 @@ export default {
       -webkit-line-clamp: 2;
       overflow: hidden;
       margin-bottom: 0.625rem;
+      i {
+        font-style: normal;
+        color: #3489FF;
+      }
     }
     img {
       width: 6.3125rem;

@@ -320,7 +320,7 @@
       <p class="tel">加盟热线：400-718-6666</p>
     </div>
     <div class="nav">
-      <a href="#">
+      <a href="tel:400-718-6686">
         <button>电话咨询</button>
       </a>
       <button class="btn" @click="show = true">申请加盟</button>

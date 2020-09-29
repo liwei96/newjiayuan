@@ -86,7 +86,7 @@
                 <p class="top-name">{{item.name}}</p>
               </div>
               <div class="li-bom">
-                <p class="xx">原价: {{item.original/1000}}万</p>
+                <p class="xx">原价: {{(item.original/1000).toFixed(2)}}万</p>
                 <div class="pri">
                   <p>省￥{{Number(item.diff)}}</p>
                 </div>
@@ -249,6 +249,7 @@
   </div>
 </template>
 <script>
+import '@/static/css/foot.css'
 import { NoticeBar, Swipe, SwipeItem } from "vant";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";

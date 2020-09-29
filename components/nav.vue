@@ -64,6 +64,7 @@ export default {
   display: flex;
   z-index: 1000;
   align-items: center;
+  border-top: 0.03125rem solid #F7F7F7;
   .nav-peo {
     position: relative;
     margin-right: 1.25rem;

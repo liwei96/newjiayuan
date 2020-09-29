@@ -9,11 +9,11 @@
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
-                <span>{{ item.status }}</span>
+                <span>{{ item.state }}</span>
               </h5>
               <p class="pro-price">
                 <span>{{ item.price }}</span>
-                <i>元/m²</i>起
+                <i>元/m²</i>
               </p>
               <p class="attr">
                 {{ item.type }} | {{ item.city }}-{{
@@ -25,7 +25,7 @@
                 <span class="pro-icon-zhuang">{{ item.decorate }}</span>
                 <span
                   class="pro-icon-type"
-                  v-for="(val, k) in item.feature"
+                  v-for="(val, k) in item.features"
                   :key="k"
                   >{{ val }}</span
                 >
@@ -46,6 +46,7 @@
 </template>
 <script>
 import topView from "@/components/header.vue";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": topView,

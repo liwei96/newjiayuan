@@ -2,7 +2,11 @@
   <div id="searchari">
     <div class="input">
       <img src="~/assets/goback.png" alt class="back" @click="back" />
-      <input type="text" placeholder="搜搜你想要了解的房产知识吧" v-model="name" />
+      <input
+        type="text"
+        placeholder="搜搜你想要了解的房产知识吧"
+        v-model="name"
+      />
       <img class="search" src="~/assets/search.png" alt />
       <span>搜索</span>
     </div>
@@ -23,48 +27,52 @@
     </div>-->
     <div class="con" v-if="!isnull">
       <h3>猜你喜欢</h3>
-      <template v-for="(item,key) in recommends">
-        <nuxt-link :to="'/'+jkl+'/aritle/'+item.id" :key="key">
+      <template v-for="(item, key) in recommends">
+        <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key">
           <div class="pro">
             <div class="left">
-              <h5>{{item.title}}</h5>
+              <h5>{{ item.title }}</h5>
               <p>
-                <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
               </p>
             </div>
             <div class="right">
-              <img :src="item.img" alt />
+              <img :src="item.img ? item.img : img" alt />
             </div>
           </div>
         </nuxt-link>
       </template>
     </div>
-    <div class="con list" v-if="isnull">
-      <p class="tit">
-        共为您搜索到
-        <span>{{num}}</span>条关于“
-        <span>{{name}}</span>”的知识
-      </p>
-      <template v-for="(item,key) in list">
-        <nuxt-link :to="'/'+jkl+'/aritle/'+item.id" :key="key">
-          <div class="pro">
-            <div class="left">
-              <h5 v-html="item.replace.title"></h5>
-              <p>
-                <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
-              </p>
+    <div class="con list" v-show="isnull">
+      <div id="kk">
+        <p class="tit">
+          共为您搜索到
+          <span>{{ num }}</span
+          >条关于“ <span>{{ name }}</span
+          >”的知识
+        </p>
+        <template v-for="(item, key) in list">
+          <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key">
+            <div class="pro">
+              <div class="left">
+                <h5 v-html="item.replace.title.indexOf('em')!=-1?item.replace.title:item.replace.description"></h5>
+                <p>
+                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
+                </p>
+              </div>
+              <div class="right">
+                <img :src="item.img ? item.img : img" alt />
+              </div>
             </div>
-            <div class="right">
-              <img :src="item.img" alt />
-            </div>
-          </div>
-        </nuxt-link>
-      </template>
+          </nuxt-link>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { souari } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let id = context.params.id;
@@ -99,14 +107,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -118,6 +125,9 @@ export default {
       isnull: false,
       num: 0,
       recommends: [],
+      img: require("~/assets/default-info.png"),
+      isok:true,
+      page:2
     };
   },
   methods: {
@@ -139,6 +149,28 @@ export default {
     back() {
       this.$router.go(-1);
     },
+    getmore() {
+      let that = this;
+      var scrollTop = window.scrollY;
+      var scrollHeight = window.screen.availHeight;
+      var windowHeight = document.body.scrollHeight;
+      if (scrollTop + scrollHeight >= windowHeight) {
+        if (that.isok &&that.name) {
+          that.isok = false;
+          souari({ name: that.name, page: that.page, limit: 10 }).then((res) => {
+            that.isok = true;
+            that.list = that.list.concat(res.data.data);
+            that.page = that.page+1
+          });
+        }
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.getmore);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.getmore);
   },
   watch: {
     name(val) {

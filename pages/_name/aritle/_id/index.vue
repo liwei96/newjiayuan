@@ -74,9 +74,10 @@
             <div class="pro">
               <div class="left">
                 <h5>{{ item.title }}</h5>
-                <p>
-                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
+                <p v-if="item.tags.length">
+                  <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
                 </p>
+                <p v-if="!item.tags.length">{{item.source}}  &nbsp;&nbsp;&nbsp;&nbsp;{{item.time}}</p>
               </div>
               <div class="right">
                 <img :src="item.img" alt />
@@ -90,6 +91,7 @@
 </template>
 <script>
 import { infolike } from '@/api/api'
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let other = context.store.state.cookie.other;
@@ -161,11 +163,17 @@ export default {
           if (res.data.code == 200) {
             if(this.article.my_like){
               this.article.like_num = this.article.like_num-1
+              this.article.my_like = 0
               this.toast('取消成功')
             }else{
               this.article.like_num = this.article.like_num+1
+              this.article.my_like = 1
               this.toast('点赞成功')
             }
+          }else{
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -372,6 +380,8 @@ header {
         p {
           position: absolute;
           bottom: 0.4375rem;
+          color: #626466;
+            font-size: 0.625rem;
           span {
             padding: 0.15625rem 0.3125rem 0.1875rem 0.3125rem;
             border-radius: 0.125rem;

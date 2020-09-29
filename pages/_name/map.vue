@@ -274,7 +274,7 @@
 <script>
 import MyOverlay from "@/components/MyOverlay";
 import MyOverlays from "@/components/MyOverlays";
-
+import '@/static/css/foot.css'
 import {
   search_start,
   mapSaerch,

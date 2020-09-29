@@ -25,7 +25,7 @@ const store = () => new Vuex.Store({
       state.IP = data.IP
     },
     settoken(state, payload) {
-      state.token = payload.token
+      state.cookie.token = payload
     },
     setcall(state, payload) {
       state.call = payload.call
@@ -152,6 +152,9 @@ const store = () => new Vuex.Store({
           commit('setcity', 149)
           break;
       }
+    },
+    setoken(context,data){
+      context.commit('settoken',data)
     }
   },
 })

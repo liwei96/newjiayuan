@@ -43,6 +43,7 @@
   </div>
 </template>
 <script>
+import '@/static/css/foot.css'
 export default {
   head() {
     return {

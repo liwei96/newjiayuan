@@ -249,6 +249,7 @@ export default {
       phone: res.common.phone,
       jkl: jkl,
       id: id,
+      tel:res.common.phone
     };
   },
   head() {
@@ -311,6 +312,18 @@ export default {
       this.ip = ip;
     },
     send() {
+      let kk = parseInt(new Date().getTime()/1000)
+      if($cookies.get('time')){
+        let dd = kk-$cookies.get('time')
+        if(dd<60){
+          this.toast('不要频繁报名')
+          return
+        }else{
+          $cookies.set('time',kk)
+        }
+      }else{
+        $cookies.set('time',kk)
+      }
       let check1 = this.check1;
       if (!check1) {
         this.toast("请勾选用户协议");
@@ -361,7 +374,7 @@ export default {
           var interval = setInterval(fn, 1000);
           $("#ytel").html(tel);
         } else {
-          this.toast(res.data.message);
+          this.toast(res.data.message || res.data.msg);
         }
       });
     },
@@ -396,7 +409,7 @@ export default {
             $cookies.set("username", tel);
           }
         } else {
-          this.toast(res.data.message);
+          this.toast(res.data.message || res.data.msg);
         }
         this.type = false;
         this.tan = false;
@@ -425,7 +438,7 @@ export default {
   },
   mounted() {
     let that = this;
-    that.baoming = $cookies.get("tel");
+    that.baoming = $cookies.get("phone");
     this.start();
   },
   updated() {

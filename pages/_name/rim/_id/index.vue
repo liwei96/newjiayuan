@@ -108,6 +108,7 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import topView from "@/components/header.vue";
 import tan from "@/components/tan.vue";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": topView,

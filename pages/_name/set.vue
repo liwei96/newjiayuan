@@ -26,7 +26,7 @@
         <p class="tit">确定退出当前账户吗？</p>
         <div class="btn">
           <p @click="show=false">取消</p>
-          <p class="yes">确定</p>
+          <p class="yes" @click="out">确定</p>
         </div>
       </div>
     </van-popup>
@@ -37,7 +37,7 @@
         <div class="btn">
           <p @click="show1=false">取消</p>
           <a :href="'tel:'+tel">
-          <p class="yes" @click="out">确定</p>
+          <p class="yes">确定</p>
           </a>
         </div>
       </div>
@@ -45,6 +45,7 @@
   </div>
 </template>
 <script>
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let token = context.store.state.cookie.token;
@@ -109,6 +110,8 @@ export default {
     out(){
       $cookies.remove('token')
       $cookies.remove('phone')
+      $cookies.remove('username')
+      this.$router.push('/'+this.jkl+'/home')
     }
   },
   mounted() {

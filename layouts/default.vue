@@ -1,6 +1,20 @@
 <template>
   <div>
-    <Nuxt />
+    <Nuxt class="allbox"/>
+    <footer v-if="home">
+      <ul>
+        <li><nuxt-link :to="'/'+jkl+'/weike/before/56'">买房百科</nuxt-link></li>
+        <li><nuxt-link :to="'/'+jkl+'/infos/46'">房产资讯</nuxt-link></li>
+        <li><nuxt-link :to="'/'+jkl+'/join'">城市加盟</nuxt-link></li>
+        <li><nuxt-link :to="'/'+jkl+'/privacy'">隐私政策</nuxt-link></li>
+      </ul>
+      <p>杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
+      <p>
+        网络经营许可证：<a href="http://www.beian.miit.gov.cn/"
+          >浙ICP备19015909号-1</a
+        >
+      </p>
+    </footer>
   </div>
 </template>
 
@@ -12,21 +26,93 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
-}
+  data(){
+    return {
+      jkl:'',
+      home:true,
+      url:''
+    }
+  },
+  mounted() {
+    this.jkl=this.$route.params.name
+    // console.log(this.$route.path)
+    this.url = this.$route.path
+    // if(this.$route.path.indexOf('home') !==-1){
+    //   this.home = false
+    // }
+    resetrem();
+    //切换屏幕 （横屏竖屏）
+    window.addEventListener("orientationchange", resetrem);
+    //resize：屏幕的大小发生改变就触发监听事件resetrem
+    window.addEventListener("resize", resetrem);
+
+    function resetrem() {
+      var html = document.querySelector("html"); //获取到html元素
+      var width = html.getBoundingClientRect().width; //获取屏幕的宽度
+      html.style.fontSize = width / 23.5 + "px";
+    }
+  },
+  watch:{
+    url(val){
+      console.log(val)
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    console.log(to)
+  },
+};
 </script>
-<style>
+<style lang="less">
 * {
-  padding:0;
-  margin:0;
+  padding: 0;
+  margin: 0;
+}
+body,
+html {
+  max-width: 33.75rem;
+}
+.allbox {
+  min-height: 100vh;
+}
+footer {
+  height: 6.25rem;
+  background-color: #f0f4f5;
+  color: #88a1ae;
+  font-size: 0.75rem;
+  margin-bottom: 50px;
+  z-index: 10000;
+  position: relative;
+  ul {
+    display: flex;
+    justify-content: center;
+    padding-top: 1.125rem;
+    margin-bottom: 0.875rem;
+    li {
+      margin-left: 1.5rem;
+      a {
+        color: #88a1ae;
+      }
+    }
+    li:nth-of-type(1) {
+      margin-left: 0;
+    }
+  }
+  p {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    a {
+      color: #88a1ae;
+      text-decoration: underline;
+    }
+  }
 }
 </style>

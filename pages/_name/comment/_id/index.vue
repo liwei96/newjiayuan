@@ -56,6 +56,7 @@
 <script>
 import topView from "@/components/header.vue";
 import { comm } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": topView,

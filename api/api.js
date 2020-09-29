@@ -2,7 +2,14 @@ import axios from 'axios'
 
 axios.defaults.withCredentials = true;
 
-
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    console.log(error.response.status)
+  }
+);
 export const aritles = (msg) => {
   return axios.request({
     method: 'get',
@@ -66,12 +73,14 @@ export const collect = (msg) => {
     params: msg
   })
 }
-export const souname = (name) => {
+export const souname = (name,k) => {
   return axios.request({
     method: 'get',
     url: '/api/project/e_search',
     params: {
-      'name': name
+      'name': name,
+      page:k,
+      limit:10
     }
   })
 }

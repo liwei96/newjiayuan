@@ -109,14 +109,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -134,7 +133,7 @@ export default {
       remark: "",
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
-      proname:''
+      proname: "",
     };
   },
   methods: {
@@ -149,6 +148,7 @@ export default {
           comments({ id: that.id, page: that.page, limit: 10 }).then((res) => {
             that.isok = true;
             that.lists = that.lists.concat(res.data.data);
+            that.page = that.page + 1;
           });
         }
       }
@@ -172,6 +172,10 @@ export default {
             this.lists.slice(key, 1);
             this.toast("删除成功");
             this.$router.go(0);
+          } else {
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -186,6 +190,10 @@ export default {
         likecomm({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
             this.$router.go(0);
+          } else {
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -199,7 +207,7 @@ export default {
     },
   },
   mounted() {
-    this.proname = $cookies.get('proname')
+    this.proname = $cookies.get("proname");
     window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {

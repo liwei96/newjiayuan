@@ -56,6 +56,7 @@
 </template>
 <script>
 import top from "@/components/header";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let id = context.params.id;

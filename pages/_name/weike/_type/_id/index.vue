@@ -3,22 +3,27 @@
     <top-view :jkl="jkl"></top-view>
     <div class="all">
       <div class="input">
-        <nuxt-link :to="'/'+jkl+'/searcharitype'">
-        <input type="text" placeholder="搜搜你想要了解的房产知识吧"  @click="gos" disabled/>
-        <img src="~/assets/search.png" alt />
+        <nuxt-link :to="'/' + jkl + '/searcharitype'">
+          <input
+            type="text"
+            placeholder="搜搜你想要了解的房产知识吧"
+            @click="gos"
+            disabled
+          />
+          <img src="~/assets/search.png" alt />
         </nuxt-link>
       </div>
       <div class="nav">
         <ul>
-          <li :class="navnum==0?'active':''" @click="setnavnum(0)">
+          <li :class="navnum == 0 ? 'active' : ''" @click="setnavnum(0)">
             <div class="nav-top">买房前</div>
             <p>相关政策、买房流程</p>
           </li>
-          <li :class="navnum==1?'active1':''" @click="setnavnum(1)">
+          <li :class="navnum == 1 ? 'active1' : ''" @click="setnavnum(1)">
             <div class="nav-top">买房中</div>
             <p>新房签约、贷款政策</p>
           </li>
-          <li :class="navnum==2?'active2':''" @click="setnavnum(2)">
+          <li :class="navnum == 2 ? 'active2' : ''" @click="setnavnum(2)">
             <div class="nav-top">买房后</div>
             <p>新房验房、还款落户</p>
           </li>
@@ -28,12 +33,12 @@
         <div class="left">
           <ul>
             <li
-              :class="item.id == position?'active':''"
-              @click="setleftnum(key,item.id)"
-              v-for="(item,key) in navs"
+              :class="item.id == position ? 'active' : ''"
+              @click="setleftnum(key, item.id)"
+              v-for="(item, key) in navs"
               :key="key"
             >
-              <span>{{item.name}}</span>
+              <span>{{ item.name }}</span>
             </li>
             <!-- <li :class="leftnum == 1?'active':''" @click="setleftnum(1)">
               <span>买房能力</span>
@@ -48,12 +53,17 @@
         </div>
         <div class="right" id="list">
           <ul id="all">
-            <template v-for="(item,key) in lists">
-              <nuxt-link :key="key" :to="'/'+jkl+'/aritle/'+item.id">
+            <template v-for="(item, key) in lists">
+              <nuxt-link :key="key" :to="'/' + jkl + '/aritle/' + item.id">
                 <li>
-                  <h6>{{item.title}}</h6>
-                  <p>
-                    <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                  <h6>{{ item.title }}</h6>
+                  <p v-if="item.tags.length">
+                    <span v-for="(val, k) in item.tags" :key="k">{{
+                      val
+                    }}</span>
+                  </p>
+                  <p v-if="!item.tags.length">
+                    {{ item.source }} &nbsp;&nbsp;&nbsp;{{ item.begin }}
                   </p>
                 </li>
               </nuxt-link>
@@ -67,6 +77,7 @@
 <script>
 import top from "@/components/header.vue";
 import { aritles } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": top,
@@ -106,14 +117,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -197,21 +207,21 @@ export default {
   methods: {
     setnavnum(n) {
       this.navnum = n;
-      if(n == 0){
-          this.$router.push("/" + this.jkl + "/weike/before/56");
-      }else if(n == 1) {
-          this.$router.push("/" + this.jkl + "/weike/going/60");
-      }else{
-          this.$router.push("/" + this.jkl + "/weike/after/65");
+      if (n == 0) {
+        this.$router.push("/" + this.jkl + "/weike/before/56");
+      } else if (n == 1) {
+        this.$router.push("/" + this.jkl + "/weike/going/60");
+      } else {
+        this.$router.push("/" + this.jkl + "/weike/after/65");
       }
     },
     setleftnum(n, id) {
       this.leftnum = n;
       this.$router.push("/" + this.jkl + "/weike/" + this.type + "/" + id);
     },
-    gos(){
-        this.$router.push('/'+this.jkl+'/searcharitype')
-    }
+    gos() {
+      this.$router.push("/" + this.jkl + "/searcharitype");
+    },
   },
   mounted() {
     if (this.type == "before") {
@@ -228,7 +238,7 @@ export default {
     let city = $cookies.get("city");
     $("#list").on("scroll", function () {
       console.log($(this).scrollTop(), $("#list").height(), $("#all").height());
-      if ($(this).scrollTop() + $("#list").height()  >= $("#all").height()) {
+      if ($(this).scrollTop() + $("#list").height() >= $("#all").height()) {
         if (that.isok) {
           that.isok = false;
           aritles({
@@ -239,7 +249,7 @@ export default {
           }).then((res) => {
             console.log(res);
             that.lists = that.lists.concat(res.data.data);
-            that.page = that.page+1
+            that.page = that.page + 1;
             that.isok = true;
           });
         }
@@ -406,6 +416,8 @@ li {
         p {
           position: absolute;
           bottom: 0.9375rem;
+          color: rgba(98, 100, 102, 1);
+          font-size: 0.625rem;
           span {
             color: rgba(98, 100, 102, 1);
             font-size: 0.625rem;

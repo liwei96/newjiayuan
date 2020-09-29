@@ -14,4 +14,7 @@ export default function ({
       }
         return config
     })
+    $axios.onError(error => {      
+    	console.log(error)
+    })
   }

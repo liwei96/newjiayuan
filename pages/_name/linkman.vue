@@ -9,6 +9,7 @@
 </template>
 <script>
 import topView from "@/components/header.vue";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": topView,

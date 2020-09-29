@@ -54,7 +54,7 @@
         标签：
         <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
       </div>
-      <div class="project" v-if="true">
+      <div class="project" v-if="project.length!=0">
         <div class="ject-top">
           <div class="top-left">
             <img :src="project.img" alt />
@@ -102,9 +102,10 @@
             <div class="pro">
               <div class="left">
                 <h5>{{item.title}}</h5>
-                <p>
+                <p v-if="item.tags.length">
                   <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
                 </p>
+                <p v-if="!item.tags.length">{{item.source}}  &nbsp;&nbsp;&nbsp;&nbsp;{{item.time}}</p>
               </div>
               <div class="right">
                 <img :src="item.img" alt />
@@ -133,6 +134,7 @@
 <script>
 import { infolike } from '@/api/api'
 import tan from "@/components/tan.vue";
+import '@/static/css/foot.css'
 export default {
   components: {
     'tan-view':tan
@@ -233,6 +235,10 @@ export default {
               this.article.my_like = 1
               this.toast('点赞成功')
             }
+          }else{
+            let url = this.$route.path;
+            sessionStorage.setItem("path", url);
+            this.$router.push("/" + this.jkl + "/login");
           }
         });
       } else {
@@ -242,6 +248,9 @@ export default {
       }
     }
   },
+  mounted(){
+    // console.log(this.project)
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -518,7 +527,7 @@ header {
           font-weight: 400;
           position: relative;
           top: -0.25rem;
-          height: 1.25rem;
+          height: 2.5rem;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;

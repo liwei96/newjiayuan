@@ -14,6 +14,7 @@
 </template>
 <script>
 import topView from "@/components/header.vue";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let jkl = context.params.name;

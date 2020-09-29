@@ -80,6 +80,18 @@ export default {
   },
   methods: {
     send() {
+      let kk = parseInt(new Date().getTime()/1000)
+      if($cookies.get('time')){
+        let dd = kk-$cookies.get('time')
+        if(dd<60){
+          this.toast('不要频繁报名')
+          return
+        }else{
+          $cookies.set('time',kk)
+        }
+      }else{
+        $cookies.set('time',kk)
+      }
       let checks = this.checks;
       if (!checks) {
         this.toast("请勾选用户协议");
@@ -135,9 +147,12 @@ export default {
           var interval = setInterval(fn, 1000);
           $("#ytel").html(tel);
         } else {
-          this.toast(res.data.message)
+          console.log(res)
+          this.toast('发送过于频繁');
         }
-      });
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     put() {
       let checks = this.checks;
@@ -160,26 +175,42 @@ export default {
       }
       let ma = this.ma;
       let ip = ip_arr["ip"];
-      check({ phone: phone, code: ma, source: 3, ip: ip }).then((res) => {
-        console.log(res)
+      check({ phone: phone, code: ma, source: 2, ip: ip }).then((res) => {
+        console.log(res);
         if (res.data.code == 200) {
-          if (this.proname.indexOf("恒大") == -1) {
+          if (this.proname) {
+            if (this.proname.indexOf("恒大") == -1) {
+              this.toast("提交成功");
+              if (!$cookies.get("token")) {
+                $cookies.set("token", res.data.token, 21600);
+                $cookies.set("phone", phone, 21600);
+                let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+                $cookies.set("username", tel);
+                this.$store.dispatch("setoken", res.data.token);
+              }
+              this.type = false;
+              this.$emit("close", false);
+            } else {
+              this.ishengda = true;
+            }
+          } else {
             this.toast("提交成功");
             if (!$cookies.get("token")) {
               $cookies.set("token", res.data.token, 21600);
               $cookies.set("phone", phone, 21600);
               let tel = phone.substr(0, 3) + "****" + phone.substr(8);
               $cookies.set("username", tel);
+              this.$store.dispatch("setoken", res.data.token);
             }
             this.type = false;
             this.$emit("close", false);
-          } else {
-            this.ishengda = true;
           }
         } else {
-          this.toast(res.data.message)
+          this.toast('验证码不正确');
         }
-      });
+      }).catch(err=>{
+        console.log(err)
+      })
     },
     close() {
       this.type = false;
@@ -187,13 +218,13 @@ export default {
     },
     daput() {
       let that = this;
-      if(!that.IDcode){
-        that.toast('请填写后六位')
-        return
+      if (!that.IDcode) {
+        that.toast("请填写后六位");
+        return;
       }
-      if(that.IDcode.length != 6){
-        that.toast('请填写后六位')
-        return
+      if (that.IDcode.length != 6) {
+        that.toast("请填写后六位");
+        return;
       }
       heng({ identity: that.IDcode, phone: that.baoming }).then((res) => {
         that.toast("提交成功");
@@ -204,6 +235,9 @@ export default {
   },
   mounted() {
     let type = this.name;
+    if ($cookies.get("phone")) {
+      this.baoming = $cookies.get("phone");
+    }
     if (type == "变价通知我") {
       this.str =
         "价格变动这么快？订阅楼盘变价通知，楼盘变价我们将第一时间通知您";

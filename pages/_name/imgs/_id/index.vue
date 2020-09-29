@@ -3,37 +3,37 @@
     <top-view :jkl="jkl"></top-view>
     <div class="con">
       <div class="imgs">
-        <h4>效果图(4）</h4>
+        <h4>效果图({{efects.length}}）</h4>
         <div class="imgbox">
           <img v-lazy="item.small" alt v-for="(item,key) in efects" :key="key" @click="big(efectsbig,key)"/>
         </div>
       </div>
       <div class="imgs">
-        <h4>实景图(5)</h4>
+        <h4>实景图({{reals.length}})</h4>
         <div class="imgbox">
           <img v-lazy="item.small" alt v-for="(item,key) in reals" :key="key" @click="big(realbig,key)"/>
         </div>
       </div>
       <div class="imgs">
-        <h4>样板房(4)</h4>
+        <h4>样板房({{templates.length}})</h4>
         <div class="imgbox">
           <img v-lazy="item.small" alt v-for="(item,key) in templates" :key="key" @click="big(examplebig,key)"/>
         </div>
       </div>
       <div class="imgs">
-        <h4>配套(4)</h4>
+        <h4>配套({{matchings.length}})</h4>
         <div class="imgbox">
           <img v-lazy="item.small" alt v-for="(item,key) in matchings" :key="key" @click="big(matchingbig,key)"/>
         </div>
       </div>
       <div class="imgs">
-        <h4>交通图(1)</h4>
+        <h4>交通图({{traffics.length}})</h4>
         <div class="imgbox">
           <img v-lazy="item.small" alt v-for="(item,key) in traffics" :key="key" @click="big(trafficbig,key)"/>
         </div>
       </div>
       <div class="huimg">
-        <h4>户型图(5)</h4>
+        <h4>户型图({{apartments.length}})</h4>
         <div class="imgbox">
           <div class="img" v-for="(item,key) in apartments" :key="key" @click="big(departmentsbig,key)">
             <img v-lazy="item.small" alt />
@@ -117,6 +117,7 @@ export default {
       examplebig:res.examplebig,
       departmentsbig:res.departmentsbig,
       jkl: jkl,
+      id:id
     };
   },
   head() {

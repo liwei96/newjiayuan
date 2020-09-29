@@ -7,28 +7,28 @@
       </div>
       <div class="name" @click="login">
         <img src="~/assets/loginpeo.png" alt />
-        <h4>{{username}}</h4>
+        <h4>{{ username }}</h4>
       </div>
       <ul class="li">
         <li @click="viewed">
-            <div>
-              <p class="num">{{list.length}}</p>
-              <p class="msg">浏览足迹</p>
-            </div>
+          <div>
+            <p class="num">{{ list.length }}</p>
+            <p class="msg">浏览足迹</p>
+          </div>
         </li>
         <li @click="collection">
-            <div>
-              <p class="num">{{colls.length}}</p>
-              <p class="msg">我的收藏</p>
-            </div>
+          <div>
+            <p class="num">{{ colls.length }}</p>
+            <p class="msg">我的收藏</p>
+          </div>
         </li>
         <li @click="cancel">
-            <div>
-              <p class="num">{{cardnum}}</p>
-              <p class="msg">优惠卡券</p>
-            </div>
+          <div>
+            <p class="num">{{ cardnum }}</p>
+            <p class="msg">优惠卡券</p>
+          </div>
         </li>
-        <li @click="linkman">
+        <!-- <li @click="linkman">
             <div>
               <p class="num">
                 0
@@ -36,11 +36,11 @@
               </p>
               <p class="msg">我的联系</p>
             </div>
-        </li>
+        </li> -->
       </ul>
       <ul class="ll">
         <li>
-          <nuxt-link :to="'/'+jkl+'/help'">
+          <nuxt-link :to="'/' + jkl + '/help'">
             <div>
               <img src="~/assets/login-search.png" alt />
               <p>帮我找房</p>
@@ -48,7 +48,7 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/order'">
+          <nuxt-link :to="'/' + jkl + '/order'">
             <div>
               <img src="~/assets/login-yue.png" alt />
               <p>预约看房</p>
@@ -56,15 +56,15 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/map'">
-          <img src="~/assets/home-map.png" alt />
-          <p>地图找房</p>
+          <nuxt-link :to="'/' + jkl + '/map'">
+            <img src="~/assets/home-map.png" alt />
+            <p>地图找房</p>
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/join'">
-          <img src="~/assets/home-jia.png" alt />
-          <p>城市加盟</p>
+          <nuxt-link :to="'/' + jkl + '/join'">
+            <img src="~/assets/home-jia.png" alt />
+            <p>城市加盟</p>
           </nuxt-link>
         </li>
       </ul>
@@ -72,7 +72,7 @@
     <div class="con">
       <ul class="col">
         <li>
-          <nuxt-link :to="'/'+jkl+'/about'">
+          <nuxt-link :to="'/' + jkl + '/about'">
             <div>
               <img class="pp" src="~/assets/home-about.png" alt />
               <p>关于家园</p>
@@ -80,22 +80,22 @@
             </div>
           </nuxt-link>
         </li>
-        <li @click="show=true">
-            <img class="pp" src="~/assets/home-tel.png" alt />
-            <p>联系我们</p>
-            <img class="more" src="~/assets/home-more.png" alt />
+        <li @click="show = true">
+          <img class="pp" src="~/assets/home-tel.png" alt />
+          <p>联系我们</p>
+          <img class="more" src="~/assets/home-more.png" alt />
         </li>
         <li>
-            <div @click="jian">
-              <img class="pp" src="~/assets/home-comment.png" alt />
-              <p>投诉建议</p>
-              <img class="more" src="~/assets/home-more.png" alt />
-            </div>
+          <div @click="jian">
+            <img class="pp" src="~/assets/home-comment.png" alt />
+            <p>投诉建议</p>
+            <img class="more" src="~/assets/home-more.png" alt />
+          </div>
         </li>
       </ul>
       <ul class="col">
         <li>
-          <nuxt-link :to="'/'+jkl+'/statement'">
+          <nuxt-link :to="'/' + jkl + '/statement'">
             <div>
               <img class="pp" src="~/assets/home-vesion.png" alt />
               <p>版权声明</p>
@@ -104,7 +104,7 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/disclaimer'">
+          <nuxt-link :to="'/' + jkl + '/disclaimer'">
             <div>
               <img class="pp" src="~/assets/home-mian.png" alt />
               <p>免责协议</p>
@@ -113,7 +113,7 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/privacy'">
+          <nuxt-link :to="'/' + jkl + '/privacy'">
             <div>
               <img class="pp" src="~/assets/home-yin.png" alt />
               <p>隐私政策</p>
@@ -122,7 +122,7 @@
           </nuxt-link>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/protocol'">
+          <nuxt-link :to="'/' + jkl + '/protocol'">
             <div>
               <img class="pp" src="~/assets/home-xie.png" alt />
               <p>服务协议</p>
@@ -135,21 +135,32 @@
     <!-- <van-popup v-model="show" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
       <tan-view :id=45 :name="'士大夫'" :typenum="5" :typebtn="5"></tan-view>
     </van-popup>-->
-    <van-popup v-model="show" position="center" :style="{ background: 'rgba(0,0,0,0)' }">
+    <van-popup
+      v-model="show"
+      position="center"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+    >
       <div class="box">
         <h4>拨打电话</h4>
         <p class="tit">400-718-6686</p>
         <div class="btn">
-          <p @click="show=false">取消</p>
-          <a :href="'tel:'+tel">
-          <p class="yes">确定</p>
+          <p @click="show = false">取消</p>
+          <a :href="'tel:' + tel">
+            <p class="yes">确定</p>
           </a>
         </div>
       </div>
     </van-popup>
+    <div class="footer">
+      <p>
+        杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;&nbsp;电话：400-718-6686
+      </p>
+      <p>网络经营许可证：<a href="http://www.beian.miit.gov.cn/">浙ICP备19015909号-1</a></p>
+    </div>
   </div>
 </template>
 <script>
+
 import tan from "@/components/tan.vue";
 export default {
   async asyncData(context) {
@@ -157,7 +168,7 @@ export default {
     let jkl = context.params.name;
     let other = context.store.state.cookie.other;
     let city = context.store.state.cookie.city;
-    let [res,res1,res2] = await Promise.all([
+    let [res, res1, res2] = await Promise.all([
       context.$axios
         .get("/jy/phone/head/foot", {
           params: {
@@ -171,12 +182,12 @@ export default {
           // console.log(data)
           return data;
         }),
-        context.$axios
+      context.$axios
         .get("/jy/mine/foots", {
           params: {
             token: token,
-            page:1,
-            limit:50
+            page: 1,
+            limit: 50,
           },
         })
         .then((resp) => {
@@ -184,12 +195,12 @@ export default {
           // console.log(data)
           return data;
         }),
-        context.$axios
+      context.$axios
         .get("/jy/mine/collect", {
           params: {
             token: token,
-            page:1,
-            limit:50
+            page: 1,
+            limit: 50,
           },
         })
         .then((resp) => {
@@ -200,9 +211,9 @@ export default {
     ]);
     return {
       jkl: jkl,
-      tel:res.common.phone,
-      list:res1.data,
-      colls:res2.data
+      tel: res.common.phone,
+      list: res1.data,
+      colls: res2.data,
     };
   },
   head() {
@@ -211,14 +222,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -226,8 +236,8 @@ export default {
       show: false,
       jkl: "",
       tel: "400-688-965",
-      username:'点击登录',
-      cardnum:0
+      username: "点击登录",
+      cardnum: 0,
     };
   },
   components: {
@@ -235,63 +245,64 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push('/'+this.jkl);
+      this.$router.push("/" + this.jkl);
     },
     set() {
       this.$router.push("/" + this.jkl + "/set");
     },
-    login(){
-      if(!$cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/login')
+    login() {
+      if (!$cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
-    jian(){
-      if($cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/complaint')
-      }else{
-        this.$router.push('/'+this.jkl+'/login')
+    jian() {
+      if ($cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/complaint");
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
-    viewed(){
-      if($cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/viewed')
-      }else{
-        this.$router.push('/'+this.jkl+'/login')
+    viewed() {
+      if ($cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/viewed");
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
-    collection(){
-      if($cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/collection')
-      }else{
-        this.$router.push('/'+this.jkl+'/login')
+    collection() {
+      if ($cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/collection");
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
-    cancel(){
-      if($cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/cancel')
-      }else{
-        this.$router.push('/'+this.jkl+'/login')
+    cancel() {
+      if ($cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/cancel");
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
-    linkman(){
-      if($cookies.get('token')){
-        this.$router.push('/'+this.jkl+'/linkman')
-      }else{
-        this.$router.push('/'+this.jkl+'/login')
+    linkman() {
+      if ($cookies.get("token")) {
+        this.$router.push("/" + this.jkl + "/linkman");
+      } else {
+        this.$router.push("/" + this.jkl + "/login");
       }
+    },
+  },
+  mounted() {
+    if ($cookies.get("token")) {
+      this.username = $cookies.get("username");
+    }
+    if ($cookies.get("have")) {
+      this.cardnum = 1;
     }
   },
-  mounted(){
-    if($cookies.get('token')){
-      this.username = $cookies.get('username')
-    }
-    if($cookies.get('have')){
-      this.cardnum = 1
-    }
-  }
 };
 </script>
 <style lang="less" scoped>
+@import '@/static/css/hide.css';
 #home {
   background-color: #f7f7f7;
   height: 100vh;
@@ -449,16 +460,31 @@ export default {
       text-align: center;
       line-height: 2rem;
     }
-    a{
-        width: 50%;
-        p {
-            width: 100%;
-        }
+    a {
+      width: 50%;
+      p {
+        width: 100%;
+      }
     }
     .yes {
       color: #2ac66d;
       border-left: 0.03125rem solid #f2f2f2;
     }
+  }
+}
+.footer {
+  color: #88a1ae;
+  width: 100%;
+  font-size: 0.75rem;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  p {
+    margin-bottom: 0.625rem;
+  }
+  a {
+    color: #88a1ae;
+    text-decoration: underline;
   }
 }
 </style>

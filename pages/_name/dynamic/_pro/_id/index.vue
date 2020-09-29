@@ -234,7 +234,7 @@ export default {
       }
     },
     search(){
-      this.$router.push('/'+this.jkl+'/search')
+      this.$router.push('/'+this.jkl+'/searchname')
     }
   }
 };

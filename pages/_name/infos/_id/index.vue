@@ -61,6 +61,7 @@ import { aritles } from "@/api/api";
 import top from "@/components/header.vue";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": top,

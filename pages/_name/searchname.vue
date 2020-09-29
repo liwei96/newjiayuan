@@ -1,51 +1,57 @@
 <template>
   <div id="searchname">
     <header>
-      <img class="back" src="~/assets/goback.png" alt @click="back"/>
+      <img class="back" src="~/assets/goback.png" alt @click="back" />
       <input type="text" placeholder="请输入楼盘名称" v-model="name" />
       <span>搜索</span>
       <img src="~/assets/search.png" alt class="search" />
     </header>
     <div class="hot">
-      <h5>
-        <img src="~/assets/search-hot.png" />大家都在搜
-      </h5>
+      <h5><img src="~/assets/search-hot.png" />大家都在搜</h5>
       <p>
-        <template v-for="(item,key) in hots">
-          <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id" v-if="key<5">
-            <span>{{item.name}}</span>
+        <template v-for="(item, key) in hots">
+          <nuxt-link
+            :key="key"
+            :to="'/' + jkl + '/content/' + item.id"
+            v-if="key < 5"
+          >
+            <span>{{ item.name }}</span>
           </nuxt-link>
         </template>
       </p>
     </div>
     <div class="view" v-if="false">
-      <h5>
-        <img src="~/assets/search-view.png" />大家都在看
-      </h5>
+      <h5><img src="~/assets/search-view.png" />大家都在看</h5>
       <p>
         <span>住宅</span>
         <span>50m²以下</span>
       </p>
     </div>
-    <div class="result" v-if="ll">
-      <p class="tit">为您找到如下“{{name}}”相关搜索</p>
-      <template v-for="(item,key) in list">
-          <div class="li" @click="go(item.id,item.name)" :key="key">
+    <div class="result" v-show="ll">
+      <div id="kk">
+        <p class="tit">
+          为您找到如下“<span>{{ name }}</span
+          >”相关搜索
+        </p>
+        <template v-for="(item, key) in list">
+          <div class="li" @click="go(item.id, item.name)" :key="key">
             <h4>
-              {{item.name}} <i>{{item.city}}</i>
+              <strong v-html="item.name"></strong> <i>{{ item.city }}</i>
               <span>在售</span>
             </h4>
             <div class="msg">
-              <p>{{item.country}} - {{item.address}}</p>
-              <span>{{item.price}}元/m²起</span>
+              <p>{{ item.country }} - <span v-html="item.address"></span></p>
+              <span>{{ item.price }}元/m²起</span>
             </div>
           </div>
-      </template>
+        </template>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { souname } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let city = context.store.state.city;
@@ -77,14 +83,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   head() {
@@ -93,14 +98,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房-楼盘搜索"
+          content: "家园新房-楼盘搜索",
         },
         {
           name: "keywords",
-          content: "家园新房-楼盘搜索"
-        }
-      ]
+          content: "家园新房-楼盘搜索",
+        },
+      ],
     };
   },
   data() {
@@ -108,38 +112,77 @@ export default {
       list: [],
       hots: [],
       name: "",
-      ll:false
+      ll: false,
+      isok: true,
+      page:2
     };
   },
   methods: {
     sou() {
       let data = this.builds;
       let dd = [];
-      let name = this.name
+      let name = this.name;
       if (!name) {
         this.ll = false;
       } else {
         this.ll = true;
-        souname(name).then((res) => {
+        souname(name,1).then((res) => {
+          for (let val of res.data.data) {
+            var text = val.where.replace(/<[^<>]+>/g, "");
+            if (text == val.name) {
+              val.name == val.where;
+            } else if (text == val.address) {
+              val.address = val.where;
+            }
+          }
           this.list = res.data.data;
-          if(res.data.data.length ==0){
-            that.$router.push('/'+that.jkl+'/search')
+          if (res.data.data.length == 0) {
+            that.$router.push("/" + that.jkl + "/search");
           }
         });
       }
     },
-    back(){
-      this.$router.go(-1)
+    back() {
+      this.$router.go(-1);
     },
-    go(id,name){
-      if(sessionStorage.getItem('order')){
-        sessionStorage.setItem('ordername',name)
-        sessionStorage.removeItem('order')
-        this.$router.push('/'+this.jkl+'/order')
-      }else{
-        this.$router.push('/'+this.jkl+'/content/'+id)
+    go(id, name) {
+      if (sessionStorage.getItem("order")) {
+        sessionStorage.setItem("ordername", name);
+        sessionStorage.removeItem("order");
+        this.$router.push("/" + this.jkl + "/order");
+      } else {
+        this.$router.push("/" + this.jkl + "/content/" + id);
       }
-    }
+    },
+  },
+  mounted() {
+    let that = this;
+    $(".result").scroll(function () {
+      let top = $(this).scrollTop();
+      let h = $(this).height();
+      let all = $("#kk").height();
+      if (top + h > all) {
+        if (that.isok) {
+          that.isok = false;
+          souname(that.name,that.page).then((res) => {
+            that.isok = true
+            that.page = that.page+1
+            for (let val of res.data.data) {
+              var text = val.where.replace(/<[^<>]+>/g, "");
+              if (text == val.name) {
+                val.name == val.where;
+              } else if (text == val.address) {
+                val.address = val.where;
+              }
+            }
+            that.list = that.list.concat(res.data.data);
+            if (res.data.data.length == 0) {
+              that.$router.push("/" + that.jkl + "/search");
+            }
+          });
+        }
+      }
+    });
   },
   watch: {
     name(val) {
@@ -273,13 +316,16 @@ header {
     color: #323233;
     font-size: 0.875rem;
     margin-bottom: 1.625rem;
+    span {
+      color: #ff5353;
+    }
   }
   .li {
     padding-right: 4%;
     padding-bottom: 0.875rem;
     border-bottom: 0.03125rem solid #f2f4f7;
     margin-bottom: 0.875rem;
-    h4 {
+    /deep/h4 {
       color: #313233;
       font-size: 1rem;
       font-weight: 400;
@@ -296,11 +342,17 @@ header {
         font-style: normal;
         font-size: 0.75rem;
       }
+      strong {
+        font-weight: 400;
+        em {
+          color: #ff5353;
+        }
+      }
     }
     .msg {
       display: flex;
       justify-content: space-between;
-      p {
+      /deep/p {
         color: #646566;
         font-size: 0.75rem;
         width: 14.0625rem;
@@ -308,10 +360,22 @@ header {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        span {
+          color: #646566;
+          font-size: 0.75rem;
+          em {
+            font-style: normal;
+            color: #ff5353;
+          }
+        }
       }
       span {
         color: #646566;
         font-size: 0.75rem;
+        em {
+          font-style: normal;
+          color: #ff5353;
+        }
       }
     }
   }

@@ -82,6 +82,7 @@
   </div>
 </template>
 <script>
+import '@/static/css/foot.css'
 import topView from "@/components/header.vue";
 import { send , check , put } from '@/api/api'
 export default {
@@ -140,9 +141,9 @@ export default {
       this.$router.push('/'+this.jkl+'/searchname')
     },
     time(val){
-      console.log(val)
       let d = new Date(val)
       let str = d.getFullYear()+'年'+(d.getMonth()+1)+'月'+d.getDate()+'日'
+      sessionStorage.setItem('ordertime',str)
       this.date = str
       this.show=false
     },
@@ -246,6 +247,7 @@ export default {
   },
   mounted(){
     this.name = sessionStorage.getItem('ordername')
+    this.date = sessionStorage.getItem('ordertime')
   }
 };
 </script>

@@ -215,6 +215,7 @@ export default {
       this.typebtn = 1;
       this.tan = true;
       this.remark = "成交案例详情页+预约看房";
+      this.id =String(this.building.id)
     },
     btns(){
       if(this.list){
@@ -229,6 +230,7 @@ export default {
       this.typenum = position
       this.tan = true
       this.remark=txt
+      this.id =String(this.building.id)
     },
   },
 };

@@ -17,6 +17,7 @@
 </template>
 <script>
 import { put, send, check } from "@/api/api";
+import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
     let jkl = context.params.name;

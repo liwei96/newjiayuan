@@ -1,7 +1,7 @@
 <template>
   <div id="hu">
     <top-view :jkl="jkl"></top-view>
-    <div class="topimg">
+    <div class="topimg" @click="big(now.small)">
       <img :src="now.small" alt />
       <p>共1张</p>
     </div>
@@ -21,8 +21,8 @@
           <span>{{ now.area }}m²</span>
         </div>
         <div class="left">
-          朝向：
-          <span>南</span>
+          层高：
+          <span>{{ Number(now.height) }}m</span>
         </div>
       </div>
       <div class="msgli">
@@ -31,16 +31,16 @@
           <span>{{ now.type }}</span>
         </div>
         <div class="left">
-          层高：
-          <span>{{ Number(now.height) }}m</span>
-        </div>
-      </div>
-      <div class="msgli tese">
-        <div class="left">
           特色：
           <span>{{ now.special }}</span>
         </div>
       </div>
+      <!-- <div class="msgli tese">
+        <div class="left">
+          特色：
+          <span>{{ now.special }}</span>
+        </div>
+      </div> -->
       <nuxt-link :to="'/' + jkl + '/rim/' + now.bid">
         <p class="address">
           <img class="path" src="~/assets/icon-path.png" alt />
@@ -206,6 +206,7 @@
   </div>
 </template>
 <script>
+import { ImagePreview } from 'vant'
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 import tan from "@/components/tan.vue";
@@ -213,6 +214,7 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
+    [ImagePreview.Component.name]: ImagePreview.Component,
     "tan-view": tan,
   },
   async asyncData(context) {
@@ -296,6 +298,10 @@ export default {
       this.tan = true
       this.remark=txt+'+'+this.now.title
     },
+    big(url){
+      let arr = [url]
+      ImagePreview(arr);
+    }
   },
 };
 </script>

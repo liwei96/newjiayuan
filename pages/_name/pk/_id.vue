@@ -57,6 +57,7 @@
 </template>
 <script>
 import top from "@/components/header";
+import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": top,
