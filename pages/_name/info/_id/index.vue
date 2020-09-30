@@ -45,7 +45,7 @@
         <span>来源：{{article.source}}</span>
         <i>浏览： {{article.visit_num}}</i>
       </p>
-      <div class="pop">
+      <div class="pop" v-if="article.description.length">
         <span>摘要：</span>
         {{article.description}}
       </div>
@@ -55,6 +55,7 @@
         <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
       </div>
       <div class="project" v-if="project.length!=0">
+        <nuxt-link :to="'/'+this.jkl+'/content/'+project.id">
         <div class="ject-top">
           <div class="top-left">
             <img :src="project.img" alt />
@@ -76,6 +77,7 @@
             </p>
           </div>
         </div>
+        </nuxt-link>
         <div class="bom">
           <a :href="'tel:'+phone">
             <button>电话咨询</button>
@@ -85,10 +87,10 @@
       </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
-        买房资格
+        {{article.source_type}}
       </p>
       <div class="agre" @click="like">
-        <img src="~/assets/noclick.png" alt />
+        <img :src="img" alt />
         <p>{{article.like_num}}</p>
       </div>
       <p class="free">
@@ -196,7 +198,10 @@ export default {
       name: "",
       remark: "",
       id:'0',
-      list:false
+      list:false,
+      img: "",
+      img1: require("~/assets/noclick.png"),
+      img2: require("~/assets/checked.png"),
     };
   },
   methods: {
@@ -212,6 +217,7 @@ export default {
       this.typenum = position;
       this.tan = true;
       this.remark = txt;
+      this.id = this.project.id
     },
     btn(){
       if(this.list){
@@ -230,10 +236,12 @@ export default {
               this.article.like_num = this.article.like_num-1
               this.article.my_like = 0
               this.toast('取消成功')
+              this.img = this.img1
             }else{
               this.article.like_num = this.article.like_num+1
               this.article.my_like = 1
               this.toast('点赞成功')
+              this.img = this.img2
             }
           }else{
             let url = this.$route.path;
@@ -250,6 +258,11 @@ export default {
   },
   mounted(){
     // console.log(this.project)
+    if (this.article.my_like) {
+      this.img = this.img2
+    } else {
+      this.img=this.img1
+    }
   }
 };
 </script>

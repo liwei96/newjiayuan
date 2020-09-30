@@ -13,7 +13,7 @@
               </h5>
               <p class="pro-price">
                 <span>{{ item.price }}</span>
-                <i>元/m²</i>起
+                <i>元/m²</i>
               </p>
               <p class="attr">
                 {{ item.type }} | {{ item.city }}-{{
@@ -25,7 +25,7 @@
                 <span class="pro-icon-zhuang">{{ item.decorate }}</span>
                 <span
                   class="pro-icon-type"
-                  v-for="(val, k) in item.feature"
+                  v-for="(val, k) in item.features"
                   :key="k"
                   >{{ val }}</span
                 >
@@ -35,7 +35,7 @@
         </nuxt-link>
       </template>
     </div>
-    <div class="isnull">
+    <div class="isnull" v-if="!list.length">
         <img src="~/assets/collection.png" alt="">
         <p>您暂无收藏记录，快去逛逛吧</p>
         <nuxt-link :to="'/' + jkl + '/search'">

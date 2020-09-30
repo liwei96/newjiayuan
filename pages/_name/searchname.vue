@@ -156,33 +156,33 @@ export default {
     },
   },
   mounted() {
-    let that = this;
-    $(".result").scroll(function () {
-      let top = $(this).scrollTop();
-      let h = $(this).height();
-      let all = $("#kk").height();
-      if (top + h > all) {
-        if (that.isok) {
-          that.isok = false;
-          souname(that.name,that.page).then((res) => {
-            that.isok = true
-            that.page = that.page+1
-            for (let val of res.data.data) {
-              var text = val.where.replace(/<[^<>]+>/g, "");
-              if (text == val.name) {
-                val.name == val.where;
-              } else if (text == val.address) {
-                val.address = val.where;
-              }
-            }
-            that.list = that.list.concat(res.data.data);
-            if (res.data.data.length == 0) {
-              that.$router.push("/" + that.jkl + "/search");
-            }
-          });
-        }
-      }
-    });
+    // let that = this;
+    // $(".result").scroll(function () {
+    //   let top = $(this).scrollTop();
+    //   let h = $(this).height();
+    //   let all = $("#kk").height();
+    //   if (top + h > all) {
+    //     if (that.isok) {
+    //       that.isok = false;
+    //       souname(that.name,that.page).then((res) => {
+    //         that.isok = true
+    //         that.page = that.page+1
+    //         for (let val of res.data.data) {
+    //           var text = val.where.replace(/<[^<>]+>/g, "");
+    //           if (text == val.name) {
+    //             val.name == val.where;
+    //           } else if (text == val.address) {
+    //             val.address = val.where;
+    //           }
+    //         }
+    //         that.list = that.list.concat(res.data.data);
+    //         if (res.data.data.length == 0) {
+    //           that.$router.push("/" + that.jkl + "/search");
+    //         }
+    //       });
+    //     }
+    //   }
+    // });
   },
   watch: {
     name(val) {

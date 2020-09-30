@@ -83,7 +83,7 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span> <img src="~/assets/ques.png" alt /> 活动规则 </span>
+        <span @click="huo=true"> <img src="~/assets/ques.png" alt /> 活动规则 </span>
       </h3>
       <div class="hui-con">
         <div class="hui-left">
@@ -118,7 +118,7 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="con">
+    <div class="con" v-if="other.length">
       <h3>本楼盘其它户型</h3>
       <template v-for="(item, key) in other">
         <nuxt-link :key="key" :to="'/' + jkl + '/hu/' + item.id">
@@ -203,6 +203,37 @@
         :proname="now.name"
       ></tan-view>
     </van-popup>
+    <van-popup v-model="huo" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="huo-msg">
+        <div class="msg-con">
+          <h4>活动规则</h4>
+          <img @click="huo = false" src="~/assets/w-del.png" alt />
+          <div>
+            <p>
+              1、本次团购活动以分档累计补发的方案执行，通过家园网站成交该项目具体团购费用如下所示：
+            </p>
+            <p>0-5套---------每套1000元</p>
+            <p>6-10套--------每套2000元</p>
+            <p>11-15套-------每套3000元</p>
+            <p>16-20套-------每套4000元</p>
+            <p>21套以上------每套5000元</p>
+            <p>
+              2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+            </p>
+            <p>
+              3、核算方式：由开发商或代理公司判定为家园平台客户即可享受这个优惠
+            </p>
+            <p>
+              4、结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户
+            </p>
+            <p>
+              详细活动方案请致电家园客服电话：
+              <span>400-718-6686</span> 注：活动最终解释权归家园所有
+            </p>
+          </div>
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
@@ -278,6 +309,7 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
+      huo:false
     };
   },
   methods: {
@@ -860,5 +892,38 @@ header {
     color: #fff;
     background: linear-gradient(270deg, #1fc365, #3fd6a6);
   }
+}
+.huo-msg .msg-con {
+  width: 74vw;
+  border-radius: 0.75rem;
+  padding: 1.5625rem;
+  background-color: #fff;
+  z-index: 300;
+}
+.huo-msg .msg-con div {
+  max-height: 280px;
+  overflow-x: auto;
+}
+.huo-msg h4 {
+  color: #2f3133;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  font-weight: bold;
+}
+.huo-msg p {
+  color: #626466;
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
+  margin-bottom: 0.625rem;
+}
+.huo-msg p span {
+  font-weight: bold;
+}
+.huo-msg img {
+  width: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 </style>

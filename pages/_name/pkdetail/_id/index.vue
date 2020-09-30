@@ -7,7 +7,7 @@
         <span>楼盘信息</span>
       </div>
       <div class="center">
-        <img class="topimg" :src="one.img" alt />
+        <img class="topimg" :src="one.img" alt @click="godetail(one.id)"/>
         <div class="msg">
           <h6>{{one.name}}</h6>
           <p class="type">
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="center">
-        <img class="topimg" :src="two.img" alt />
+        <img class="topimg" :src="two.img" alt @click="godetail(two.id)"/>
         <div class="msg">
           <h6>{{two.name}}</h6>
           <p class="type">
@@ -331,6 +331,9 @@ export default {
       this.tan = true;
       this.remark = "楼盘PK页+预约看房";
     },
+    godetail(id){
+      this.$router.push('/'+this.jkl+'/content/'+id)
+    }
   }
 };
 </script>

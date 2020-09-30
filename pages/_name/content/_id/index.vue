@@ -575,9 +575,7 @@
         </li>
       </ul>
       <p class="tishi" v-if="!comments.length">暂无点评，快来点评吧</p>
-      <nuxt-link :to="'/' + jkl + '/comment/' + id">
-        <button>我要点评</button>
-      </nuxt-link>
+        <button @click="dianping">我要点评</button>
     </div>
     <div class="line"></div>
     <div class="wen">
@@ -604,14 +602,44 @@
         </template>
       </ul>
       <p class="tishi" v-if="!questions.length">暂无问答，快来提问吧</p>
-      <nuxt-link :to="'/' + jkl + '/quiz/' + id">
-        <button>我要提问</button>
-      </nuxt-link>
+        <button @click="tiwen">我要提问</button>
     </div>
     <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
-      <div class="pro" v-for="(item, key) in recommends" :key="key">
+      <template v-for="(item, key) in recommends">
+          <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
+            <div class="pro">
+              <img :src="item.img" alt />
+              <div class="pro-msg">
+                <h5>
+                  {{ item.name }}
+                  <span>{{ item.state }}</span>
+                </h5>
+                <p class="pro-price">
+                  <span>{{ item.single_price }}</span>
+                  <i>元/m²</i>
+                </p>
+                <p class="attr">
+                  {{ item.type }} | {{ item.city }}-{{
+                    item.country.substr(0, 2)
+                  }}
+                  | {{ item.area }}m²
+                </p>
+                <p class="pro-icon">
+                  <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                  <span
+                    class="pro-icon-type"
+                    v-for="(val, k) in item.features"
+                    :key="k"
+                    >{{ val }}</span
+                  >
+                </p>
+              </div>
+            </div>
+          </nuxt-link>
+        </template>
+      <!-- <div class="pro" v-for="(item, key) in recommends" :key="key">
         <img :src="item.img" alt />
         <div class="pro-msg">
           <h5>
@@ -636,7 +664,7 @@
             >
           </p>
         </div>
-      </div>
+      </div> -->
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
@@ -822,12 +850,31 @@ export default {
     };
   },
   methods: {
+    dianping(){
+      let token = $cookies.get("token");
+      if (token) {
+        this.$router.push('/'+this.jkl+'/comment/'+this.id)
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
+    tiwen(){
+      let token = $cookies.get("token");
+      if (token) {
+        this.$router.push('/'+this.jkl+'/quiz/'+this.id)
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
     del(id, key) {
       let token = $cookies.get("token");
       if (token) {
         delcomm({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
-            this.lists.slice(key, 1);
             this.toast("删除成功");
             this.$router.go(0);
           } else {
@@ -879,25 +926,25 @@ export default {
       this.navnum = e;
       switch (e) {
         case 0:
-          scroll(0, 970);
+          scroll(0, 700);
           break;
         case 1:
-          scroll(0, 1178);
+          scroll(0, 900);
           break;
         case 2:
-          scroll(0, 1600);
+          scroll(0, 1300);
           break;
         case 3:
-          scroll(0, 2300);
+          scroll(0, 1700);
           break;
         case 4:
-          scroll(0, 3400);
+          scroll(0, 3000);
           break;
         case 5:
-          scroll(0, 3800);
+          scroll(0, 3400);
           break;
         case 6:
-          scroll(0, 4000);
+          scroll(0, 3900);
           break;
       }
     },
@@ -1238,13 +1285,14 @@ export default {
     },
     setnav() {
       var top = window.scrollY;
-      if (top >= 970) {
+      // console.log(top)
+      if (top >= 700) {
         $(".nav-icon").css({ position: "fixed", top: "2.75rem" });
-        if (top >= 1178 && top < 1600) {
+        if (top >= 900 && top < 1300) {
           this.navnum = 1;
-        } else if (top >= 1600 && top < 2000) {
+        } else if (top >= 1300 && top < 1700) {
           this.navnum = 2;
-        } else if (top >= 2000 && top < 2300) {
+        } else if (top >= 1700 && top < 2300) {
           this.navnum = 3;
         } else if (top >= 2300 && top < 3400) {
           this.navnum = 4;
@@ -2292,7 +2340,7 @@ export default {
     }
   }
   .liao-msg {
-    height: 7.5rem;
+    // height: 7.5rem;
     border-radius: 0.375rem;
     background-color: #f7f7f7;
     padding: 0 0.875rem;
@@ -2302,11 +2350,11 @@ export default {
       font-size: 0.875rem;
       line-height: 1.25rem;
       padding-top: 0.9375rem;
-      height: 2.4375rem;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
+      // height: 2.4375rem;
+      // display: -webkit-box;
+      // -webkit-box-orient: vertical;
+      // -webkit-line-clamp: 2;
+      // overflow: hidden;
     }
   }
   button {

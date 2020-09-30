@@ -1,12 +1,12 @@
 <template>
   <div id="search">
     <header>
-      <img class="back" src="~/assets/goback.png" alt @click="back"/>
-      <nuxt-link :to="'/'+jkl+'/address'">
-      <p class="city">
-        {{cityname}}
-        <img src="~/assets/downsan.png" alt />
-      </p>
+      <img class="back" src="~/assets/goback.png" alt @click="back" />
+      <nuxt-link :to="'/' + jkl + '/address'">
+        <p class="city">
+          {{ cityname }}
+          <img src="~/assets/downsan.png" alt />
+        </p>
       </nuxt-link>
       <img class="logo" src="~/assets/logo.png" alt />
       <!-- <div class="zixuns" @click="gotalk" v-show="false">
@@ -15,13 +15,11 @@
       </div> -->
     </header>
     <div class="input">
-      <nuxt-link :to="'/'+jkl+'/searchname'">
+      <nuxt-link :to="'/' + jkl + '/searchname'">
         <input type="text" placeholder="请输入楼盘名称" />
       </nuxt-link>
-      <nuxt-link :to="'/'+jkl+'/map'">
-      <span>
-        <img src="~/assets/dian.png" />地图
-      </span>
+      <nuxt-link :to="'/' + jkl + '/map'">
+        <span> <img src="~/assets/dian.png" />地图 </span>
       </nuxt-link>
       <img src="~/assets/search.png" alt class="sea" />
     </div>
@@ -53,37 +51,51 @@
           <div class="area-top">
             <div class="area-left">
               <ul>
-                <li :class="areanum == 0 ?'active':''" @click="setarea(0)">
+                <li :class="areanum == 0 ? 'active' : ''" @click="setarea(0)">
                   <span>区域</span>
                 </li>
-                <li :class="areanum == 1 ?'active':''" @click="setarea(1)">
+                <li :class="areanum == 1 ? 'active' : ''" @click="setarea(1)">
                   <span>地铁</span>
                 </li>
               </ul>
             </div>
             <div class="area-right">
               <ul v-if="areanum == 0">
-                <li :class="area.length == 0 ?'active':''" @click="unlimited(0,citys)">不限</li>
                 <li
-                  v-for="(item,key) in citys"
+                  :class="area.length == 0 ? 'active' : ''"
+                  @click="unlimited(0, citys)"
+                >
+                  不限
+                </li>
+                <li
+                  v-for="(item, key) in citys"
                   :key="key"
-                  :class="item.btn == 1 ?'active':''"
-                  @click="set(citys,item.id,key,0)"
-                >{{item.name}}</li>
+                  :class="item.btn == 1 ? 'active' : ''"
+                  @click="set(citys, item.id, key, 0)"
+                >
+                  {{ item.name }}
+                </li>
               </ul>
               <ul v-if="areanum == 1">
-                <li :class="railway.length == 0 ?'active':''" @click="unlimited(1,ties)">不限</li>
                 <li
-                  v-for="(item,key) in ties"
+                  :class="railway.length == 0 ? 'active' : ''"
+                  @click="unlimited(1, ties)"
+                >
+                  不限
+                </li>
+                <li
+                  v-for="(item, key) in ties"
                   :key="key"
-                  :class="item.btn == 1 ?'active':''"
-                  @click="set(ties,item.id,key,1)"
-                >{{item.name}}</li>
+                  :class="item.btn == 1 ? 'active' : ''"
+                  @click="set(ties, item.id, key, 1)"
+                >
+                  {{ item.name }}
+                </li>
               </ul>
             </div>
           </div>
           <div class="area-bom">
-            <button>重置</button>
+            <button @click="setnull">重置</button>
             <button class="yes" @click="yes">确定</button>
           </div>
         </div>
@@ -93,50 +105,58 @@
           <div class="area-top">
             <div class="area-left">
               <ul>
-                <li :class="areanum == 0 ?'active':''" @click="setarea(0)">
-                  <span>总价</span>
-                </li>
-                <li :class="areanum == 1 ?'active':''" @click="setarea(1)">
+                <li :class="areanum == 0 ? 'active' : ''" @click="setarea(0)">
                   <span>单价</span>
+                </li>
+                <li :class="areanum == 1 ? 'active' : ''" @click="setarea(1)">
+                  <span>总价</span>
                 </li>
               </ul>
             </div>
             <div class="area-right">
               <ul v-if="areanum == 0">
-                <li :class="price == 0 ?'active':''" @click="price = 0">不限</li>
+                <li :class="price == 0 ? 'active' : ''" @click="price = 0">
+                  不限
+                </li>
                 <li
-                  v-for="(item,key) in single_prices"
+                  v-for="(item, key) in single_prices"
                   :key="key"
-                  :class="price == item.id ?'active':''"
+                  :class="price == item.id ? 'active' : ''"
                   @click="price = item.id"
-                >{{item.name}}</li>
+                >
+                  {{ item.name }}
+                </li>
               </ul>
               <ul v-if="areanum == 1">
-                <li :class="total == 0 ?'active':''" @click="total = 0">不限</li>
+                <li :class="total == 0 ? 'active' : ''" @click="total = 0">
+                  不限
+                </li>
                 <li
-                  v-for="(item,key) in total_prices"
+                  v-for="(item, key) in total_prices"
                   :key="key"
-                  :class="total == item.id ?'active':''"
+                  :class="total == item.id ? 'active' : ''"
                   @click="total = item.id"
-                >{{item.name}}</li>
+                >
+                  {{ item.name }}
+                </li>
               </ul>
             </div>
           </div>
           <div class="area-bom">
-            <button>重置</button>
+            <button @click="setnull1">重置</button>
             <button class="yes" @click="yes">确定</button>
           </div>
         </div>
       </div>
       <div class="hu">
         <ul>
-          <li v-for="(item,key) in hus" :key="key">
-            <p>{{item.name}}</p>
+          <li v-for="(item, key) in hus" :key="key">
+            <p>{{ item.name }}</p>
             <input type="checkbox" name="hu" v-model="husid" :value="key" />
           </li>
         </ul>
         <div class="hubtn">
-          <button>重置</button>
+          <button @click="husid = []">重置</button>
           <button class="yes" @click="yes">确定</button>
         </div>
       </div>
@@ -146,33 +166,36 @@
             <h6>面积</h6>
             <p>
               <span
-                v-for="(item,key) in areas"
+                v-for="(item, key) in areas"
                 :key="key"
-                :class="region == item.id ?'active':''"
+                :class="region == item.id ? 'active' : ''"
                 @click="region = item.id"
-              >{{item.name}}</span>
+                >{{ item.name }}</span
+              >
             </p>
           </div>
           <div class="type-li">
             <h6>类型</h6>
             <p>
               <span
-                v-for="(item,key) in types"
+                v-for="(item, key) in types"
                 :key="key"
-                :class="type1 == item.type ?'active':''"
+                :class="type1 == item.type ? 'active' : ''"
                 @click="type1 = item.type"
-              >{{item.type}}</span>
+                >{{ item.type }}</span
+              >
             </p>
           </div>
           <div class="type-li">
             <h6>特色</h6>
             <p>
               <span
-                v-for="(item,key) in features"
+                v-for="(item, key) in features"
                 :key="key"
-                :class="item.btn == 1 ?'active':''"
-                @click="set(features,item.id,key,2)"
-              >{{item.name}}</span>
+                :class="item.btn == 1 ? 'active' : ''"
+                @click="set(features, item.id, key, 2)"
+                >{{ item.name }}</span
+              >
             </p>
           </div>
           <!-- <div class="type-li">
@@ -186,17 +209,27 @@
           </div>-->
         </div>
         <div class="typebtn">
-          <button>重置</button>
+          <button @click="setnull2()">重置</button>
           <button class="yes" @click="yes">确定</button>
         </div>
       </div>
       <div class="order">
         <ul>
-          <li @click="order(0)" :class="ordernum == 0 ? 'active':''">默认排序</li>
-          <li @click="order(1)" :class="ordernum == 1 ? 'active':''">单价从低到高</li>
-          <li @click="order(3)" :class="ordernum == 3 ? 'active':''">单价从高到低</li>
-          <li @click="order(4)" :class="ordernum == 4 ? 'active':''">开盘时间从近到远</li>
-          <li @click="order(2)" :class="ordernum == 2 ? 'active':''">开盘时间从远到近</li>
+          <li @click="order(0)" :class="ordernum == 0 ? 'active' : ''">
+            默认排序
+          </li>
+          <li @click="order(1)" :class="ordernum == 1 ? 'active' : ''">
+            单价从低到高
+          </li>
+          <li @click="order(3)" :class="ordernum == 3 ? 'active' : ''">
+            单价从高到低
+          </li>
+          <li @click="order(4)" :class="ordernum == 4 ? 'active' : ''">
+            开盘时间从近到远
+          </li>
+          <li @click="order(2)" :class="ordernum == 2 ? 'active' : ''">
+            开盘时间从远到近
+          </li>
         </ul>
       </div>
       <div class="zhe" v-if="showtype" @click="cloase"></div>
@@ -208,25 +241,33 @@
       <p @click="jin">近地铁</p>
     </div>
     <div class="con">
-      <template v-for="(item,key) in list">
-        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
+      <template v-for="(item, key) in list">
+        <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
           <div class="pro">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
-                {{item.name}}
-                <span>{{item.state}}</span>
+                {{ item.name }}
+                <span>{{ item.state }}</span>
               </h5>
               <p class="pro-price">
-                <span>{{item.price}}</span>
+                <span>{{ item.price }}</span>
                 <i>元/m²</i>
               </p>
-              <p
-                class="attr"
-              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
               <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.feature"
+                  :key="k"
+                  >{{ val }}</span
+                >
               </p>
             </div>
           </div>
@@ -239,35 +280,44 @@
       </div>
       <p class="nullmsg">
         没有找到相关内容，
-        <span @click="clearall">清空条件</span>再次搜索 或者让我们来为您推荐寻找合适的楼盘
+        <span @click="clearall">清空条件</span>再次搜索
+        或者让我们来为您推荐寻找合适的楼盘
       </p>
       <button @click="help">帮我找房</button>
       <div class="other">
         <h3>猜你喜欢</h3>
-        <template v-for="(item,key) in other">
-        <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
-          <div class="pro">
-            <img :src="item.img" alt />
-            <div class="pro-msg">
-              <h5>
-                {{item.name}}
-                <span>{{item.state}}</span>
-              </h5>
-              <p class="pro-price">
-                <span>{{item.price}}</span>
-                <i>元/m²</i>
-              </p>
-              <p
-                class="attr"
-              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
-              <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
-              </p>
+        <template v-for="(item, key) in other">
+          <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
+            <div class="pro">
+              <img :src="item.img" alt />
+              <div class="pro-msg">
+                <h5>
+                  {{ item.name }}
+                  <span>{{ item.state }}</span>
+                </h5>
+                <p class="pro-price">
+                  <span>{{ item.price }}</span>
+                  <i>元/m²</i>
+                </p>
+                <p class="attr">
+                  {{ item.type }} | {{ item.city }}-{{
+                    item.country.substr(0, 2)
+                  }}
+                  | {{ item.area }}m²
+                </p>
+                <p class="pro-icon">
+                  <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                  <span
+                    class="pro-icon-type"
+                    v-for="(val, k) in item.feature"
+                    :key="k"
+                    >{{ val }}</span
+                  >
+                </p>
+              </div>
             </div>
-          </div>
-        </nuxt-link>
-      </template>
+          </nuxt-link>
+        </template>
       </div>
     </div>
     <div class="load" v-if="load">
@@ -278,7 +328,7 @@
 <script>
 import { Popup, Loading } from "vant";
 import { pros } from "@/api/api";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
     let city = context.store.state.city;
@@ -436,23 +486,22 @@ export default {
       region: region, //面积
       other: res2,
       isnull: isnull,
-      cityname:res.common.city_info.current.short
+      cityname: res.common.city_info.current.short,
     };
   },
   head() {
     return {
-      title: "家园新房-"+this.cityname+'-楼盘查询',
+      title: "家园新房-" + this.cityname + "-楼盘查询",
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -491,8 +540,21 @@ export default {
     Loading,
   },
   methods: {
-    back(){
-      this.$router.push('/'+this.jkl)
+    setnull(){
+      this.unlimited(0,this.citys)
+      this.unlimited(1, this.ties)
+    },
+    setnull1(){
+      this.price = 0
+      this.total = 0
+    },
+    setnull2(){
+      this.region = ''
+      this.type1 = ''
+      this.unlimited(2, this.features)
+    },
+    back() {
+      this.$router.push("/" + this.jkl);
     },
     setarea(n) {
       this.areanum = n;
@@ -683,8 +745,8 @@ export default {
           type[ll[0]] = ll[1];
         }
         $cookies.set("type", type);
-      }else{
-        $cookies.set('type',{})
+      } else {
+        $cookies.set("type", {});
       }
     },
     set(arr, id, key, type) {
@@ -739,6 +801,10 @@ export default {
           that.tienum = 0;
           that.ties = arr;
           break;
+        case 2:
+          that.feature = [];
+          that.features = arr;
+          break;
       }
     },
     yes() {
@@ -769,7 +835,7 @@ export default {
       } else {
         d = that.tostring(d, "area", that.region);
       }
-      if (that.husid.length !=0) {
+      if (that.husid.length != 0) {
         d.house_type = that.husid.join(",");
       } else {
         d = that.tostring(d, "house_type", that.husid);
@@ -875,8 +941,8 @@ export default {
       url = arr.join("/");
       this.$router.push(url);
     },
-    help(){
-      this.$router.push('/'+this.jkl+'/help')
+    help() {
+      this.$router.push("/" + this.jkl + "/help");
     },
     gotalk() {
       window.location.href =
@@ -904,7 +970,7 @@ export default {
     // }
     // console.log(this.$route.path);
     // 滑动监控
-    localStorage.setItem('cityname',this.cityname)
+    localStorage.setItem("cityname", this.cityname);
     // $(window).scroll(function () {
     //   var scrollTop =
     //     document.documentElement.scrollTop || document.body.scrollTop;

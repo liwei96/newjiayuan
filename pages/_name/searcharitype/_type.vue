@@ -56,9 +56,14 @@
             <div class="pro">
               <div class="left">
                 <h5 v-html="item.replace.title.indexOf('em')!=-1?item.replace.title:item.replace.description"></h5>
-                <p>
-                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
-                </p>
+                <p v-if="item.tags.length">
+                    <span v-for="(val, k) in item.tags" :key="k">{{
+                      val
+                    }}</span>
+                  </p>
+                  <p v-if="!item.tags.length">
+                    {{ item.source }} &nbsp;&nbsp;&nbsp;{{ item.time }}
+                  </p>
               </div>
               <div class="right">
                 <img :src="item.img ? item.img : img" alt />
@@ -166,12 +171,12 @@ export default {
       }
     },
   },
-  mounted() {
-    window.addEventListener("scroll", this.getmore);
-  },
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.getmore);
-  },
+  // mounted() {
+  //   window.addEventListener("scroll", this.getmore);
+  // },
+  // beforeDestroy() {
+  //   window.removeEventListener("scroll", this.getmore);
+  // },
   watch: {
     name(val) {
       this.sou();
@@ -300,6 +305,8 @@ li {
       p {
         position: absolute;
         bottom: 0.4375rem;
+        color: #626466;
+          font-size: 0.625rem;
         span {
           padding: 0.15625rem 0.3125rem 0.1875rem 0.3125rem;
           border-radius: 0.125rem;

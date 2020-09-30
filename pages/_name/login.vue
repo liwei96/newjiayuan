@@ -123,7 +123,7 @@ export default {
             // localStorage.setItem('token',res.data.token)
             $cookies.set("phone", that.tel);
             $cookies.set("token", res.data.token);
-
+            this.$store.dispatch("setoken", res.data.token);
             // localStorage.setItem('phone',that.tel)
             let tel = that.tel.substr(0, 3) + "****" + that.tel.substr(8);
             $cookies.set("username", tel);
@@ -135,6 +135,8 @@ export default {
             } else {
               that.$router.push("/" + that.jkl + "/home");
             }
+          }else{
+            this.toast('验证码不正确')
           }
         }
       );

@@ -12,22 +12,22 @@
       <ul class="li">
         <li @click="viewed">
           <div>
-            <p class="num">{{ list.length }}</p>
+            <p class="num">{{ viewednum }}</p>
             <p class="msg">浏览足迹</p>
           </div>
         </li>
         <li @click="collection">
           <div>
-            <p class="num">{{ colls.length }}</p>
+            <p class="num">{{ collnum }}</p>
             <p class="msg">我的收藏</p>
           </div>
         </li>
-        <li @click="cancel">
+        <!-- <li @click="cancel">
           <div>
             <p class="num">{{ cardnum }}</p>
             <p class="msg">优惠卡券</p>
           </div>
-        </li>
+        </li> -->
         <!-- <li @click="linkman">
             <div>
               <p class="num">
@@ -155,7 +155,7 @@
       <p>
         杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;&nbsp;电话：400-718-6686
       </p>
-      <p>网络经营许可证：<a href="http://www.beian.miit.gov.cn/">浙ICP备19015909号-1</a></p>
+      <p>网络经营许可证：<a href="http://www.beian.gov.cn/portal/index.do">浙ICP备19015909号-1</a></p>
     </div>
   </div>
 </template>
@@ -238,6 +238,8 @@ export default {
       tel: "400-688-965",
       username: "点击登录",
       cardnum: 0,
+      viewednum:0,
+      collnum:0
     };
   },
   components: {
@@ -294,6 +296,8 @@ export default {
   mounted() {
     if ($cookies.get("token")) {
       this.username = $cookies.get("username");
+      this.viewednum = this.list.length
+      this.collnum = this.colls.length
     }
     if ($cookies.get("have")) {
       this.cardnum = 1;
@@ -395,6 +399,8 @@ export default {
 }
 .con {
   padding: 0 4%;
+  position: relative;
+  z-index: 5;
   .col {
     width: 100%;
     // height: 9.375rem;

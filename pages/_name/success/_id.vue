@@ -3,7 +3,7 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/searchtop.png" alt class="search" />
+      <img src="~/assets/searchtop.png" alt class="search" @click="search"/>
       <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
       <ul class="cailist" v-if="list">
       <li class="cmn">
@@ -232,6 +232,9 @@ export default {
       this.remark=txt
       this.id =String(this.building.id)
     },
+    search(){
+      this.$router.push('/'+this.jkl+'/searchname')
+    }
   },
 };
 </script>

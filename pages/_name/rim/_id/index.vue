@@ -138,6 +138,7 @@ export default {
       jkl: jkl,
       phone: res.common.phone,
       building: res.building,
+      id:id
     };
   },
   head() {

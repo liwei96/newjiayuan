@@ -130,7 +130,7 @@ export default {
           if (res.data.code == 200) {
             this.toast("点评成功");
             console.log(res);
-            that.$router.push("/" + that.jkl + "/comments/" + that.id);
+            that.$router.push("/" + that.jkl + "/content/" + that.id);
           }
         });
       } else {

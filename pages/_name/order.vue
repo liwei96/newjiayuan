@@ -237,7 +237,7 @@ export default {
               let tel = that.tel.substr(0, 3) + "****" + that.tel.substr(8);
               $cookies.set("username", tel);
             }
-            that.toast("提交成功");
+            that.toast("预约成功，咨询师会主动联系你");
             that.show1 = false;
             that.isok = false;
           }
@@ -248,6 +248,9 @@ export default {
   mounted(){
     this.name = sessionStorage.getItem('ordername')
     this.date = sessionStorage.getItem('ordertime')
+    if($cookies.get('phone')){
+      this.tel = $cookies.get('phone')
+    }
   }
 };
 </script>

@@ -249,7 +249,7 @@ export default {
       phone: res.common.phone,
       jkl: jkl,
       id: id,
-      tel:res.common.phone
+      tel: res.common.phone,
     };
   },
   head() {
@@ -258,14 +258,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -312,18 +311,18 @@ export default {
       this.ip = ip;
     },
     send() {
-      let kk = parseInt(new Date().getTime()/1000)
-      if($cookies.get('time')){
-        let dd = kk-$cookies.get('time')
-        if(dd<60){
-          this.toast('不要频繁报名')
-          return
-        }else{
-          $cookies.set('time',kk)
-        }
-      }else{
-        $cookies.set('time',kk)
-      }
+      // let kk = parseInt(new Date().getTime()/1000)
+      // if($cookies.get('time')){
+      //   let dd = kk-$cookies.get('time')
+      //   if(dd<60){
+      //     this.toast('不要频繁报名')
+      //     return
+      //   }else{
+      //     $cookies.set('time',kk)
+      //   }
+      // }else{
+      //   $cookies.set('time',kk)
+      // }
       let check1 = this.check1;
       if (!check1) {
         this.toast("请勾选用户协议");
@@ -342,6 +341,7 @@ export default {
       let typenum = this.typenum;
       let ip = ip_arr["ip"];
       let city = $cookies.get("city");
+      let ol = true;
       put({
         tel: phone,
         page: 4,
@@ -352,29 +352,34 @@ export default {
         name: "未知",
         position: typenum,
         city: city,
-      }).then((res) => {});
-
-      send({ ip: ip, phone: phone, source: 3 }).then((res) => {
+      }).then((res) => {
         if (res.data.code == 200) {
-          this.type = true;
-          var time = 60;
-          var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-          var fn = function () {
-            time--;
-            if (time > 0) {
-              $(".t-b-scode").html("重新发送" + time + "s");
-              $(".t-b-scode").attr("disabled", true);
+          send({ ip: ip, phone: phone, source: 3 }).then((res) => {
+            if (res.data.code == 200) {
+              this.type = true;
+              var time = 60;
+              var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
+              var fn = function () {
+                time--;
+                if (time > 0) {
+                  $(".t-b-scode").html("重新发送" + time + "s");
+                  $(".t-b-scode").attr("disabled", true);
+                } else {
+                  clearInterval(interval);
+                  $(".t-b-scode").html("获取验证码");
+                  $(".t-b-scode").attr("disabled", false);
+                }
+              };
+              fn();
+              var interval = setInterval(fn, 1000);
+              $("#ytel").html(tel);
             } else {
-              clearInterval(interval);
-              $(".t-b-scode").html("获取验证码");
-              $(".t-b-scode").attr("disabled", false);
+              this.toast(res.data.message || res.data.msg);
             }
-          };
-          fn();
-          var interval = setInterval(fn, 1000);
-          $("#ytel").html(tel);
-        } else {
-          this.toast(res.data.message || res.data.msg);
+          });
+        }
+        if (res.data.code == 500) {
+          this.toast(res.data.msg || res.data.message);
         }
       });
     },

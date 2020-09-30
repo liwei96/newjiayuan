@@ -3,7 +3,7 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
+      <img src="~/assets/mapcai.png" alt class="list" @click="btn" />
       <ul class="cailist" v-if="list">
         <li class="cmn">
           <router-link :to="'/' + jkl">
@@ -45,7 +45,7 @@
         <span>来源：{{ article.source }}</span>
         <i>浏览： {{ article.visit_num }}</i>
       </p>
-      <div class="pop">
+      <div class="pop" v-if="article.description.length != 0">
         <span>摘要：</span>
         {{ article.description }}
       </div>
@@ -56,10 +56,10 @@
       </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
-        买房资格
+        {{ article.source_type }}
       </p>
       <div class="agre" @click="like">
-        <img src="~/assets/noclick.png" alt />
+        <img :src="img" alt />
         <p>{{ article.like_num }}</p>
       </div>
       <p class="free">
@@ -75,9 +75,11 @@
               <div class="left">
                 <h5>{{ item.title }}</h5>
                 <p v-if="item.tags.length">
-                  <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
                 </p>
-                <p v-if="!item.tags.length">{{item.source}}  &nbsp;&nbsp;&nbsp;&nbsp;{{item.time}}</p>
+                <p v-if="!item.tags.length">
+                  {{ item.source }} &nbsp;&nbsp;&nbsp;&nbsp;{{ item.time }}
+                </p>
               </div>
               <div class="right">
                 <img :src="item.img" alt />
@@ -90,8 +92,8 @@
   </div>
 </template>
 <script>
-import { infolike } from '@/api/api'
-import '@/static/css/foot.css'
+import { infolike } from "@/api/api";
+import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
     let other = context.store.state.cookie.other;
@@ -127,50 +129,54 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
     return {
       article: {},
       others: [],
-      list:false
+      list: false,
+      img: "",
+      img1: require("~/assets/noclick.png"),
+      img2: require("~/assets/checked.png"),
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
-    btn(){
-      if(this.list){
-        this.list=false
-      }else{
-        this.list= true
+    btn() {
+      if (this.list) {
+        this.list = false;
+      } else {
+        this.list = true;
       }
     },
-    like(){
+    like() {
       let token = $cookies.get("token");
-      let id = this.article.id
+      let id = this.article.id;
       if (token) {
         infolike({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
-            if(this.article.my_like){
-              this.article.like_num = this.article.like_num-1
-              this.article.my_like = 0
-              this.toast('取消成功')
-            }else{
-              this.article.like_num = this.article.like_num+1
-              this.article.my_like = 1
-              this.toast('点赞成功')
+            if (this.article.my_like) {
+              this.article.like_num = this.article.like_num - 1;
+              this.article.my_like = 0;
+              this.toast("取消成功");
+              this.img = this.img1
+            } else {
+              this.article.like_num = this.article.like_num + 1;
+              this.article.my_like = 1;
+              this.img = this.img2
+              this.toast("点赞成功");
             }
-          }else{
+          } else {
             let url = this.$route.path;
             sessionStorage.setItem("path", url);
             this.$router.push("/" + this.jkl + "/login");
@@ -181,6 +187,13 @@ export default {
         sessionStorage.setItem("path", url);
         this.$router.push("/" + this.jkl + "/login");
       }
+    },
+  },
+  mounted() {
+    if (this.article.my_like) {
+      this.img = this.img2
+    } else {
+      this.img=this.img1
     }
   },
 };
@@ -304,7 +317,7 @@ header {
     color: rgba(47, 49, 51, 1);
     font-size: 0.9375rem;
     margin-top: 1.25rem;
-    
+
     span {
       color: rgba(150, 151, 153, 1);
       margin-right: 0.6875rem;
@@ -381,7 +394,7 @@ header {
           position: absolute;
           bottom: 0.4375rem;
           color: #626466;
-            font-size: 0.625rem;
+          font-size: 0.625rem;
           span {
             padding: 0.15625rem 0.3125rem 0.1875rem 0.3125rem;
             border-radius: 0.125rem;

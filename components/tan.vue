@@ -8,7 +8,7 @@
         <input type="tel" placeholder="请输入手机号" v-model="baoming" />
         <p class="xiyi">
           <input type="checkbox" v-model="checks" />我已阅读并同意
-          <router-link :to="'/'">《家园用户协议》</router-link>
+          <a @click="goo">《家园用户协议》</a>
         </p>
         <button @click="send">立即订阅</button>
         <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
@@ -40,6 +40,12 @@
 <script>
 import { put, check, send, heng } from "~/api/api";
 export default {
+  async asyncData(context) {
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
   props: {
     id: {
       type: String,
@@ -76,22 +82,27 @@ export default {
       msg: "请输入正确手机号",
       ishengda: false,
       IDcode: "",
+      jkl: "",
     };
   },
   methods: {
+    goo() {
+      let jkl = this.$route.params.name;
+      this.$router.push("/" + jkl + "/protocol");
+    },
     send() {
-      let kk = parseInt(new Date().getTime()/1000)
-      if($cookies.get('time')){
-        let dd = kk-$cookies.get('time')
-        if(dd<60){
-          this.toast('不要频繁报名')
-          return
-        }else{
-          $cookies.set('time',kk)
-        }
-      }else{
-        $cookies.set('time',kk)
-      }
+      // let kk = parseInt(new Date().getTime()/1000)
+      // if($cookies.get('time')){
+      //   let dd = kk-$cookies.get('time')
+      //   if(dd<60){
+      //     this.toast('不要频繁报名')
+      //     return
+      //   }else{
+      //     $cookies.set('time',kk)
+      //   }
+      // }else{
+      //   $cookies.set('time',kk)
+      // }
       let checks = this.checks;
       if (!checks) {
         this.toast("请勾选用户协议");
@@ -113,6 +124,7 @@ export default {
       let kid = $cookies.get("kid");
       let other = $cookies.get("other");
       let txt = this.txt;
+      let ol = true;
       put({
         ip: ip,
         tel: phone,
@@ -125,34 +137,41 @@ export default {
         position: typenum,
         kid: kid,
         other: other,
-      }).then((res) => {});
-
-      send({ ip: ip, phone: phone, source: 3 }).then((res) => {
+      }).then((res) => {
         if (res.data.code == 200) {
-          this.type = true;
-          var time = 60;
-          var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-          var fn = function () {
-            time--;
-            if (time > 0) {
-              $(".t-b-scode").html("重新发送" + time + "s");
-              $(".t-b-scode").attr("disabled", true);
-            } else {
-              clearInterval(interval);
-              $(".t-b-scode").html("获取验证码");
-              $(".t-b-scode").attr("disabled", false);
-            }
-          };
-          fn();
-          var interval = setInterval(fn, 1000);
-          $("#ytel").html(tel);
-        } else {
-          console.log(res)
-          this.toast('发送过于频繁');
+          send({ ip: ip, phone: phone, source: 3 })
+            .then((res) => {
+              if (res.data.code == 200) {
+                this.type = true;
+                var time = 60;
+                var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
+                var fn = function () {
+                  time--;
+                  if (time > 0) {
+                    $(".t-b-scode").html("重新发送" + time + "s");
+                    $(".t-b-scode").attr("disabled", true);
+                  } else {
+                    clearInterval(interval);
+                    $(".t-b-scode").html("获取验证码");
+                    $(".t-b-scode").attr("disabled", false);
+                  }
+                };
+                fn();
+                var interval = setInterval(fn, 1000);
+                $("#ytel").html(tel);
+              } else {
+                console.log(res);
+                this.toast("发送过于频繁");
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
-      }).catch(err=>{
-        console.log(err)
-      })
+        if (res.data.code == 500) {
+          this.toast(res.data.msg || res.data.message);
+        }
+      });
     },
     put() {
       let checks = this.checks;
@@ -175,11 +194,26 @@ export default {
       }
       let ma = this.ma;
       let ip = ip_arr["ip"];
-      check({ phone: phone, code: ma, source: 2, ip: ip }).then((res) => {
-        console.log(res);
-        if (res.data.code == 200) {
-          if (this.proname) {
-            if (this.proname.indexOf("恒大") == -1) {
+      check({ phone: phone, code: ma, source: 2, ip: ip })
+        .then((res) => {
+          console.log(res);
+          if (res.data.code == 200) {
+            if (this.proname) {
+              if (this.proname.indexOf("恒大") == -1) {
+                this.toast("提交成功");
+                if (!$cookies.get("token")) {
+                  $cookies.set("token", res.data.token, 21600);
+                  $cookies.set("phone", phone, 21600);
+                  let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+                  $cookies.set("username", tel);
+                  this.$store.dispatch("setoken", res.data.token);
+                }
+                this.type = false;
+                this.$emit("close", false);
+              } else {
+                this.ishengda = true;
+              }
+            } else {
               this.toast("提交成功");
               if (!$cookies.get("token")) {
                 $cookies.set("token", res.data.token, 21600);
@@ -190,27 +224,14 @@ export default {
               }
               this.type = false;
               this.$emit("close", false);
-            } else {
-              this.ishengda = true;
             }
           } else {
-            this.toast("提交成功");
-            if (!$cookies.get("token")) {
-              $cookies.set("token", res.data.token, 21600);
-              $cookies.set("phone", phone, 21600);
-              let tel = phone.substr(0, 3) + "****" + phone.substr(8);
-              $cookies.set("username", tel);
-              this.$store.dispatch("setoken", res.data.token);
-            }
-            this.type = false;
-            this.$emit("close", false);
+            this.toast("验证码不正确");
           }
-        } else {
-          this.toast('验证码不正确');
-        }
-      }).catch(err=>{
-        console.log(err)
-      })
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     close() {
       this.type = false;

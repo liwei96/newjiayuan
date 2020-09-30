@@ -10,7 +10,7 @@
       </ul>
       <p>杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
       <p>
-        网络经营许可证：<a href="http://www.beian.miit.gov.cn/"
+        网络经营许可证：<a href="http://www.beian.gov.cn/portal/index.do"
           >浙ICP备19015909号-1</a
         >
       </p>
