@@ -2,7 +2,7 @@
   <div id="content">
     <top-view :jkl="jkl"></top-view>
     <div class="topimg">
-      <div class="swiper-topimg">
+      <div class="swiper-topimg" @click="goimg">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in imgs" :key="key">
             <img :src="item.small" alt />
@@ -11,7 +11,7 @@
       </div>
       <!-- <img class="img-top" :src="basic.img" alt /> -->
       <!-- <span class="imgnum">共{{basic.img_num}}张</span> -->
-      <div class="zhe" @click="goimg"></div>
+      <!-- <div class="zhe" @click="goimg"></div> -->
       <p class="imgnum">共{{ imgnum }}张</p>
       <div class="taps">
         <p
@@ -55,17 +55,11 @@
       <div class="intro-con">
         <p>
           均价:
-          <span class="price">
-            {{ abstract.single_price }}
-            <i>元/m²</i>
-          </span>
+          <span class="price"> {{ abstract.single_price }}<i>元/m²</i> </span>
         </p>
         <p>
           总价:
-          <span class="total">
-            {{ abstract.total_price }}
-            <i>万起</i>
-          </span>
+          <span class="total"> {{ abstract.total_price }}<i>万起</i> </span>
         </p>
         <p>
           开盘:
@@ -82,17 +76,17 @@
       </nuxt-link>
       <div class="btn">
         <button @click="pop('变价通知我', 91, '详情页+变价通知我')">
-          <img src="~/assets/zhexian.png" />变价通知我
+          变价通知我
         </button>
         <button @click="pop('开盘提醒我', 92, '详情页+开盘提醒我')">
-          <img src="~/assets/msg.png" />开盘提醒我
+          开盘提醒我
         </button>
       </div>
     </div>
     <div class="tel">
       <a :href="'tel:' + phone">
         <img src="~/assets/tel.jpg" alt />
-        <p>{{ phonemsg }}</p>
+        <p v-html="phonemsg"></p>
       </a>
     </div>
     <div class="line"></div>
@@ -102,9 +96,11 @@
         <span>{{ hour }}小时前更新</span>
         <!-- <img src="~/assets/tit.png" alt class="te-tit" /> -->
       </h3>
-      <i class="teprice">最高立减 <span>{{ specials.max_diff }}</span> 元</i>
+      <i class="teprice"
+        >最高立减 <span>{{ specials.max_diff }}</span> 元</i
+      >
       <div class="tabs">
-        <table border>
+        <table>
           <thead>
             <tr>
               <th>房号</th>
@@ -172,7 +168,7 @@
           <h6>
             最高
             <span>5000</span>元购房优惠
-            <i>{{ time }}（截止）</i>
+            <i>（{{ time }}截止）</i>
           </h6>
           <p>售楼处专供家园平台客户</p>
         </div>
@@ -194,7 +190,7 @@
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
-          <button @click="pop('免费领取', 95, '详情页+免费领取')">
+          <button @click="pop('免费专车看房', 95, '详情页+免费专车看房')">
             免费领取
           </button>
           <p>
@@ -274,8 +270,8 @@
         获取详细分析报告
       </button>
     </div>
-    <div class="line"></div>
-    <div class="hus">
+    <div class="line" v-show="house_types.length"></div>
+    <div class="hus" v-show="house_types.length">
       <h5>
         主力户型
         <nuxt-link :to="'/' + jkl + '/hus/' + id">
@@ -301,23 +297,24 @@
                   }}关注
                 </p>
               </div>
+            </nuxt-link>
+            <div class="hu-bom">
               <p class="name">
                 {{ item.title }}
                 <span>{{ item.state }}</span>
               </p>
               <p class="type">
                 <span class="t1">建面 {{ item.area }}m²</span>
-                <span>类型 {{ item.type }}</span>
+                <!-- <span>类型 {{ item.type }}</span> -->
               </p>
               <p class="huprice">
-                约
-                <span>{{ item.price }}</span
+                约<span>{{ item.price }}</span
                 >万起
               </p>
-            </nuxt-link>
-            <button @click="pop('咨询户型底价', 97, '详情页+咨询户型底价')">
-              <img src="~/assets/zixun.png" alt />咨询户型底价
-            </button>
+              <button @click="pop('咨询户型底价', 97, '详情页+咨询户型底价')">
+                咨询户型底价
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -361,7 +358,8 @@
             {{ item.name }}
             <span>满意度5分</span>
           </h6>
-          <p>了解房源特色，专业挑好房</p>
+          <p v-if="key == 0">了解房源特色，专业挑好房</p>
+          <p v-if="key == 1">为客户提供专业的购房建议</p>
         </div>
         <img
           class="peoicon"
@@ -393,11 +391,11 @@
         </template>
       </div>
       <button @click="pop('领取分析资料', 99, '详情页+领取分析资料')">
-        <img src="~/assets/ziliao.png" />领取分析资料
+        领取分析资料
       </button>
     </div>
     <div class="line" v-if="deal_prices.length"></div>
-    <div class="newprice" >
+    <div class="newprice">
       <h3 v-show="deal_prices.length">
         最新成交价
         <p>
@@ -405,7 +403,11 @@
           <span>125</span>人查询
         </p>
       </h3>
-      <div id="chart" style="width: 100%; height: 250px" v-show="deal_prices.length"></div>
+      <div
+        id="chart"
+        style="width: 100%; height: 180px"
+        v-show="deal_prices.length"
+      ></div>
       <p v-show="deal_prices.length">2020年</p>
       <div class="tab" v-show="deal_prices.length">
         <table>
@@ -426,8 +428,11 @@
           <img src="~/assets/huo-down.png" alt />
         </div>
       </div>
-      <button @click="pop('获取最新成交价', 101, '详情页+获取最新成交价')" v-show="deal_prices.length">
-        <img src="~/assets/geticon.png" />获取最新成交价
+      <button
+        @click="pop('获取最新成交价', 101, '详情页+获取最新成交价')"
+        v-show="deal_prices.length"
+      >
+        获取最新成交价
       </button>
     </div>
     <div class="line"></div>
@@ -447,19 +452,19 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide">
             <div
-              :class="mapnum === 0 ? 'tegood active' : 'tegood'"
-              @click="setmap(0, '地铁')"
+              :class="mapnum === 1 ? 'tegood active' : 'tegood'"
+              @click="setmap(1, '公交')"
             >
-              地铁
+              公交
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
             <div
-              :class="mapnum === 1 ? 'tegood active' : 'tegood'"
-              @click="setmap(1, '公交')"
+              :class="mapnum === 0 ? 'tegood active' : 'tegood'"
+              @click="setmap(0, '地铁')"
             >
-              公交
+              地铁
               <i></i>
             </div>
           </div>
@@ -575,7 +580,7 @@
         </li>
       </ul>
       <p class="tishi" v-if="!comments.length">暂无点评，快来点评吧</p>
-        <button @click="dianping">我要点评</button>
+      <button @click="dianping">我要点评</button>
     </div>
     <div class="line"></div>
     <div class="wen">
@@ -596,49 +601,49 @@
                 <span>问</span>
                 {{ item.question }}
               </p>
-              <p class="num">共1个专业回答</p>
+              <p class="num">共1个专业问答</p>
             </li>
           </nuxt-link>
         </template>
       </ul>
       <p class="tishi" v-if="!questions.length">暂无问答，快来提问吧</p>
-        <button @click="tiwen">我要提问</button>
+      <button @click="tiwen">我要提问</button>
     </div>
     <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
       <template v-for="(item, key) in recommends">
-          <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
-            <div class="pro">
-              <img :src="item.img" alt />
-              <div class="pro-msg">
-                <h5>
-                  {{ item.name }}
-                  <span>{{ item.state }}</span>
-                </h5>
-                <p class="pro-price">
-                  <span>{{ item.single_price }}</span>
-                  <i>元/m²</i>
-                </p>
-                <p class="attr">
-                  {{ item.type }} | {{ item.city }}-{{
-                    item.country.substr(0, 2)
-                  }}
-                  | {{ item.area }}m²
-                </p>
-                <p class="pro-icon">
-                  <span class="pro-icon-zhuang">{{ item.decorate }}</span>
-                  <span
-                    class="pro-icon-type"
-                    v-for="(val, k) in item.features"
-                    :key="k"
-                    >{{ val }}</span
-                  >
-                </p>
-              </div>
+        <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
+          <div class="pro">
+            <img :src="item.img" alt />
+            <div class="pro-msg">
+              <h5>
+                {{ item.name }}
+                <span>{{ item.state }}</span>
+              </h5>
+              <p class="pro-price">
+                <span>{{ item.single_price }}</span>
+                <i>元/m²</i>
+              </p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
+              <p class="pro-icon">
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.features"
+                  :key="k"
+                  >{{ val }}</span
+                >
+              </p>
             </div>
-          </nuxt-link>
-        </template>
+          </div>
+        </nuxt-link>
+      </template>
       <!-- <div class="pro" v-for="(item, key) in recommends" :key="key">
         <img :src="item.img" alt />
         <div class="pro-msg">
@@ -738,6 +743,7 @@ export default {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
+    let kid = context.query.kid;
     let [res] = await Promise.all([
       context.$axios
         .get("/jy/building/detail", {
@@ -783,6 +789,8 @@ export default {
       count: res.count,
       collect: res.collect,
       cityname: res.common.city_info.current.short,
+      othercode:other,
+      kidcode:kid
     };
   },
   head() {
@@ -821,7 +829,7 @@ export default {
       phone: "",
       abstract: {},
       btn: false,
-      mapnum: 0,
+      mapnum: 1,
       tabnum: 1,
       isnull: false,
       morebtn: true,
@@ -833,7 +841,7 @@ export default {
       navnum: 0,
       src: require("~/assets/lun02.jpg"),
       srctype: false,
-      mapname: "地铁",
+      mapname: "公交",
       effects: [],
       examples: [],
       traffics: [],
@@ -844,28 +852,30 @@ export default {
       huo: false,
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
-      heart: require("~/assets/proheart.png"),
+      heart: require("~/assets/home-heart.png"),
       hearted: require("~/assets/collected.png"),
       phonemsg: "",
+      kidcode:'',
+      othercode:''
     };
   },
   methods: {
-    dianping(){
+    dianping() {
       let token = $cookies.get("token");
       if (token) {
-        this.$router.push('/'+this.jkl+'/comment/'+this.id)
+        this.$router.push("/" + this.jkl + "/comment/" + this.id);
       } else {
-        let url = this.$route.path;
+        let url = "/" + this.jkl + "/comment/" + this.id;
         sessionStorage.setItem("path", url);
         this.$router.push("/" + this.jkl + "/login");
       }
     },
-    tiwen(){
+    tiwen() {
       let token = $cookies.get("token");
       if (token) {
-        this.$router.push('/'+this.jkl+'/quiz/'+this.id)
+        this.$router.push("/" + this.jkl + "/quiz/" + this.id);
       } else {
-        let url = this.$route.path;
+        let url = "/" + this.jkl + "/quiz/" + this.id;
         sessionStorage.setItem("path", url);
         this.$router.push("/" + this.jkl + "/login");
       }
@@ -1164,7 +1174,7 @@ export default {
         color: ["rgba(77,181,255,1)"],
         grid: {
           top: "10%",
-          left: "11%",
+          left: "8.2%",
           right: 0,
           bottom: "10%",
         },
@@ -1175,7 +1185,13 @@ export default {
             data: that.times,
             axisLine: {
               lineStyle: {
-                color: "#919499",
+                color: "#EEEEEE",
+              },
+            },
+            axisLabel: {
+              show: true,
+              textStyle: {
+                color: "#969699",
               },
             },
           },
@@ -1231,6 +1247,17 @@ export default {
         $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + this.id);
       } else {
+        let k = arr.split(",");
+        k.unshift(this.id);
+        let kk = [];
+        for (let val of k) {
+          if (kk.indexOf(String(val)) == -1) {
+            kk.push(val);
+          }
+        }
+        kk = kk.slice(0,4)
+        arr = kk.join(",");
+        $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
     },
@@ -1242,6 +1269,17 @@ export default {
         $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + this.id);
       } else {
+        let k = arr.split(",");
+        k.unshift(this.id);
+        let kk = [];
+        for (let val of k) {
+          if (kk.indexOf(String(val)) == -1) {
+            kk.push(val);
+          }
+        }
+        kk = kk.slice(0,4)
+        arr = kk.join(",");
+        $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + arr);
       }
     },
@@ -1308,13 +1346,23 @@ export default {
     },
   },
   mounted() {
+    if(this.kidcode){
+      $cookies.set('kid',this.kidcode)
+      $cookies.set('other',this.othercode)
+    }
     if (this.phone.split(",").length == 2) {
       this.phonemsg =
-        this.phone.split(",")[0] + "转" + this.phone.split(",")[1];
+        this.phone.split(",")[0].substr(0, 3) +
+        " " +
+        this.phone.split(",")[0].substr(3, 3) +
+        " " +
+        this.phone.split(",")[0].substr(6) +
+        " <em>转</em> " +
+        this.phone.split(",")[1];
     } else {
       this.phonemsg = this.phone;
     }
-
+    document.getElementById("hh").style.borderBottom = "0";
     $cookies.set("proname", this.abstract.name);
     if (localStorage.getItem(this.$route.params.id)) {
       this.hour = localStorage.getItem(this.$route.params.id);
@@ -1358,17 +1406,17 @@ export default {
       autoplay: true,
     });
     var mySwiper3 = new Swiper(".swiper-nav", {
-      slidesPerView: 5,
+      slidesPerView: 5.1,
       spaceBetween: 50,
       resistanceRatio: 0.01,
       slidesOffsetBefore: 14,
       slidesOffsetAfter: 14,
     });
     var mySwiper1 = new Swiper(".swiper-hu", {
-      slidesPerView: 2.08,
+      slidesPerView: 2.26,
       spaceBetween: 10,
       observer: true,
-      slidesOffsetAfter: 2,
+      slidesOffsetAfter: 14,
       resistanceRatio: 0.1,
       slidesOffsetBefore: 14,
     });
@@ -1380,9 +1428,14 @@ export default {
       slidesOffsetAfter: 12,
     });
     window.addEventListener("scroll", this.setnav);
+    this.$nextTick(() => {
+      document.getElementById("hh").style.borderBottom = "0";
+    });
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.setnav);
+    document.getElementById("hh").style.borderBottom =
+      "0.03125rem solid #f7f7f7";
   },
 };
 </script>
@@ -1512,21 +1565,21 @@ export default {
   -ms-z-index: 5;
   -o-z-index: 5;
   z-index: 5;
-  padding: 1.375rem 0.9375rem 1.25rem 0.9375rem;
+  padding: 1.1875rem 0.9375rem 1.25rem 0.9375rem;
   margin-bottom: 0.3125rem;
   .intro-top {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.375rem;
+    margin-bottom: 1.25rem;
     .top-left {
       h2 {
         color: #131313;
         font-size: 1.25rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
       }
       p {
         span {
-          padding: 0.1875rem 0.3125rem 0.15625rem 0.3125rem;
+          padding: 0.15625rem 0.3125rem 0.125rem 0.3125rem;
           border-radius: 0.125rem;
           background-color: #f5f5f5;
           color: #7d7d80;
@@ -1536,6 +1589,7 @@ export default {
         .active {
           background-color: #2ac66e;
           color: #fff;
+          margin-right: 0.1875rem;
         }
       }
     }
@@ -1546,10 +1600,12 @@ export default {
         .img {
           display: flex;
           justify-content: center;
-          margin-bottom: 0.25rem;
+          margin-bottom: 0.125rem;
           position: relative;
           img {
             width: 1.5rem;
+            height: 1.5rem;
+            display: block;
           }
           span {
             position: absolute;
@@ -1569,6 +1625,8 @@ export default {
         p {
           color: #4c4c4e;
           font-size: 0.6875rem;
+          padding-left: 0.125rem;
+          width: 1.6rem;
         }
       }
     }
@@ -1577,7 +1635,7 @@ export default {
     p {
       color: #7d7f80;
       font-size: 0.875rem;
-      margin-bottom: 0.8125rem;
+      margin-bottom: 0.375rem;
       overflow: hidden;
       span {
         color: #333334;
@@ -1603,6 +1661,7 @@ export default {
       }
       img {
         width: 3.125rem;
+        height: 2.125rem;
         float: right;
       }
     }
@@ -1610,10 +1669,14 @@ export default {
       line-height: 2.125rem;
     }
     p:nth-of-type(3) {
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.3125rem;
+      margin-top: 0.0625rem;
     }
     .address {
       display: flex;
+      position: relative;
+      top: -0.25rem;
+      margin-bottom: 0.4375rem;
       span {
         display: block;
         width: 14.5rem;
@@ -1628,7 +1691,7 @@ export default {
     color: #2ac66e;
     font-size: 0.9375rem;
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.375rem;
   }
   .btn {
     display: flex;
@@ -1654,17 +1717,23 @@ export default {
 }
 .tel {
   padding: 0 4%;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   position: relative;
   img {
+    border-radius: 0.25rem;
     width: 100%;
   }
   p {
     color: #302e2a;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     position: absolute;
-    top: 0.3rem;
+    top: 0.6875rem;
+    font-weight: bold;
     left: 2.125rem;
+    /deep/em {
+      font-style: normal;
+      font-size: 1rem;
+    }
   }
 }
 .line {
@@ -1716,7 +1785,12 @@ export default {
       border-collapse: collapse;
       border-spacing: 0;
       width: 100%;
-      border: 0.03125rem solid #f7f7f7;
+      border-top: 0.03125rem solid #ededed;
+      border-bottom: 0.03125rem solid #ededed;
+      border-left: 0.03125rem solid #ededed;
+      border-right: 0.03125rem solid #ededed;
+      overflow: hidden;
+      border-radius: 0.25rem;
       thead {
         tr {
           height: 1.875rem;
@@ -1805,18 +1879,20 @@ export default {
 .nav-icon {
   border-bottom: 0.03125rem solid #f5f5f5;
   background-color: #fff;
-  z-index: 1000;
+  z-index: 900;
+  width: 100%;
   .swiper-nav {
     overflow: hidden;
     .swiper-slide {
       color: #323233;
-      font-size: 0.9375rem;
+      font-size: 1rem;
       height: 3.25rem;
       line-height: 3.25rem;
       .active {
         position: relative;
         height: 100%;
         color: #2ac66d;
+        font-weight: bold;
         span {
           position: absolute;
           display: block;
@@ -1832,7 +1908,7 @@ export default {
   }
 }
 .hui {
-  padding: 1.25rem 4%;
+  padding: 1.125rem 4% 1.25rem 4%;
   h3 {
     color: #1f1f1f;
     font-size: 1.0625rem;
@@ -1850,12 +1926,11 @@ export default {
   }
   .hui-con {
     width: 100%;
-    height: 4.375rem;
+    height: 4.6875rem;
     border-radius: 0.0625rem;
-    background-color: #ffeded;
     background: url("~assets/b1.png") no-repeat;
     background-size: 100%;
-    margin-top: 1.25rem;
+    margin-top: 1.0625rem;
     // display: flex;
     .hui-left {
       padding-left: 1rem;
@@ -1864,7 +1939,7 @@ export default {
       h6 {
         color: #ff7519;
         font-size: 0.625rem;
-        margin-bottom: 0.4375rem;
+        margin-bottom: 0.125rem;
         span {
           font-size: 1.25rem;
           font-weight: bold;
@@ -1881,7 +1956,7 @@ export default {
       }
     }
     .hui-right {
-      padding-top: 0.9375rem;
+      padding-top: 0.6875rem;
       float: right;
       margin-right: 0.9375rem;
       button {
@@ -1898,13 +1973,14 @@ export default {
       p {
         color: #ff7519;
         font-size: 0.75rem;
-        margin-top: 0.3125rem;
+        margin-top: 0.1875rem;
       }
     }
   }
   .two {
     background: url("~assets/b2.png") no-repeat;
     background-size: 100%;
+    margin-top: 0.4375rem;
     .hui-left {
       h6 {
         font-size: 1rem;
@@ -1926,7 +2002,7 @@ export default {
   }
 }
 .lei {
-  padding: 1.25rem 4%;
+  padding: 1.1875rem 4% 1.25rem 4%;
   h3 {
     color: #1f1f1f;
     font-size: 1.0625rem;
@@ -1945,15 +2021,15 @@ export default {
   p {
     color: #646566;
     font-size: 0.625rem;
-    margin-top: 0.75rem;
+    margin-top: 0.5625rem;
   }
   .con {
     position: relative;
     #leiecharts {
       width: 100%;
       height: 10rem;
-      margin-top: 1rem;
-      margin-bottom: 1.25rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.8125rem;
     }
     .img {
       position: absolute;
@@ -2004,26 +2080,45 @@ export default {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
+    border-radius: 0.25rem;
+    border-top: 0.03125rem solid #ededed;
+    border-bottom: 0.03125rem solid #ededed;
+    tbody {
+      border-radius: 0.25rem;
+    }
     tr {
+      width: 100%;
       height: 2rem;
       line-height: 2rem;
       border-right: 0.03125rem solid #ededed;
+      border-left: 0.03125rem solid #ededed;
       td {
+        width: 50%;
         color: #646566;
-        font-size: 0.625rem;
-        padding-left: 0.625rem;
-        border-left: 0.03125rem solid #ededed;
+        font-size: 0.75rem;
+        padding-left: 0.9375rem;
         margin: 0;
         span {
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
           color: #ff5454;
           float: right;
-          margin-right: 0.875rem;
+          margin-right: 4.125rem;
         }
+      }
+      td:nth-of-type(1) {
+        border-right: 0.03125rem solid #f7f7f7;
       }
     }
     tr:nth-of-type(2n + 1) {
       background-color: #f7f7f7;
+    }
+    tr:nth-of-type(4) {
+      border-bottom: 0.03125rem solid #ededed;
+      border-radius: 0 0 0.25rem 0.25rem;
+    }
+    tr:nth-of-type(1) {
+      border-top: 0.03125rem solid #ededed;
+      border-radius: 0.25rem 0.25rem 0 0;
     }
   }
   button {
@@ -2045,9 +2140,9 @@ export default {
   h5 {
     color: #1f1f1f;
     font-size: 1.0625rem;
-    margin-top: 1.25rem;
+    margin-top: 1rem;
     padding: 0 4%;
-    margin-bottom: 1.375rem;
+    margin-bottom: 1rem;
     span {
       float: right;
       color: #646466;
@@ -2067,13 +2162,15 @@ export default {
     overflow: hidden;
   }
   .swiper-slide {
+    border-radius: 0.125rem;
     .hu-top {
       background-color: #f7f7f7;
-      height: 7.5rem;
+      overflow: hidden;
+      border-radius: 0.125rem 0.125rem 0 0;
+      height: 6.6875rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 1rem;
       position: relative;
       p {
         width: 4.6875rem;
@@ -2093,18 +2190,27 @@ export default {
         img {
           height: 0.75rem;
           width: 0.75rem;
-          margin-bottom: -0.0625rem;
+          margin-bottom: -0.125rem;
         }
       }
       img {
-        height: 7.5rem;
+        height: 6.6875rem;
         width: 5.1875rem;
       }
     }
+    .hu-bom {
+      border: 0.03125rem solid #ededed;
+      padding-left: 0.75rem;
+      padding-bottom: 0.75rem;
+      padding-top: 0.5625rem;
+      border-radius: 0 0 0.125rem 0.125rem;
+      padding-right: 0.75rem;
+    }
     .name {
       color: #1f1f1f;
-      font-size: 1rem;
-      margin-bottom: 0.625rem;
+      font-size: 0.875rem;
+      font-weight: bold;
+      margin-bottom: 0.0625rem;
       span {
         display: inline-block;
         color: #ffffff;
@@ -2113,12 +2219,14 @@ export default {
         height: 1rem;
         text-align: center;
         line-height: 1rem;
+        background-color: #28cc72;
+        border-radius: 0.125rem;
       }
     }
     .type {
       color: #5c5c5c;
       font-size: 0.8125rem;
-      margin-bottom: 0.375rem;
+      margin-bottom: 0.0625rem;
       .t1 {
         margin-right: 0.75rem;
       }
@@ -2126,13 +2234,14 @@ export default {
     .huprice {
       color: #ff5543;
       font-size: 0.875rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.625rem;
       span {
         font-size: 1.125rem;
+        font-weight: bold;
       }
     }
     button {
-      width: 100%;
+      width: 8.4375rem;
       height: 2.25rem;
       border-radius: 0.125rem;
       background-color: #f1f8f4;
@@ -2143,6 +2252,7 @@ export default {
       font-size: 0.875rem;
       font-weight: bold;
       border: 0;
+      border-radius: 0.1875rem;
       img {
         width: 1rem;
         margin-right: 0.1875rem;
@@ -2170,7 +2280,7 @@ export default {
   h3 {
     color: #121212;
     font-size: 1rem;
-    padding: 1.25rem 0;
+    padding: 1.0625rem 0 0.9375rem 0;
     span {
       color: #646466;
       font-size: 0.875rem;
@@ -2224,14 +2334,14 @@ export default {
   }
 }
 .zixun {
-  padding: 1.25rem 4%;
+  padding: 0.875rem 4% 1.25rem 4%;
   h3 {
     color: #1f1f1f;
     margin-bottom: 0.75rem;
     font-size: 1rem;
   }
   .xun-icon {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.375rem;
     span {
       color: #8f8f8f;
       font-size: 0.8125rem;
@@ -2245,7 +2355,7 @@ export default {
   }
   .peo {
     display: flex;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     .peoimg {
       width: 2.5rem;
       height: 2.5rem;
@@ -2260,7 +2370,7 @@ export default {
         color: #1f1f1f;
         font-size: 1rem;
         font-weight: 400;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3125rem;
         span {
           display: inline-block;
           padding: 0.0625rem 0.125rem 0.125rem 0.125rem;
@@ -2274,7 +2384,7 @@ export default {
       }
       p {
         color: #969799;
-        font-size: 0.75rem;
+        font-size: 0.6875rem;
       }
     }
     .psm {
@@ -2345,6 +2455,7 @@ export default {
     background-color: #f7f7f7;
     padding: 0 0.875rem;
     margin-bottom: 1.25rem;
+    padding-bottom: 0.8rem;
     p {
       color: #5c5c5c;
       font-size: 0.875rem;
@@ -2387,7 +2498,7 @@ export default {
       float: right;
       font-weight: 400;
       span {
-        color: #fe582f;
+        color: #ff5454;
         font-size: 1.0625rem;
         font-weight: bold;
       }
@@ -2398,6 +2509,7 @@ export default {
     color: #5c5c5c;
     font-size: 0.625rem;
     margin-bottom: 0.875rem;
+    margin-top: 0.25rem;
   }
   .tab {
     position: relative;
@@ -2409,6 +2521,7 @@ export default {
       width: 100%;
       border-top: 0.5px solid #e6e6ec;
       border-left: 0.5px solid #e6e6ec;
+      border-right: 0.5px solid #e6e6ec;
       tr {
         height: 1.9375rem;
         line-height: 1.9375rem;
@@ -2418,11 +2531,17 @@ export default {
           border-right: 0.5px solid #e6e6ec;
           border-bottom: 0.5px solid #e6e6ec;
         }
+        th:nth-of-type(3) {
+          border-right: 0;
+        }
         td {
           width: 33%;
           text-align: center;
           border-right: 0.5px solid #e6e6ec;
           border-bottom: 0.5px solid #e6e6ec;
+        }
+        td:nth-of-type(3) {
+          border-right: 0;
         }
       }
     }
@@ -2440,6 +2559,8 @@ export default {
       line-height: 3.125rem;
       img {
         width: 1.5rem;
+        position: relative;
+        top: 0.5rem;
       }
     }
   }
@@ -2468,7 +2589,7 @@ export default {
     font-size: 1.0625rem;
     color: #101214;
     line-height: 1.375rem;
-    margin-bottom: 1.375rem;
+    margin-bottom: 1.0625rem;
     margin-top: 1.125rem;
     span {
       color: #96989a;
@@ -2487,14 +2608,14 @@ export default {
     margin-left: 4%;
     height: 9.375rem;
     border-radius: 0.375rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8125rem;
   }
   .swiper-map {
     overflow: hidden;
-    padding-bottom: 1.125rem;
+    padding-bottom: 1rem;
     .tegood {
       color: #4d4d4d;
-      font-size: 0.875rem;
+      font-size: 1rem;
     }
     .active {
       color: #20c466;
@@ -2515,17 +2636,18 @@ export default {
     padding-top: 1.125rem;
     border-top: 0.5px solid #f5f5f5;
     padding: 0 4%;
-    /deep/ .map-msg-con {
-      padding-top: 0.625rem;
-      /deep/ li {
+    .map-msg-con {
+      padding-top: 0.75rem;
+      /deep/li {
         list-style: none;
         margin-bottom: 1.125rem;
-        /deep/ h5 {
+        h5 {
           color: #1a1a1a;
           font-size: 0.9375rem;
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.1875rem;
+          font-weight: 400;
         }
-        /deep/ p {
+        p {
           color: #999999;
           font-size: 0.8125rem;
           span {
@@ -2534,6 +2656,26 @@ export default {
               width: 0.75rem;
               margin-right: 0.125rem;
             }
+          }
+        }
+      }
+    }
+    .map-msg-con /deep/ li {
+      list-style: none;
+      margin-bottom: 0.75rem;
+      h5 {
+        color: #1a1a1a;
+        font-size: 0.9375rem;
+        margin-bottom: 0.1875rem;
+      }
+      p {
+        color: #999999;
+        font-size: 0.8125rem;
+        span {
+          float: right;
+          img {
+            width: 0.75rem;
+            margin-right: 0.125rem;
           }
         }
       }
@@ -2601,12 +2743,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color: #ff5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color: #ff5454;
         }
       }
       .attr {
@@ -2639,7 +2781,7 @@ export default {
   padding: 0 4%;
   h3 {
     color: #131313;
-    padding: 1.25rem 0 1.375rem 0;
+    padding: 1rem 0 1.25rem 0;
     font-size: 1rem;
     span {
       float: right;
@@ -2654,7 +2796,7 @@ export default {
   }
   ul {
     li {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.375rem;
       .dian-top {
         overflow: hidden;
         .peo {
@@ -2680,6 +2822,7 @@ export default {
             color: #92949a;
             font-size: 0.8125rem;
             margin-top: 0.3rem;
+            line-height: 1.3125rem;
           }
         }
         .top-right {
@@ -2700,7 +2843,7 @@ export default {
         color: #333333;
         font-size: 0.875rem;
         line-height: 1.25rem;
-        margin-top: 0.5rem;
+        margin-top: 0.6875rem;
       }
     }
   }

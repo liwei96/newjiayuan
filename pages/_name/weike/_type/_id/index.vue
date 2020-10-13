@@ -39,6 +39,7 @@
               :key="key"
             >
               <span>{{ item.name }}</span>
+              <i></i>
             </li>
             <!-- <li :class="leftnum == 1?'active':''" @click="setleftnum(1)">
               <span>买房能力</span>
@@ -57,13 +58,13 @@
               <nuxt-link :key="key" :to="'/' + jkl + '/aritle/' + item.id">
                 <li>
                   <h6>{{ item.title }}</h6>
-                  <p v-if="item.tags.length">
+                  <p>
+                    {{ item.begin }}
+                  </p>
+                  <p>
                     <span v-for="(val, k) in item.tags" :key="k">{{
                       val
                     }}</span>
-                  </p>
-                  <p v-if="!item.tags.length">
-                    {{ item.source }} &nbsp;&nbsp;&nbsp;{{ item.begin }}
                   </p>
                 </li>
               </nuxt-link>
@@ -255,6 +256,10 @@ export default {
         }
       }
     });
+    document.getElementById('foott').style.display = 'none'
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
   },
 };
 </script>
@@ -307,7 +312,7 @@ li {
   }
 }
 .nav {
-  padding: 1.25rem 4% 0.875rem 4%;
+  padding: 1rem 4% 1.0625rem 4%;
   ul {
     display: flex;
     li {
@@ -315,10 +320,10 @@ li {
       height: 4rem;
       margin-right: 0.75rem;
       .nav-top {
-        height: 2.875rem;
+        height: 2.6rem;
         border: 0.0625rem solid rgba(242, 242, 242, 1);
         text-align: center;
-        line-height: 2.875rem;
+        line-height: 2.6rem;
         color: rgba(98, 100, 102, 1);
         font-size: 1rem;
         border-radius: 0.34375rem 0.34375rem 0 0;
@@ -391,8 +396,16 @@ li {
         span {
           display: inline-block;
           width: 100%;
-          border-left: 0.1875rem solid rgba(42, 198, 109, 1);
+          // border-left: 0.1875rem solid rgba(42, 198, 109, 1);
           height: 0.9375rem;
+        }
+        i {
+          position: absolute;
+          display: block;
+          width: 0.1875rem;
+          height: 0.9375rem;
+          background-color: #2AC66E;
+          left:0
         }
       }
     }
@@ -404,20 +417,19 @@ li {
     ul {
       li {
         position: relative;
-        height: 6rem;
         border-bottom: 0.03125rem solid rgba(245, 245, 245, 1);
         padding-right: 0.9375rem;
         h6 {
           color: rgba(50, 50, 51, 1);
           font-size: 0.875rem;
           font-weight: 400;
-          padding-top: 0.875rem;
+          padding-top: 0.6875rem;
+          margin-bottom: 0.625rem;
         }
         p {
-          position: absolute;
-          bottom: 0.9375rem;
           color: rgba(98, 100, 102, 1);
           font-size: 0.625rem;
+          margin-bottom: 0.875rem;
           span {
             color: rgba(98, 100, 102, 1);
             font-size: 0.625rem;

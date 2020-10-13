@@ -135,14 +135,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -159,7 +158,7 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      proname:''
+      proname: "",
     };
   },
   methods: {
@@ -192,21 +191,27 @@ export default {
     chang(data) {
       this.typenum = data.position;
       this.name = data.name;
-
       this.typebtn = 1;
       this.tan = true;
       this.remark = "问答页+预约看房";
     },
     click() {
-      if (this.id) {
-        this.$router.push("/" + this.jkl + "/quiz/" + this.id);
+      let token = $cookies.get("token");
+      if (token) {
+        if (this.id) {
+          this.$router.push("/" + this.jkl + "/quiz/" + this.id);
+        } else {
+          this.$router.push("/" + this.jkl + "/quiz");
+        }
       } else {
-        this.$router.push("/" + this.jkl + "/quiz");
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
   },
   mounted() {
-    this.proname = $cookies.get('proname')
+    this.proname = $cookies.get("proname");
     window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {
@@ -217,7 +222,7 @@ export default {
 <style lang="less" scoped>
 .topimg {
   padding-top: 2.75rem;
-  margin-bottom: 0.875rem;
+  margin-bottom: 0.4375rem;
   img {
     width: 100%;
     height: 6.25rem;
@@ -231,9 +236,9 @@ ul {
       color: #323333;
       font-size: 0.875rem;
       line-height: 1.40625rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.875rem;
       span {
-        padding: 0.1875rem;
+        padding: 0.09375rem 0.1875rem;
         border-radius: 0.125rem;
         background-color: #ff5454;
         color: #fff;
@@ -242,8 +247,9 @@ ul {
     }
     .answer {
       background-color: #f7f7f7;
-      padding: 0.875rem;
-      margin-bottom: 1.875rem;
+      padding: 0.9375rem 0.875rem;
+      margin-bottom: 2rem;
+      border-radius: 0.375rem;
       .top {
         display: flex;
         img {
@@ -257,7 +263,8 @@ ul {
             color: #131313;
             font-size: 0.9375rem;
             font-weight: 400;
-            margin-bottom: 0.125rem;
+            position: relative;
+            top: -0.25rem;
             span {
               padding: 0.125rem 0.1875rem;
               color: #fff;
@@ -276,7 +283,7 @@ ul {
       .msg {
         color: #646566;
         font-size: 0.875rem;
-        margin-top: 0.875rem;
+        margin-top: 0.5rem;
         span {
           color: #628bb9;
           font-size: 0.875rem;

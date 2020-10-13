@@ -42,9 +42,7 @@
         </div>
       </li>
     </ul>
-    <nuxt-link :to="'/' + jkl + '/comment/' + id">
-      <img src="~/assets/comments-fixed.png" alt class="fixed" />
-    </nuxt-link>
+      <img src="~/assets/comments-fixed.png" alt class="fixed" @click="gocomment"/>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <van-popup
       v-model="tan"
@@ -137,6 +135,16 @@ export default {
     };
   },
   methods: {
+    gocomment(){
+      let token = $cookies.get("token");
+      if (token) {
+        this.$router.push("/" + this.jkl + "/comment/" + this.id);
+      } else {
+        let url = this.$route.path;
+        sessionStorage.setItem("path", url);
+        this.$router.push("/" + this.jkl + "/login");
+      }
+    },
     getmore() {
       let that = this;
       var scrollTop = window.scrollY;

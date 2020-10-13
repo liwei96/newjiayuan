@@ -168,7 +168,7 @@
     <!-- 底部悬浮按钮 -->
     <div class="nav">
       <div class="nav-peo" @click="gotalk">
-        <img src="~/assets/ke_h.png" alt />
+        <img src="~/assets/ke_hp.png" alt />
         <span>1</span>
         <p>在线咨询</p>
       </div>
@@ -324,6 +324,7 @@ export default {
       //   $cookies.set('time',kk)
       // }
       let check1 = this.check1;
+      let that = this
       if (!check1) {
         this.toast("请勾选用户协议");
         return;
@@ -342,6 +343,8 @@ export default {
       let ip = ip_arr["ip"];
       let city = $cookies.get("city");
       let ol = true;
+      let kid = $cookies.get("kid");
+      let other = $cookies.get("other");
       put({
         tel: phone,
         page: 4,
@@ -352,6 +355,8 @@ export default {
         name: "未知",
         position: typenum,
         city: city,
+        kid:kid,
+        other:other
       }).then((res) => {
         if (res.data.code == 200) {
           send({ ip: ip, phone: phone, source: 3 }).then((res) => {
@@ -380,6 +385,9 @@ export default {
         }
         if (res.data.code == 500) {
           this.toast(res.data.msg || res.data.message);
+          setTimeout(()=>{
+            that.tan=false
+          },2000)
         }
       });
     },
@@ -445,6 +453,10 @@ export default {
     let that = this;
     that.baoming = $cookies.get("phone");
     this.start();
+    document.getElementById('foott').style.display = 'none'
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
   },
   updated() {
     if (this.one) {

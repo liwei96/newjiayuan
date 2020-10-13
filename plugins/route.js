@@ -97,6 +97,30 @@ export default ({
         store.state.city = 181
         break;
     }
-    next()
+    if (!to.query.uuid) {
+      let toQuery = JSON.parse(JSON.stringify(to.query));
+      if (store.state.uuid) {
+        var timestamp = store.state.uuid
+      } else {
+        var timestamp = Date.parse(new Date());
+        var $chars =
+          "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        var maxPos = $chars.length;
+        var pwd = "";
+        let i = 0;
+        for (i = 0; i < 12; i++) {
+          pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        timestamp = pwd + timestamp;
+      }
+      toQuery.uuid = timestamp;
+      store.state.uuid = timestamp
+      next({
+        path: to.path,
+        query: toQuery
+      })
+    } else {
+      next()
+    }
   })
 }

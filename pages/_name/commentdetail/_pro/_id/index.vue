@@ -521,12 +521,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color:#FF5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color:#FF5454;
         }
       }
       .attr {

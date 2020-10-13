@@ -2,8 +2,8 @@
   <div id="Dynamic">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo.png" alt />
-      <img src="~/assets/searchtop.png" alt class="search" @click="search"/>
+      <img class="logo" src="~/assets/logo1.png" alt />
+      <img src="~/assets/searchtop.png" alt class="search" @click="search" />
       <img src="~/assets/mapcai.png" alt class="list" @click="btns" />
       <ul class="cailist" v-if="list">
         <li class="cmn">
@@ -42,24 +42,24 @@
     <img src="~/assets/dynamics.png" alt class="topimg" />
     <div class="con">
       <div class="con-li" v-for="(item, key) in lists" :key="key">
-        <div class="con-li-top">
-          <img :src="item.img" alt />
-          <h6>{{ item.name }}</h6>
-          <p>
-            {{ item.country.substr(0, 2) }}
-            <span>面积 {{ item.area }}m²</span>
-            <span>均价：{{ item.price }}元/m²</span>
-          </p>
-          <i v-if="key == 0">最新</i>
-          <div class="zhe"></div>
-        </div>
+        <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
+          <div class="con-li-top">
+            <img :src="item.img" alt />
+            <h6>{{ item.name }}</h6>
+            <p>
+              {{ item.country.substr(0, 2) }}
+              <span>面积 {{ item.area }}m²</span>
+              <span>均价：{{ item.price }}元/m²</span>
+            </p>
+            <i v-if="key == 0">最新</i>
+            <div class="zhe"></div>
+          </div>
+        </nuxt-link>
         <div class="con-li-bom">
           <h6>{{ item.title }}</h6>
           <p class="txt">{{ item.content }}</p>
           <p class="time">{{ item.time }}</p>
-          <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
-            <button>查看详细</button>
-          </nuxt-link>
+          <button @click="pop('订阅实时动态', 98, '动态页+订阅实时动态',item.bid)">订阅此楼盘动态</button>
         </div>
       </div>
     </div>
@@ -135,14 +135,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -192,9 +191,17 @@ export default {
         this.list = true;
       }
     },
-    search(){
-      this.$router.push('/'+this.jkl+'/search')
-    }
+    search() {
+      this.$router.push("/" + this.jkl + "/search");
+    },
+    pop(name, position, txt,id) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+      this.id = id
+    },
   },
   mounted() {
     let that = this;
@@ -227,7 +234,7 @@ header {
   background-color: #fff;
   // position: relative;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
@@ -240,7 +247,7 @@ header {
     top: 0.75rem;
   }
   .list {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-right: 4%;
   }
   .cailist {
@@ -292,12 +299,12 @@ header {
   margin-top: 2.75rem;
 }
 .con {
-  padding: 1.5625rem 1.5625rem 3.75rem 1.5625rem;
+  padding: 1.3125rem 1.5625rem 0 1.5625rem;
   .con-li {
     width: 100%;
     height: 19.0625rem;
     border-radius: 0.5rem;
-    margin-bottom: 1.875rem;
+    margin-bottom: 1.5625rem;
     box-shadow: 0px 0px 1.1875rem 0.09375rem rgba(0, 0, 0, 0.04);
     overflow: hidden;
     .con-li-top {
@@ -312,13 +319,13 @@ header {
         font-size: 1rem;
         position: absolute;
         left: 0.875rem;
-        bottom: 2.5rem;
+        bottom: 2.75rem;
         z-index: 1;
       }
       p {
         color: #ffffff;
         font-size: 0.8125rem;
-        bottom: 0.625rem;
+        bottom: 1rem;
         left: 0.875rem;
         position: absolute;
         z-index: 1;
@@ -355,13 +362,12 @@ header {
       }
     }
     .con-li-bom {
-      height: 23.3125rem;
       padding: 0 4%;
       h6 {
         color: #323333;
         font-size: 0.9375rem;
-        margin-top: 0.6rem;
-        margin-bottom: 0.4rem;
+        margin-top: 0.75rem;
+        margin-bottom: 0.5rem;
         height: 1.25rem;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -372,7 +378,6 @@ header {
         font-size: 0.8125rem;
         line-height: 1.1875rem;
         margin-bottom: 0.375rem;
-        height: 3.5625rem;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 3;

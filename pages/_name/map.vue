@@ -127,7 +127,14 @@
                 class="col-xs-12 col-sm-12"
               >
                 <span>{{ hu.name }}</span>
-                <input type="checkbox" name="hu" v-model="hus" :value="hu.id" />
+                <input
+                  type="checkbox"
+                  class="hubox"
+                  name="hu"
+                  v-model="hus"
+                  :value="hu.id"
+                  @click="checkbox($event)"
+                />
               </li>
             </ul>
             <div class="huxing_btn huxing_que">
@@ -200,35 +207,23 @@
         anchor="BMAP_ANCHOR_CENTER_RIGHT"
         :enableGeolocation="show"
       ></bm-navigation>
-      <template v-if="zoom < 14">
+      <template v-for="(item, index) in point">
         <my-overlay
-          v-for="(item, index) in point"
           :key="index"
           :position="item"
-          :text="` <h4 id='m_name'> ${item.country || item.street}</h4>
+          :text="zoom<14?` <h4 id='m_name'> ${item.country || item.street}</h4>
                  <p id='m_num'>${item.Num}个</p>
-                 `"
-          :active="active"
-          @mouseover.native="active = true"
-          @mouseleave.native="active = false"
-          @click.native="changezoom(item)"
-        ></my-overlay>
-      </template>
-      <template v-else>
-        <my-overlays
-          v-for="(item, index) in point"
-          :key="index"
-          :position="item"
-          :text="` <h4 id='b_name'> ${item.building_name}</h4>
+                 `:` <h4 id='b_name'> ${item.building_name}</h4>
                  <p id='b_price'>约${parseInt(item.price)}元/m²</p>
                  `"
-          :active="active"
-          :projectid="item.id"
-          @click.native="putid(item.id, $event)"
-        ></my-overlays>
+          :active="zoom"
+          @mouseover.native="active = true"
+          @mouseleave.native="active = false"
+          @click.native="boxclick(item, $event)"
+        ></my-overlay>
       </template>
     </baidu-map>
-    <div class="project" v-if="pro">
+    <div class="project" v-show="pro">
       <router-link :to="'/' + jkl + '/content/' + building.id">
         <div class="re-list">
           <div class="re-con-left">
@@ -254,8 +249,8 @@
             </p>
             <p class="tabs">
               <span class="strong">{{ building.decorate }}</span>
-              <span v-if="building.railways">{{ building.railways }}</span>
-              <span v-if="building.features">{{ building.features }}</span>
+              <span v-show="building.railways">{{ building.railways }}</span>
+              <span v-show="building.features">{{ building.features }}</span>
             </p>
           </div>
         </div>
@@ -265,6 +260,7 @@
       <img src="~/assets/map-hui.png" alt="" />
       <p>优惠</p>
     </div>
+
     <div class="you list" @click="search">
       <img src="~/assets/map-list.png" alt="" />
       <p>列表</p>
@@ -274,7 +270,7 @@
 <script>
 import MyOverlay from "@/components/MyOverlay";
 import MyOverlays from "@/components/MyOverlays";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 import {
   search_start,
   mapSaerch,
@@ -586,16 +582,18 @@ export default {
     },
     putid(id, e) {
       // map.panTo(new BMap.Point(jk[0],jk[1]));
-      let n = e.target.parentElement.parentElement.parentElement.children;
+      // let n = e.target.parentElement.parentElement.parentElement.children;
+
       //   console.log(n, id, e.currentTarget);
       //   return
-      for (let i = 1; i < n.length; i++) {
-        n[i].style.backgroundColor = "#40A2F4";
-        n[i].style.zIndex = "1";
-      }
-      e.currentTarget.style.background =
-        "linear-gradient(270deg, #FF8D41, #FFAE2D)";
-      e.currentTarget.style.zIndex = 2;
+      // for (let i = 1; i < n.length; i++) {
+      //   n[i].style.backgroundColor = "#40A2F4";
+      //   n[i].style.zIndex = "1";
+      // }
+      // e.currentTarget.style.background =
+      //   "linear-gradient(270deg, #FF8D41, #FFAE2D)";
+      $(e.currentTarget).addClass("dv").siblings().removeClass("dv");
+      // e.currentTarget.style.zIndex = 2;
       //   if (e.target.id == "b_name") {
       //     e.target.style.backgroundColor = "#FF6666";
       //     e.target.parentElement.parentElement.style.zIndex='2'
@@ -624,12 +622,24 @@ export default {
           console.log(error);
         });
     },
+    boxclick(item, e) {
+      if (this.level <= 2) {
+        this.changezoom(item);
+      } else {
+        this.putid(item.id, e);
+      }
+    },
+    css(t) {
+      let s = document.createElement("style");
+      s.innerText = t;
+      document.body.appendChild(s);
+    },
     changezoom(item) {
-      console.log(item);
+      // console.log(item);
       if (this.level == 1) {
         this.zoom = 13;
       } else if (this.level == 2) {
-        this.zoom = 15;
+        this.zoom = 14;
       }
       let BMap = this.Bmap;
       this.map.panTo(new BMap.Point(item["lng"], item["lat"]));
@@ -658,6 +668,18 @@ export default {
     },
     search() {
       this.$router.push("/" + this.$route.params.name + "/search");
+    },
+    checkbox(e) {
+      console.log(e.target);
+      $(".hubox").each(function () {
+        $(this).prop("checked", false);
+      });
+      $(e.target).prop("checked", true);
+      this.hus = this.hus.slice(0, this.hus.length - 1);
+      // if (this.hus.length >= 1) {
+      //   // e.target.checked = false
+      //   $(e.target).prop("checked", false);
+      // }
     },
   },
   mounted() {
@@ -997,6 +1019,21 @@ export default {
         .children()
         .attr("class", "iconfont iconxiajiantoushixinxiao");
     });
+    document.getElementById("foott").style.display = "none";
+  },
+  beforeDestroy() {
+    document.getElementById("foott").style.display = "block";
+  },
+  watch: {
+    // hus(val,old){
+    //   console.log(val,old)
+    //   if(val.length>=2){
+    //     this.hus = old
+    //   }
+    // }
+    zoom(val) {
+      console.log(val);
+    },
   },
 };
 </script>
@@ -1006,11 +1043,14 @@ export default {
   padding: 0;
   margin: 0;
 }
+.Map {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 .bm-view {
-  height: 90%;
   width: 100%;
-  top: 10%;
-  position: fixed;
+  flex: 1;
 }
 
 .Map >>> #m_name {
@@ -1032,8 +1072,8 @@ export default {
   color: #fff;
   height: 1rem;
   overflow: hidden;
-text-overflow:ellipsis;
-white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .Map >>> #b_price {
   font-size: 0.5625rem;
@@ -1041,15 +1081,14 @@ white-space: nowrap;
   text-align: center;
   height: 1rem;
   overflow: hidden;
-text-overflow:ellipsis;
-white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .top {
   width: 100%;
-  height: 40px;
+  height: 8rem;
   background-color: #fff;
-  position: fixed;
-  z-index: 2;
+  z-index: 20;
 }
 .top .back {
   width: 20px;
@@ -1059,32 +1098,33 @@ white-space: nowrap;
   top: 0.6875rem;
 }
 .top .inpu {
-  width: 82.67%;
+  width: 80%;
   height: 30px;
   border-radius: 0.25rem;
-  background-color: #f2f4f7;
+  background-color: #f5f5f5;
   margin-top: 6px;
   line-height: 30px;
-  padding-left: 33px;
+  padding-left: 2.5rem;
   border: 0;
   text-align: left;
   margin-left: 3.25rem;
+  font-size: 0.875rem;
 }
 input::-webkit-input-placeholder {
   /* WebKit browsers */
-  color: #969899;
+  color: #969799;
   font-size: 0.875rem;
 }
 
 input::-moz-placeholder {
   /* Mozilla Firefox 19+ */
-  color: #969899;
+  color: #969799;
   font-size: 0.875rem;
 }
 
 input:-ms-input-placeholder {
   /* Internet Explorer 10+ */
-  color: #969899;
+  color: #969799;
   font-size: 0.875rem;
 }
 .top .search {
@@ -1158,7 +1198,7 @@ input:-ms-input-placeholder {
   font-size: 11px;
 }
 .re-list .re-con-right .price {
-  color: #fe582f;
+  color: #ff5454;
   font-size: 12px;
   margin-bottom: 2px;
 }
@@ -1195,7 +1235,7 @@ input:-ms-input-placeholder {
   box-shadow: 0px 0px 0.3125rem 0px rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
   position: fixed;
-  z-index: 500;
+  z-index: 5;
   top: 9.375rem;
   right: 0.9375rem;
   background-color: #fff;

@@ -20,7 +20,7 @@ export default {
       },
       {
         name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
+        content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
       },
       {
         hid: 'description',
@@ -31,7 +31,7 @@ export default {
     link: [{
       rel: 'icon',
       type: 'image/x-icon',
-      href: '/favicon.ico'
+      href: '/bitbug_favicon.ico'
     }],
     script: [{
         src: '//libs.baidu.com/jquery/2.0.0/jquery.min.js'

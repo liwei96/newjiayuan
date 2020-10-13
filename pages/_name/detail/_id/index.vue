@@ -168,7 +168,7 @@ export default {
         .get("/jy/project/base/phone", {
           params: {
             city: city,
-            position: position,
+            id: position,
             page: 1,
             limit: 10,
           },
@@ -428,7 +428,7 @@ header {
     }
     .pri {
       span {
-        color: #fe582f;
+        color: #FF5454;
         font-size: 0.5625rem;
         i {
           font-style: normal;

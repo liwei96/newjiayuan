@@ -20,10 +20,10 @@
           <p class="msg">人均100万业绩</p>
         </li>
       </ul>
-      <h2>
+      <h2 class="first">
         关于我们
         <span>ABOUT US</span>
-        <p>About us</p>
+        <p>ABOUT US</p>
       </h2>
       <p class="txt">
         <i v-if="type"
@@ -61,7 +61,7 @@
           <p class="num"><span>60</span>千单+</p>
         </li>
       </ul>
-      <h2>
+      <h2 class="two">
         我们的优势
         <span>ADVANTAGE</span>
         <p>Our strengths</p>
@@ -98,7 +98,7 @@
         </div>
       </div>
     </div>
-    <h2>
+    <h2 class="three">
       平台支持
       <span>PLATFORM</span>
       <p>PLATFORM</p>
@@ -187,7 +187,7 @@
         </div>
       </div>
     </div>
-    <h2>
+    <h2 class="three">
       模式比较
       <span>PATTERN</span>
       <p>PATTERN</p>
@@ -255,7 +255,7 @@
       </div>
       <div class="swiper-pagination"></div>
     </div>
-    <h2>
+    <h2 class="four">
       加盟条件
       <span>CONDITION</span>
       <p>CONDITION</p>
@@ -284,7 +284,7 @@
       </div>
       <div class="line"></div>
     </div>
-    <h2>
+    <h2 class="five">
       加入我们
       <span>JOIN US</span>
       <p>JOIN US</p>
@@ -317,7 +317,7 @@
     <div class="code">
       <img src="~/assets/jia-code.jpg" alt />
       <p class="codemsg">扫码加盟官方微信号</p>
-      <p class="tel">加盟热线：400-718-6666</p>
+      <p class="tel">加盟热线：<span>400-718-6666</span></p>
     </div>
     <div class="nav">
       <a href="tel:400-718-6686">
@@ -528,13 +528,13 @@ h2 {
     box-shadow: 0px 0.15625rem 0.9375rem 0px rgba(0, 0, 0, 0.05);
     border-radius: 0.25rem;
     position: relative;
-    top: -2.34375rem;
+    top: -2.5625rem;
     justify-content: space-around;
     li {
       .tit {
         color: #e33737;
         font-size: 0.9375rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.3125rem;
         padding-top: 1rem;
         span {
           font-size: 1.125rem;
@@ -545,6 +545,13 @@ h2 {
         color: #2a2a2a;
         font-size: 0.625rem;
       }
+    }
+  }
+  .first {
+    margin-top: 0.4375rem;
+    margin-bottom: 1.8125rem;
+    span {
+      top: -0.5rem
     }
   }
   .txt {
@@ -561,19 +568,19 @@ h2 {
   }
   .icons {
     display: flex;
-    margin-top: 1.25rem;
-    margin-bottom: 3rem;
+    margin-top: 1.125rem;
+    margin-bottom: 2.6875rem;
     li {
       width: 25%;
       text-align: center;
       img {
         width: 1.625rem;
-        margin-bottom: 0.625rem;
+        margin-bottom: 0.5rem;
       }
       .name {
         color: #4b4c4d;
         font-size: 0.625rem;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.125rem;
       }
       .num {
         color: #4b4c4c;
@@ -586,11 +593,14 @@ h2 {
       }
     }
   }
+  .two {
+    margin-bottom: 1.4375rem;
+  }
 }
 .swiper-advantage {
   overflow: hidden;
   padding: 0.625rem 0;
-  margin-bottom: 2.6875rem;
+  margin-bottom: 2.1875rem;
   .swiper-slide {
     height: 11.25rem;
     background: #ffffff;
@@ -603,7 +613,7 @@ h2 {
       text-align: center;
       font-weight: 400;
       margin-bottom: 0.5rem;
-      padding-top: 1.25rem;
+      padding-top: 1.0625rem;
       span {
         font-weight: bold;
         color: #2a2a2a;
@@ -617,7 +627,7 @@ h2 {
       left: 50%;
       margin-left: -2.5rem;
       position: relative;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.5625rem;
     }
     p {
       color: #4b4c4c;
@@ -626,7 +636,7 @@ h2 {
       width: 11.875rem;
       text-align: center;
       margin-left: 1.875rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
     button {
       width: 13.125rem;
@@ -644,6 +654,9 @@ h2 {
       bottom: 20px;
     }
   }
+}
+.three {
+  margin-bottom: 1.5rem;
 }
 .swiper-platform {
   overflow: hidden;
@@ -664,14 +677,14 @@ h2 {
       h4 {
         color: #de9b6c;
         font-size: 1.25rem;
-        margin-bottom: 0.875rem;
-        padding-top: 1rem;
+        margin-bottom: 0.5625rem;
+        padding-top: 0.6875rem;
       }
       ul {
         li {
           color: #4b4c4c;
           font-size: 0.875rem;
-          margin-bottom: 0.375rem;
+          margin-bottom: 0.1875rem;
           padding-left: 0.875rem;
           position: relative;
           p {
@@ -692,7 +705,7 @@ h2 {
   overflow: hidden;
   padding: 0.625rem 0;
   padding-bottom: 1.75rem;
-  margin-bottom: 1.875rem;
+  margin-bottom: 1.6875rem;
   position: relative;
   .swiper-slide {
     height: 23.75rem;
@@ -705,8 +718,8 @@ h2 {
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-align: center;
-      padding-top: 1.25rem;
-      margin-bottom: 1.25rem;
+      padding-top: 1.125rem;
+      margin-bottom: 1rem;
       font-size: 1.5rem;
     }
     .sw-con {
@@ -718,11 +731,11 @@ h2 {
         .cn-ll {
           color: #2a2a2a;
           font-size: 0.875rem;
-          margin-bottom: 1.25rem;
+          margin-bottom: 1.0625rem;
           h5 {
             color: #2a2a2a;
             font-size: 0.875rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.375rem;
           }
           img {
             width: 3.5625rem;
@@ -760,7 +773,7 @@ h2 {
       width: 0.5rem;
       height: 0.15625rem;
       border-radius: 0.0625rem;
-      background-color: #d9d9d9;
+      background-color:#cacacc;
     }
     .swiper-pagination-bullet-active {
       width: 0.9375rem;
@@ -770,6 +783,12 @@ h2 {
     }
   }
 }
+.four {
+  margin-bottom: 2.125rem;
+}
+.five {
+  margin-bottom: 2.125rem;
+}
 .jians {
   padding-left: 1.5rem;
   position: relative;
@@ -777,7 +796,7 @@ h2 {
   .li {
     display: flex;
     align-items: center;
-    margin-bottom: 1.125rem;
+    margin-bottom: 1.25rem;
     .num {
       width: 1rem;
       height: 1rem;
@@ -822,7 +841,7 @@ h2 {
     display: flex;
     padding-left: 1.5rem;
     align-items: center;
-    margin-bottom: 1.125rem;
+    margin-bottom: 1.1875rem;
     p {
       color: #333333;
       font-size: 0.875rem;
@@ -872,6 +891,7 @@ h2 {
     font-weight: bold;
     margin-left: 4.6875rem;
     border: 0;
+    margin-top: 1.375rem;
   }
 }
 .code {
@@ -884,14 +904,18 @@ h2 {
   .codemsg {
     color: #333333;
     font-size: 0.75rem;
-    margin-bottom: 1.375rem;
+    margin-bottom: 0.9375rem;
+    margin-top: 0.3125rem;
   }
   .tel {
     background: linear-gradient(0deg, #fdbe90 0%, #d18d5d 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.3125rem;
-    margin-bottom: 6.25rem;
+    margin-bottom: 1.875rem;
+    span {
+      font-weight: bold;
+    }
   }
 }
 .nav {
@@ -909,7 +933,6 @@ h2 {
     height: 3rem;
     border-radius: 0.25rem;
     background: linear-gradient(270deg, #348aff, #6accff);
-    box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(78, 169, 255, 0.2);
     font-weight: bold;
     font-size: 0.9375rem;
     border: 0;
@@ -917,7 +940,6 @@ h2 {
   }
   .btn {
     background: linear-gradient(90deg, #fdbe90, #d18d5d);
-    box-shadow: 0px 0.15625rem 0.3125rem 0px rgba(44, 203, 128, 0.2);
     margin-left: 0.6875rem;
   }
 }

@@ -3,7 +3,7 @@
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <input type="text" placeholder="请输入楼盘名称" v-model="name" />
-      <span>搜索</span>
+      <span @click="ss">搜索</span>
       <img src="~/assets/search.png" alt class="search" />
     </header>
     <div class="hot">
@@ -126,7 +126,8 @@ export default {
         this.ll = false;
       } else {
         this.ll = true;
-        souname(name,1).then((res) => {
+        let city = localStorage.getItem('cityname')
+        souname(name,1,city).then((res) => {
           for (let val of res.data.data) {
             var text = val.where.replace(/<[^<>]+>/g, "");
             if (text == val.name) {
@@ -154,6 +155,9 @@ export default {
         this.$router.push("/" + this.jkl + "/content/" + id);
       }
     },
+    ss(){
+      this.$router.push('/'+this.jkl+'/search')
+    }
   },
   mounted() {
     // let that = this;
@@ -183,11 +187,15 @@ export default {
     //     }
     //   }
     // });
+    document.getElementById('foott').style.display = 'none'
   },
   watch: {
     name(val) {
       this.sou();
     },
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
   },
 };
 </script>

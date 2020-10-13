@@ -250,9 +250,10 @@ header {
   height: 2.75rem;
   z-index: 1;
   background-color: #fff;
+  border-bottom: 0.03125rem solid #f7f7f7;
   // position: relative;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
@@ -265,7 +266,7 @@ header {
     top: 0.75rem;
   }
   .list {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-right: 4%;
   }
   .cailist {
@@ -368,7 +369,9 @@ header {
       h4 {
         color: #474a4e;
         font-size: 0.9375rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.175rem;
+        position: relative;
+        top:-0.1875rem;
         span {
           float: right;
           display: block;
@@ -474,7 +477,7 @@ header {
     margin-bottom: 1.375rem;
   }
   ul {
-    margin-bottom: 3.75rem;
+    margin-bottom: 1.875rem;
     li {
       display: flex;
       padding-bottom: 0.875rem;
@@ -499,6 +502,8 @@ header {
           font-size: 1rem;
           font-weight: 400;
           margin-bottom: 0.375rem;
+          position: relative;
+          top: -0.3125rem;
           span {
             float: right;
             width: 2.125rem;
@@ -519,7 +524,7 @@ header {
             font-size: 0.8125rem;
           }
           .pri {
-            color: #fe582f;
+            color:#FF5454;
             font-size: 0.625rem;
             i {
               font-style: normal;
@@ -532,7 +537,7 @@ header {
         }
       }
     }
-    li:nth-last-of-type(1) {
+    a:nth-last-of-type(1) li{
       border: 0;
       margin-bottom: 0;
     }

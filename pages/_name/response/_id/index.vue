@@ -101,6 +101,12 @@ export default {
       }
     },
   },
+  mounted() {
+    document.getElementById('foott').style.display = 'none'
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
+  },
 };
 </script>
 <style lang="less" scoped>

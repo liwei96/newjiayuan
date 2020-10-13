@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header id="hh">
     <img class="back" src="~/assets/goback.png" alt @click="back" />
     <img class="logo" src="~/assets/logo.png" alt />
     <div class="zixuns" @click="gotalk" v-if="kk">
@@ -107,13 +107,14 @@ header {
   background-color: #fff;
   position: fixed;
   top: 0;
-  z-index: 10000;
+  z-index: 1000;
+  border-bottom: 0.03125rem solid #f7f7f7;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
-    width: 3.125rem;
+    width: 2.625rem;
   }
   .home {
     width: 1.25rem;
@@ -142,7 +143,7 @@ header {
     }
   }
   .list {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-right: 4%;
   }
   .cailist {

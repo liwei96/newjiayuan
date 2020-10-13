@@ -73,14 +73,15 @@ export const collect = (msg) => {
     params: msg
   })
 }
-export const souname = (name,k) => {
+export const souname = (name,k,city) => {
   return axios.request({
     method: 'get',
     url: '/api/project/e_search',
     params: {
       'name': name,
       page:k,
-      limit:10
+      limit:10,
+      city:city
     }
   })
 }
@@ -157,7 +158,7 @@ export const mapSearch = (msg) => {
 export const index_start = (msg) => {
   return axios.request({
     method: 'post',
-    url: '/api/first/index_mobile',
+    url: '/api/location/get_city',
     data: msg
   })
 }

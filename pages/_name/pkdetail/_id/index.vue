@@ -117,11 +117,11 @@
           <td>参考单价</td>
           <td>
             <p>约{{one.price}}元/m²</p>
-            <button>咨询底价</button>
+            <button @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价',one.id)">咨询底价</button>
           </td>
           <td>
             <p>约{{two.price}}元/m²</p>
-            <button>咨询底价</button>
+            <button @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价',two.id)">咨询底价</button>
           </td>
         </tr>
         <tr>
@@ -210,7 +210,7 @@
           <td>{{two.parking}}</td>
         </tr>
       </table>
-      <button class="btn">咨询详细楼盘信息</button>
+      <button class="btn" @click="pop('咨询详细楼盘信息',90,'详情页+咨询详细楼盘信息',one.id)">咨询详细楼盘信息</button>
     </div>
     <div class="other">
       <h3>猜你喜欢</h3>
@@ -333,15 +333,26 @@ export default {
     },
     godetail(id){
       this.$router.push('/'+this.jkl+'/content/'+id)
-    }
+    },
+    pop(name,position,txt,id){
+      this.name = name
+      this.typebtn = 1
+      this.typenum = position
+      this.tan = true
+      this.remark=txt
+      this.id = id
+    },
   }
 };
 </script>
 <style lang="less" scoped>
 .top {
   display: flex;
-  padding-top: 44px;
   padding-bottom: 1.25rem;
+  border-bottom: 0.03125rem solid #F3F3F3;
+  position: fixed;
+  top: 2.75rem;
+  background-color: #fff;
   .left {
     width: 5.625rem;
     text-align: center;
@@ -428,6 +439,7 @@ export default {
 }
 .message {
   margin-bottom: 2.1875rem;
+  margin-top: 16.25rem;
   table {
     border-collapse: collapse;
     width: 100%;
@@ -555,10 +567,10 @@ export default {
     }
     .hui {
       td:nth-of-type(2) {
-        color: #fe582f;
+        color:#FF5454;
       }
       td:nth-of-type(3) {
-        color: #fe582f;
+        color:#FF5454;
       }
     }
     .hu {
@@ -610,7 +622,6 @@ export default {
 }
 .other {
   padding: 0 4%;
-  padding-bottom: 3.75rem;
   h3 {
     color: rgba(50, 51, 51, 1);
     font-size: 1rem;
@@ -650,12 +661,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color:#FF5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color:#FF5454;
         }
       }
       .attr {

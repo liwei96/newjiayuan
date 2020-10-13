@@ -131,6 +131,10 @@ export default {
   },
   mounted() {
     this.proname = $cookies.get("proname");
+    document.getElementById('foott').style.display = 'none'
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
   },
 };
 </script>
@@ -208,10 +212,12 @@ header {
         color: #323333;
         font-size: 1rem;
         font-weight: 400;
-        margin-bottom: 0.46rem;
+        margin-bottom: 0.1475rem;
+        position: relative;
+        top: -0.3125rem;
         span {
           float: right;
-          padding: 0.1875rem 0.375rem;
+          padding: 0rem 0.375rem 0.1rem 0.375rem;
           border-radius: 0.125rem;
           background-color: #2cd264;
           color: #fff;
@@ -239,7 +245,7 @@ header {
       }
     }
   }
-  .li:last-child {
+  a:last-child .li{
     border: 0;
   }
 }

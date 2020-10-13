@@ -28,7 +28,7 @@
     <div class="con" v-if="!isnull">
       <h3>猜你喜欢</h3>
       <template v-for="(item, key) in recommends">
-        <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key">
+        <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key" v-if="key<4">
           <div class="pro">
             <div class="left">
               <h5>{{ item.title }}</h5>
@@ -171,12 +171,14 @@ export default {
       }
     },
   },
-  // mounted() {
-  //   window.addEventListener("scroll", this.getmore);
-  // },
-  // beforeDestroy() {
-  //   window.removeEventListener("scroll", this.getmore);
-  // },
+  mounted() {
+    document.getElementById('foott').style.display = 'none'
+    // window.addEventListener("scroll", this.getmore);
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
+    // window.removeEventListener("scroll", this.getmore);
+  },
   watch: {
     name(val) {
       this.sou();
@@ -227,7 +229,7 @@ li {
     left: 3.4rem;
   }
   .back {
-    width: 1rem;
+    width: 1.25rem;
     margin-right: 0.625rem;
   }
   span {
@@ -272,7 +274,7 @@ li {
   .tit {
     color: #2f3133;
     font-size: 0.875rem;
-    margin-bottom: 1.125rem;
+    margin-bottom: 1.5rem;
     span {
       color: #ff3f3f;
     }

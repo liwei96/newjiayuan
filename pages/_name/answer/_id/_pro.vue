@@ -276,15 +276,15 @@ export default {
 <style lang="less" scoped>
 .topmsg {
   padding: 0 4%;
-  padding-top: 4rem;
+  padding-top: 3.75rem;
   padding-bottom: 1.25rem;
   .tit {
     color: #323333;
     font-size: 0.875rem;
     line-height: 1.40625rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.875rem;
     span {
-      padding: 0.1875rem;
+      padding: 0.09375rem 0.1875rem;
       border-radius: 0.125rem;
       background-color: #ff5454;
       color: #fff;
@@ -309,7 +309,9 @@ export default {
       h4 {
         color: #474a4e;
         font-size: 0.9375rem;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.175rem;
+        position: relative;
+        top:-0.1875rem;
         span {
           float: right;
           display: block;
@@ -330,6 +332,7 @@ export default {
         margin-bottom: 0.2rem;
         span {
           font-size: 0.875rem;
+          font-weight: bold;
         }
       }
       .typemsg {
@@ -341,7 +344,7 @@ export default {
         span {
           color: #7d7f80;
           font-size: 0.75rem;
-          padding: 0.1875rem 0.3125rem;
+          padding: 0.125rem 0.3125rem;
           background-color: #f5f5f5;
           border-radius: 0.125rem;
           margin-right: 0.375rem;
@@ -360,8 +363,8 @@ export default {
   .top {
     display: flex;
     align-items: center;
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0.9375rem;
     img {
       width: 2rem;
       height: 2rem;
@@ -373,7 +376,8 @@ export default {
         color: #131313;
         font-size: 0.9375rem;
         font-weight: 400;
-        margin-bottom: 0.125rem;
+        position: relative;
+        top: -0.1875rem;
         span {
           padding: 0.125rem 0.1875rem;
           color: #fff;
@@ -411,12 +415,14 @@ export default {
     margin-top: 0.875rem;
     background-color: #f7f7f7;
     padding: 0.875rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1875rem;
+    border-radius: 0.375rem;
+    line-height: 1.625rem;
   }
   .time {
     color: #96989a;
     font-size: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.0625rem;
     span {
       float: right;
       color: #96989a;
@@ -530,12 +536,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color:#FF5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color:#FF5454;
         }
       }
       .attr {

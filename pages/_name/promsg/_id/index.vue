@@ -28,7 +28,7 @@
           <div class="con">
             <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
             <h4>{{item.title}}</h4>
-            <p>{{item.content.substr(0,46)}}<i v-if="item.content.length>50">...</i><i v-if="item.content.length>50">[查看更多]</i></p>
+            <p>{{item.content.substr(0,46)}}<i v-if="item.content.length>50">...</i></p>
             </nuxt-link>
             <!-- <div class="imgbox">
               <img v-lazy="item.img" alt @click="big(item.img)"/>
@@ -204,16 +204,18 @@ export default {
   },
   mounted(){
     window.addEventListener("scroll", this.getmore);
+    document.getElementById('foott').style.display = 'none'
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.getmore);
+    document.getElementById('foott').style.display = 'block'
   },
 };
 </script>
 <style lang="less" scoped>
 .topnav {
   padding-top: 3.5rem;
-  margin-bottom: 0.875rem;
+  margin-bottom: 0.8125rem;
   padding-bottom: 0.875rem;
   border-bottom: 0.03125rem solid #f5f5f5;
   ul {
@@ -247,13 +249,13 @@ export default {
   .time {
     color: #96989a;
     font-size: 0.75rem;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
   }
   .con {
     padding-left: 1.125rem;
     border-left: 0.03125rem solid #eeeeee;
     position: relative;
-    margin-bottom: 1.875rem;
+    margin-bottom: 1.5rem;
     h4 {
       color: #474a4d;
       font-size: 0.9375rem;

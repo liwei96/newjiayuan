@@ -4,16 +4,16 @@
       <img src="~/assets/logo.png" alt class="logo" />
       <div class="input">
         <p @click="goadd">
-          {{cityname}}
+          {{ cityname }}
           <img src="~/assets/downsan.png" alt />
           <span>|</span>
           <img class="sou" src="~/assets/search.png" alt />
         </p>
-        <nuxt-link :to="'/'+jkl+'/searchname'">
-        <input type="text" placeholder="请输入楼盘名" disabled/>
+        <nuxt-link :to="'/' + jkl + '/searchname'">
+          <input type="text" placeholder="请输入楼盘名" disabled />
         </nuxt-link>
       </div>
-      <nuxt-link :to="'/'+jkl+'/home'">
+      <nuxt-link :to="'/' + jkl + '/home'">
         <img src="~/assets/index-peo.png" alt class="peo" />
       </nuxt-link>
     </header>
@@ -21,47 +21,55 @@
       <img src="~/assets/banner.png" alt class="topimg" />
       <ul>
         <li>
-          <nuxt-link :to="'/'+jkl+'/search'">
+          <nuxt-link :to="'/' + jkl + '/search'">
             <img src="~/assets/index-xin.png" alt />
           </nuxt-link>
           <p>新房</p>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/special'">
+          <nuxt-link :to="'/' + jkl + '/special'">
             <img src="~/assets/index-te.png" alt />
             <span>优惠</span>
           </nuxt-link>
           <p>特价房</p>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/weike/before/56'">
+          <nuxt-link :to="'/' + jkl + '/weike/before/56'">
             <img src="~/assets/index-weiki.png" alt />
           </nuxt-link>
           <p>百科</p>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/infos/46'">
+          <nuxt-link :to="'/' + jkl + '/infos/46'">
             <img src="~/assets/index-zixun.png" alt />
           </nuxt-link>
           <p>资讯</p>
         </li>
         <li>
-          <nuxt-link :to="'/'+jkl+'/map'">
-          <img src="~/assets/index-map.png" alt />
+          <nuxt-link :to="'/' + jkl + '/map'">
+            <img src="~/assets/index-map.png" alt />
           </nuxt-link>
           <p>地图</p>
         </li>
       </ul>
     </div>
     <div class="swipe">
-      <img src="~/assets/index-tit.png" alt />
+      <img src="~/assets/index-tit.png" alt class="swipe-logo" />
       <notice-bar :scrollable="false" background="#fff" color="#646566">
-        <swipe vertical class="notice-swipe" :autoplay="3000" :show-indicators="false">
-          <swipe-item v-for="(item,key) in tops" :key="key">
-            <nuxt-link :to="'/'+jkl+'/info/'+item.id">{{item.title}}</nuxt-link>
+        <swipe
+          vertical
+          class="notice-swipe"
+          :autoplay="3000"
+          :show-indicators="false"
+        >
+          <swipe-item v-for="(item, key) in tops" :key="key">
+            <nuxt-link :to="'/' + jkl + '/info/' + item.id">{{
+              item.title
+            }}</nuxt-link>
           </swipe-item>
         </swipe>
       </notice-bar>
+      <img src="~/assets/vant-bg.png" alt="" class="swipe-bg" />
     </div>
     <div class="help" @click="gohelp">
       <button>帮我找房</button>
@@ -69,7 +77,7 @@
     <div class="te" v-if="discounts.length">
       <div class="top">
         <img class="topimg" src="~/assets/index-jinte.png" alt />
-        <nuxt-link :to="'/'+jkl+'/special'">
+        <nuxt-link :to="'/' + jkl + '/special'">
           <span>
             查看全部
             <img src="~/assets/index-round.png" alt />
@@ -77,18 +85,27 @@
         </nuxt-link>
       </div>
       <ul>
-        <template v-for="(item,key) in discounts">
-          <nuxt-link :to="'/'+jkl+'/content/'+item.id" :key="key">
+        <template v-for="(item, key) in discounts">
+          <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
             <li>
               <div class="li-top">
-                <p class="top-area">{{item.country.substr(0,2)}}</p>
+                <p class="top-area">{{ item.country.substr(0, 2) }}</p>
                 <img :src="item.img" alt />
-                <p class="top-name">{{item.name}}</p>
+                <p class="top-name">{{ item.name }}</p>
+                <div class="ze"></div>
               </div>
               <div class="li-bom">
-                <p class="xx">原价: {{(item.original/1000).toFixed(2)}}万</p>
+                <p class="xx">
+                  原价: {{ (item.original / 1000).toFixed(2) }}万
+                </p>
                 <div class="pri">
-                  <p>省￥{{Number(item.diff)>99999?(item.diff/10000).toFixed(0)+'万':Number(item.diff)}}</p>
+                  <p>
+                    省￥{{
+                      Number(item.diff) > 99999
+                        ? (item.diff / 10000).toFixed(0) + "万"
+                        : Number(item.diff)
+                    }}
+                  </p>
                 </div>
               </div>
             </li>
@@ -100,7 +117,7 @@
       <h3>
         楼盘动态
         <p>hot</p>
-        <nuxt-link :to="'/'+jkl+'/dynamics'">
+        <nuxt-link :to="'/' + jkl + '/dynamics'">
           <span>
             全部动态
             <img src="~/assets/j-more.png" alt />
@@ -109,16 +126,16 @@
       </h3>
       <div class="swiper-dynamic">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in dynamics" :key="key">
-            <nuxt-link :to="'/'+jkl+'/dynamic/'+item.id">
+          <div class="swiper-slide" v-for="(item, key) in dynamics" :key="key">
+            <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
               <img :src="item.img" alt />
               <div class="swper-con">
-                <h5>{{item.title}}</h5>
+                <h5>{{ item.title }}</h5>
                 <p>
-                  {{item.content.substr(0,30)}}...
+                  {{ item.content.substr(0, 30) }}...
                   <span>详细</span>
                 </p>
-                <span>{{item.time}}</span>
+                <span>{{ item.time }}</span>
               </div>
             </nuxt-link>
           </div>
@@ -131,25 +148,25 @@
       <h3>
         家园严选
         <span class="n">必看好房</span>
-        <nuxt-link :to="'/'+jkl+'/search'">
-        <span class="more">
-          全部楼盘
-          <img src="~/assets/j-more.png" alt />
-        </span>
+        <nuxt-link :to="'/' + jkl + '/search'">
+          <span class="more">
+            全部楼盘
+            <img src="~/assets/j-more.png" alt />
+          </span>
         </nuxt-link>
       </h3>
       <div class="swiper-strict">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in stricts" :key="key">
-            <nuxt-link :to="'/'+jkl+'/content/'+item.id">
+          <div class="swiper-slide" v-for="(item, key) in stricts" :key="key">
+            <nuxt-link :to="'/' + jkl + '/content/' + item.id">
               <img :src="item.img" alt />
               <div class="strict-bom">
-                <h6>{{item.name}}</h6>
+                <h6>{{ item.name }}</h6>
                 <p>
-                  {{item.price}}
+                  {{ item.price }}
                   <span>元/m²</span>
                 </p>
-                <i>{{item.country}}</i>
+                <i>{{ item.country }}</i>
               </div>
             </nuxt-link>
           </div>
@@ -160,7 +177,7 @@
       <h3>
         成交案例
         <span class="n">成交故事</span>
-        <nuxt-link :to="'/'+jkl+'/successs'">
+        <nuxt-link :to="'/' + jkl + '/successs'">
           <span class="more">
             全部案例
             <img src="~/assets/j-more.png" alt />
@@ -169,16 +186,16 @@
       </h3>
       <div class="swiper-success">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in finishes" :key="key">
-            <nuxt-link :to="'/'+jkl+'/success/'+item.id">
+          <div class="swiper-slide" v-for="(item, key) in finishes" :key="key">
+            <nuxt-link :to="'/' + jkl + '/success/' + item.id">
               <div class="top">
-                <h5>客户：{{item.customer}}</h5>
-                <p class="time">时间：{{item.time}}</p>
-                <p class="name">购买{{item.project}}</p>
+                <h5>客户：{{ item.customer }}</h5>
+                <p class="time">时间：{{ item.time }}</p>
+                <p class="name">购买{{ item.project }}</p>
                 <img :src="item.img" alt />
               </div>
               <div class="bom">
-                <p>{{item.content}}</p>
+                <p>{{ item.content }}</p>
                 <div class="btn">
                   查看详细
                   <img src="~/assets/index-round.png" alt />
@@ -192,7 +209,7 @@
     <div class="guide">
       <h3>
         楼盘导购
-        <nuxt-link :to="'/'+jkl+'/infos/46'">
+        <nuxt-link :to="'/' + jkl + '/infos/46'">
           <span class="more">
             更多资讯
             <img src="~/assets/j-more.png" alt />
@@ -200,14 +217,18 @@
         </nuxt-link>
       </h3>
       <ul>
-        <template v-for="(item,key) in articles">
-          <nuxt-link :key="key" :to="'/'+jkl+'/info/'+item.id" v-if="key<3">
+        <template v-for="(item, key) in articles">
+          <nuxt-link
+            :key="key"
+            :to="'/' + jkl + '/info/' + item.id"
+            v-if="key < 3"
+          >
             <li>
               <div class="left">
-                <p class="tit">{{item.title}}</p>
+                <p class="tit">{{ item.title }}</p>
                 <p class="time">
-                  <span>{{item.source}}</span>
-                  {{item.time}}
+                  <span>{{ item.source }}</span>
+                  {{ item.time }}
                 </p>
               </div>
               <img :src="item.img" alt />
@@ -217,39 +238,47 @@
       </ul>
     </div>
     <div class="other">
-      <h3>为你推荐</h3>
-      <template v-for="(item,key) in recommends">
-        <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id">
+      <h1>为你推荐</h1>
+      <template v-for="(item, key) in recommends">
+        <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
-                {{item.name}}
-                <span>{{item.state}}</span>
+                {{ item.name }}
+                <span>{{ item.state }}</span>
               </h5>
               <p class="pro-price">
-                <span>{{item.price}}</span>
+                <span>{{ item.price }}</span>
                 <i>元/m²</i>
               </p>
-              <p
-                class="attr"
-              >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
               <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.feature"
+                  :key="k"
+                  >{{ val }}</span
+                >
               </p>
             </div>
           </div>
         </nuxt-link>
       </template>
     </div>
-    <nuxt-link :to="'/'+jkl+'/search'">
-    <button class="morebtn">更多楼盘</button>
+    <nuxt-link :to="'/' + jkl + '/search'">
+      <button class="morebtn">更多楼盘</button>
     </nuxt-link>
   </div>
 </template>
 <script>
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 import { NoticeBar, Swipe, SwipeItem } from "vant";
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
@@ -286,23 +315,22 @@ export default {
       discounts: res.discounts,
       dynamics: res.dynamics,
       jkl: jkl,
-      cityname:res.common.city_info.current.short
+      cityname: res.common.city_info.current.short,
     };
   },
   head() {
     return {
-      title: "家园新房-"+this.cityname,
+      title: "家园新房-" + this.cityname,
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -315,23 +343,23 @@ export default {
       recommends: [],
       discounts: [],
       dynamics: [],
-      cityname:''
+      cityname: "",
     };
   },
-  methods:{
-    gohelp(){
-      this.$router.push('/'+this.jkl+'/help')
+  methods: {
+    gohelp() {
+      this.$router.push("/" + this.jkl + "/help");
     },
-    goadd(){
-      this.$router.push('/'+this.jkl+'/address')
-    }
+    goadd() {
+      this.$router.push("/" + this.jkl + "/address");
+    },
   },
   mounted() {
     // this.cityname = $cookies.get('cityname')
-    localStorage.setItem('cityname',this.cityname)
+    localStorage.setItem("cityname", this.cityname);
     var swiper08 = new Swiper(".swiper-dynamic", {
       slidesPerView: 1,
-      spaceBetween: 0,
+      spaceBetween: 10,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
       pagination: {
@@ -339,7 +367,7 @@ export default {
       },
     });
     var swiper08 = new Swiper(".swiper-strict", {
-      slidesPerView: 2.4,
+      slidesPerView: 2.5,
       spaceBetween: 15,
       slidesOffsetAfter: 14,
       slidesOffsetBefore: 14,
@@ -363,6 +391,10 @@ header {
   padding: 0 4%;
   line-height: 3.4375rem;
   display: flex;
+  position: fixed;
+  width: 92%;
+  z-index: 5;
+  border-bottom: 0.03125rem solid #f7f7f7;
   .logo {
     width: 2.5rem;
     margin-right: 0.875rem;
@@ -410,15 +442,17 @@ header {
   }
 }
 .topnav {
-  padding: 0 4%;
+  padding-top: 3.4375rem;
   .topimg {
-    width: 100%;
+    width: 92%;
     height: 6.25rem;
     border-radius: 0.5rem;
-    margin-bottom: 0.9375rem;
+    margin-bottom: 0.6875rem;
+    margin-left: 4%;
   }
   ul {
     display: flex;
+    padding: 0 0.5rem;
     li {
       width: 20%;
       text-align: center;
@@ -430,6 +464,8 @@ header {
       p {
         color: #313233;
         font-size: 0.75rem;
+        position: relative;
+        top: -0.1875rem;
       }
       span {
         display: block;
@@ -451,13 +487,14 @@ header {
 .swipe {
   display: flex;
   margin: 0 4%;
-  margin-top: 0.9375rem;
+  margin-top: 0.875rem;
   border-radius: 0.375rem;
   box-shadow: 0.5px 1px 15px 0px rgba(0, 0, 0, 0.05);
-  height: 3.25rem;
+  height: 2.8125rem;
   border: 0.09375rem solid #ffffff;
   align-items: center;
-  margin-bottom: 0.875rem;
+  margin-bottom: 0.9375rem;
+  position: relative;
   /deep/.van-notice-bar__wrap {
     width: 100%;
   }
@@ -481,9 +518,16 @@ header {
       font-size: 0.875rem;
     }
   }
-  img {
+  .swipe-logo {
     margin-left: 1.25rem;
-    width: 1.625rem;
+    width: 1.75rem;
+  }
+  .swipe-bg {
+    position: absolute;
+    width: 7.5rem;
+    height: 2.125rem;
+    top: 0.38em;
+    left: 7.8125rem;
   }
 }
 .help {
@@ -523,7 +567,7 @@ header {
   padding: 0 0.6875rem;
   .top {
     padding-top: 0.9375rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6875rem;
     .topimg {
       height: 1rem;
     }
@@ -563,6 +607,7 @@ header {
           left: 0;
           color: #fff;
           font-size: 0.625rem;
+          z-index: 1;
         }
         img {
           width: 100%;
@@ -580,6 +625,15 @@ header {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          z-index: 1;
+        }
+        .ze {
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          position: absolute;
+          top: 0;
+          left: 0;
         }
       }
       .li-bom {
@@ -590,6 +644,7 @@ header {
           margin-top: 0.25rem;
           margin-bottom: 0.3125rem;
           text-decoration: line-through;
+          font-weight: bold;
         }
         .pri {
           width: 5.1875rem;
@@ -623,11 +678,12 @@ header {
     font-size: 1rem;
     position: relative;
     line-height: 1.3125rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8125rem;
     span {
       color: #7d7f80;
       font-size: 0.75rem;
       float: right;
+      font-weight: 400;
       img {
         width: 0.75rem;
         height: 0.75rem;
@@ -646,6 +702,7 @@ header {
       font-size: 0.5625rem;
       top: 0;
       left: 4.0625rem;
+      font-weight: 400;
     }
   }
   .swiper-dynamic {
@@ -675,18 +732,19 @@ header {
         h5 {
           color: #2e3034;
           font-size: 0.875rem;
-          margin-bottom: 0.2rem;
+          margin-bottom: 0.2625rem;
           position: relative;
           top: -0.25rem;
           height: 1.1875rem;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          width: 14.375rem;
         }
         p {
           color: #646566;
           font-size: 0.8125rem;
-          line-height: 1.1875rem;
+          line-height: 1.2rem;
           span {
             color: #60d0b0;
             font-size: 0.8125rem;
@@ -707,7 +765,7 @@ header {
         width: 0.375rem;
         height: 0.125rem;
         border-radius: 0.0625rem;
-        background-color: #f0f0f2;
+        background-color: #cacacc;
       }
       /deep/.swiper-pagination-bullet-active {
         width: 0.75rem;
@@ -723,7 +781,7 @@ header {
   h3 {
     color: #323333;
     font-size: 1rem;
-    margin-bottom: 0.875rem;
+    margin-bottom: 0.75rem;
     padding: 0 4%;
     .n {
       color: #60d0b0;
@@ -744,7 +802,7 @@ header {
   }
   .swiper-strict {
     overflow: hidden;
-    padding-bottom: 1.75rem;
+    padding-bottom: 1.4375rem;
     .swiper-slide {
       border: 0.03125rem solid #f0f1f5;
       box-shadow: 0.03125rem 0.15625rem 0.625rem 0px rgba(0, 0, 0, 0.05);
@@ -760,8 +818,8 @@ header {
         h6 {
           color: #4b4b4d;
           font-size: 0.875rem;
-          margin-top: 0.2rem;
-          margin-bottom: 0.2rem;
+          margin-top: 0.3125rem;
+          margin-bottom: 0;
         }
         p {
           color: #ff5454;
@@ -830,6 +888,10 @@ header {
         .name {
           color: #90949a;
           font-size: 0.75rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 7.5rem;
         }
         img {
           width: 6.25rem;
@@ -890,6 +952,7 @@ header {
       margin-bottom: 0.625rem;
       .left {
         width: 14.0625rem;
+        position: relative;
         .tit {
           color: #323333;
           font-size: 0.875rem;
@@ -899,10 +962,15 @@ header {
           -webkit-box-orient: vertical;
           -webkit-line-clamp: 2;
           overflow: hidden;
+          height: 2.375rem;
+          position: relative;
+          top: -0.1875rem;
         }
         .time {
           color: #969899;
           font-size: 0.6875rem;
+          position: absolute;
+          bottom: 0.4375rem;
           span {
             margin-right: 0.25rem;
           }
@@ -913,15 +981,16 @@ header {
         height: 4.375rem;
         border: 0.1875rem;
         margin-left: 1.25rem;
+        border-radius: 0.125rem;
       }
     }
   }
 }
 .other {
-  padding: 1.25rem 4% 0 4%;
-  h3 {
+  padding: 0.9375rem 4% 0 4%;
+  h1 {
     color: #1f1f1f;
-    font-size: 1.0625rem;
+    font-size: 1rem;
     margin-bottom: 1.375rem;
   }
   .pro {
@@ -958,12 +1027,13 @@ header {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color: #ff5454;
           font-size: 0.9375rem;
+          font-weight: bold;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color: #ff5454;
         }
       }
       .attr {

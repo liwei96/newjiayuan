@@ -22,21 +22,21 @@
             <p class="msg">我的收藏</p>
           </div>
         </li>
-        <!-- <li @click="cancel">
+        <li @click="cancel">
           <div>
             <p class="num">{{ cardnum }}</p>
             <p class="msg">优惠卡券</p>
           </div>
-        </li> -->
-        <!-- <li @click="linkman">
+        </li>
+        <li @click="linkman">
             <div>
               <p class="num">
                 0
-                <span>0</span>
+                <!-- <span>0</span> -->
               </p>
               <p class="msg">我的联系</p>
             </div>
-        </li> -->
+        </li>
       </ul>
       <ul class="ll">
         <li>
@@ -70,7 +70,7 @@
       </ul>
     </div>
     <div class="con">
-      <ul class="col">
+      <ul class="col cll">
         <li>
           <nuxt-link :to="'/' + jkl + '/about'">
             <div>
@@ -279,6 +279,8 @@ export default {
       }
     },
     cancel() {
+      this.toast('功能暂不开放')
+      return
       if ($cookies.get("token")) {
         this.$router.push("/" + this.jkl + "/cancel");
       } else {
@@ -286,6 +288,8 @@ export default {
       }
     },
     linkman() {
+      this.toast('功能暂不开放')
+      return
       if ($cookies.get("token")) {
         this.$router.push("/" + this.jkl + "/linkman");
       } else {
@@ -302,6 +306,11 @@ export default {
     if ($cookies.get("have")) {
       this.cardnum = 1;
     }
+    document.getElementById('foott').style.display = 'none'
+    
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
   },
 };
 </script>
@@ -309,7 +318,7 @@ export default {
 @import '@/static/css/hide.css';
 #home {
   background-color: #f7f7f7;
-  height: 100vh;
+  min-height: 100vh;
 }
 .top {
   padding: 0 4%;
@@ -317,19 +326,21 @@ export default {
   background: url(~assets/home1.png) no-repeat;
   background-size: 100%;
   .tops {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.4375rem;
   }
   .back {
     width: 1.25rem;
   }
   .set {
-    width: 1.25rem;
+    width: 1.5rem;
     float: right;
+    position: relative;
+    top: -0.125rem
   }
   .name {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.9375rem;
     img {
       width: 3.125rem;
       height: 3.125rem;
@@ -348,7 +359,7 @@ export default {
       .num {
         color: #115c31;
         font-size: 1.125rem;
-        margin-bottom: 0.375rem;
+        margin-bottom: 0.0625rem;
         text-align: center;
         font-weight: bold;
         position: relative;
@@ -376,8 +387,8 @@ export default {
   }
   .ll {
     width: 100%;
-    margin-top: 0.875rem;
-    height: 5.5rem;
+    margin-top: 0.8125rem;
+    height: 5.4375rem;
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
@@ -387,8 +398,11 @@ export default {
     li {
       width: 25%;
       text-align: center;
+      position: relative;
+      top: 0.125rem;
       img {
         width: 2rem;
+        margin-bottom: 0.0625rem;
       }
       p {
         color: #101214;
@@ -406,7 +420,7 @@ export default {
     // height: 9.375rem;
     background-color: #fff;
     border-radius: 0.75rem;
-    margin-bottom: 0.9375rem;
+    margin-bottom: 0.625rem;
     li {
       display: flex;
       align-items: center;
@@ -433,6 +447,23 @@ export default {
         margin-left: auto;
         height: 0.75rem;
       }
+    }
+    li:nth-last-of-type(1){
+      position: relative;
+      top: 0.0625rem;
+    }
+  }
+  .cll {
+    li {
+      a {
+        .pp {
+          width: 1.5rem;
+        }
+      }
+    }
+    li:nth-of-type(1){
+      position: relative;
+      top: -0.0625rem
     }
   }
 }
@@ -482,9 +513,8 @@ export default {
   color: #88a1ae;
   width: 100%;
   font-size: 0.75rem;
-  position: fixed;
-  bottom: 0;
   text-align: center;
+  margin-top: 2.25rem;
   p {
     margin-bottom: 0.625rem;
   }

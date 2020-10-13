@@ -511,7 +511,7 @@ header {
             font-size: 0.8125rem;
           }
           .pri {
-            color: #fe582f;
+            color:#FF5454;
             font-size: 0.625rem;
             i {
               font-style: normal;

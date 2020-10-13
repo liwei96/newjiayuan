@@ -19,14 +19,15 @@
       <div class="swiper-map">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <div :class="mapnum === 0 ? 'tegood active' : 'tegood'" @click="setmap(0, '地铁')">
-              地铁
+            <div :class="mapnum === 1 ? 'tegood active' : 'tegood'" @click="setmap(1, '公交')">
+              公交
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 1 ? 'tegood active' : 'tegood'" @click="setmap(1 ,'公交')">
-              公交
+            <div :class="mapnum === 0 ? 'tegood active' : 'tegood'" @click="setmap(0 ,'地铁')">
+              
+              地铁
               <i></i>
             </div>
           </div>
@@ -108,7 +109,6 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import topView from "@/components/header.vue";
 import tan from "@/components/tan.vue";
-import '@/static/css/foot.css'
 export default {
   components: {
     "top-view": topView,
@@ -159,8 +159,8 @@ export default {
   },
   data() {
     return {
-      mapname: "地铁",
-      mapnum: 0,
+      mapname: "公交",
+      mapnum: 1,
       isnull: false,
       show: false,
       id: 0,
@@ -281,6 +281,7 @@ export default {
     },
   },
   mounted() {
+    document.getElementById('foott').style.display = 'none'
     this.mmap();
     var swiper08 = new Swiper(".swiper-map", {
       slidesPerView: 5.5,
@@ -289,6 +290,9 @@ export default {
       slidesOffsetBefore: 14,
     });
   },
+  beforeDestroy(){
+    document.getElementById('foott').style.display = 'block'
+  }
 };
 </script>
 <style lang="less" scoped>

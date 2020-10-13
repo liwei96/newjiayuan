@@ -57,7 +57,7 @@
 </template>
 <script>
 import top from "@/components/header";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   components: {
     "top-view": top,
@@ -82,7 +82,11 @@ export default {
             },
           })
           .then((resp) => {
+            let arr = id.split(",");
             let data = resp.data;
+            let kk = [];
+            for (let val of arr) {
+            }
             // console.log(data)
             return data;
           }),
@@ -100,14 +104,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -124,9 +127,9 @@ export default {
       let that = this;
       if (this.result.length == 2) {
         let ids = this.result.join(",");
-        if(sessionStorage.getItem('pktype') == 1){
+        if (sessionStorage.getItem("pktype") == 1) {
           this.$router.push("/" + this.jkl + "/pkdetail/" + ids);
-        }else{
+        } else {
           this.$router.push("/" + this.jkl + "/leipk/" + ids);
         }
       } else {
@@ -146,6 +149,7 @@ export default {
   },
   watch: {
     result(val, old) {
+      console.log(val);
       if (val.length > old.length) {
         this.isadd = true;
         let that = this;
@@ -154,6 +158,18 @@ export default {
         }, 1000);
       }
     },
+  },
+  mounted() {
+    let arr = this.$route.params.id.split(",");
+    for (let val in arr) {
+      if (val < 2) {
+        this.result.push(parseInt(arr[val]));
+      }
+    }
+    document.getElementById("foott").style.display = "none";
+  },
+  beforeDestroy() {
+    document.getElementById("foott").style.display = "block";
   },
 };
 </script>
@@ -243,6 +259,7 @@ header {
 }
 .pks {
   /deep/.van-checkbox-group {
+    padding-bottom: 2.5rem;
     .van-swipe-cell {
       margin-bottom: 1.75rem;
       .van-checkbox {

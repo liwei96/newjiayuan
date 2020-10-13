@@ -2,7 +2,7 @@
   <div id="aritle">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo.png" alt />
+      <img class="logo" src="~/assets/logo1.png" alt />
       <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
       <ul class="cailist" v-if="list">
       <li class="cmn">
@@ -277,9 +277,10 @@ header {
   height: 2.75rem;
   z-index: 1;
   background-color: #fff;
+  border-bottom: 0.03125rem solid #F7F7F7;
   // position: relative;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
@@ -290,7 +291,7 @@ header {
     margin-right: 1rem;
   }
   .list {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-right: 4%;
   }
   .cailist {
@@ -344,8 +345,8 @@ header {
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.8125rem;
-    padding-top: 0.625rem;
-    margin-bottom: 1rem;
+    padding-top: 0.75rem;
+    margin-bottom: 0.5625rem;
   }
   .time {
     color: rgba(150, 151, 153, 1);
@@ -362,7 +363,7 @@ header {
   .pop {
     background: rgba(247, 247, 247, 1);
     border-radius: 0.25rem;
-    padding: 0.9375rem 0.875rem;
+    padding: 0.75rem 0.875rem 0.6875rem 0.875rem;
     color: rgba(98, 100, 102, 1);
     font-size: 0.875rem;
     line-height: 1.5rem;
@@ -393,7 +394,7 @@ header {
   }
   .project {
     margin: 0 4%;
-    height: 9.375rem;
+    height: 8.8rem;
     margin-top: 1.125rem;
     padding: 0.75rem;
     padding-bottom: 0;
@@ -443,6 +444,7 @@ header {
           margin-bottom: 0.2rem;
         }
         .icon {
+          margin-bottom: 1rem;
           span {
             color: #7d7f80;
             font-size: 0.75rem;

@@ -566,6 +566,7 @@ li {
   color: #5e6166;
   font-size: 14px;
   margin-bottom: 15px;
+  border-radius: 0.125rem;
 }
 
 .all {

@@ -224,6 +224,7 @@ export default {
       slidesOffsetBefore: 14,
     });
     window.addEventListener("scroll", this.getmore);
+    // document.getElementById('foott').style.display = 'none'
     // $(document).on("scroll", function () {
     //   var scrollTop = window.scrollY;
     //   var scrollHeight = window.screen.availHeight;
@@ -237,6 +238,7 @@ export default {
     // });
   },
   beforeDestroy() {
+    // document.getElementById('foott').style.display = 'block'
     window.removeEventListener("scroll", this.getmore);
   },
 };
@@ -248,7 +250,7 @@ li {
 .input {
   height: 2.5rem;
   padding: 0.25rem 4%;
-  padding-top: 3rem;
+  padding-top: 2.875rem;
   position: relative;
   input {
     border: 0;
@@ -285,10 +287,11 @@ li {
   }
 }
 .topimgs {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   .swiper-topimg {
     overflow: hidden;
     padding-bottom: 1.875rem;
+    margin-bottom: 0.4375rem;
     position: relative;
     .swiper-slide {
       position: relative;
@@ -317,11 +320,12 @@ li {
       }
     }
     .swiper-pagination {
+      bottom: 0.75rem;
       /deep/.swiper-pagination-bullet {
         width: 0.375rem;
         height: 0.125rem;
         border-radius: 0.0625rem;
-        background-color: #f0f0f2;
+        background-color: #cacacc;
       }
       /deep/.swiper-pagination-bullet-active {
         width: 0.75rem;
@@ -333,7 +337,7 @@ li {
 }
 .swiper-nav {
   overflow: hidden;
-  padding-bottom: 2.1875rem;
+  padding-bottom: 1.9375rem;
   .swiper-slide {
     color: #626466;
     font-size: 0.9375rem;
@@ -366,7 +370,7 @@ li {
       width: 14.0625rem;
       h5 {
         color: #303234;
-        font-size: 0.875rem;
+        font-size: 0.878rem;
         line-height: 1.25rem;
         font-weight: 400;
         height: 2.5rem;
@@ -374,6 +378,8 @@ li {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        position: relative;
+        top: -0.1875rem;
         span {
           padding: 0.0625rem 0.125rem;
           border-radius: 0.125rem;
@@ -388,7 +394,7 @@ li {
         color: #969899;
         font-size: 0.6875rem;
         position: absolute;
-        bottom: 0.25rem;
+        bottom: 0.625rem;
         span {
           margin-left: 0.25rem;
         }

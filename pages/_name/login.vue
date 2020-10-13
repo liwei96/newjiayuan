@@ -145,6 +145,12 @@ export default {
       this.$router.go(-1);
     },
   },
+  mounted() {
+    document.getElementById('foott').style.display = 'none'
+  },
+  beforeDestroy() {
+    document.getElementById('foott').style.display = 'block'
+  },
 };
 </script>
 <style lang="less" scoped>

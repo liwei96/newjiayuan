@@ -195,7 +195,7 @@ export default {
         width: 6.75rem;
         height: 5rem;
         border-radius: 0.1875rem;
-        margin-right: 0.37rem;
+        margin-right: 0.6rem;
         margin-bottom: 0.4rem;
       }
       img:nth-of-type(3n) {

@@ -21,7 +21,7 @@
           tooltip_position="top"
         />
       </div>
-      <p class="tit">您意向购买哪种户型？</p>
+      <p class="tit tit1">您意向购买哪种户型？</p>
       <div class="type">
         <span
           :class="huid==item.name?'active':''"
@@ -30,7 +30,7 @@
           @click="huid=item.name"
         >{{item.name}}</span>
       </div>
-      <p class="tit">您意向购买的区域是？</p>
+      <p class="tit tit1">您意向购买的区域是？</p>
       <div class="area" @click="show = true">
         <span>{{areaid}}</span>
         <img src="~/assets/j-more.png" alt />
@@ -298,7 +298,7 @@ export default {
 .topimg {
   width: 100%;
   height: 6.25rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.125rem;
   padding-top:2.75rem
 }
 .con {
@@ -306,11 +306,14 @@ export default {
   .tit {
     color: #333333;
     font-size: 1rem;
-    margin-bottom: 1.375rem;
+    margin-bottom: 1.4375rem;
+  }
+  .tit1 {
+    margin-bottom: 1.1875rem;
   }
   .sliderbox {
-    padding-top: 3rem;
-    margin-bottom: 2.25rem;
+    padding-top: 2.6875rem;
+    margin-bottom: 1.8125rem;
     position: relative;
     /deep/.slider.slider-horizontal {
       width: 21.5625rem;
@@ -338,12 +341,12 @@ export default {
       position: absolute;
       top: 0;
       width: 3.75rem;
-      height: 1.75rem;
+      height: 1.5rem;
       border-radius: 0.125rem;
       border: 0.03125rem solid #f5f5f5;
       box-shadow: 0.03125rem 0.09375rem 0.3125rem 0px rgba(0, 0, 0, 0.03);
       text-align: center;
-      line-height: 1.75rem;
+      line-height: 1.5rem;
       color: #30cb72;
       font-size: 0.9375rem;
       font-weight: bold;
@@ -356,7 +359,7 @@ export default {
     }
   }
   .type {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.3125rem;
     span {
       display: inline-block;
       width: 4.6875rem;
@@ -381,14 +384,14 @@ export default {
   }
   .area {
     width: 21.5625rem;
-    height: 2.5rem;
+    height: 2.375rem;
     border-radius: 0.375rem;
     border: 0.0625rem solid #ccc;
-    line-height: 2.5rem;
+    line-height: 2.375rem;
     color: #646566;
     font-size: 0.9375rem;
     background-color: #fafafa;
-    margin-bottom: 2.25rem;
+    margin-bottom: 2.125rem;
     img {
       width: 1rem;
       float: right;
@@ -400,14 +403,14 @@ export default {
     }
   }
   textarea {
-    height: 5.625rem;
+    height: 5.5rem;
     width: 21rem;
     border-radius: 0.375rem;
     border: 0.03125rem solid #ccc;
     background-color: #fafafa;
     padding-left: 0.625rem;
     padding-top: 0.625rem;
-    margin-bottom: 2.125rem;
+    margin-bottom: 2rem;
   }
   button {
     background: linear-gradient(270deg, #20c466, #3fd6a7);
@@ -419,7 +422,7 @@ export default {
     border: 0;
     color: #fff;
     font-size: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.875rem;
   }
 }
 /deep/.bomm {

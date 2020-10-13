@@ -14,12 +14,10 @@ li {
 }
 
 .select-list .qu_active {
-    color: #4DB5FF !important;
+    color: #2AC66D !important;
 }
 
-.select-list .qu_active {
-    color: #4DB5FF !important;
-}
+
 
 .sou_box h4 {
     font-size: 14px;
@@ -44,7 +42,7 @@ li {
 }
 
 .sou_box h4 span {
-    color: #FE582F;
+    color: #FF5454;
 }
 
 .sou_input_box {
@@ -268,16 +266,16 @@ li {
     outline: none;
 }
 .huxing_top li input[type="checkbox"]:checked {
-    background: url(/static/img/checkbox_icon.6be756d.png) no-repeat center;
+    background: url(~assets/checkbox_icon.png) no-repeat center;
     background-size: 90%;
 }
 
 .huxing_list .huxing_btn,
 .shaixuan_list .huxing_btn {
     height: 60px;
-    width: 100%;
+    /* width: 100%; */
     box-shadow: 0px -3px 5px 1px rgba(0, 0, 0, 0.03);
-    padding: 0 20px 0 20px;
+    /* padding: 0 20px 0 20px; */
     display: flex;
     ;
     justify-content: space-around;
@@ -296,8 +294,8 @@ li {
     font-size: 15px;
     text-align: center;
     line-height: 40px;
-    border-radius: 20px;
-    background:linear-gradient(270deg,rgba(102,207,255,1),rgba(76,181,255,1));
+    border-radius: 0.25rem;
+    background:#2AC66D;
     color: #fff;
 }
 
@@ -331,7 +329,7 @@ li {
 
 .hua .active {
     color: #fff !important;
-    background-color: #4DB5FF!important;
+    background-color:#2AC66D!important;
 }
 
 .shaixuan_list h2 {
@@ -415,7 +413,7 @@ li {
 }
 
 .number p span {
-    color: #FE582F;
+    color: #FF5454;
 }
 
 /* 项目列表*/

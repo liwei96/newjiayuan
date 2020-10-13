@@ -5,9 +5,14 @@
 <script>
 import { index_start } from "~/api/api";
 export default {
-  // asyncData({ redirect }) {
-  //   redirect('/hangzhou')
-  // },
+  async asyncData(context) {
+    let other = context.query.other;
+    let kid = context.query.kid;
+    return {
+      kid: kid,
+      other: other,
+    };
+  },
   head() {
     return {
       title: "杭州房产网_杭州买房新房_杭州新开楼盘-允家新房",
@@ -28,6 +33,8 @@ export default {
     start_data() {
           let ll = [];
           let ip = ip_arr["ip"];
+          $cookies.set('kid',this.kid)
+          $cookies.set('other',this.other)
           // let ip = returnCitySN["cip"];
           index_start({ ip: ip, city: 0 }).then(resp => {
             ll = resp.data.city;
@@ -37,7 +44,6 @@ export default {
             $cookies.set("city", citys, 0);
             $cookies.set("pinyin", pinyins, 0);
             $cookies.set('ip',ip,0)
-            console.log(resp)
             window.location.href = "/" + pinyins;
           });
     },

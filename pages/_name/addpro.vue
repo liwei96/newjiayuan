@@ -22,7 +22,7 @@
                   <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
                 </p>
               </div>
-              <img class="newimg" v-if="key==0" src="~/assets/new-view.png" alt="">
+              <img class="newimg" v-if="key==0&too" src="~/assets/new-view.png" alt="">
             </div>
           </van-checkbox>
         </template>
@@ -91,6 +91,7 @@ export default {
       result: [],
       isadd: false,
       list: [],
+      too:true
     };
   },
   head() {
@@ -121,9 +122,10 @@ export default {
         let kk = [];
         for (let val of k) {
           if (kk.indexOf(String(val)) == -1) {
-            kk.push(val);
+            kk.unshift(val);
           }
         }
+        kk = kk.slice(0,4)
         ids = kk.join(",");
         $cookies.set("ids", ids);
       } else {
@@ -144,6 +146,13 @@ export default {
       }
     },
   },
+  mounted(){
+    if($cookies.get('token')){
+      this.too = true
+    }else{
+      this.too = false
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

@@ -2,7 +2,7 @@
   <div id="aritle">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo.png" alt />
+      <img class="logo" src="~/assets/logo1.png" alt />
       <img src="~/assets/mapcai.png" alt class="list" @click="btn" />
       <ul class="cailist" v-if="list">
         <li class="cmn">
@@ -54,6 +54,37 @@
         标签：
         <span v-for="(item, key) in article.tags" :key="key">{{ item }}</span>
       </div>
+      <div class="project" v-if="project.length!=0">
+        <nuxt-link :to="'/'+this.jkl+'/content/'+project.id">
+        <div class="ject-top">
+          <div class="top-left">
+            <img :src="project.img" alt />
+          </div>
+          <div class="top-right">
+            <h4>
+              {{project.name}}
+              <span>{{project.state}}</span>
+            </h4>
+            <p class="pri">
+              <span>{{project.price}}</span>元/m²
+            </p>
+            <p
+              class="typemsg"
+            >{{project.type}} | {{project.city}}-{{project.country?project.country.substr(0,2):project.country}} | {{project.area}}m²</p>
+            <p class="icon">
+              <span class="zu">{{project.decorate}}</span>
+              <span v-for="(item,key) in project.features" :key="key">{{item}}</span>
+            </p>
+          </div>
+        </div>
+        </nuxt-link>
+        <div class="bom">
+          <a :href="'tel:'+phone">
+            <button>电话咨询</button>
+          </a>
+          <button class="wen" @click="pop('咨询服务', 104, '详情页+咨询服务')">在线问</button>
+        </div>
+      </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
         {{ article.source_type }}
@@ -89,12 +120,30 @@
         </template>
       </div>
     </div>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import { infolike } from "@/api/api";
+import tan from "@/components/tan.vue";
 import "@/static/css/foot.css";
 export default {
+  components: {
+    'tan-view':tan
+  },
   async asyncData(context) {
     let other = context.store.state.cookie.other;
     let city = context.store.state.city;
@@ -121,6 +170,8 @@ export default {
       jkl: jkl,
       article: res.article,
       others: res.others,
+      project: res.project_info,
+      phone: res.common.phone,
     };
   },
   head() {
@@ -144,6 +195,12 @@ export default {
       others: [],
       list: false,
       img: "",
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
+      id:'0',
       img1: require("~/assets/noclick.png"),
       img2: require("~/assets/checked.png"),
     };
@@ -158,6 +215,14 @@ export default {
       } else {
         this.list = true;
       }
+    },
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+      this.id = this.project.id
     },
     like() {
       let token = $cookies.get("token");
@@ -209,9 +274,10 @@ header {
   height: 2.75rem;
   z-index: 1;
   background-color: #fff;
+  border-bottom: 0.03125rem solid #F7F7F7;
   // position: relative;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
@@ -222,7 +288,7 @@ header {
     margin-right: 1rem;
   }
   .list {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-right: 4%;
   }
   .cailist {
@@ -321,6 +387,97 @@ header {
     span {
       color: rgba(150, 151, 153, 1);
       margin-right: 0.6875rem;
+    }
+  }
+  .project {
+    margin: 0 4%;
+    height: 8.8rem;
+    margin-top: 1.125rem;
+    padding: 0.75rem;
+    padding-bottom: 0;
+    box-shadow: 0px 0px 1.1875rem 0.09375rem rgba(0, 0, 0, 0.03);
+    border-radius: 0.25rem;
+    margin-bottom: 1.25rem;
+    .ject-top {
+      display: flex;
+      .top-left {
+        img {
+          width: 6.875rem;
+          height: 5rem;
+          border-radius: 0.1875rem;
+          margin-right: 0.625rem;
+        }
+      }
+      .top-right {
+        flex: 1;
+        h4 {
+          color: #474a4e;
+          font-size: 0.9375rem;
+          margin-bottom: 0.3rem;
+          span {
+            float: right;
+            display: block;
+            width: 2.25rem;
+            height: 1.0625rem;
+            border-radius: 0.125rem;
+            background-color: #e9f7ea;
+            text-align: center;
+            line-height: 1.0625rem;
+            color: #20c658;
+            font-size: 0.6875rem;
+          }
+        }
+        .pri {
+          color: #ff5454;
+          font-size: 0.75rem;
+          margin-bottom: 0.2rem;
+          span {
+            font-size: 0.875rem;
+          }
+        }
+        .typemsg {
+          color: #7d7f80;
+          font-size: 0.75rem;
+          margin-bottom: 0.2rem;
+        }
+        .icon {
+          margin:0;
+          margin-bottom: 1rem;
+          span {
+            color: #7d7f80;
+            font-size: 0.75rem;
+            padding: 0.1875rem 0.3125rem;
+            background-color: #f5f5f5;
+            border-radius: 0.125rem;
+            margin-right: 0.375rem;
+          }
+          .zu {
+            background-color: #f1f6f9;
+            color: #4aabf2;
+          }
+        }
+      }
+    }
+    .bom {
+      text-align: right;
+      button {
+        width: 4.375rem;
+        height: 1.5rem;
+        border-radius: 0.25rem;
+        background: linear-gradient(270deg, #348aff, #6acdff);
+        box-shadow: 0.03125rem 0.15625rem 0.3125rem 0px rgba(78, 170, 255, 0.2);
+        text-align: center;
+        line-height: 1.5rem;
+        color: #fff;
+        border: 0;
+        font-size: 0.75rem;
+        color: #fff;
+      }
+      .wen {
+        background: linear-gradient(270deg, #20c466, #3fd6a7);
+        box-shadow: 0.03125rem 0.15625rem 0.3125rem 0px rgba(44, 204, 128, 0.2);
+        margin-left: 0.75rem;
+      }
     }
   }
   .icon {

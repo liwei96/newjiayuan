@@ -9,7 +9,7 @@
     <div class="con" v-if="!isnull">
       <h3><img src="~/assets/search-hot.png">最近热搜</h3>
       <template v-for="(item,key) in recommends">
-        <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key">
+        <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key" v-if="key<4">
           <div class="pro">
             <div class="left">
               <h5>{{item.title}}</h5>
@@ -141,10 +141,12 @@ export default {
     },
   },
   mounted() {
+    document.getElementById('foott').style.display = 'none'
     window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.getmore);
+    document.getElementById('foott').style.display = 'block'
   },
   watch: {
     name(val) {
@@ -207,11 +209,11 @@ li {
 }
 .con {
   padding: 0 4%;
-  margin-top: 2.5rem;
+  margin-top: 2.125rem;
   h3 {
     color: #191919;
     font-size: 0.9375rem;
-    margin-bottom: 1.375rem;
+    margin-bottom: 1.7rem;
     font-weight: 400;
     img {
         width: 1.125rem;

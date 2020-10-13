@@ -103,6 +103,7 @@ export default {
       // }else{
       //   $cookies.set('time',kk)
       // }
+      let that = this
       let checks = this.checks;
       if (!checks) {
         this.toast("请勾选用户协议");
@@ -170,6 +171,9 @@ export default {
         }
         if (res.data.code == 500) {
           this.toast(res.data.msg || res.data.message);
+          setTimeout(()=>{
+            that.$emit("close", false);
+          },2000)
         }
       });
     },
@@ -285,7 +289,7 @@ export default {
       this.str = "精准匹配房源，免费接送一次看完好房";
     } else if (type == "获取详细分析报告") {
       this.str = "向允家咨询师免费领取分析报告,内附有购房流程全盘解读";
-    } else if (type == "咨询户型底价") {
+    } else if (type == "咨询楼盘底价") {
       this.str = "好楼盘户型是关键，咨询户型底价，安安心心买房";
     } else if (type == "咨询服务") {
       this.str = "立即报名，专业人员为你解惑!";
@@ -295,6 +299,10 @@ export default {
       this.str = "立即报名，专业人员为你解惑!";
     } else if (type == "免费咨询") {
       this.str = "立即报名，专业人员为你解惑!";
+    } else if (type == "咨询详细楼盘信息") {
+      this.str = "向家园咨询师免费领取楼盘资料,内附有购房流程全盘解读";
+    } else if (type == "免费专车看房") {
+      this.str = "免费专车看房，楼下接您随时出发，可带家人一起看楼盘";
     }
   },
   watch: {

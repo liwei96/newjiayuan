@@ -110,7 +110,7 @@
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
-          <button @click="pop('免费领取',95,'详情页+免费领取')">免费领取</button>
+          <button @click="pop('免费专车看房',95,'详情页+免费专车看房')">免费领取</button>
           <p>
             <span>{{ hui.receive_num }}人</span>已领取
           </p>
@@ -152,6 +152,7 @@
         </nuxt-link>
       </template>
     </div>
+    <div class="line"></div>
     <div class="other">
       <h3>看了该楼盘的还看了</h3>
       <template v-for="(item, key) in recommends">
@@ -414,8 +415,8 @@ header {
   h3 {
     color: #121212;
     font-size: 1.25rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.375rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.1875rem;
     span {
       color: #fff;
       font-size: 0.75rem;
@@ -429,14 +430,14 @@ header {
   .pri {
     color: #fe5830;
     font-size: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     span {
       font-size: 1rem;
     }
   }
   .msgli {
     display: flex;
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.3125rem;
     .left {
       color: #7d7f80;
       font-size: 0.8125rem;
@@ -458,6 +459,7 @@ header {
     display: flex;
     .path {
       width: 1rem;
+      height: 1rem;
       margin-right: 0.2rem;
       margin-bottom: -0.125rem;
     }
@@ -475,6 +477,7 @@ header {
     .more {
       float: right;
       width: 1rem;
+      height: 1rem;
     }
   }
   .btn {
@@ -504,15 +507,15 @@ header {
 }
 .ana {
   padding: 0 4%;
-  padding-bottom: 0.875rem;
+  padding-bottom: 0.125rem;
   h3 {
     color: #1f1f1f;
     font-size: 1rem;
-    margin-top: 1.25rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.875rem;
   }
   .xun-icon {
-    margin-bottom: 1.5625rem;
+    margin-bottom: 1.25rem;
     span {
       color: #8f8f8f;
       font-size: 0.8125rem;
@@ -527,7 +530,7 @@ header {
   .peo {
     display: flex;
     align-items: center;
-    padding-bottom: 1.25rem;
+    padding-bottom: 0.9375rem;
     border-bottom: 0.03125rem solid #f3f3f3;
     img {
       width: 2.5rem;
@@ -540,7 +543,7 @@ header {
         color: #1f1f1f;
         font-size: 1rem;
         font-weight: 400;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.375rem;
         span {
           padding: 0.125rem;
           font-size: 0.625rem;
@@ -574,8 +577,8 @@ header {
   h4 {
     color: #121212;
     font-size: 1.0625rem;
-    margin-top: 1.125rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.875rem;
   }
   .analy {
     color: #7d7f80;
@@ -585,7 +588,7 @@ header {
   }
 }
 .hui {
-  padding: 1.25rem 4%;
+  padding: 1.1875rem 4% 0.625rem 4%;
   h3 {
     color: #1f1f1f;
     font-size: 1.0625rem;
@@ -603,11 +606,11 @@ header {
   }
   .hui-con {
     width: 100%;
-    height: 4.375rem;
+    height: 4.6875rem;
     border-radius: 0.0625rem;
-    margin-top: 1.25rem;
-    background: url(~assets/b1.png) no-repeat;
+    background: url("~assets/b1.png") no-repeat;
     background-size: 100%;
+    margin-top: 1.0625rem;
     // display: flex;
     .hui-left {
       padding-left: 1rem;
@@ -616,16 +619,15 @@ header {
       h6 {
         color: #ff7519;
         font-size: 0.625rem;
-        margin-bottom: 0.4375rem;
+        margin-bottom: 0.125rem;
         span {
           font-size: 1.25rem;
           font-weight: bold;
         }
         i {
           font-style: normal;
-          color: #211c19;
+          color: #201b18;
           font-size: 0.625rem;
-          font-weight: 400;
         }
       }
       p {
@@ -634,7 +636,7 @@ header {
       }
     }
     .hui-right {
-      padding-top: 0.7rem;
+      padding-top: 0.6875rem;
       float: right;
       margin-right: 0.9375rem;
       button {
@@ -651,13 +653,14 @@ header {
       p {
         color: #ff7519;
         font-size: 0.75rem;
-        margin-top: 0.2rem;
+        margin-top: 0.1875rem;
       }
     }
   }
   .two {
     background: url("~assets/b2.png") no-repeat;
     background-size: 100%;
+    margin-top: 0.4375rem;
     .hui-left {
       h6 {
         font-size: 1rem;
@@ -682,7 +685,7 @@ header {
   h3 {
     color: #121212;
     font-size: 1.0625rem;
-    margin-top: 1.125rem;
+    margin-top: 1rem;
     margin-bottom: 1.25rem;
     padding: 0 4%;
   }
@@ -709,10 +712,12 @@ header {
         color: #323333;
         font-size: 1rem;
         font-weight: 400;
-        margin-bottom: 0.46rem;
+        margin-bottom: 0.1475rem;
+        position: relative;
+        top: -0.3125rem;
         span {
           float: right;
-          padding: 0.1875rem 0.375rem;
+          padding: 0rem 0.375rem 0.1rem 0.375rem;
           border-radius: 0.125rem;
           background-color: #2cd264;
           color: #fff;
@@ -740,17 +745,18 @@ header {
       }
     }
   }
-  .li:last-child {
+  a:last-child .li{
     border: 0;
+    margin-bottom: 0;
   }
 }
 .other {
   padding: 0 4%;
-  padding-bottom: 3.75rem;
   h3 {
     color: rgba(50, 51, 51, 1);
     font-size: 1rem;
     margin-bottom: 1.25rem;
+    padding-top: 1rem;
   }
   .pro {
     margin-bottom: 1.875rem;
@@ -786,13 +792,13 @@ header {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color: #FF5454;
           font-size: 0.9375rem;
           font-weight: bold;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color: #FF5454;
         }
       }
       .attr {

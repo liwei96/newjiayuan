@@ -24,8 +24,8 @@ export default {
     draw({ el, BMap, map }) {
       const { lng, lat } = this.position;
       const pixel = map.pointToOverlayPixel(new BMap.Point(lng, lat));
-      el.style.left = pixel.x - 62 + "px";
-      el.style.top = pixel.y - 22 + "px";
+      el.style.left = pixel.x - 68 + "px";
+      el.style.top = pixel.y - 18 + "px";
     },
   },
 };
@@ -53,5 +53,12 @@ export default {
   border-width: 0.5rem;
   border-style: solid dashed dashed dashed;
   border-color: #20c466 transparent transparent transparent;
+}
+.dv {
+  background: linear-gradient(270deg, #FF8D41, #FFAE2D)!important;
+  z-index: 2;
+}
+.dv::after {
+  border-color: rgb(255, 174, 45) transparent transparent transparent;
 }
 </style>

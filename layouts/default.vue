@@ -1,12 +1,14 @@
 <template>
   <div>
-    <Nuxt class="allbox"/>
-    <footer v-if="home">
+    <Nuxt class="allbox" />
+    <footer v-if="home" id="foott">
       <ul>
-        <li><nuxt-link :to="'/'+jkl+'/weike/before/56'">买房百科</nuxt-link></li>
-        <li><nuxt-link :to="'/'+jkl+'/infos/46'">房产资讯</nuxt-link></li>
-        <li><nuxt-link :to="'/'+jkl+'/join'">城市加盟</nuxt-link></li>
-        <li><nuxt-link :to="'/'+jkl+'/privacy'">隐私政策</nuxt-link></li>
+        <li>
+          <nuxt-link :to="'/' + jkl + '/weike/before/56'">买房百科</nuxt-link>
+        </li>
+        <li><nuxt-link :to="'/' + jkl + '/infos/46'">房产资讯</nuxt-link></li>
+        <li><nuxt-link :to="'/' + jkl + '/join'">城市加盟</nuxt-link></li>
+        <li><nuxt-link :to="'/' + jkl + '/privacy'">隐私政策</nuxt-link></li>
       </ul>
       <p>杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
       <p>
@@ -35,20 +37,29 @@ export default {
       ],
     };
   },
-  data(){
+  data() {
     return {
-      jkl:'',
-      home:true,
-      url:''
-    }
+      jkl: "",
+      home: true,
+      url: "",
+    };
   },
   mounted() {
-    this.jkl=this.$route.params.name
+    $cookies.set('uuid',this.$route.query.uuid)
+    this.$store.dispatch("setuuid", this.$route.query.uuid);
+    this.jkl = this.$route.params.name;
     // console.log(this.$route.path)
-    this.url = this.$route.path
+    this.url = this.$route.path;
     // if(this.$route.path.indexOf('home') !==-1){
     //   this.home = false
     // }
+    var _hmt = _hmt || [];
+    (function () {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?230bc6d42c4b990e03d4981911da5ffe";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
     resetrem();
     //切换屏幕 （横屏竖屏）
     window.addEventListener("orientationchange", resetrem);
@@ -61,13 +72,8 @@ export default {
       html.style.fontSize = width / 23.5 + "px";
     }
   },
-  watch:{
-    url(val){
-      console.log(val)
-    }
-  },
-  beforeRouteUpdate (to, from, next) {
-    console.log(to)
+  beforeRouteUpdate(to, from, next) {
+    console.log(to);
   },
 };
 </script>
@@ -79,6 +85,7 @@ export default {
 body,
 html {
   max-width: 33.75rem;
+  margin: 0 auto
 }
 .allbox {
   min-height: 100vh;
@@ -89,13 +96,13 @@ footer {
   color: #88a1ae;
   font-size: 0.75rem;
   margin-bottom: 50px;
-  z-index: 10000;
+  z-index: 1000;
   position: relative;
   ul {
     display: flex;
     justify-content: center;
-    padding-top: 1.125rem;
-    margin-bottom: 0.875rem;
+    padding-top: 0.9375rem;
+    margin-bottom: 0.75rem;
     li {
       margin-left: 1.5rem;
       a {

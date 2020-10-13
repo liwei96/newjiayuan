@@ -13,14 +13,15 @@
         <img src="~/assets/zixun.png" alt />
         <p></p>
       </div> -->
+      <nuxt-link :to="'/' + jkl + '/map'" class="map">
+        <span> <img src="~/assets/dian.png" />地图 </span>
+      </nuxt-link>
     </header>
     <div class="input">
       <nuxt-link :to="'/' + jkl + '/searchname'">
         <input type="text" placeholder="请输入楼盘名称" />
       </nuxt-link>
-      <nuxt-link :to="'/' + jkl + '/map'">
-        <span> <img src="~/assets/dian.png" />地图 </span>
-      </nuxt-link>
+
       <img src="~/assets/search.png" alt class="sea" />
     </div>
     <div class="nav">
@@ -169,7 +170,7 @@
                 v-for="(item, key) in areas"
                 :key="key"
                 :class="region == item.id ? 'active' : ''"
-                @click="region = item.id"
+                @click="mian(item.id)"
                 >{{ item.name }}</span
               >
             </p>
@@ -181,7 +182,7 @@
                 v-for="(item, key) in types"
                 :key="key"
                 :class="type1 == item.type ? 'active' : ''"
-                @click="type1 = item.type"
+                @click="leixing(item.type)"
                 >{{ item.type }}</span
               >
             </p>
@@ -235,10 +236,17 @@
       <div class="zhe" v-if="showtype" @click="cloase"></div>
     </div>
     <div class="icon">
-      <p @click="zhu">住宅</p>
-      <p @click="te">特价房</p>
-      <p @click="gang">刚需</p>
-      <p @click="jin">近地铁</p>
+      <p @click="zhu($event)" :class="type1 ? 'active' : ''">住宅</p>
+      <p @click="te($event)" :class="special_discount ? 'active' : ''">
+        特价房
+      </p>
+      <p
+        @click="gang($event)"
+        :class="feature.indexOf('3') != -1 ? 'active' : ''"
+      >
+        刚需
+      </p>
+      <p @click="jin($event)" :class="near_railway ? 'active' : ''">近地铁</p>
     </div>
     <div class="con">
       <template v-for="(item, key) in list">
@@ -248,7 +256,9 @@
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
-                <span>{{ item.state }}</span>
+                <span :class="item.state != '在售' ? 'active' : ''">{{
+                  item.state
+                }}</span>
               </h5>
               <p class="pro-price">
                 <span>{{ item.price }}</span>
@@ -354,6 +364,8 @@ export default {
     let ordernum = 0;
     let region = 0;
     let isnull = false;
+    let special_discount = "";
+    let near_railway = "";
     if (context.route.path.split("/").length == 4) {
       let arr = context.route.path.split("/")[3].split("+");
       for (let val of arr) {
@@ -402,6 +414,12 @@ export default {
           case "area":
             shai1 = 1;
             region = ll[1];
+            break;
+          case "special_discount":
+            special_discount = 1;
+            break;
+          case "near_railway":
+            near_railway = 1;
             break;
         }
         options[ll[0]] = ll[1];
@@ -487,6 +505,8 @@ export default {
       other: res2,
       isnull: isnull,
       cityname: res.common.city_info.current.short,
+      special_discount: special_discount,
+      near_railway: near_railway,
     };
   },
   head() {
@@ -533,6 +553,8 @@ export default {
       price: 0, //单价
       total: 0, //总价
       region: 0, //面积
+      special_discount: "",
+      near_railway: "",
     };
   },
   components: {
@@ -540,18 +562,18 @@ export default {
     Loading,
   },
   methods: {
-    setnull(){
-      this.unlimited(0,this.citys)
-      this.unlimited(1, this.ties)
+    setnull() {
+      this.unlimited(0, this.citys);
+      this.unlimited(1, this.ties);
     },
-    setnull1(){
-      this.price = 0
-      this.total = 0
+    setnull1() {
+      this.price = 0;
+      this.total = 0;
     },
-    setnull2(){
-      this.region = ''
-      this.type1 = ''
-      this.unlimited(2, this.features)
+    setnull2() {
+      this.region = "";
+      this.type1 = "";
+      this.unlimited(2, this.features);
     },
     back() {
       this.$router.push("/" + this.jkl);
@@ -647,8 +669,10 @@ export default {
       var scrollTop = window.scrollY;
       if (scrollTop >= 44) {
         $(".nav").css({ position: "fixed", top: "2.75rem" });
+        $(".icon").css({ marginTop: "47.86px" });
       } else {
         $(".nav").css({ position: "relative", top: "0" });
+        $(".icon").css({ marginTop: "0" });
       }
       var scrollHeight = window.screen.availHeight;
       var windowHeight = document.body.scrollHeight;
@@ -686,6 +710,12 @@ export default {
           }
           if (that.feature.length != 0) {
             d.feature = that.feature.join(",");
+          }
+          if (that.special_discount) {
+            d.special_discount = that.special_discount;
+          }
+          if (that.near_railway) {
+            d.near_railway = that.near_railway;
           }
           pros(d).then((res) => {
             that.list = that.list.concat(res.data.info);
@@ -748,6 +778,8 @@ export default {
       } else {
         $cookies.set("type", {});
       }
+      if (this.type1) {
+      }
     },
     set(arr, id, key, type) {
       let that = this;
@@ -778,11 +810,25 @@ export default {
       }
     },
     pu(arr, id) {
-      if (arr.indexOf(id) == -1) {
-        arr.push(id);
+      if (typeof id == String) {
+        if (arr.indexOf(String(id)) == -1) {
+          arr.push(id);
+        } else {
+          arr.splice(arr.indexOf(String(id)), 1);
+        }
       } else {
-        arr.splice(arr.indexOf(id), 1);
+        if (arr.indexOf(parseInt(id)) == -1) {
+          arr.push(id);
+        } else {
+          arr.splice(arr.indexOf(String(id)), 1);
+        }
       }
+      // if (arr.indexOf(String(id)) == -1) {
+      //   arr.push(id);
+      // } else {
+      //   arr.splice(arr.indexOf(String(id)), 1);
+      // }
+      console.log(arr);
       return arr;
     },
     unlimited(id, arr) {
@@ -862,6 +908,7 @@ export default {
       let arr = url.split("/");
       arr[3] = str;
       url = arr.join("/");
+      this.cloase();
       this.$router.push(url);
     },
     clearall() {
@@ -869,12 +916,18 @@ export default {
       let that = this;
       this.$router.push("/" + that.jkl + "/search");
     },
-    zhu() {
+    zhu(e) {
+      let tar = e.currentTarget;
       let type = $cookies.get("type");
       if (!type) {
         type = {};
       }
-      type.type = "住宅";
+      if (tar.className) {
+        delete type.type;
+      } else {
+        tar.className = "active";
+        type.type = "住宅";
+      }
       $cookies.set("type", type);
       let url = this.$route.path;
       let str = "";
@@ -887,12 +940,18 @@ export default {
       url = arr.join("/");
       this.$router.push(url);
     },
-    te() {
+    te(e) {
+      let tar = e.currentTarget;
       let type = $cookies.get("type");
       if (!type) {
         type = {};
       }
-      type.special_discount = 1;
+      if (tar.className) {
+        delete type.special_discount;
+      } else {
+        tar.className = "active";
+        type.special_discount = 1;
+      }
       $cookies.set("type", type);
       let url = this.$route.path;
       let str = "";
@@ -905,12 +964,24 @@ export default {
       url = arr.join("/");
       this.$router.push(url);
     },
-    gang() {
+    gang(e) {
       let type = $cookies.get("type");
       if (!type) {
         type = {};
       }
-      type.feature = 3;
+      let tar = e.currentTarget;
+      if (tar.className) {
+        this.feature.splice(this.feature.indexOf(3), 1);
+        if (this.feature.length) {
+          type.feature = this.feature.join(",");
+        } else {
+          delete type.feature;
+        }
+      } else {
+        tar.className = "active";
+        this.feature.push(3);
+        type.feature = this.feature.join(",");
+      }
       $cookies.set("type", type);
       let url = this.$route.path;
       let str = "";
@@ -923,12 +994,18 @@ export default {
       url = arr.join("/");
       this.$router.push(url);
     },
-    jin() {
+    jin(e) {
       let type = $cookies.get("type");
       if (!type) {
         type = {};
       }
-      type.near_railway = 1;
+      let tar = e.currentTarget;
+      if (tar.className) {
+        delete type.near_railway;
+      } else {
+        tar.className = "active";
+        type.near_railway = 1;
+      }
       $cookies.set("type", type);
       let url = this.$route.path;
       let str = "";
@@ -948,9 +1025,24 @@ export default {
       window.location.href =
         "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
     },
+    leixing(type) {
+      if (this.type1 == type) {
+        this.type1 = "";
+      } else {
+        this.type1 = type;
+      }
+    },
+    mian(id) {
+      if (this.region == id) {
+        this.region = "";
+      } else {
+        this.region = id;
+      }
+    },
   },
   mounted() {
     this.start();
+    console.log(this.types);
     let url = window.location.href;
     let newurl = url.split("?")[0];
     let id = this.$route.params.id;
@@ -1007,7 +1099,7 @@ header {
   background-color: #fff;
   // position: relative;
   .back {
-    width: 1.25rem;
+    width: 1.5rem;
     margin-left: 1rem;
   }
   .logo {
@@ -1055,6 +1147,20 @@ header {
       top: 0.125rem;
     }
   }
+  .map {
+    right: 3.875rem;
+  }
+  span {
+    color: #333334;
+    font-size: 0.875rem;
+    position: absolute;
+    width: 5rem;
+    img {
+      width: 0.875rem;
+      margin-right: 0.25rem;
+      margin-bottom: -0.125rem;
+    }
+  }
 }
 .input {
   height: 2.5rem;
@@ -1062,7 +1168,8 @@ header {
   position: relative;
   margin-top: 2.75rem;
   input {
-    width: 17.8125rem;
+    width: 100%;
+    // width: 17.8125rem;
     height: 2rem;
     border-radius: 0.25rem;
     background-color: #f5f5f5;
@@ -1097,7 +1204,8 @@ header {
     position: absolute;
     width: 1rem;
     top: 0.7rem;
-    left: 5.3rem;
+    left: 7.5rem;
+    // left: 5.3rem;
   }
 }
 .nav {
@@ -1107,6 +1215,7 @@ header {
   width: 92%;
   background-color: #fff;
   z-index: 1000;
+  border-bottom: 0.03125rem solid #f7f7f7;
   .nn {
     display: flex;
     li {
@@ -1454,15 +1563,19 @@ header {
   padding: 0.6875rem 4%;
   display: flex;
   p {
-    background-color: #fff7f2;
+    background-color: #f5f5f5;
     height: 1.75rem;
     width: 5rem;
     border-radius: 0.875rem;
     text-align: center;
     line-height: 1.75rem;
-    color: #ff761a;
+    color: #969799;
     font-size: 0.75rem;
     margin-right: 0.5rem;
+  }
+  .active {
+    background-color: #fff7f2;
+    color: #ff761a;
   }
   p:nth-of-type(4) {
     margin: 0;
@@ -1499,19 +1612,23 @@ header {
           border-radius: 0.125rem;
           font-weight: 400;
         }
+        .active {
+          background-color: #fff7f2;
+          color: #ff761a;
+        }
       }
       .pro-price {
         color: #7a7a7a;
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #fe582f;
+          color: #ff5454;
           font-size: 0.9375rem;
           font-weight: bold;
         }
         i {
           font-style: normal;
-          color: #fe582f;
+          color: #ff5454;
         }
       }
       .attr {
@@ -1614,18 +1731,22 @@ header {
             border-radius: 0.125rem;
             font-weight: 400;
           }
+          .active {
+            background-color: #fff7f2;
+            color: #ff761a;
+          }
         }
         .pro-price {
           color: #7a7a7a;
           font-size: 0.75rem;
           margin-bottom: 0.1875rem;
           span {
-            color: #fe582f;
+            color: #ff5454;
             font-size: 0.9375rem;
           }
           i {
             font-style: normal;
-            color: #fe582f;
+            color: #ff5454;
           }
         }
         .attr {

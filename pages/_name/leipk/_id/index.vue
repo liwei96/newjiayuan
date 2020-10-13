@@ -425,9 +425,15 @@ export default {
   .top {
     display: flex;
     padding: 0 4%;
+    width: 92%;
     align-items: center;
     padding-bottom: 1.125rem;
     border-bottom: 0.03125rem solid #f2f2f2;
+    position: fixed;
+    background-color: #fff;
+    z-index: 1;
+    padding-top: 1.25rem;
+    top:2.77125rem;
     .center {
       width: 7.5rem;
       height: 10.8rem;
@@ -504,6 +510,7 @@ export default {
   .lei {
     padding: 0 4%;
     margin-bottom: 2.25rem;
+    margin-top: 11.875rem;
     #leiecharts {
       margin-top: 1.25rem;
       width: 100%;
@@ -601,7 +608,6 @@ export default {
   }
   .other {
     padding: 0 4%;
-    padding-bottom: 3.75rem;
     h3 {
       color: rgba(50, 51, 51, 1);
       font-size: 1rem;
@@ -641,12 +647,12 @@ export default {
           font-size: 0.75rem;
           margin-bottom: 0.1875rem;
           span {
-            color: #fe582f;
+            color: #FF5454;
             font-size: 0.9375rem;
           }
           i {
             font-style: normal;
-            color: #fe582f;
+            color: #FF5454;
           }
         }
         .attr {
