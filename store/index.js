@@ -47,7 +47,7 @@ const store = () => new Vuex.Store({
       state.cookie = payload.cookie
     },
     setuuid(state,id){
-      state.uuid = id
+      state.cookie.uuid = id
     }
   },
   actions: {
@@ -69,24 +69,9 @@ const store = () => new Vuex.Store({
           'cookie': obj
         })
       }
-      console.log(app.store.state.uuid)
-      // if (!app.store.state.cookie.uuid) {
-      //   var timestamp = Date.parse(new Date());
-      //   var $chars =
-      //     "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-      //   var maxPos = $chars.length;
-      //   var pwd = "";
-      //   let i = 0;
-      //   for (i = 0; i < 12; i++) {
-      //     pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-      //   }
-      //   timestamp = pwd + timestamp;
-      //   req.headers.cookie = req.headers.cookie + '; uuid=' + timestamp
-      //   // console.log(timestamp)
-      //   commit('setuuid', {
-      //     id: timestamp
-      //   })
-      //   // console.log(app.store.state.cookie.uuid)
+      // if (app.store.state.cookie.uuid) {
+        
+      //   commit('setuuid', app.store.state.cookie.uuid)
       // }
       let name = req.url.split('/')[1]
       switch (name) {

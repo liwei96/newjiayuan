@@ -320,6 +320,7 @@ export default {
       this.typebtn = 1;
       this.tan = true;
       this.remark = "户型页+预约看房+"+this.now.title;
+      this.id = String(this.now.bid)
     },
     cli(e) {
       this.tan = e;
@@ -330,6 +331,7 @@ export default {
       this.typenum = position
       this.tan = true
       this.remark=txt+'+'+this.now.title
+      this.id = String(this.now.bid)
     },
     big(url){
       let arr = [url]

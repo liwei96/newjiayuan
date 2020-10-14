@@ -97,10 +97,22 @@ export default ({
         store.state.city = 181
         break;
     }
+
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
-      if (store.state.uuid) {
-        var timestamp = store.state.uuid
+      if (store.state.cookie.uuid || from.query.uuid) {
+        var timestamp = store.state.uuid || from.query.uuid
+      } else if (app.context.req) {
+        let cookie = app.context.req.headers.cookie;
+        if (cookie) {
+          let cookieArr = cookie.split(";");
+          let obj = {}
+          cookieArr.forEach((i) => {
+            let arr = i.split("=");
+            obj[arr[0].trim()] = arr[1];
+          });
+          var timestamp = obj.uuid
+        }
       } else {
         var timestamp = Date.parse(new Date());
         var $chars =

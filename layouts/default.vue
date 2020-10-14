@@ -45,14 +45,21 @@ export default {
     };
   },
   mounted() {
-    $cookies.set('uuid',this.$route.query.uuid)
-    this.$store.dispatch("setuuid", this.$route.query.uuid);
+    if(localStorage.getItem('uuid')){
+      $cookies.set('uuid',localStorage.getItem('uuid'))
+      this.$store.dispatch("setuuid", localStorage.getItem('uuid'));
+    }else{
+      $cookies.set('uuid',this.$route.query.uuid)
+      this.$store.dispatch("setuuid", this.$route.query.uuid);
+      localStorage.setItem('uuid',this.$route.query.uuid)
+    }
+    
     this.jkl = this.$route.params.name;
     // console.log(this.$route.path)
     this.url = this.$route.path;
     // if(this.$route.path.indexOf('home') !==-1){
     //   this.home = false
-    // }
+    // } ?uuid=mFycFkMNE5by1602557156000
     var _hmt = _hmt || [];
     (function () {
       var hm = document.createElement("script");
@@ -65,7 +72,6 @@ export default {
     window.addEventListener("orientationchange", resetrem);
     //resize：屏幕的大小发生改变就触发监听事件resetrem
     window.addEventListener("resize", resetrem);
-
     function resetrem() {
       var html = document.querySelector("html"); //获取到html元素
       var width = html.getBoundingClientRect().width; //获取屏幕的宽度
