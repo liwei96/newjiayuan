@@ -441,7 +441,7 @@ export default {
       position: absolute;
       top: 9.125rem;
       left: 50%;
-      margin-left: -90px;
+      margin-left: -5.625rem;
     }
     .ti {
       width: 12.5rem;
