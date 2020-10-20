@@ -18,7 +18,9 @@
       </nuxt-link>
     </header>
     <div class="topnav">
-      <img src="~/assets/banner.png" alt class="topimg" />
+      <!-- <img src="~/assets/banner.png" alt class="topimg"/> -->
+      <img src="~/assets/banner.png" alt class="topimg" v-if="city !=1 && city!=3"/>
+      <img src="~/assets/index-luck.jpg" alt class="topimg" v-if="city ==1 || city==3" @click="goluck"/>
       <ul>
         <li>
           <nuxt-link :to="'/' + jkl + '/search'">
@@ -316,6 +318,7 @@ export default {
       dynamics: res.dynamics,
       jkl: jkl,
       cityname: res.common.city_info.current.short,
+      city:city
     };
   },
   head() {
@@ -353,6 +356,9 @@ export default {
     goadd() {
       this.$router.push("/" + this.jkl + "/address");
     },
+    goluck(){
+      this.$router.push('/'+this.jkl+'/lucky')
+    }
   },
   mounted() {
     // this.cityname = $cookies.get('cityname')

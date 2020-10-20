@@ -44,7 +44,14 @@ export default {
             $cookies.set("city", citys, 0);
             $cookies.set("pinyin", pinyins, 0);
             $cookies.set('ip',ip,0)
-            window.location.href = "/" + pinyins;
+            let uuid = this.$route.query.uuid
+            if(uuid){
+              window.location.href = "/" + pinyins+'?uuid='+uuid;
+              localStorage.setItem('uuid',uuid)
+            }else{
+              window.location.href = "/" + pinyins;
+            }
+            
           });
     },
   },

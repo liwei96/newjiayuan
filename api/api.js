@@ -1,19 +1,34 @@
 import axios from 'axios'
 
 axios.defaults.withCredentials = true;
-
-axios.interceptors.response.use(
-  response => {
-    return response
-  },
-  error => {
-    console.log(error.response.status)
+axios.interceptors.request.use(function (config) {
+  // 处理请求之前的配置
+  if(config.method == 'get'){
+    config.params.uuid = $cookies.get('uuid')
+  }else{
+    if(config.data){
+      config.data.uuid = $cookies.get('uuid')
+    }else{
+      config.params.uuid = $cookies.get('uuid')
+    }
   }
-);
+  return config
+}, function (error) {
+  // 请求失败的处理
+  return Promise.reject(error)
+})
+
 export const aritles = (msg) => {
   return axios.request({
     method: 'get',
     url: '/jy/article/info',
+    params: msg
+  })
+}
+export const luck = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/jy/prize/draw',
     params: msg
   })
 }

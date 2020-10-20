@@ -69,6 +69,9 @@ export default {
     proname: {
       type: String,
     },
+    lucktype: {
+      type: Number,
+    },
   },
   data() {
     return {
@@ -103,7 +106,7 @@ export default {
       // }else{
       //   $cookies.set('time',kk)
       // }
-      let that = this
+      let that = this;
       let checks = this.checks;
       if (!checks) {
         this.toast("请勾选用户协议");
@@ -171,9 +174,9 @@ export default {
         }
         if (res.data.code == 500) {
           this.toast(res.data.msg || res.data.message);
-          setTimeout(()=>{
+          setTimeout(() => {
             that.$emit("close", false);
-          },2000)
+          }, 2000);
         }
       });
     },
@@ -198,6 +201,7 @@ export default {
       }
       let ma = this.ma;
       let ip = ip_arr["ip"];
+      let that = this;
       check({ phone: phone, code: ma, source: 2, ip: ip })
         .then((res) => {
           console.log(res);
@@ -205,12 +209,20 @@ export default {
             if (this.proname) {
               if (this.proname.indexOf("恒大") == -1) {
                 this.toast("提交成功");
-                if (!$cookies.get("token")) {
+                if (that.lucktype == 1) {
                   $cookies.set("token", res.data.token, 21600);
                   $cookies.set("phone", phone, 21600);
                   let tel = phone.substr(0, 3) + "****" + phone.substr(8);
                   $cookies.set("username", tel);
                   this.$store.dispatch("setoken", res.data.token);
+                } else {
+                  if (!$cookies.get("token")) {
+                    $cookies.set("token", res.data.token, 21600);
+                    $cookies.set("phone", phone, 21600);
+                    let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+                    $cookies.set("username", tel);
+                    this.$store.dispatch("setoken", res.data.token);
+                  }
                 }
                 this.type = false;
                 this.$emit("close", false);
@@ -219,12 +231,20 @@ export default {
               }
             } else {
               this.toast("提交成功");
-              if (!$cookies.get("token")) {
+              if (that.lucktype == 1) {
                 $cookies.set("token", res.data.token, 21600);
                 $cookies.set("phone", phone, 21600);
                 let tel = phone.substr(0, 3) + "****" + phone.substr(8);
                 $cookies.set("username", tel);
                 this.$store.dispatch("setoken", res.data.token);
+              } else {
+                if (!$cookies.get("token")) {
+                  $cookies.set("token", res.data.token, 21600);
+                  $cookies.set("phone", phone, 21600);
+                  let tel = phone.substr(0, 3) + "****" + phone.substr(8);
+                  $cookies.set("username", tel);
+                  this.$store.dispatch("setoken", res.data.token);
+                }
               }
               this.type = false;
               this.$emit("close", false);

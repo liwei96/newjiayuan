@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { Button,Checkbox, CheckboxGroup, SwipeCell, Cell,Rate ,RadioGroup, Radio,DatetimePicker,Popup,NoticeBar,ImagePreview  } from 'vant';
+import { Button,Checkbox, CheckboxGroup, SwipeCell, Cell,Rate ,RadioGroup, Radio,DatetimePicker,Popup,NoticeBar,ImagePreview, Swipe, SwipeItem } from 'vant';
 
 Vue.use(Button);
 Vue.use(Checkbox);
@@ -13,3 +13,5 @@ Vue.use(DatetimePicker);
 Vue.use(Popup);
 Vue.use(NoticeBar);
 Vue.use(ImagePreview);
+Vue.use(Swipe);
+Vue.use(SwipeItem);

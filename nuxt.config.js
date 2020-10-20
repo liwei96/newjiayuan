@@ -45,6 +45,9 @@ export default {
       {
         src: '//ll.edefang.net/getIp.php'
       },
+      {
+        src: '/jQueryRotate.js'
+      },
     ]
   },
   /*
