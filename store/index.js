@@ -47,7 +47,7 @@ const store = () => new Vuex.Store({
       state.cookie = payload.cookie
     },
     setuuid(state,id){
-      state.uuid = id
+      state.cookie.uuid = id
     }
   },
   actions: {

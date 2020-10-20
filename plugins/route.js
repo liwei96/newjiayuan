@@ -99,8 +99,15 @@ export default ({
     }
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
-      if (store.state.uuid) {
-        var timestamp = store.state.uuid
+      if (store.state.cookie.uuid) {
+        var timestamp = store.state.cookie.uuid
+      } else if (from.query.uuid) {
+        toQuery.uuid = from.query.uuid;
+        store.state.uuid = from.query.uuid
+        next({
+          path: to.path,
+          query: toQuery
+        })
       } else {
         var timestamp = Date.parse(new Date());
         var $chars =

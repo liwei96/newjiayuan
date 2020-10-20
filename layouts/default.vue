@@ -45,10 +45,19 @@ export default {
     };
   },
   mounted() {
-    $cookies.set('uuid',this.$route.query.uuid)
-    this.$store.dispatch("setuuid", this.$route.query.uuid);
+    if (!localStorage.getItem("uuid")) {
+      if (this.$route.query.uuid) {
+        $cookies.set("uuid", this.$route.query.uuid);
+        this.$store.dispatch("setuuid", this.$route.query.uuid);
+        localStorage.setItem("uuid", this.$route.query.uuid);
+      }
+    } else {
+      let uuid = localStorage.getItem("uuid");
+      $cookies.set("uuid", uuid);
+      this.$store.dispatch("setuuid", uuid);
+    }
     this.jkl = this.$route.params.name;
-    // console.log(this.$route.path)
+    // console.log(this.$route.path) RPa7YGmBjxbX1602733863000
     this.url = this.$route.path;
     // if(this.$route.path.indexOf('home') !==-1){
     //   this.home = false
@@ -85,7 +94,7 @@ export default {
 body,
 html {
   max-width: 33.75rem;
-  margin: 0 auto
+  margin: 0 auto;
 }
 .allbox {
   min-height: 100vh;

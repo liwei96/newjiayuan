@@ -671,6 +671,9 @@
         </div>
       </div> -->
     </div>
+    <div class="luck" @click="goluck">
+      <img src="~/assets/content-luck.png" alt="">
+    </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
@@ -860,6 +863,9 @@ export default {
     };
   },
   methods: {
+    goluck(){
+      this.$router.push('/'+this.jkl+'/lucky')
+    },
     dianping() {
       let token = $cookies.get("token");
       if (token) {
@@ -1346,6 +1352,12 @@ export default {
     },
   },
   mounted() {
+    $('#content').on('touchstart',function(){
+      $('.luck').animate({right:'-1.75rem'})
+    })
+    $('#content').on('touchend',function(){
+      $('.luck').animate({right:'0.4375rem'})
+    })
     if(this.kidcode){
       $cookies.set('kid',this.kidcode)
       $cookies.set('other',this.othercode)
@@ -2775,6 +2787,15 @@ export default {
         }
       }
     }
+  }
+}
+.luck {
+  position: fixed;
+  right: 0.4375rem;
+  bottom: 7.5rem;
+  z-index: 1001;
+  img {
+    width: 4rem;
   }
 }
 .dian {
