@@ -672,7 +672,7 @@
       </div> -->
     </div>
     <div class="luck" @click="goluck">
-      <img src="~/assets/content-luck.png" alt="">
+      <img src="~/assets/content-luck.png" alt="" />
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
@@ -792,8 +792,8 @@ export default {
       count: res.count,
       collect: res.collect,
       cityname: res.common.city_info.current.short,
-      othercode:other,
-      kidcode:kid
+      othercode: other,
+      kidcode: kid,
     };
   },
   head() {
@@ -858,13 +858,13 @@ export default {
       heart: require("~/assets/home-heart.png"),
       hearted: require("~/assets/collected.png"),
       phonemsg: "",
-      kidcode:'',
-      othercode:''
+      kidcode: "",
+      othercode: "",
     };
   },
   methods: {
-    goluck(){
-      this.$router.push('/'+this.jkl+'/lucky')
+    goluck() {
+      this.$router.push("/" + this.jkl + "/lucky");
     },
     dianping() {
       let token = $cookies.get("token");
@@ -1261,7 +1261,7 @@ export default {
             kk.push(val);
           }
         }
-        kk = kk.slice(0,4)
+        kk = kk.slice(0, 4);
         arr = kk.join(",");
         $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + arr);
@@ -1283,7 +1283,7 @@ export default {
             kk.push(val);
           }
         }
-        kk = kk.slice(0,4)
+        kk = kk.slice(0, 4);
         arr = kk.join(",");
         $cookies.set("ids", arr);
         this.$router.push("/" + this.jkl + "/pk/" + arr);
@@ -1352,15 +1352,15 @@ export default {
     },
   },
   mounted() {
-    $('#content').on('touchstart',function(){
-      $('.luck').animate({right:'-1.75rem'})
-    })
-    $('#content').on('touchend',function(){
-      $('.luck').animate({right:'0.4375rem'})
-    })
-    if(this.kidcode){
-      $cookies.set('kid',this.kidcode)
-      $cookies.set('other',this.othercode)
+    $("#content").on("touchstart", function () {
+      $(".luck").animate({ right: "-1.75rem" });
+    });
+    $("#content").on("touchend", function () {
+      $(".luck").animate({ right: "0.4375rem" });
+    });
+    if (this.kidcode) {
+      $cookies.set("kid", this.kidcode);
+      $cookies.set("other", this.othercode);
     }
     if (this.phone.split(",").length == 2) {
       this.phonemsg =
@@ -1382,16 +1382,14 @@ export default {
       this.hour = Math.floor(Math.random() * 10) + 1;
       localStorage.setItem(this.$route.params.id, this.hour);
     }
-    if (localStorage.getItem(this.$route.params.id + "time")) {
-      this.time = localStorage.getItem(this.$route.params.id + "time");
-    } else {
-      var date1 = new Date();
-      var date2 = new Date(date1);
-      date2.setDate(date1.getDate() + 7);
-      var time2 = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
-      localStorage.setItem(this.$route.params.id + "time", time2);
-      this.time = time2;
-    }
+
+    var date1 = new Date();
+    var date2 = new Date(date1);
+    date2.setDate(date1.getDate() + 7);
+    var time2 = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
+    localStorage.setItem(this.$route.params.id + "time", time2);
+    this.time = time2;
+
     this.id = this.$route.params.id;
     let foot = $cookies.get("foot");
     let that = this;
