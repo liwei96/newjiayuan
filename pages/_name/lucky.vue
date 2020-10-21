@@ -439,7 +439,7 @@ export default {
     .dian {
       width: 11.25rem;
       position: absolute;
-      top: 9.125rem;
+      top: 9.25rem;
       left: 50%;
       margin-left: -5.625rem;
     }

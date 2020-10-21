@@ -671,12 +671,40 @@
         </div>
       </div> -->
     </div>
-    <div class="luck" @click="goluck">
+    <div :class="lucktypes?'luck':'luck lucked'" @click="goluck">
       <img src="~/assets/content-luck.png" alt="" />
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
+    </div>
+    <div class="talkbox" v-if="talktype">
+      <img src="~/assets/w-del.png" alt="" class="del">
+      <div class="peo">
+        <img src="~/assets/people.png" alt="">
+        <div class="right">
+          <h3>王烨城 <span>新房咨询</span></h3>
+          <p>从业咨询服务6年</p>
+        </div>
+      </div>
+      <div class="msg">
+        <div class="li">
+          <p class="num"><span>134</span>人</p>
+          <p class="txt">服务客户</p>
+        </div>
+        <div class="li">
+          <p class="num"><span>34</span>次</p>
+          <p class="txt">带看客户</p>
+        </div>
+        <div class="li">
+          <p class="num"><span>99</span>%</p>
+          <p class="txt">好评率</p>
+        </div>
+      </div>
+      <div class="btn">
+        <button>在线咨询</button>
+        <button>稍后咨询</button>
+      </div>
     </div>
     <van-popup
       v-model="tan"
@@ -813,6 +841,7 @@ export default {
   },
   data() {
     return {
+      talktype:false,
       time: "7月24日",
       count: {},
       tan: false,
@@ -860,9 +889,21 @@ export default {
       phonemsg: "",
       kidcode: "",
       othercode: "",
+      timer:'',
+      lucktypes:true
     };
   },
   methods: {
+    handleScroll(){
+      this.lucktypes = false
+      if (this.timer) { 
+        clearTimeout(this.timer)
+      }
+      let that = this
+      this.timer = setTimeout(() => { 
+        that.lucktypes = true
+      }, 800)
+    },
     goluck() {
       this.$router.push("/" + this.jkl + "/lucky");
     },
@@ -1352,12 +1393,32 @@ export default {
     },
   },
   mounted() {
-    $("#content").on("touchstart", function () {
-      $(".luck").animate({ right: "-1.75rem" });
-    });
-    $("#content").on("touchend", function () {
-      $(".luck").animate({ right: "0.4375rem" });
-    });
+    let that = this
+    window.addEventListener('scroll', this.handleScroll)
+    // this.lucktypes = false
+    // setTimeout(()=>{
+    //   that.lucktypes = true
+    // },9000)
+    // $(window).on("scroll", function () {
+    //   that.lucktypes = false
+    //   if (this.timer) { 
+    //     clearTimeout(this.timer)
+    //   }
+    //   this.timer = setTimeout(() => { 
+    //     this.transition = true
+    //     console.log(5555)
+    //   }, 1000)
+    // });
+    // $("#content").on("touchmove", function (event) {
+    //   var touch = event.targetTouches[0];
+    //   //手势滑动时，手势坐标不断变化，取最后一点的坐标为最终的终点坐标
+    //     endX = touch.pageX;
+    //     endY = touch.pageY;
+    // });
+    // $("#content").on("touchend", function () {
+    //   console.log(666)
+    //   $(".luck").animate({ right: "0.4375rem" });
+    // });
     if (this.kidcode) {
       $cookies.set("kid", this.kidcode);
       $cookies.set("other", this.othercode);
@@ -1392,7 +1453,6 @@ export default {
 
     this.id = this.$route.params.id;
     let foot = $cookies.get("foot");
-    let that = this;
     if (foot) {
       foot = foot + "," + that.id;
       foot = foot.split(",");
@@ -2792,9 +2852,13 @@ export default {
   right: 0.4375rem;
   bottom: 7.5rem;
   z-index: 1001;
+  transition: right 0.5s linear;
   img {
     width: 4rem;
   }
+}
+.lucked {
+  right: -1.75rem;
 }
 .dian {
   padding: 0 4%;
@@ -2978,5 +3042,97 @@ export default {
   position: absolute;
   top: 1rem;
   right: 1rem;
+}
+.talkbox {
+  position: fixed;
+  bottom: 0;
+  z-index: 3000;
+  height: 13.75rem;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0px 0px 0.5625rem 0px rgba(52, 71, 87, 0.24);
+  .del {
+    width: 1rem;
+    height: 1rem;
+    position: absolute;
+    top: 0.9375rem;
+    right: 0.9375rem;
+  }
+  .peo {
+    padding-top: 1.5625rem;
+    padding-left: 1.9375rem;
+    display: flex;
+    margin-bottom: 1.125rem;
+    img {
+      width: 3rem;
+      height: 3rem;
+      margin-right: 0.625rem;
+    }
+    .right {
+      h3 {
+        color: #1F1F1F;
+        font-size: 1.0625rem;
+        margin-bottom: 0.375rem;
+        span {
+          font-weight: 400;
+          color: #7495BD;
+          font-size: 0.6875rem;
+          padding: 0.125rem 0.3125rem 0.15625rem 0.3125rem;
+          background-color: #F2F8FF;
+          border-radius: 0.09375rem;
+        }
+      }
+      p {
+        color: #646466;
+        font-size: 0.8125rem;
+      }
+    }
+  }
+  .msg {
+    display: flex;
+    margin-bottom: 1.75rem;
+    .li {
+      width: 33%;
+      text-align: center;
+      border-right: 0.03125rem solid #F0F0F2;
+      .num {
+        color: #121212;
+        font-size: 0.625rem;
+        margin-bottom: 0.25rem;
+        span {
+          color: #121212;
+          font-size: 1.125rem;
+          font-weight: bold;
+        }
+      }
+      .txt {
+        color: #646466;
+        font-size: 0.6875rem;
+      }
+    }
+  }
+  .btn {
+    button {
+      width: 9.375rem;
+      height: 2.5rem;
+      border-radius: 0.25rem;
+      text-align: center;
+      line-height: 2.5rem;
+      font-size: 0.9375rem;
+      border: 0;
+      outline: none;
+    }
+    button:nth-of-type(1) {
+      background: linear-gradient(270deg, #1FC365, #3FD6A6);
+      margin-left: 1.9375rem;
+      color: #fff;
+    }
+    button:nth-of-type(2) {
+      border: 0.03125rem solid #3DA56A;
+      background-color: #F0F7F3;
+      color: #3DA56A;
+      margin-left: 0.625rem;
+    }
+  }
 }
 </style>

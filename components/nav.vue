@@ -1,15 +1,19 @@
 <template>
   <div class="nav">
     <div class="nav-peo" @click="gotalk">
-      <img src="~/assets/ke_h.png" alt />
+      <img src="~/assets/ke_h.png" alt v-if="!type" />
+      <img src="~/assets/talking.gif" alt v-if="type" />
       <span v-if="true">1</span>
       <p>在线咨询</p>
     </div>
-    
     <a :href="'tel:' + phone">
-      <button class="nav-tel"><img src="~/assets/nav-tel.png" />电话咨询</button>
+      <button class="nav-tel">
+        <img src="~/assets/nav-tel.png" />电话咨询
+      </button>
     </a>
-    <button @click="show(103,'预约看房')"><img src="~/assets/nav-yue.png" />预约看房</button>
+    <button @click="show(103, '预约看房')">
+      <img src="~/assets/nav-yue.png" />预约看房
+    </button>
   </div>
 </template>
 <script>
@@ -23,10 +27,11 @@ export default {
   data() {
     return {
       url: "",
-      btn:false
+      btn: false,
+      type: false,
     };
   },
-   methods: {
+  methods: {
     show(id, name) {
       this.$emit("fot", { position: id, name: name });
     },
@@ -64,7 +69,7 @@ export default {
   display: flex;
   z-index: 1000;
   align-items: center;
-  border-top: 0.03125rem solid #F7F7F7;
+  border-top: 0.03125rem solid #f7f7f7;
   .nav-peo {
     position: relative;
     margin-right: 1.25rem;

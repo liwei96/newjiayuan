@@ -4,26 +4,26 @@
       <header>
         <img class="back" src="~/assets/goback.png" alt="" @click="back" />
         允家李华为您服务
-        <div class="status doen">
-          <img src="~/assets/talk-list.png" alt="">
+        <div class="status doen" @click="golist">
+          <img src="~/assets/talk-list.png" alt="" />
           <p>1</p>
         </div>
       </header>
       <div class="con">
         <p class="time">11:24</p>
-        <div class="you">
+        <div class="you alltxt">
           <img src="~/assets/people.png" alt="" />
           <p class="txt">
             您好！很高兴为您服务,看楼盘项目 本人可提供免费接送服务
           </p>
         </div>
-        <div class="peo">
+        <div class="peo alltxt">
           <img src="~/assets/talk-peo.png" alt="" />
           <p class="txt">
             您好！很高兴为您服务,看楼盘项目 本人可提供免费接送服务
           </p>
         </div>
-        <div class="peo-pro">
+        <div class="peo-pro alltxt">
           <img src="~/assets/talk-peo.png" alt="" />
           <div class="pro">
             <img src="~/assets/lun02.jpg" alt="" />
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="gettel">
+        <div class="gettel alltxt">
           <img src="~/assets/people.png" alt="" class="peoimg" />
           <div class="telbox">
             <img src="~/assets/talk-tel.jpg" alt="" />
@@ -45,11 +45,11 @@
               <p class="msg">
                 向咨询师免费领取专属分析报告,内附有购房 流程全盘解读
               </p>
-              <button>免费领取</button>
+              <button @click="show = true">免费领取</button>
             </div>
           </div>
         </div>
-        <div class="putcard">
+        <div class="putcard alltxt">
           <img src="~/assets/people.png" alt="" class="peoimg" />
           <div class="cardbox">
             <div class="top">
@@ -73,13 +73,15 @@
                 <p class="type">好评率</p>
               </div>
             </div>
-            <button>电话咨询</button>
+            <a href="tel:400">
+              <button>电话咨询</button>
+            </a>
           </div>
         </div>
-        <div class="imgbox">
+        <div class="imgbox alltxt">
           <img src="~/assets/people.png" alt="" class="peoimg" />
           <div class="right">
-            <img src="~/assets/lun02.jpg" alt="">
+            <img src="~/assets/lun02.jpg" alt="" />
           </div>
         </div>
       </div>
@@ -87,7 +89,7 @@
         <div class="top">
           <p :class="txt ? 'active' : ''" @click="txt = !txt">大家都在问</p>
           <a href="tel:400">
-          <p :class="teltype ? 'hid' : ''">电话咨询</p>
+            <p :class="teltype ? 'hid' : ''">电话咨询</p>
           </a>
         </div>
         <div class="bom">
@@ -104,41 +106,83 @@
         </div>
       </div>
       <div class="icons" v-if="icon">
-        <img v-for="item in faces" :key="item.con" :src="item.img" alt @click="seticon(item.con)"/>
+        <img
+          v-for="item in faces"
+          :key="item.con"
+          :src="item.img"
+          alt
+          @click="seticon(item.con)"
+        />
       </div>
       <div class="words" v-if="txt">
         <div class="word">
           <div class="txt">
-            <p v-if="type" class="showmsg" @click="settxt('您好，我想咨询项目详情？')">
+            <p
+              v-if="type"
+              class="showmsg"
+              @click="settxt('您好，我想咨询项目详情？')"
+            >
               您好，我想咨询项目详情？
             </p>
           </div>
           <div class="txt">
-            <p v-if="type" class="showmsg">
-              您好，项目什么时候开盘？
-            </p>
+            <p v-if="type" class="showmsg">您好，项目什么时候开盘？</p>
           </div>
         </div>
       </div>
     </div>
-
-    <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
-      <div class="addtxt">
-        <img src="~/assets/w-del.png" alt="" @click="show = false" />
-        <h2>添加常用语</h2>
-        <textarea
-          placeholder="编辑您的常用语"
-          v-model="addtxt"
-          maxlength="50"
-        ></textarea>
-        <p>{{ addtxtnum }}/50</p>
-        <button>确定</button>
+    <div class="load" v-if="load">
+      <p>正在发起聊天，请稍后...</p>
+      <img src="~/assets/talk-load.gif" alt="" />
+    </div>
+    <van-popup
+      v-model="show"
+      position="center"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+    >
+      <div class="telbox">
+        <div class="top">
+          <img src="~/assets/w-del.png" alt class="close" @click="ll" />
+          <h5>免费领取资料</h5>
+        </div>
+        <div class="one" v-if="!isok">
+          <input
+            class="txt"
+            type="text"
+            placeholder="请输入手机号"
+            v-model="tel"
+          />
+          <p class="xiyi">
+            <input type="checkbox" v-model="check" />我已阅读并同意
+            <nuxt-link :to="'/'">《家有用户协议》</nuxt-link>
+          </p>
+          <button @click="sendmsg">确定</button>
+        </div>
+        <div class="two" v-if="isok">
+          <p class="msg">验证码已发送到187****4376 请注意查看</p>
+          <input
+            class="txt"
+            type="text"
+            placeholder="请输入验证码"
+            v-model="code"
+          />
+          <span @click="sendmsg">{{ msg }}</span>
+          <button @click="sure">确定</button>
+        </div>
       </div>
     </van-popup>
   </div>
 </template>
 <script>
+import { send, check, put } from "@/api/api";
 export default {
+  async asyncData(context) {
+    let token = context.store.state.cookie.token;
+    let jkl = context.params.name;
+    return {
+      jkl: jkl,
+    };
+  },
   data() {
     return {
       faces: [
@@ -226,20 +270,25 @@ export default {
       status: false,
       msg: false,
       talktxt: "",
+      load: false,
+      isok: false,
+      tel: "",
+      code: "",
+      check: true,
     };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
-    settxt(k){
-      this.talktxt = k
-      this.txt = false
+    settxt(k) {
+      this.talktxt = k;
+      this.txt = false;
     },
     send() {
       let img = require("~/assets/talk-peo.png");
       let msg = this.talktxt;
-      let that = this
+      let that = this;
       if (msg.split("face").length !== 0) {
         let index = msg.indexOf("face");
         while (index != -1) {
@@ -259,7 +308,7 @@ export default {
         }
       }
       let dv = document.createElement("div");
-      dv.className = "peo";
+      dv.className = "peo alltxt";
       dv.innerHTML = `
           <img src="${img}" alt="" />
               <p class="txt">
@@ -268,12 +317,83 @@ export default {
         `;
       $(".con").append(dv);
       dv.scrollIntoView();
-      this.talktxt = ''
+      this.talktxt = "";
     },
     seticon(con) {
       this.talktxt = this.talktxt + "face" + con;
       this.icon = false;
     },
+    sendmsg() {
+      if (!this.tel) {
+        this.toast("手机号不能为空");
+        return;
+      }
+      let that = this;
+      let pattern_phone = /^1[3-9][0-9]{9}$/;
+      if (!pattern_phone.test(that.tel)) {
+        this.toast("手机号不正确");
+        return;
+      }
+      if (!that.check) {
+        this.toast("请勾选用户协议");
+        return;
+      }
+      if (!that.isnull) {
+        return;
+      }
+      let ip = ip_arr["ip"];
+      let city = $cookies.get("city");
+      let other = $cookies.get("other");
+      let kid = $cookies.get("kid");
+      let txt = `客户性别为：${that.radio}`;
+      if (that.date) {
+        txt += `；看房时间为：${that.date}`;
+      }
+      if (that.name) {
+        txt += `；想看楼盘为：${that.name}`;
+      }
+      put({
+        ip: ip,
+        page: 4,
+        city: city,
+        position: 103,
+        remark: txt,
+        source: "线上推广1",
+        other: other,
+        kid: kid,
+        tel: that.tel,
+      }).then((res) => {
+        console.log(res);
+      });
+      send({ phone: that.tel, source: 3, ip: ip }).then((res) => {
+        if (res.data.code == 200) {
+          that.isok = true;
+          let num = 60;
+          that.isnull = false;
+          let time = setInterval(() => {
+            num--;
+            if (num <= 0) {
+              clearInterval(time);
+              that.msg = "获取验证码";
+              that.isnull = true;
+            } else {
+              that.msg = num + "秒后重发";
+            }
+          }, 1000);
+        }
+        console.log(res);
+      });
+    },
+    sure() {},
+    ll() {
+      this.show = false;
+    },
+    golist() {
+      this.$router.push("/" + this.jkl + "/talklist");
+    },
+  },
+  updated() {
+    
   },
   created() {
     let that = this;
@@ -285,7 +405,12 @@ export default {
     }
   },
   mounted() {
-      $('#foott').css('display','none')
+    let dds = document.getElementsByClassName("alltxt");
+    let dd = dds[dds.length - 1];
+    if (dd) {
+      dd.scrollIntoView();
+    }
+    $("#foott").css("display", "none");
     document.getElementById("upload").addEventListener("change", function (e) {
       var file = event.currentTarget.files[0];
       if ((file.size / 1000).toFixed(0) < 2000) {
@@ -294,7 +419,7 @@ export default {
           var imgFile = e.target.result; //或e.target都是一样的
           let img = require("~/assets/talk-peo.png");
           let dv = document.createElement("div");
-          dv.className = "imgbox";
+          dv.className = "imgbox alltxt";
           dv.innerHTML = `
             <img src="${img}" alt="" class="peoimg" />
             <div class="right">
@@ -365,7 +490,7 @@ header {
       margin-top: 0.6rem;
     }
     p {
-      background-color: #FF4040;
+      background-color: #ff4040;
       width: 0.8125rem;
       height: 0.8125rem;
       border-radius: 50%;
@@ -446,6 +571,11 @@ header {
       position: relative;
       bottom: -0.625rem;
       max-width: 14.5rem;
+      img {
+        width: 1rem;
+        height: 1rem;
+        margin-left: 0.25rem;
+      }
     }
     .txt::after {
       content: "";
@@ -864,6 +994,112 @@ header {
     .btn {
       border-left: 0.03125rem solid #f2f2f2;
       color: #51c1cb;
+    }
+  }
+}
+.load {
+  width: 13.75rem;
+  height: 6.25rem;
+  border-radius: 0.375rem;
+  background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  left: 50%;
+  margin-left: -6.875rem;
+  top: 35vh;
+  p {
+    text-align: center;
+    color: #fff;
+    font-size: 1rem;
+    padding-top: 1.375rem;
+    margin-bottom: 1.125rem;
+  }
+  img {
+    width: 2.25rem;
+    position: relative;
+    left: 50%;
+    margin-left: -1.125rem;
+  }
+}
+.telbox {
+  width: 18.125rem;
+  height: 13.75rem;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  text-align: center;
+  position: relative;
+  .close {
+    width: 0.875rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+  h5 {
+    color: #333333;
+    font-size: 1.375rem;
+    padding-top: 1.125rem;
+    margin-bottom: 1.125rem;
+  }
+  .txt {
+    width: 15rem;
+    height: 3.125rem;
+    border-radius: 0.25rem;
+    border: 0;
+    outline: none;
+    background-color: #f7f7f7;
+    margin-bottom: 0.625rem;
+    padding-left: 0.625rem;
+  }
+  .xiyi {
+    color: #626466;
+    font-size: 0.6875rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    padding-left: 1.25rem;
+    input {
+      width: 0.6875rem;
+      height: 0.6875rem;
+      -webkit-appearance: none;
+      border: 0.03125rem solid #e6e6e6;
+      margin-right: 0.3125rem;
+    }
+    input:checked {
+      background: url("~assets/checkbox_icon.png") no-repeat 50%;
+      background-size: 90%;
+    }
+    a {
+      color: #7495bd;
+    }
+  }
+  button {
+    width: 15.625rem;
+    height: 2.5rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    line-height: 2.5rem;
+    border: 0;
+    background-color: #2ac66d;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: bold;
+  }
+  .msg {
+    color: #999999;
+    font-size: 0.6875rem;
+    text-align: left;
+    padding-left: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+  .two {
+    position: relative;
+    .txt {
+      margin-bottom: 1.3rem;
+    }
+    span {
+      color: #7495bd;
+      font-size: 1rem;
+      position: absolute;
+      right: 2rem;
+      top: 2.5625rem;
     }
   }
 }
