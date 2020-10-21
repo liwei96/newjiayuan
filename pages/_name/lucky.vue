@@ -123,14 +123,12 @@
               :loop="true"
               :autoplay="3000"
             >
-              <van-swipe-item v-for="(item, key) in msg.data" :key="key"
-                >
+              <van-swipe-item v-for="(item, key) in msg.data" :key="key">
                 <div class="ll">
                   <p class="kk">{{ item.tel }}用户获得</p>
                   <p class="tl">家园专享{{ item.prize }}元优惠券</p>
                 </div>
-                </van-swipe-item
-              >
+              </van-swipe-item>
             </van-swipe>
           </div>
         </div>
@@ -297,10 +295,12 @@ export default {
       this.tan = e;
       let uuid = this.$route.query.uuid;
       let token = $cookies.get("token");
-      luck({ token: token, uuid: uuid, type: 1 }).then((res) => {
-        this.toast(res.data.msg || "获取成功");
-        this.num = 0;
-      });
+      if (token) {
+        luck({ token: token, uuid: uuid, type: 1 }).then((res) => {
+          this.toast(res.data.msg || "获取成功");
+          this.num = 0;
+        });
+      }
     },
   },
   mounted() {
@@ -531,17 +531,17 @@ export default {
         }
         .ll {
           display: flex;
-            justify-content: space-between;
-            p {
-              font-size: 0.75rem;
-            }
-            .tl {
-              color: #fd613e;
-              margin-right: 0.875rem;
-            }
-            .kk {
-              margin-left: 0.875rem;
-            }
+          justify-content: space-between;
+          p {
+            font-size: 0.75rem;
+          }
+          .tl {
+            color: #fd613e;
+            margin-right: 0.875rem;
+          }
+          .kk {
+            margin-left: 0.875rem;
+          }
         }
       }
     }
