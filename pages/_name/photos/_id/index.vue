@@ -446,7 +446,7 @@ export default {
       newurl += `?proid=${id}&name=${name}`;
       newurl = encodeURIComponent(newurl);
       window.location.href =
-        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + newurl;
+        "http://m.jy8006.com/hangzhou/talk?reconnect=" + newurl;
     },
   },
   mounted() {
