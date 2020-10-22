@@ -235,6 +235,7 @@ export default {
       bRotate: true,
       num: 1,
       huo: false,
+      imgnum :1
     };
   },
   methods: {
@@ -254,18 +255,40 @@ export default {
         if (!this.bRotate) return false;
         var item = Math.floor(Math.floor(Math.random() * (3 + 1) + 0)); //生成0~10的随机数
         console.log(item);
+        // 
         switch (item) {
           case 0:
-            this.rotateFn(190, "未中奖");
+            this.rotateFn(95, 1);
             break;
           case 1:
-            this.rotateFn(200, "免单4999元");
+            this.rotateFn(105, 1);
             break;
           case 2:
-            this.rotateFn(210, "免单50元");
+            this.rotateFn(115, 1);
             break;
           case 3:
-            this.rotateFn(220, "免单10元");
+            this.rotateFn(125, 1);
+            break;
+          case 4:
+            this.rotateFn(130, 1);
+            break;
+          case 5:
+            this.rotateFn(100, 1);
+            break;
+          case 6:
+            this.rotateFn(99, 1);
+            break;
+          case 7:
+            this.rotateFn(10, 2);
+            break;
+          case 8:
+            this.rotateFn(30, 2);
+            break;
+          case 9:
+            this.rotateFn(40, 2);
+            break;
+          case 10:
+            this.rotateFn(210, 3);
             break;
         }
       } else {
@@ -273,6 +296,7 @@ export default {
       }
     },
     rotateFn(ang, txt) {
+      this.imgnum = txt
       this.bRotate = false;
       let that = this;
       $("#turntable").stopRotate();
@@ -304,6 +328,7 @@ export default {
     },
   },
   mounted() {
+    // this.rotateFn(220, "免单10元");
     this.num = this.msg.remained;
     $("#foott").css("display", "none");
     var swiper08 = new Swiper(".swiper-food", {

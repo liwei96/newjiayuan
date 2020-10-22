@@ -140,7 +140,7 @@
       position="center"
       :style="{ background: 'rgba(0,0,0,0)' }"
     >
-      <div class="telbox">
+      <div class="telboxs">
         <div class="top">
           <img src="~/assets/w-del.png" alt class="close" @click="ll" />
           <h5>免费领取资料</h5>
@@ -1020,7 +1020,7 @@ header {
     margin-left: -1.125rem;
   }
 }
-.telbox {
+.telboxs {
   width: 18.125rem;
   height: 13.75rem;
   border-radius: 0.25rem;
