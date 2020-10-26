@@ -77,8 +77,8 @@
             <div class="swiper-food">
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                  <img src="~/assets/luck-10.png" alt="" />
-                  <p>家园专享10万元</p>
+                  <img src="~/assets/luck-20.png" alt="" />
+                  <p>家园专享2万元</p>
                 </div>
                 <div class="swiper-slide">
                   <img src="~/assets/luck-5000.png" alt="" />
@@ -149,8 +149,29 @@
     <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
       <div class="formbox">
         <img src="~/assets/luck-x.png" alt @click="show = false" class="del" />
-        <img src="~/assets/luck-tan.png" alt="" class="topimg" />
-        <p>恭喜您获得 <br />“5000元限时购房优惠金”</p>
+        <img
+          src="~/assets/luck-tan.png"
+          alt=""
+          class="topimg"
+          v-if="imgnum == 1"
+        />
+        <img
+          src="~/assets/luck-tan1.png"
+          alt=""
+          class="topimg"
+          v-if="imgnum == 2"
+        />
+        <img
+          src="~/assets/luck-tan2.png"
+          alt=""
+          class="topimg"
+          v-if="imgnum == 3"
+        />
+        <p>
+          恭喜您获得 <br />“<span v-if="imgnum == 1">5000</span
+          ><span v-if="imgnum == 3">2000</span
+          ><span v-if="imgnum == 2">1000</span>元限时购房优惠金”
+        </p>
         <button @click="ling">立即领取</button>
       </div>
     </van-popup>
@@ -235,7 +256,7 @@ export default {
       bRotate: true,
       num: 1,
       huo: false,
-      imgnum :1
+      imgnum: 1,
     };
   },
   methods: {
@@ -255,40 +276,40 @@ export default {
         if (!this.bRotate) return false;
         var item = Math.floor(Math.floor(Math.random() * (3 + 1) + 0)); //生成0~10的随机数
         console.log(item);
-        // 
+        //
         switch (item) {
           case 0:
-            this.rotateFn(95, 1);
+            this.rotateFn(95, 2);
             break;
           case 1:
-            this.rotateFn(105, 1);
+            this.rotateFn(105, 2);
             break;
           case 2:
-            this.rotateFn(115, 1);
+            this.rotateFn(115, 2);
             break;
           case 3:
-            this.rotateFn(125, 1);
+            this.rotateFn(125, 2);
             break;
           case 4:
-            this.rotateFn(130, 1);
+            this.rotateFn(130, 2);
             break;
           case 5:
-            this.rotateFn(100, 1);
+            this.rotateFn(100, 2);
             break;
           case 6:
-            this.rotateFn(99, 1);
+            this.rotateFn(99, 2);
             break;
           case 7:
-            this.rotateFn(10, 2);
+            this.rotateFn(10, 3);
             break;
           case 8:
-            this.rotateFn(30, 2);
+            this.rotateFn(30, 3);
             break;
           case 9:
-            this.rotateFn(40, 2);
+            this.rotateFn(40, 3);
             break;
           case 10:
-            this.rotateFn(210, 3);
+            this.rotateFn(210, 1);
             break;
         }
       } else {
@@ -296,7 +317,7 @@ export default {
       }
     },
     rotateFn(ang, txt) {
-      this.imgnum = txt
+      this.imgnum = txt;
       this.bRotate = false;
       let that = this;
       $("#turntable").stopRotate();
@@ -319,8 +340,9 @@ export default {
       this.tan = e;
       let uuid = this.$route.query.uuid;
       let token = $cookies.get("token");
+      let num = this.imgnum;
       if (token) {
-        luck({ token: token, uuid: uuid, type: 1 }).then((res) => {
+        luck({ token: token, uuid: uuid, type: num }).then((res) => {
           this.toast(res.data.msg || "获取成功");
           this.num = 0;
         });

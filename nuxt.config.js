@@ -48,6 +48,9 @@ export default {
       {
         src: '/jQueryRotate.js'
       },
+      {
+        src: '//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js'
+      }
     ]
   },
   /*
@@ -88,7 +91,7 @@ export default {
     },
     {
       src: '~plugins/route',
-      ssr: true
+      ssr: false
     },
     {
       src: '~plugins/axios',
@@ -168,6 +171,12 @@ export default {
         }, 'vant']
       ],
     },
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000
+      }
+    },
+    
   },
-
 }

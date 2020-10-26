@@ -97,36 +97,28 @@ export default ({
         store.state.city = 181
         break;
     }
-
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
-      if (store.state.cookie.uuid || from.query.uuid) {
-        var timestamp = store.state.uuid || from.query.uuid
-      } else if (app.context.req) {
-        let cookie = app.context.req.headers.cookie;
-        if (cookie) {
-          let cookieArr = cookie.split(";");
-          let obj = {}
-          cookieArr.forEach((i) => {
-            let arr = i.split("=");
-            obj[arr[0].trim()] = arr[1];
-          });
-          var timestamp = obj.uuid
+      let timestamp = ''
+      if ( from.query.uuid) {
+        timestamp =  from.query.uuid
+      } else if (localStorage.getItem('uuid')) {
+        timestamp = localStorage.getItem('uuid')
+       } else {
+          timestamp = Date.parse(new Date());
+          var $chars =
+            "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+          var maxPos = $chars.length;
+          var pwd = "";
+          let i = 0;
+          for (i = 0; i < 12; i++) {
+            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+          }
+          timestamp = pwd + timestamp;
         }
-      } else {
-        var timestamp = Date.parse(new Date());
-        var $chars =
-          "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-        var maxPos = $chars.length;
-        var pwd = "";
-        let i = 0;
-        for (i = 0; i < 12; i++) {
-          pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
-        }
-        timestamp = pwd + timestamp;
-      }
       toQuery.uuid = timestamp;
-      store.state.uuid = timestamp
+      store.state.cookie.uuid = timestamp
+      localStorage.setItem('uuid',timestamp)
       next({
         path: to.path,
         query: toQuery
@@ -134,5 +126,6 @@ export default ({
     } else {
       next()
     }
+    next()
   })
 }

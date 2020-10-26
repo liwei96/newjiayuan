@@ -48,10 +48,6 @@ export default {
     if(localStorage.getItem('uuid')){
       $cookies.set('uuid',localStorage.getItem('uuid'))
       this.$store.dispatch("setuuid", localStorage.getItem('uuid'));
-    }else{
-      $cookies.set('uuid',this.$route.query.uuid)
-      this.$store.dispatch("setuuid", this.$route.query.uuid);
-      localStorage.setItem('uuid',this.$route.query.uuid)
     }
     
     this.jkl = this.$route.params.name;

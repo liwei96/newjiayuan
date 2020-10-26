@@ -22,95 +22,95 @@
       <h4>全部城市</h4>
       <p class="tit" id="A">A</p>
       <ul>
-        <li v-for="city in A" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in A" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="B">B</p>
       <ul>
-        <li v-for="city in B" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in B" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="C">C</p>
       <ul>
-        <li v-for="city in C" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in C" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="D">D</p>
       <ul>
-        <li v-for="city in D" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in D" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="E">E</p>
       <ul>
-        <li v-for="city in E" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in E" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="F">F</p>
       <ul>
-        <li v-for="city in F" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in F" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="G">G</p>
       <ul>
-        <li v-for="city in G" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in G" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="H">H</p>
       <ul>
-        <li v-for="city in H" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in H" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="J">J</p>
       <ul>
-        <li v-for="city in J" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in J" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="K">K</p>
       <ul>
-        <li v-for="city in K" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in K" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="L">L</p>
       <ul>
-        <li v-for="city in L" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in L" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="M">M</p>
       <ul>
-        <li v-for="city in M" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in M" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="N">N</p>
       <ul>
-        <li v-for="city in N" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in N" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="O">O</p>
       <ul>
-        <li v-for="city in O" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in O" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="P">P</p>
       <ul>
-        <li v-for="city in P" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in P" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="Q">Q</p>
       <ul>
-        <li v-for="city in Q" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in Q" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="R">R</p>
       <ul>
-        <li v-for="city in R" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in R" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="S">S</p>
       <ul>
-        <li v-for="city in S" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in S" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="T">T</p>
       <ul>
-        <li v-for="city in T" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in T" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="W">W</p>
       <ul>
-        <li v-for="city in W" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in W" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="X">X</p>
       <ul>
-        <li v-for="city in X" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in X" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="Y">Y</p>
       <ul>
-        <li v-for="city in Y" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in Y" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
       <p class="tit" id="Z">Z</p>
       <ul>
-        <li v-for="city in Z" :key="city.area_id" @click="show($event)">{{city.city}}</li>
+        <li v-for="city in Z" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
       </ul>
     </div>
     <ul class="right">
@@ -377,16 +377,29 @@ export default {
     goback() {
       this.$router.go(-1);
     },
-    show(e) {
-      let n = e.target;
-      this.getname = n.innerHTML;
-      let address = JSON.parse(localStorage.getItem("address"));
-      for (let item of address["hots"]) {
-        if (n.innerHTML == item["city"]) {
+    show(e, id, name, pinyin) {
+      if (id) {
+        let city = id;
+        let n = pinyin;
+        let name = name;
+        localStorage.setItem("city", city);
+        $cookies.set("city", city);
+        localStorage.setItem("cityname", name);
+        $cookies.set("cityname", name);
+        localStorage.setItem("pinyin", n);
+        $cookies.set("pinyin", n);
+        window.location.href = "/" + n;
+      } else {
+        let n = e.target;
+        this.getname = n.innerHTML;
+        let address = JSON.parse(localStorage.getItem("address"));
+        for (let item of address["hots"]) {
+          if (n.innerHTML == item["city"]) {
+          }
         }
+        $(".zhao").show();
+        this.kk = true;
       }
-      $(".zhao").show();
-      this.kk = true;
     },
     close() {
       $(".zhao").hide();

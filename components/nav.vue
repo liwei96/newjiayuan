@@ -37,7 +37,7 @@ export default {
     },
     gotalk() {
       window.location.href =
-        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
+        "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
     },
   },
   mounted() {
