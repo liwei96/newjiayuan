@@ -5,41 +5,26 @@
       在线咨询
     </header>
     <ul class="con">
-      <li @click="gotalk">
+      <li @click="gotalk(item.id)" v-for="item in list" :key="item.id">
         <div class="left">
-          <img src="~/assets/people.png" alt="" />
-          <p>1</p>
+          <img :src="item.img" alt="" />
+          <p v-if="item.num">{{item.num}}</p>
         </div>
         <div class="right">
           <div class="top">
-            李华
+            {{item.name}}
             <p class="pro">越秀缦云府越秀缦云府越秀缦云府</p>
-            <span class="time">11:24</span>
+            <span class="time">{{item.time}}</span>
           </div>
-          <p class="txt">您好！很高兴为您服务您好！很高兴为您服务</p>
-        </div>
-      </li>
-      <li>
-        <div class="left">
-          <img src="~/assets/people.png" alt="" />
-          <p>1</p>
-        </div>
-        <div class="right">
-          <div class="top">
-            李华
-            <p class="pro">越秀缦云府越秀缦云府越秀缦云府</p>
-            <span class="time">11:24</span>
-          </div>
-          <p class="txt">您好！很高兴为您服务您好！很高兴为您服务</p>
+          <p class="txt">{{item.content}}</p>
         </div>
       </li>
     </ul>
-    
   </div>
 </template>
 <script>
 export default {
-    async asyncData(context) {
+  async asyncData(context) {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     return {
@@ -47,14 +32,81 @@ export default {
     };
   },
   data() {
-    return {};
+    return {
+      ws: "",
+      list:[]
+    };
   },
   methods: {
-      gotalk() {
-          this.$router.push('/'+this.jkl+'/talk')
+    gotalk(id) {
+      sessionStorage.setItem('staffid',id)
+      let n = parseInt(sessionStorage.getItem(id))
+      let total = parseInt(sessionStorage.getItem('total'))
+      total = total - n
+      if(total != 0){
+        sessionStorage.setItem('total',total)
+      }else{
+        sessionStorage.removeItem('total')
       }
+      sessionStorage.removeItem(id)
+      sessionStorage.setItem('islist',1)
+      this.$router.push("/" + this.jkl + "/talk/"+id);
+    },
+    back() {
+      this.$router.go(-1);
+    },
+    getlist(id) {
+      let pp = {
+        controller: "Staff",
+        action: "lists",
+        params: { uuid: id },
+      };
+      this.ws.send(JSON.stringify(pp));
+    },
   },
   mounted() {
+    let that = this
+    console.log(this.$store.state.ws);
+    this.ws = this.$store.state.ws;
+    let id = localStorage.getItem('uuid')
+    this.ws.onopen = function () {
+      that.getlist(id);
+    };
+    if (this.ws.readyState == 1) {
+        that.getlist(id);
+    }
+    that.ws.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      if(data.action == 105) {
+        let date = new Date();
+        for (let val of data.data) {
+          let dd = new Date(val.time);
+          let time = date - dd;
+          if (time / 1000 < 3600 * 24) {
+            val.time =
+              (dd.getHours() >= 10 ? dd.getHours() : "0" + dd.getHours()) +
+              ":" +
+              (dd.getMinutes() >= 10 ? dd.getMinutes() : "0" + dd.getMinutes());
+          } else {
+            val.time =
+              dd.getFullYear() +
+              "-" +
+              (dd.getMonth() + 1 >= 10
+                ? dd.getMonth() + 1
+                : "0" + (dd.getMonth() + 1)) +
+              "-" +
+              (dd.getDate() >= 10 ? dd.getDate() : "0" + dd.getDate());
+          }
+          console.log(time);
+          if(sessionStorage.getItem(val.id)){
+            console.log(sessionStorage.getItem(val.id))
+            val.num = sessionStorage.getItem(val.id)
+          }
+        }
+        that.list = data.data;
+        console.log(that.list)
+      }
+    }
     $("#foott").css("display", "none");
   },
 };
@@ -146,5 +198,4 @@ header {
     }
   }
 }
-
 </style>

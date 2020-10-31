@@ -97,34 +97,97 @@ export default ({
         store.state.city = 181
         break;
     }
+    let city = localStorage.getItem('city')
+    let ip = ip_arr["ip"];
+    let url = 'm.jy1980.com'+to.fullPath
+    console.log(url)
+    let pro = 0
+    if (url.indexOf('content') !== -1) {
+      pro = to.params.id
+    }
+    let pp = {
+      controller: "Info",
+      action: "register",
+      params: {
+        "city": city,
+        "project": pro,
+        "ip": ip,
+        "url": url
+      },
+    };
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
       let timestamp = ''
-      if ( from.query.uuid) {
-        timestamp =  from.query.uuid
-      } else if (localStorage.getItem('uuid')) {
-        timestamp = localStorage.getItem('uuid')
-       } else {
-          timestamp = Date.parse(new Date());
-          var $chars =
-            "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
-          var maxPos = $chars.length;
-          var pwd = "";
-          let i = 0;
-          for (i = 0; i < 12; i++) {
-            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+      if (from.query.uuid) {
+        timestamp = from.query.uuid
+        console.log(456)
+        if(store.state.ws){
+          if(to.fullPath.indexOf('content')!==-1){
+            store.state.ws.send(JSON.stringify(pp))
           }
-          timestamp = pwd + timestamp;
         }
+      } else if (localStorage.getItem('uuid')) {
+        console.log(789)
+        if(store.state.ws){
+          if(to.fullPath.indexOf('content')!==-1){
+            store.state.ws.send(JSON.stringify(pp))
+          }
+        }
+        timestamp = localStorage.getItem('uuid')
+      } else {
+        timestamp = Date.parse(new Date());
+        var $chars =
+          "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        var maxPos = $chars.length;
+        var pwd = "";
+        let i = 0;
+        for (i = 0; i < 12; i++) {
+          pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        timestamp = pwd + timestamp;
+      }
       toQuery.uuid = timestamp;
       store.state.cookie.uuid = timestamp
-      localStorage.setItem('uuid',timestamp)
+      localStorage.setItem('uuid', timestamp)
+      if (!store.state.ws) {
+        let ws = new ReconnectingWebSocket(
+          "ws://139.155.128.107:9509?uuid="+timestamp
+        );
+        ws.onopen = function () {
+          if(to.fullPath.indexOf('content')!==-1){
+            ws.send(JSON.stringify(pp))
+          }
+        }
+        store.dispatch("setws", ws);
+      }
       next({
         path: to.path,
         query: toQuery
       })
     } else {
+      if (!store.state.ws) {
+        let ws = new ReconnectingWebSocket(
+          "ws://139.155.128.107:9509?uuid="+localStorage.getItem('uuid')
+        );
+        ws.onopen = function () {
+          if(to.fullPath.indexOf('content')!==-1){
+            ws.send(JSON.stringify(pp))
+          }
+        }
+        store.dispatch("setws", ws);
+      }
       next()
+    }
+    if (!store.state.ws) {
+      let ws = new ReconnectingWebSocket(
+        "ws://139.155.128.107:9509?uuid="+localStorage.getItem('uuid')
+      );
+      ws.onopen = function () {
+        if(to.fullPath.indexOf('content')!==-1){
+          ws.send(JSON.stringify(pp))
+        }
+      }
+      store.dispatch("setws", ws);
     }
     next()
   })

@@ -3,12 +3,12 @@ import axios from 'axios'
 axios.defaults.withCredentials = true;
 axios.interceptors.request.use(function (config) {
   // 处理请求之前的配置
-  if(config.method == 'get'){
+  if (config.method == 'get') {
     config.params.uuid = $cookies.get('uuid')
-  }else{
-    if(config.data){
+  } else {
+    if (config.data) {
       config.data.uuid = $cookies.get('uuid')
-    }else{
+    } else {
       config.params.uuid = $cookies.get('uuid')
     }
   }
@@ -88,15 +88,15 @@ export const collect = (msg) => {
     params: msg
   })
 }
-export const souname = (name,k,city) => {
+export const souname = (name, k, city) => {
   return axios.request({
     method: 'get',
     url: '/api/project/e_search',
     params: {
       'name': name,
-      page:k,
-      limit:10,
-      city:city
+      page: k,
+      limit: 10,
+      city: city
     }
   })
 }

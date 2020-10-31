@@ -4,7 +4,7 @@
     <img class="logo" src="~/assets/logo.png" alt />
     <div class="zixuns" @click="gotalk" v-if="kk">
       <img src="~/assets/header-talk.png" alt />
-      <!-- <p></p> -->
+      <p v-if="totalnum>0" >{{totalnum}}</p>
     </div>
     <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
     <ul class="cailist" v-if="list">
@@ -47,6 +47,9 @@ export default {
   props:{
     jkl:{
       type:String
+    },
+    totalnum:{
+      type:Number
     }
   },
   data() {
@@ -74,9 +77,10 @@ export default {
       }
     },
     gotalk() {
-      window.location.href =
-        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
-    },
+      // window.location.href =
+      //   "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
+      this.$router.push("/" + this.jkl + "/talklist");
+    }
   },
   mounted() {
     let url = window.location.href;

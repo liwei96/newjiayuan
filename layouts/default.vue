@@ -45,11 +45,18 @@ export default {
     };
   },
   mounted() {
-    if(localStorage.getItem('uuid')){
-      $cookies.set('uuid',localStorage.getItem('uuid'))
-      this.$store.dispatch("setuuid", localStorage.getItem('uuid'));
+    if (localStorage.getItem("uuid")) {
+      $cookies.set("uuid", localStorage.getItem("uuid"));
+      this.$store.dispatch("setuuid", localStorage.getItem("uuid"));
     }
-    
+    // this.ws = new ReconnectingWebSocket(
+    //   "ws://39.98.227.114:9509?uuid=zhYfTSJ3yQt71602841160013"
+    // );
+    // this.$store.dispatch("setws", this.ws);
+    console.log(456)
+    // this.ws.onopen = function(){
+    //   sessionStorage.setItem('type',1)
+    // }
     this.jkl = this.$route.params.name;
     // console.log(this.$route.path) RPa7YGmBjxbX1602733863000
     this.url = this.$route.path;

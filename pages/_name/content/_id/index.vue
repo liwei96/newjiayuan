@@ -1,6 +1,6 @@
 <template>
   <div id="content">
-    <top-view :jkl="jkl"></top-view>
+    <top-view :jkl="jkl" :totalnum="totalnum"></top-view>
     <div class="topimg">
       <div class="swiper-topimg" @click="goimg">
         <div class="swiper-wrapper">
@@ -671,39 +671,41 @@
         </div>
       </div> -->
     </div>
-    <div :class="lucktypes?'luck':'luck lucked'" @click="goluck">
+    <div :class="lucktypes ? 'luck' : 'luck lucked'" @click="goluck">
       <img src="~/assets/content-luck.png" alt="" />
     </div>
-    <nav-view :phone="phone" @fot="chang($event)"></nav-view>
+    <nav-view :phone="phone" @fot="chang($event)" :totalnum="totalnum" :jkl="jkl"></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
     </div>
     <div class="talkbox" v-if="talktype">
-      <img src="~/assets/w-del.png" alt="" class="del">
+      <img src="~/assets/w-del.png" alt="" class="del" @click="talktype = false"/>
       <div class="peo">
-        <img src="~/assets/people.png" alt="">
+        <div class="left">
+          <img :src="staffimg" alt="" />
+        </div>
         <div class="right">
-          <h3>王烨城 <span>新房咨询</span></h3>
+          <h3>{{staffname}} <span>新房咨询</span></h3>
           <p>从业咨询服务6年</p>
         </div>
       </div>
       <div class="msg">
         <div class="li">
-          <p class="num"><span>134</span>人</p>
+          <p class="num"><span>{{usernum}}</span>人</p>
           <p class="txt">服务客户</p>
         </div>
         <div class="li">
-          <p class="num"><span>34</span>次</p>
+          <p class="num"><span>{{looknum}}</span>次</p>
           <p class="txt">带看客户</p>
         </div>
         <div class="li">
-          <p class="num"><span>99</span>%</p>
+          <p class="num"><span>{{rate}}</span>%</p>
           <p class="txt">好评率</p>
         </div>
       </div>
       <div class="btn">
-        <button>在线咨询</button>
-        <button>稍后咨询</button>
+        <button @click="talk">在线咨询</button>
+        <button @click="talktype = false">稍后咨询</button>
       </div>
     </div>
     <van-popup
@@ -841,7 +843,7 @@ export default {
   },
   data() {
     return {
-      talktype:false,
+      talktype: false,
       time: "7月24日",
       count: {},
       tan: false,
@@ -889,20 +891,28 @@ export default {
       phonemsg: "",
       kidcode: "",
       othercode: "",
-      timer:'',
-      lucktypes:true
+      timer: "",
+      lucktypes: true,
+      ws:{},
+      totalnum:0,
+      usernum:0,
+      looknum:0,
+      rate:0,
+      stafftel:0,
+      staffname:'',
+      staffimg:''
     };
   },
   methods: {
-    handleScroll(){
-      this.lucktypes = false
-      if (this.timer) { 
-        clearTimeout(this.timer)
+    handleScroll() {
+      this.lucktypes = false;
+      if (this.timer) {
+        clearTimeout(this.timer);
       }
-      let that = this
-      this.timer = setTimeout(() => { 
-        that.lucktypes = true
-      }, 800)
+      let that = this;
+      this.timer = setTimeout(() => {
+        that.lucktypes = true;
+      }, 800);
     },
     goluck() {
       this.$router.push("/" + this.jkl + "/lucky");
@@ -1391,34 +1401,84 @@ export default {
         this.navnum = 0;
       }
     },
+    putcard() {
+      let urlid = this.$route.params.id
+      let id = sessionStorage.getItem(urlid);
+      let pp = {
+        controller: "Staff",
+        action: "info",
+        params: { uuid: id },
+      };
+      if(id){
+        this.ws.send(JSON.stringify(pp));
+      }
+    },
+    talk(){
+      let urlid = this.$route.params.id;
+      let id = sessionStorage.getItem(urlid) || 0;
+      if (id) {
+        sessionStorage.setItem("staffid", id);
+        let n = parseInt(sessionStorage.getItem(id));
+        let total = parseInt(sessionStorage.getItem("total"));
+        total = total - n;
+        if (total != 0) {
+          sessionStorage.setItem("total", total);
+        } else {
+          sessionStorage.removeItem("total");
+        }
+        sessionStorage.removeItem(id);
+      } else {
+        sessionStorage.removeItem("staffid");
+      }
+      this.$router.push("/" + this.jkl + "/talk");
+    }
   },
   mounted() {
-    let that = this
-    window.addEventListener('scroll', this.handleScroll)
-    // this.lucktypes = false
-    // setTimeout(()=>{
-    //   that.lucktypes = true
-    // },9000)
-    // $(window).on("scroll", function () {
-    //   that.lucktypes = false
-    //   if (this.timer) { 
-    //     clearTimeout(this.timer)
-    //   }
-    //   this.timer = setTimeout(() => { 
-    //     this.transition = true
-    //     console.log(5555)
-    //   }, 1000)
-    // });
-    // $("#content").on("touchmove", function (event) {
-    //   var touch = event.targetTouches[0];
-    //   //手势滑动时，手势坐标不断变化，取最后一点的坐标为最终的终点坐标
-    //     endX = touch.pageX;
-    //     endY = touch.pageY;
-    // });
-    // $("#content").on("touchend", function () {
-    //   console.log(666)
-    //   $(".luck").animate({ right: "0.4375rem" });
-    // });
+    sessionStorage.setItem('proid',this.$route.params.id)
+    let that = this;
+    if(sessionStorage.getItem('total') && sessionStorage.getItem('total') !== 'NaN'){
+      this.totalnum = parseInt(sessionStorage.getItem('total'))
+    }
+    $('#foott').css('display','block')
+    window.addEventListener("scroll", this.handleScroll);
+    this.ws = this.$store.state.ws
+    this.$store.state.ws.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      if(data.action == 301) {
+        let urlid = that.$route.params.id
+        if(!sessionStorage.getItem(urlid)){
+          sessionStorage.setItem(urlid,data.fromUserName)
+          that.putcard()
+        }else{
+          if(sessionStorage.getItem(data.fromUserName)){
+            sessionStorage.setItem(data.fromUserName,(parseInt(sessionStorage.getItem(data.fromUserName))+1))
+          }else{
+            sessionStorage.setItem(data.fromUserName,1)
+          }
+          if (
+            sessionStorage.getItem("total") &&
+            sessionStorage.getItem("total") != "NaN"
+          ) {
+            sessionStorage.setItem(
+              "total",
+              parseInt(sessionStorage.getItem("total")) + 1
+            );
+            that.totalnum = parseInt(sessionStorage.getItem('total'));
+          } else {
+            sessionStorage.setItem("total", 1);
+            that.totalnum = 1;
+          }
+        }
+      }else if (data.action == 206) {
+        that.usernum = data.num.user_num
+        that.looknum = data.num.look_num
+        that.rate = data.num.rate
+        that.stafftel = data.staff.tel
+        that.staffname = data.staff.name
+        that.staffimg = data.staff.img
+        that.talktype = true
+      }
+    }
     if (this.kidcode) {
       $cookies.set("kid", this.kidcode);
       $cookies.set("other", this.othercode);
@@ -1435,7 +1495,6 @@ export default {
     } else {
       this.phonemsg = this.phone;
     }
-    document.getElementById("hh").style.borderBottom = "0";
     $cookies.set("proname", this.abstract.name);
     if (localStorage.getItem(this.$route.params.id)) {
       this.hour = localStorage.getItem(this.$route.params.id);
@@ -1465,9 +1524,7 @@ export default {
     }
     $cookies.set("foot", foot);
     this.imgs = this.effects;
-    this.drawline();
-    this.drawlei();
-    this.mmap();
+
     var mySwiper2 = new Swiper(".swiper-topimg", {
       slidesPerView: 1,
       spaceBetween: 0,
@@ -1499,6 +1556,9 @@ export default {
     });
     window.addEventListener("scroll", this.setnav);
     this.$nextTick(() => {
+      this.drawline();
+      this.drawlei();
+      this.mmap();
       document.getElementById("hh").style.borderBottom = "0";
     });
   },
@@ -3063,22 +3123,26 @@ export default {
     padding-left: 1.9375rem;
     display: flex;
     margin-bottom: 1.125rem;
-    img {
-      width: 3rem;
-      height: 3rem;
+    .left {
       margin-right: 0.625rem;
+      overflow: hidden;
+      height: 3rem;
+      border-radius: 50%;
+      img {
+        width: 3rem;
+      }
     }
     .right {
       h3 {
-        color: #1F1F1F;
+        color: #1f1f1f;
         font-size: 1.0625rem;
         margin-bottom: 0.375rem;
         span {
           font-weight: 400;
-          color: #7495BD;
+          color: #7495bd;
           font-size: 0.6875rem;
           padding: 0.125rem 0.3125rem 0.15625rem 0.3125rem;
-          background-color: #F2F8FF;
+          background-color: #f2f8ff;
           border-radius: 0.09375rem;
         }
       }
@@ -3094,7 +3158,7 @@ export default {
     .li {
       width: 33%;
       text-align: center;
-      border-right: 0.03125rem solid #F0F0F2;
+      border-right: 0.03125rem solid #f0f0f2;
       .num {
         color: #121212;
         font-size: 0.625rem;
@@ -3123,14 +3187,14 @@ export default {
       outline: none;
     }
     button:nth-of-type(1) {
-      background: linear-gradient(270deg, #1FC365, #3FD6A6);
+      background: linear-gradient(270deg, #1fc365, #3fd6a6);
       margin-left: 1.9375rem;
       color: #fff;
     }
     button:nth-of-type(2) {
-      border: 0.03125rem solid #3DA56A;
-      background-color: #F0F7F3;
-      color: #3DA56A;
+      border: 0.03125rem solid #3da56a;
+      background-color: #f0f7f3;
+      color: #3da56a;
       margin-left: 0.625rem;
     }
   }

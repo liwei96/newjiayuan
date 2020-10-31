@@ -1,10 +1,12 @@
 <template>
   <div class="nav">
     <div class="nav-peo" @click="gotalk">
-      <img src="~/assets/ke_h.png" alt v-if="!type" />
-      <img src="~/assets/talking.gif" alt v-if="type" />
-      <span v-if="true">1</span>
-      <p>在线咨询</p>
+      <img src="~/assets/ke_h.png" alt v-if="totalnum <= 0 || !totalnum" />
+      <img src="~/assets/talking.gif" alt v-if="totalnum > 0" />
+      <span v-if="totalnum <= 0 || !totalnum">1</span>
+      <span v-if="totalnum > 0">{{ totalnum }}</span>
+      <p v-if="totalnum <= 0 || !totalnum">在线咨询</p>
+      <p v-if="totalnum > 0" class="org">有新消息</p>
     </div>
     <a :href="'tel:' + phone">
       <button class="nav-tel">
@@ -23,12 +25,19 @@ export default {
       type: String,
       // required: true,
     },
+    totalnum: {
+      type: Number,
+    },
+    jkl: {
+      type: String,
+    },
   },
   data() {
     return {
       url: "",
       btn: false,
       type: false,
+      ws: "",
     };
   },
   methods: {
@@ -36,11 +45,33 @@ export default {
       this.$emit("fot", { position: id, name: name });
     },
     gotalk() {
-      window.location.href =
-        "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
+      // window.location.href =
+      //   "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
+      let urlid = sessionStorage.getItem('proid');
+      let id = sessionStorage.getItem(urlid);
+      if (id) {
+        sessionStorage.setItem("staffid", id);
+        let n = parseInt(sessionStorage.getItem(id));
+        let total = parseInt(sessionStorage.getItem("total"));
+        total = total - n;
+        if (total != 0) {
+          sessionStorage.setItem("total", total);
+        } else {
+          sessionStorage.removeItem("total");
+        }
+        sessionStorage.removeItem(id);
+        
+      } else {
+        sessionStorage.removeItem("staffid");
+      }
+      this.$router.push("/" + this.jkl + "/talk/"+urlid);
     },
   },
   mounted() {
+    if(this.totalnum == 'NaN'){
+      this.totalnum = 0
+    }
+    console.log(this.totalnum)
     let url = window.location.href;
     let newurl = url.split("?")[0];
     let id = this.$route.params.id;
@@ -95,6 +126,9 @@ export default {
     p {
       color: #626466;
       font-size: 0.75rem;
+    }
+    .org {
+      color: #ff9a26;
     }
   }
   .nav-msg {
