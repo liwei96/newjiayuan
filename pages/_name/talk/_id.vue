@@ -11,6 +11,7 @@
       </header>
       <div class="con">
         <p class="time">{{ time }}</p>
+        <div class="conbox"></div>
         <!-- <div class="you alltxt">
           <div class="left">
             <img src="~/assets/people.png" alt="" />
@@ -96,7 +97,7 @@
       <div class="nav">
         <div class="top">
           <p :class="txt ? 'active' : ''" @click="txt = !txt">大家都在问</p>
-          <a :href="'tel:'+stafftel">
+          <a :href="'tel:' + stafftel">
             <p :class="teltype ? 'hid' : ''">电话咨询</p>
           </a>
         </div>
@@ -134,13 +135,27 @@
             </p>
           </div>
           <div class="txt">
-            <p v-if="type" class="showmsg" @click="settxt('您好，项目什么时候开盘？')">您好，项目什么时候开盘？</p>
+            <p
+              v-if="type"
+              class="showmsg"
+              @click="settxt('您好，项目什么时候开盘？')"
+            >
+              您好，项目什么时候开盘？
+            </p>
           </div>
           <div class="txt">
-            <p v-if="type" class="showmsg" @click="settxt('首付大概是多少？')">首付大概是多少？</p>
+            <p v-if="type" class="showmsg" @click="settxt('首付大概是多少？')">
+              首付大概是多少？
+            </p>
           </div>
           <div class="txt">
-            <p v-if="type" class="showmsg" @click="settxt('什么时候可以看房？')">什么时候可以看房？</p>
+            <p
+              v-if="type"
+              class="showmsg"
+              @click="settxt('什么时候可以看房？')"
+            >
+              什么时候可以看房？
+            </p>
           </div>
         </div>
       </div>
@@ -168,7 +183,9 @@
           />
           <p class="xiyi">
             <input type="checkbox" v-model="check" />我已阅读并同意
-            <nuxt-link :to="'/'+jkl+'/protocol'">《家有用户协议》</nuxt-link>
+            <nuxt-link :to="'/' + jkl + '/protocol'"
+              >《家有用户协议》</nuxt-link
+            >
           </p>
           <button @click="sendmsg">确定</button>
         </div>
@@ -308,8 +325,8 @@ export default {
       isnull: true,
       staffid: "",
       isonce: 0,
-      message:'获取验证码',
-      promsg:{}
+      message: "获取验证码",
+      promsg: {},
     };
   },
   methods: {
@@ -321,7 +338,7 @@ export default {
       this.txt = false;
     },
     send() {
-      let img = require('~/assets/talk-peo.png');
+      let img = require("~/assets/talk-peo.png");
       let msg = this.talktxt;
       let ll = this.talktxt;
       let that = this;
@@ -358,7 +375,7 @@ export default {
                 ${msg}
               </p>
         `;
-      $(".con").append(dv);
+      $(".conbox").append(dv);
       dv.scrollIntoView();
       this.talktxt = "";
     },
@@ -432,6 +449,13 @@ export default {
     golist() {
       this.$router.push("/" + this.jkl + "/talklist");
     },
+    compare(key){
+    return function(value1,value2){
+        var val1=value1[key];
+        var val2=value2[key];
+        return val1-val2;
+    }
+},
     record(id, staffid) {
       let page = this.page;
       let pp = {
@@ -491,53 +515,45 @@ export default {
     }
     this.ws = this.$store.state.ws;
     let id = localStorage.getItem("uuid");
-    that.staffid =sessionStorage.getItem("staffid")
-      setTimeout(() => {
-        // that.load = false;
-        that.autotalk(id);
-      }, 2000);
+    that.staffid = sessionStorage.getItem("staffid");
+    setTimeout(() => {
+      // that.load = false;
+      that.autotalk(id);
+    }, 2000);
     this.ws.onopen = function () {
-      if(that.staffid){
+      if (that.staffid) {
         that.loadbox(id, that.staffid);
       }
       that.putcard();
     };
     if (this.ws.readyState == 1) {
-      if(that.staffid){
+      if (that.staffid) {
         that.loadbox(id, that.staffid);
       }
       that.putcard();
-      if (that.staffid) {
-      }
     }
     that.ws.onmessage = function (event) {
       let data = JSON.parse(event.data);
       if (data.action == 305) {
-        that.userimg = require('~/assets/talk-peo.png');
+        that.userimg = require("~/assets/talk-peo.png");
         that.staffimg = data.staff.head_img;
         that.staffname = data.staff.name;
         let pro = data.project_info;
-        that.promsg = pro
+        that.promsg = pro;
         if (pro.length !== 0) {
           that.proid = pro.id;
-          
-          if(that.isonce == 0){
-            if(that.staffid){
-              that.record(id, that.staffid);
-            }
-            that.isonce = 1
-            
-          }
+          $(".conbox").html("");
+          that.record(id, that.staffid);
         }
       } else if (data.action == 303) {
-        $(".con").html('');
+        $(".conbox").html("");
         that.isover = true;
         let nn = 0;
         if (that.list.length == 0) {
-          that.list = data.data.reverse()
+          that.list = data.data.reverse();
           // that.list = data.data.reverse();
         } else {
-          let list = data.data.reverse()
+          let list = data.data.reverse();
           // let list = data.data.reverse();
           nn = list.length - 1;
           // that.list = list;
@@ -566,6 +582,14 @@ export default {
         }
         that.page = that.page + 1;
         that.total = data.total;
+        that.list = that.list.filter((x, index, self) => {
+          var arrids = [];
+          that.list.forEach((item, i) => {
+            arrids.push(item.id);
+          });
+          return arrids.indexOf(x.id) === index;
+        });
+        that.list.sort(that.compare('id'))
         for (let val of that.list) {
           let msg = val.content;
           if (msg == "%get your phone%") {
@@ -586,7 +610,7 @@ export default {
               </div>
             </div>
             `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
           } else if (msg == "%put my card%") {
             let img = that.staffimg;
             let dv = document.createElement("div");
@@ -620,7 +644,7 @@ export default {
               </a>
             </div>
             `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
           } else {
             if (msg.split("face").length !== 0) {
               let index = msg.indexOf("face");
@@ -686,9 +710,8 @@ export default {
                   `;
               }
             }
-            $(".con").append(dv);
+            $(".conbox").append(dv);
           }
-          
         }
         let kk;
         let dds = document.getElementsByClassName("alltxt");
@@ -710,10 +733,10 @@ export default {
             </div>
           </div>
           `;
-          let dv = document.createElement("div");
-          dv.innerHTML = txt;
-          dv.className = "peo-pro alltxt";
-          $(".con").prepend(dv);
+        let dv = document.createElement("div");
+        dv.innerHTML = txt;
+        dv.className = "peo-pro alltxt";
+        $(".conbox").prepend(dv);
         if (kk) {
           kk.scrollIntoView();
         }
@@ -721,13 +744,23 @@ export default {
         if (data.fromUserName.length < 10) {
           that.load = false;
         }
-        if ((data.fromUserName == that.staffid || !sessionStorage.getItem(that.proid)) && data.fromUserName.length < 10) {
-          if (!sessionStorage.getItem(that.proid) && data.fromUserName.length < 10) {
+        if (
+          (data.fromUserName == that.staffid ||
+            !sessionStorage.getItem(that.proid)) &&
+          String(data.fromUserName).length < 10
+        ) {
+          if (
+            !sessionStorage.getItem(that.proid) &&
+            data.fromUserName.length < 10 &&
+            data.fromUserName !== that.staffid
+          ) {
             sessionStorage.setItem("staffid", data.fromUserName);
             sessionStorage.setItem(that.proid, data.fromUserName);
             that.staffid = data.fromUserName;
             that.loadbox(id, that.staffid);
+            that.page = 1;
           }
+          console.log(data);
           let img = that.staffimg || require("~/assets/people.png");
           let msg = data.content;
           if (msg == "%get your phone%") {
@@ -747,7 +780,7 @@ export default {
               </div>
             </div>
             `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
             dv.scrollIntoView();
           } else if (msg == "%put my card%") {
             let mm = require("~/assets/talk-tel.jpg");
@@ -782,7 +815,7 @@ export default {
               </a>
             </div>
             `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
             dv.scrollIntoView();
           } else if (data.content.indexOf("img:") !== -1) {
             let dv = document.createElement("div");
@@ -795,7 +828,7 @@ export default {
                   <img src="${img}" alt="" />
                 </div>
               `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
             dv.scrollIntoView();
           } else {
             if (msg.split("face").length !== 0) {
@@ -826,7 +859,7 @@ export default {
                   ${msg}
                   </p>
             `;
-            $(".con").append(dv);
+            $(".conbox").append(dv);
             dv.scrollIntoView();
           }
         } else {
@@ -860,7 +893,6 @@ export default {
         that.rate = data.num.rate;
         that.stafftel = data.staff.tel;
       }
-      console.log(data);
     };
 
     let dds = document.getElementsByClassName("alltxt");
@@ -870,8 +902,7 @@ export default {
     }
     $("#foott").css("display", "none");
     this.$nextTick(() => {
-      setTimeout(()=>{
-        document
+      document
         .getElementById("upload")
         .addEventListener("change", function (e) {
           var file = event.currentTarget.files[0];
@@ -889,7 +920,7 @@ export default {
                 </div>
               `;
               let ig = ``;
-              $(".con").append(dv);
+              $(".conbox").append(dv);
               dv.scrollIntoView();
               let ll = `img:${imgFile}`;
               let pp = {
@@ -904,14 +935,13 @@ export default {
             this.toast("请不要上传超过2M的图片");
           }
         });
-      },2000)
     });
     $(".con").on("scroll", function () {
       if ($(this).scrollTop() == 0) {
         console.log(100 * that.page);
         if (that.isover && Math.ceil(that.total / 15) >= that.page) {
           that.isover = false;
-          if(that.staffid){
+          if (that.staffid) {
             that.record(id, that.staffid);
           }
         }
@@ -929,6 +959,7 @@ export default {
   },
   beforeDestroy() {
     sessionStorage.removeItem("islist");
+    sessionStorage.removeItem(this.proid);
     // sessionStorage.removeItem("staffid");
   },
 };

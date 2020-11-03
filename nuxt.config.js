@@ -48,9 +48,9 @@ export default {
       {
         src: '/jQueryRotate.js'
       },
-      {
-        src: '//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js'
-      }
+      // {
+      //   src: '//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js'
+      // }
     ]
   },
   /*

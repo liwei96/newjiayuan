@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ReconnectingWebSocket from 'reconnecting-websocket'
 export default ({
   app,
   store
