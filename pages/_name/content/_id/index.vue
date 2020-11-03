@@ -394,7 +394,7 @@
         领取分析资料
       </button>
     </div>
-    <div class="line" v-if="deal_prices.length"></div>
+    <div class="line" v-show="deal_prices.length"></div>
     <div class="newprice">
       <h3 v-show="deal_prices.length">
         最新成交价
@@ -674,32 +674,51 @@
     <div :class="lucktypes ? 'luck' : 'luck lucked'" @click="goluck">
       <img src="~/assets/content-luck.png" alt="" />
     </div>
-    <nav-view :phone="phone" @fot="chang($event)" :totalnum="totalnum" :jkl="jkl"></nav-view>
+    <nav-view
+      :phone="phone"
+      @fot="chang($event)"
+      :totalnum="totalnum"
+      :jkl="jkl"
+    ></nav-view>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
       <img :src="src" alt />
     </div>
     <div class="talkbox" v-if="talktype">
-      <img src="~/assets/w-del.png" alt="" class="del" @click="talktype = false"/>
+      <img
+        src="~/assets/w-del.png"
+        alt=""
+        class="del"
+        @click="talktype = false"
+      />
       <div class="peo">
         <div class="left">
           <img :src="staffimg" alt="" />
         </div>
         <div class="right">
-          <h3>{{staffname}} <span>新房咨询</span></h3>
+          <h3>{{ staffname }} <span>新房咨询</span></h3>
           <p>从业咨询服务6年</p>
         </div>
       </div>
       <div class="msg">
         <div class="li">
-          <p class="num"><span>{{usernum}}</span>人</p>
+          <p class="num">
+            <span>{{ usernum }}</span
+            >人
+          </p>
           <p class="txt">服务客户</p>
         </div>
         <div class="li">
-          <p class="num"><span>{{looknum}}</span>次</p>
+          <p class="num">
+            <span>{{ looknum }}</span
+            >次
+          </p>
           <p class="txt">带看客户</p>
         </div>
         <div class="li">
-          <p class="num"><span>{{rate}}</span>%</p>
+          <p class="num">
+            <span>{{ rate }}</span
+            >%
+          </p>
           <p class="txt">好评率</p>
         </div>
       </div>
@@ -795,15 +814,15 @@ export default {
               data.deal_prices[val].price,
             ];
           }
-          // console.log(data)
+          // console.log(data.imgs);
           return data;
         }),
     ]);
     return {
-      effects: res.imgs.img.effects,
-      examples: res.imgs.img.examples,
-      traffics: res.imgs.img.traffics,
-      imgnum: res.imgs.num,
+      effects: res ? res.imgs.img.effects : [],
+      examples: res ? res.imgs.img.examples : [],
+      traffics: res ? res.imgs.img.traffics : [],
+      imgnum: res ? res.imgs.num : [],
       abstract: res.abstract,
       phone: res.common.phone,
       scores: res.scores,
@@ -893,14 +912,14 @@ export default {
       othercode: "",
       timer: "",
       lucktypes: true,
-      ws:{},
-      totalnum:0,
-      usernum:0,
-      looknum:0,
-      rate:0,
-      stafftel:0,
-      staffname:'',
-      staffimg:''
+      ws: {},
+      totalnum: 0,
+      usernum: 0,
+      looknum: 0,
+      rate: 0,
+      stafftel: 0,
+      staffname: "",
+      staffimg: "",
     };
   },
   methods: {
@@ -1353,7 +1372,6 @@ export default {
     chang(data) {
       this.typenum = data.position;
       this.name = data.name;
-
       this.typebtn = 1;
       this.tan = true;
       this.remark = "详情页+预约看房";
@@ -1402,18 +1420,18 @@ export default {
       }
     },
     putcard() {
-      let urlid = this.$route.params.id
+      let urlid = this.$route.params.id;
       let id = sessionStorage.getItem(urlid);
       let pp = {
         controller: "Staff",
         action: "info",
         params: { uuid: id },
       };
-      if(id){
+      if (id) {
         this.ws.send(JSON.stringify(pp));
       }
     },
-    talk(){
+    talk() {
       let urlid = this.$route.params.id;
       let id = sessionStorage.getItem(urlid) || 0;
       if (id) {
@@ -1430,30 +1448,36 @@ export default {
       } else {
         sessionStorage.removeItem("staffid");
       }
-      this.$router.push("/" + this.jkl + "/talk");
-    }
+      this.$router.push("/" + this.jkl + "/talk/" + urlid);
+    },
   },
   mounted() {
-    sessionStorage.setItem('proid',this.$route.params.id)
+    sessionStorage.setItem("proid", this.$route.params.id);
     let that = this;
-    if(sessionStorage.getItem('total') && sessionStorage.getItem('total') !== 'NaN'){
-      this.totalnum = parseInt(sessionStorage.getItem('total'))
+    if (
+      sessionStorage.getItem("total") &&
+      sessionStorage.getItem("total") !== "NaN"
+    ) {
+      this.totalnum = parseInt(sessionStorage.getItem("total"));
     }
-    $('#foott').css('display','block')
+    $("#foott").css("display", "block");
     window.addEventListener("scroll", this.handleScroll);
-    this.ws = this.$store.state.ws
+    this.ws = this.$store.state.ws;
     this.$store.state.ws.onmessage = function (event) {
       let data = JSON.parse(event.data);
-      if(data.action == 301) {
-        let urlid = that.$route.params.id
-        if(!sessionStorage.getItem(urlid)){
-          sessionStorage.setItem(urlid,data.fromUserName)
-          that.putcard()
-        }else{
-          if(sessionStorage.getItem(data.fromUserName)){
-            sessionStorage.setItem(data.fromUserName,(parseInt(sessionStorage.getItem(data.fromUserName))+1))
-          }else{
-            sessionStorage.setItem(data.fromUserName,1)
+      if (data.action == 301) {
+        let urlid = that.$route.params.id;
+        if (!sessionStorage.getItem(urlid)) {
+          sessionStorage.setItem(urlid, data.fromUserName);
+          that.putcard();
+        } else {
+          if (sessionStorage.getItem(data.fromUserName)) {
+            sessionStorage.setItem(
+              data.fromUserName,
+              parseInt(sessionStorage.getItem(data.fromUserName)) + 1
+            );
+          } else {
+            sessionStorage.setItem(data.fromUserName, 1);
           }
           if (
             sessionStorage.getItem("total") &&
@@ -1463,22 +1487,24 @@ export default {
               "total",
               parseInt(sessionStorage.getItem("total")) + 1
             );
-            that.totalnum = parseInt(sessionStorage.getItem('total'));
+            that.totalnum = parseInt(sessionStorage.getItem("total"));
           } else {
             sessionStorage.setItem("total", 1);
             that.totalnum = 1;
           }
         }
-      }else if (data.action == 206) {
-        that.usernum = data.num.user_num
-        that.looknum = data.num.look_num
-        that.rate = data.num.rate
-        that.stafftel = data.staff.tel
-        that.staffname = data.staff.name
-        that.staffimg = data.staff.img
-        that.talktype = true
+      } else if (data.action == 206) {
+        that.usernum = data.num.user_num;
+        that.looknum = data.num.look_num;
+        that.rate = data.num.rate;
+        that.stafftel = data.staff.tel;
+        that.staffname = data.staff.name;
+        that.staffimg = data.staff.img;
+        that.talktype = true;
+      } else if (data.action == 302) {
+        sessionStorage.setItem('staffid',data.sid)
       }
-    }
+    };
     if (this.kidcode) {
       $cookies.set("kid", this.kidcode);
       $cookies.set("other", this.othercode);
@@ -1509,7 +1535,6 @@ export default {
     var time2 = date2.getMonth() + 1 + "月" + date2.getDate() + "日";
     localStorage.setItem(this.$route.params.id + "time", time2);
     this.time = time2;
-
     this.id = this.$route.params.id;
     let foot = $cookies.get("foot");
     if (foot) {
@@ -1559,13 +1584,15 @@ export default {
       this.drawline();
       this.drawlei();
       this.mmap();
-      document.getElementById("hh").style.borderBottom = "0";
+      // document.getElementById("hh").style.borderBottom = "0";
     });
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.setnav);
-    document.getElementById("hh").style.borderBottom =
-      "0.03125rem solid #f7f7f7";
+    // setTimeout(()=>{
+    //   document.getElementById("hh").style.borderBottom =
+    //   "0.03125rem solid #f7f7f7";
+    // },2000)
   },
 };
 </script>

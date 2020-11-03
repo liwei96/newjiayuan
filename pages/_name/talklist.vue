@@ -13,7 +13,7 @@
         <div class="right">
           <div class="top">
             {{item.name}}
-            <p class="pro">越秀缦云府越秀缦云府越秀缦云府</p>
+            <p class="pro">{{item.project}}</p>
             <span class="time">{{item.time}}</span>
           </div>
           <p class="txt">{{item.content}}</p>
@@ -50,7 +50,7 @@ export default {
       }
       sessionStorage.removeItem(id)
       sessionStorage.setItem('islist',1)
-      this.$router.push("/" + this.jkl + "/talk/"+id);
+      this.$router.push("/" + this.jkl + "/talk");
     },
     back() {
       this.$router.go(-1);
@@ -174,7 +174,7 @@ header {
           font-size: 0.6875rem;
           background-color: #ebf9fa;
           margin-left: 0.5rem;
-          width: 6.5625rem;
+          max-width: 6.5625rem;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;

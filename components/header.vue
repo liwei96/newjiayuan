@@ -79,7 +79,21 @@ export default {
     gotalk() {
       // window.location.href =
       //   "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
-      this.$router.push("/" + this.jkl + "/talklist");
+      let urlid = sessionStorage.getItem('proid');
+      let id = sessionStorage.getItem(urlid);
+      if (id) {
+        sessionStorage.setItem("staffid", id);
+        let n = parseInt(sessionStorage.getItem(id));
+        let total = parseInt(sessionStorage.getItem("total"));
+        total = total - n;
+        if (total != 0) {
+          sessionStorage.setItem("total", total);
+        } else {
+          sessionStorage.removeItem("total");
+        }
+        sessionStorage.removeItem(id);
+      }
+      this.$router.push("/" + this.jkl + "/talk/"+urlid);
     }
   },
   mounted() {

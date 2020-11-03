@@ -60,9 +60,6 @@ export default {
           sessionStorage.removeItem("total");
         }
         sessionStorage.removeItem(id);
-        
-      } else {
-        sessionStorage.removeItem("staffid");
       }
       this.$router.push("/" + this.jkl + "/talk/"+urlid);
     },

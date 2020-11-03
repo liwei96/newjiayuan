@@ -6,12 +6,12 @@
         家园{{ staffname }}为您服务
         <div class="status doen" @click="golist" v-if="listtype">
           <img src="~/assets/talk-list.png" alt="" />
-          <p v-if="totalnum">{{ totalnum }}</p>
+          <p v-if="totalnum"></p>
         </div>
       </header>
       <div class="con">
         <p class="time">{{ time }}</p>
-        <div class="you alltxt">
+        <!-- <div class="you alltxt">
           <div class="left">
             <img src="~/assets/people.png" alt="" />
           </div>
@@ -91,7 +91,7 @@
           <div class="right">
             <img src="~/assets/lun02.jpg" alt="" />
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="nav">
         <div class="top">
@@ -302,13 +302,14 @@ export default {
       usernum: 0,
       looknum: 0,
       rate: 0,
-      stafftel: "",
+      stafftel: "400-718-6686",
       listtype: true,
       proid: 0,
       isnull: true,
       staffid: "",
       isonce: 0,
-      message:'获取验证码'
+      message:'获取验证码',
+      promsg:{}
     };
   },
   methods: {
@@ -436,7 +437,7 @@ export default {
       let pp = {
         controller: "chat",
         action: "history",
-        params: { mine: id, customer: staffid, page: page, limit: 100 },
+        params: { mine: id, customer: staffid, page: page, limit: 15 },
       };
       this.ws.send(JSON.stringify(pp));
     },
@@ -490,23 +491,21 @@ export default {
     }
     this.ws = this.$store.state.ws;
     let id = localStorage.getItem("uuid");
-    that.staffid =
-      sessionStorage.getItem(sessionStorage.getItem("proid")) ||
-      sessionStorage.getItem("staffid") ||
-      0;
-    if (!that.staffid) {
-      this.load = true;
+    that.staffid =sessionStorage.getItem("staffid")
       setTimeout(() => {
-        that.load = false;
+        // that.load = false;
         that.autotalk(id);
-      }, 5000);
-    }
+      }, 2000);
     this.ws.onopen = function () {
-      that.loadbox(id, that.staffid);
+      if(that.staffid){
+        that.loadbox(id, that.staffid);
+      }
       that.putcard();
     };
     if (this.ws.readyState == 1) {
-      that.loadbox(id, that.staffid);
+      if(that.staffid){
+        that.loadbox(id, that.staffid);
+      }
       that.putcard();
       if (that.staffid) {
       }
@@ -518,39 +517,30 @@ export default {
         that.staffimg = data.staff.head_img;
         that.staffname = data.staff.name;
         let pro = data.project_info;
+        that.promsg = pro
         if (pro.length !== 0) {
           that.proid = pro.id;
-          let txt = `
-            <img src="${that.userimg}" alt="" />
-          <div class="pro">
-            <img src="${pro.img}" alt="" />
-            <div class="pro-msg">
-              <p class="name">${pro.name}</p>
-              <p class="area">建面 ${pro.area}/m²</p>
-              <p class="price">
-                均价<span><i>${pro.price}</i>元/m²</span>
-              </p>
-            </div>
-          </div>
-          `;
-          let dv = document.createElement("div");
-          dv.innerHTML = txt;
-          dv.className = "peo-pro alltxt";
+          
           if(that.isonce == 0){
-            that.record(id, that.staffid);
+            if(that.staffid){
+              that.record(id, that.staffid);
+            }
             that.isonce = 1
-            $(".con").append(dv);
-            dv.scrollIntoView();
+            
           }
         }
       } else if (data.action == 303) {
+        $(".con").html('');
         that.isover = true;
         let nn = 0;
         if (that.list.length == 0) {
-          that.list = data.data.reverse();
+          that.list = data.data.reverse()
+          // that.list = data.data.reverse();
         } else {
-          let list = data.data.reverse();
+          let list = data.data.reverse()
+          // let list = data.data.reverse();
           nn = list.length - 1;
+          // that.list = list;
           that.list = list.concat(that.list);
         }
         let dd = new Date();
@@ -698,6 +688,7 @@ export default {
             }
             $(".con").append(dv);
           }
+          
         }
         let kk;
         let dds = document.getElementsByClassName("alltxt");
@@ -706,6 +697,23 @@ export default {
         } else {
           kk = dds[nn];
         }
+        let txt = `
+            <img src="${that.userimg}" alt="" />
+          <div class="pro">
+            <img src="${that.promsg.img}" alt="" />
+            <div class="pro-msg">
+              <p class="name">${that.promsg.name}</p>
+              <p class="area">建面 ${that.promsg.area}/m²</p>
+              <p class="price">
+                均价<span><i>${that.promsg.price}</i>元/m²</span>
+              </p>
+            </div>
+          </div>
+          `;
+          let dv = document.createElement("div");
+          dv.innerHTML = txt;
+          dv.className = "peo-pro alltxt";
+          $(".con").prepend(dv);
         if (kk) {
           kk.scrollIntoView();
         }
@@ -713,8 +721,8 @@ export default {
         if (data.fromUserName.length < 10) {
           that.load = false;
         }
-        if ((data.fromUserName == that.staffid || !that.staffid) && data.fromUserName!=152) {
-          if (!that.staffid && data.fromUserName.length < 10) {
+        if ((data.fromUserName == that.staffid || !sessionStorage.getItem(that.proid)) && data.fromUserName.length < 10) {
+          if (!sessionStorage.getItem(that.proid) && data.fromUserName.length < 10) {
             sessionStorage.setItem("staffid", data.fromUserName);
             sessionStorage.setItem(that.proid, data.fromUserName);
             that.staffid = data.fromUserName;
@@ -862,7 +870,8 @@ export default {
     }
     $("#foott").css("display", "none");
     this.$nextTick(() => {
-      document
+      setTimeout(()=>{
+        document
         .getElementById("upload")
         .addEventListener("change", function (e) {
           var file = event.currentTarget.files[0];
@@ -895,13 +904,16 @@ export default {
             this.toast("请不要上传超过2M的图片");
           }
         });
+      },2000)
     });
     $(".con").on("scroll", function () {
       if ($(this).scrollTop() == 0) {
         console.log(100 * that.page);
-        if (that.isover && Math.ceil(that.total / 100) >= that.page) {
+        if (that.isover && Math.ceil(that.total / 15) >= that.page) {
           that.isover = false;
-          that.record(id, that.staffid);
+          if(that.staffid){
+            that.record(id, that.staffid);
+          }
         }
       }
     });
@@ -917,7 +929,7 @@ export default {
   },
   beforeDestroy() {
     sessionStorage.removeItem("islist");
-    sessionStorage.removeItem("staffid");
+    // sessionStorage.removeItem("staffid");
   },
 };
 </script>
