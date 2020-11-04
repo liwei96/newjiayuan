@@ -161,7 +161,7 @@
       </div>
     </div>
     <div class="load" v-if="load">
-      <p>正在发起聊天，请稍后...</p>
+      <p>正在加载聊天，请稍后...</p>
       <img src="~/assets/talk-load.gif" alt="" />
     </div>
     <van-popup
@@ -449,13 +449,13 @@ export default {
     golist() {
       this.$router.push("/" + this.jkl + "/talklist");
     },
-    compare(key){
-    return function(value1,value2){
-        var val1=value1[key];
-        var val2=value2[key];
-        return val1-val2;
-    }
-},
+    compare(key) {
+      return function (value1, value2) {
+        var val1 = value1[key];
+        var val2 = value2[key];
+        return val1 - val2;
+      };
+    },
     record(id, staffid) {
       let page = this.page;
       let pp = {
@@ -492,6 +492,37 @@ export default {
         this.ws.send(JSON.stringify(pp));
       }
     },
+    start() {
+      let that = this;
+      this.ws = this.$store.state.ws;
+      let id = localStorage.getItem("uuid");
+      that.staffid = sessionStorage.getItem("staffid");
+      setTimeout(() => {
+        // that.load = false;
+        that.autotalk(id);
+      }, 2000);
+      this.ws.onopen = function () {
+        if (that.staffid) {
+          that.loadbox(id, that.staffid);
+        }
+        that.putcard();
+      };
+      if (this.ws.readyState == 1) {
+        if (that.staffid) {
+          that.loadbox(id, that.staffid);
+        }
+        that.putcard();
+      }
+      $(".con").on("click", ".mfbtn", function () {
+        that.show = true;
+      });
+      if (sessionStorage.getItem("islist")) {
+        this.listtype = false;
+      }
+      if (sessionStorage.getItem("total")) {
+        this.totalnum = parseInt(sessionStorage.getItem("total"));
+      }
+    },
   },
   created() {
     let that = this;
@@ -503,36 +534,65 @@ export default {
     }
   },
   mounted() {
+    let url = window.location.href;
+    url = url.split("?")[1];
+    if (url && url.indexOf("reconnect") != -1) {
+      console.log(decodeURIComponent(url.split("=")[1]));
+      let arr = decodeURIComponent(url.split("=")[1]).split("?");
+      sessionStorage.setItem("reconnect", arr[0]);
+      let kk = arr[1].split("&");
+      let pro = kk[0].split("=")[1];
+      let uuid = kk[1].split("=")[1];
+      let ip = ip_arr["ip"];
+      let city = 1;
+      localStorage.setItem("uuid", uuid);
+      let pp = {
+        controller: "Info",
+        action: "register",
+        params: {
+          city: city,
+          project: pro,
+          ip: ip,
+          url: arr[0],
+        },
+      };
+      this.$store.state.ws.send(JSON.stringify(pp));
+    } else {
+      this.start();
+    }
+    // return
     let that = this;
-    $(".con").on("click", ".mfbtn", function () {
-      that.show = true;
-    });
-    if (sessionStorage.getItem("islist")) {
-      this.listtype = false;
-    }
-    if (sessionStorage.getItem("total")) {
-      this.totalnum = parseInt(sessionStorage.getItem("total"));
-    }
     this.ws = this.$store.state.ws;
-    let id = localStorage.getItem("uuid");
-    that.staffid = sessionStorage.getItem("staffid");
-    setTimeout(() => {
-      // that.load = false;
-      that.autotalk(id);
-    }, 2000);
-    this.ws.onopen = function () {
-      if (that.staffid) {
-        that.loadbox(id, that.staffid);
-      }
-      that.putcard();
-    };
-    if (this.ws.readyState == 1) {
-      if (that.staffid) {
-        that.loadbox(id, that.staffid);
-      }
-      that.putcard();
-    }
+    // $(".con").on("click", ".mfbtn", function () {
+    //   that.show = true;
+    // });
+    // if (sessionStorage.getItem("islist")) {
+    //   this.listtype = false;
+    // }
+    // if (sessionStorage.getItem("total")) {
+    //   this.totalnum = parseInt(sessionStorage.getItem("total"));
+    // }
+    // this.ws = this.$store.state.ws;
+    // let id = localStorage.getItem("uuid");
+    // that.staffid = sessionStorage.getItem("staffid");
+    // setTimeout(() => {
+    //   // that.load = false;
+    //   that.autotalk(id);
+    // }, 2000);
+    // this.ws.onopen = function () {
+    //   if (that.staffid) {
+    //     that.loadbox(id, that.staffid);
+    //   }
+    //   that.putcard();
+    // };
+    // if (this.ws.readyState == 1) {
+    //   if (that.staffid) {
+    //     that.loadbox(id, that.staffid);
+    //   }
+    //   that.putcard();
+    // }
     that.ws.onmessage = function (event) {
+      // 0 5 0 1 11
       let data = JSON.parse(event.data);
       if (data.action == 305) {
         that.userimg = require("~/assets/talk-peo.png");
@@ -544,8 +604,10 @@ export default {
           that.proid = pro.id;
           $(".conbox").html("");
           that.record(id, that.staffid);
+          this.load = true;
         }
       } else if (data.action == 303) {
+        that.load = false;
         $(".conbox").html("");
         that.isover = true;
         let nn = 0;
@@ -589,7 +651,7 @@ export default {
           });
           return arrids.indexOf(x.id) === index;
         });
-        that.list.sort(that.compare('id'))
+        that.list.sort(that.compare("id"));
         for (let val of that.list) {
           let msg = val.content;
           if (msg == "%get your phone%") {
@@ -720,23 +782,23 @@ export default {
         } else {
           kk = dds[nn];
         }
-        let txt = `
-            <img src="${that.userimg}" alt="" />
-          <div class="pro">
-            <img src="${that.promsg.img}" alt="" />
-            <div class="pro-msg">
-              <p class="name">${that.promsg.name}</p>
-              <p class="area">建面 ${that.promsg.area}/m²</p>
-              <p class="price">
-                均价<span><i>${that.promsg.price}</i>元/m²</span>
-              </p>
-            </div>
-          </div>
-          `;
-        let dv = document.createElement("div");
-        dv.innerHTML = txt;
-        dv.className = "peo-pro alltxt";
-        $(".conbox").prepend(dv);
+        // let txt = `
+        //     <img src="${that.userimg}" alt="" />
+        //   <div class="pro">
+        //     <img src="${that.promsg.img}" alt="" />
+        //     <div class="pro-msg">
+        //       <p class="name">${that.promsg.name}</p>
+        //       <p class="area">建面 ${that.promsg.area}/m²</p>
+        //       <p class="price">
+        //         均价<span><i>${that.promsg.price}</i>元/m²</span>
+        //       </p>
+        //     </div>
+        //   </div>
+        //   `;
+        // let dv = document.createElement("div");
+        // dv.innerHTML = txt;
+        // dv.className = "peo-pro alltxt";
+        // $(".conbox").prepend(dv);
         if (kk) {
           kk.scrollIntoView();
         }
@@ -892,6 +954,9 @@ export default {
         that.looknum = data.num.look_num;
         that.rate = data.num.rate;
         that.stafftel = data.staff.tel;
+      } else if (data.action == 302) {
+        that.staffid = data.sid;
+        that.start()
       }
     };
 

@@ -843,19 +843,22 @@ export default {
       cityname: res.common.city_info.current.short,
       othercode: other,
       kidcode: kid,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: this.abstract.name + "-" + this.cityname,
+      title: this.title || this.abstract.name + "-" + this.cityname,
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

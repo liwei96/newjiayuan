@@ -105,6 +105,8 @@ export default ({
     let pro = 0
     if (url.indexOf('content') !== -1) {
       pro = to.params.id
+    }else{
+      pro = 0
     }
     let pp = {
       controller: "Info",
@@ -123,14 +125,14 @@ export default ({
         timestamp = from.query.uuid
         console.log(456)
         if(store.state.ws){
-          if(to.fullPath.indexOf('content')!==-1){
+          if(to.fullPath.indexOf('talk')===-1){
             store.state.ws.send(JSON.stringify(pp))
           }
         }
       } else if (localStorage.getItem('uuid')) {
         console.log(789)
         if(store.state.ws){
-          if(to.fullPath.indexOf('content')!==-1){
+          if(to.fullPath.indexOf('talk')===-1){
             store.state.ws.send(JSON.stringify(pp))
           }
         }
@@ -155,8 +157,8 @@ export default ({
           "ws://139.155.128.107:9509?uuid="+timestamp
         );
         ws.onopen = function () {
-          if(to.fullPath.indexOf('content')!==-1){
-            ws.send(JSON.stringify(pp))
+          if(to.fullPath.indexOf('talk')===-1){
+            store.state.ws.send(JSON.stringify(pp))
           }
         }
         store.dispatch("setws", ws);
@@ -171,8 +173,8 @@ export default ({
           "ws://139.155.128.107:9509?uuid="+localStorage.getItem('uuid')
         );
         ws.onopen = function () {
-          if(to.fullPath.indexOf('content')!==-1){
-            ws.send(JSON.stringify(pp))
+          if(to.fullPath.indexOf('talk')===-1){
+            store.state.ws.send(JSON.stringify(pp))
           }
         }
         store.dispatch("setws", ws);
@@ -184,8 +186,8 @@ export default ({
         "ws://139.155.128.107:9509?uuid="+localStorage.getItem('uuid')
       );
       ws.onopen = function () {
-        if(to.fullPath.indexOf('content')!==-1){
-          ws.send(JSON.stringify(pp))
+        if(to.fullPath.indexOf('talk')===-1){
+          store.state.ws.send(JSON.stringify(pp))
         }
       }
       store.dispatch("setws", ws);
