@@ -45,23 +45,23 @@ export default {
       this.$emit("fot", { position: id, name: name });
     },
     gotalk() {
-      window.location.href =
-        "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
-      // let urlid = sessionStorage.getItem('proid');
-      // let id = sessionStorage.getItem(urlid);
-      // if (id) {
-      //   sessionStorage.setItem("staffid", id);
-      //   let n = parseInt(sessionStorage.getItem(id));
-      //   let total = parseInt(sessionStorage.getItem("total"));
-      //   total = total - n;
-      //   if (total != 0) {
-      //     sessionStorage.setItem("total", total);
-      //   } else {
-      //     sessionStorage.removeItem("total");
-      //   }
-      //   sessionStorage.removeItem(id);
-      // }
-      // this.$router.push("/" + this.jkl + "/talk/"+urlid);
+      // window.location.href =
+      //   "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
+      let urlid = sessionStorage.getItem('proid');
+      let id = sessionStorage.getItem(urlid);
+      if (id) {
+        sessionStorage.setItem("staffid", id);
+        let n = parseInt(sessionStorage.getItem(id));
+        let total = parseInt(sessionStorage.getItem("total"));
+        total = total - n;
+        if (total != 0) {
+          sessionStorage.setItem("total", total);
+        } else {
+          sessionStorage.removeItem("total");
+        }
+        sessionStorage.removeItem(id);
+      }
+      this.$router.push("/" + this.jkl + "/talk/"+urlid);
     },
   },
   mounted() {

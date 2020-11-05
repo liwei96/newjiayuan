@@ -26,21 +26,10 @@
             您好！很高兴为您服务,看楼盘项目 本人可提供免费接送服务
           </p>
         </div>
-        <div class="peo-pro alltxt">
-          <img src="~/assets/talk-peo.png" alt="" />
-          <div class="pro">
-            <img src="~/assets/lun02.jpg" alt="" />
-            <div class="pro-msg">
-              <p class="name">临安宝龙广场</p>
-              <p class="area">建面 80-120/m²</p>
-              <p class="price">
-                均价<span><i>25000</i>元/m²</span>
-              </p>
-            </div>
-          </div>
-        </div>
         <div class="gettel alltxt">
-          <img src="~/assets/people.png" alt="" class="peoimg" />
+          <div class="left">
+            <img src="~/assets/people.png" alt="" class="peoimg" />
+          </div>
           <div class="telbox">
             <img src="~/assets/talk-tel.jpg" alt="" />
             <div class="telbox-bom">
@@ -53,7 +42,9 @@
           </div>
         </div>
         <div class="putcard alltxt">
-          <img src="~/assets/people.png" alt="" class="peoimg" />
+           <div class="left">
+            <img src="~/assets/people.png" alt="" class="peoimg" />
+          </div>
           <div class="cardbox">
             <div class="top">
               <img src="~/assets/people.png" alt="" />
@@ -96,7 +87,7 @@
       </div>
       <div class="nav">
         <div class="top">
-          <p :class="txt ? 'active' : ''" @click="txt = !txt">大家都在问</p>
+          <p :class="txt ? 'active' : ''" @click="settxt">大家都在问</p>
           <a :href="'tel:' + stafftel">
             <p :class="teltype ? 'hid' : ''">电话咨询</p>
           </a>
@@ -108,7 +99,7 @@
             v-model="talktxt"
             placeholder="在这输入内容"
           />
-          <img src="~/assets/talk-icon.png" alt="" @click="icon = !icon" />
+          <img src="~/assets/talk-icon.png" alt="" @click="seticon" />
           <img src="~/assets/talk-img.png" alt="" v-show="!msg" />
           <input type="file" id="upload" v-show="!msg" />
           <span v-if="msg" @click="send">发送</span>
@@ -184,12 +175,12 @@
           <p class="xiyi">
             <input type="checkbox" v-model="check" />我已阅读并同意
             <nuxt-link :to="'/' + jkl + '/protocol'"
-              >《家有用户协议》</nuxt-link
+              >《家园用户协议》</nuxt-link
             >
           </p>
           <button @click="sendmsg">确定</button>
         </div>
-        <div class="two" v-if="isok">
+        <!-- <div class="two" v-if="isok">
           <p class="msg">验证码已发送到187****4376 请注意查看</p>
           <input
             class="txt"
@@ -199,13 +190,14 @@
           />
           <span @click="sendmsg">{{ message }}</span>
           <button @click="sure">确定</button>
-        </div>
+        </div> -->
       </div>
     </van-popup>
   </div>
 </template>
 <script>
 import { send, check, put } from "@/api/api";
+
 export default {
   async asyncData(context) {
     let token = context.store.state.cookie.token;
@@ -331,7 +323,11 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      if (sessionStorage.getItem("reconnect")) {
+        window.location.href = sessionStorage.getItem("reconnect");
+      } else {
+        this.$router.go(-1);
+      }
     },
     settxt(k) {
       this.talktxt = k;
@@ -495,12 +491,15 @@ export default {
     start() {
       let that = this;
       this.ws = this.$store.state.ws;
-      let id = localStorage.getItem("uuid");
+      this.id = localStorage.getItem("uuid");
+      let id = this.id;
       that.staffid = sessionStorage.getItem("staffid");
       setTimeout(() => {
         // that.load = false;
         that.autotalk(id);
       }, 2000);
+      // that.loadbox(id, that.staffid);
+      // that.putcard();
       this.ws.onopen = function () {
         if (that.staffid) {
           that.loadbox(id, that.staffid);
@@ -523,6 +522,14 @@ export default {
         this.totalnum = parseInt(sessionStorage.getItem("total"));
       }
     },
+    seticon(){
+      this.icon = !this.icon
+      this.txt = false
+    },
+    settxt(){
+      this.txt = !this.txt
+      this.icon = false
+    }
   },
   created() {
     let that = this;
@@ -536,16 +543,32 @@ export default {
   mounted() {
     let url = window.location.href;
     url = url.split("?")[1];
+    let id = localStorage.getItem("uuid");
+    this.load = true;
     if (url && url.indexOf("reconnect") != -1) {
       console.log(decodeURIComponent(url.split("=")[1]));
       let arr = decodeURIComponent(url.split("=")[1]).split("?");
       sessionStorage.setItem("reconnect", arr[0]);
       let kk = arr[1].split("&");
-      let pro = kk[0].split("=")[1];
       let uuid = kk[1].split("=")[1];
-      let ip = ip_arr["ip"];
-      let city = 1;
       localStorage.setItem("uuid", uuid);
+      if(!sessionStorage.getItem('isconnect')){
+        sessionStorage.setItem('isconnect',true)
+        setTimeout(()=>{
+          that.$router.go(0)
+        },500)
+      }
+      // this.$store.state.ws.close()
+      // this.$store.state.ws = new ReconnectingWebSocket(
+      //     "ws://139.155.128.107:9509?uuid="+uuid
+      //   );
+      console.log(uuid);
+      let pro = kk[0].split("=")[1];
+      let city = kk[2].split("=")[1];
+      sessionStorage.setItem("proid", pro);
+      console.log("city", city);
+      let ip = ip_arr["ip"];
+      // let city = '1';
       let pp = {
         controller: "Info",
         action: "register",
@@ -554,9 +577,12 @@ export default {
           project: pro,
           ip: ip,
           url: arr[0],
+          uuid: uuid
         },
       };
-      this.$store.state.ws.send(JSON.stringify(pp));
+      setTimeout(()=>{
+        that.$store.state.ws.send(JSON.stringify(pp));
+      },4000)
     } else {
       this.start();
     }
@@ -595,6 +621,7 @@ export default {
       // 0 5 0 1 11
       let data = JSON.parse(event.data);
       if (data.action == 305) {
+        that.load = false;
         that.userimg = require("~/assets/talk-peo.png");
         that.staffimg = data.staff.head_img;
         that.staffname = data.staff.name;
@@ -660,7 +687,9 @@ export default {
             let dv = document.createElement("div");
             dv.className = "gettel alltxt";
             dv.innerHTML = `
-            <img src="${img}" alt="" class="peoimg" />
+            <div class="left">
+              <img src="${img}" alt="" class="peoimg" />
+            </div>
             <div class="telbox">
               <img src="${mm}" alt="" />
               <div class="telbox-bom">
@@ -678,10 +707,14 @@ export default {
             let dv = document.createElement("div");
             dv.className = "putcard alltxt";
             dv.innerHTML = `
-            <img src="${img}" alt="" class="peoimg" />
+            <div class="left">
+              <img src="${img}" alt="" class="peoimg" />
+            </div>
             <div class="cardbox">
               <div class="top">
-                <img src="${img}" alt="" />
+                <div class="top-left">
+                  <img src="${img}" alt="" />
+                </div>
                 <div class="top-right">
                   <h5>${that.staffname} <span>新房咨询</span></h5>
                   <p>从业咨询服务6年</p>
@@ -830,7 +863,9 @@ export default {
             let dv = document.createElement("div");
             dv.className = "gettel alltxt";
             dv.innerHTML = `
-            <img src="${img}" alt="" class="peoimg" />
+            <div class="left">
+              <img src="${img}" alt="" class="peoimg" />
+            </div>
             <div class="telbox">
               <img src="${mm}" alt="" />
               <div class="telbox-bom">
@@ -849,10 +884,14 @@ export default {
             let dv = document.createElement("div");
             dv.className = "putcard alltxt";
             dv.innerHTML = `
-            <img src="${img}" alt="" class="peoimg" />
+            <div class="left">
+              <img src="${img}" alt="" class="peoimg" />
+            </div>
             <div class="cardbox">
               <div class="top">
-                <img src="${img}" alt="" />
+                <div class="top-left">
+                  <img src="${img}" alt="" />
+                </div>
                 <div class="top-right">
                   <h5>${that.staffname} <span>新房咨询</span></h5>
                   <p>从业咨询服务6年</p>
@@ -956,7 +995,8 @@ export default {
         that.stafftel = data.staff.tel;
       } else if (data.action == 302) {
         that.staffid = data.sid;
-        that.start()
+        sessionStorage.setItem("staffid", data.sid);
+        that.start();
       }
     };
 
@@ -971,7 +1011,7 @@ export default {
         .getElementById("upload")
         .addEventListener("change", function (e) {
           var file = event.currentTarget.files[0];
-          if ((file.size / 1000).toFixed(0) < 2000) {
+          if ((file.size / 1000).toFixed(0) < 800) {
             let r = new FileReader(); //本地预览
             r.onload = function (e) {
               var imgFile = e.target.result; //或e.target都是一样的
@@ -997,7 +1037,7 @@ export default {
             };
             let base = r.readAsDataURL(file);
           } else {
-            this.toast("请不要上传超过2M的图片");
+            this.toast("请不要上传超过1M的图片");
           }
         });
     });
@@ -1228,11 +1268,15 @@ header {
     display: flex;
     flex-direction: row;
     margin-bottom: 1.5rem;
-    .peoimg {
+    .left {
       width: 2.5rem;
-      margin-right: 1rem;
-      height: 2.5rem;
-      border-radius: 50%;
+        margin-right: 1rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        overflow: hidden;
+      .peoimg {
+        width: 2.5rem;
+      }
     }
     .telbox {
       width: 15rem;
@@ -1277,11 +1321,15 @@ header {
     display: flex;
     flex-direction: row;
     margin-bottom: 1.5rem;
-    .peoimg {
+    .left {
       width: 2.5rem;
-      margin-right: 1rem;
-      height: 2.5rem;
-      border-radius: 50%;
+        margin-right: 1rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        overflow: hidden;
+      .peoimg {
+        width: 2.5rem;
+      }
     }
     .cardbox {
       width: 13.125rem;
@@ -1292,11 +1340,15 @@ header {
       .top {
         display: flex;
         margin-bottom: 1rem;
-        img {
+        .top-left {
           width: 2.25rem;
-          height: 2.25rem;
-          margin-right: 0.625rem;
-          border-radius: 50%;
+            height: 2.25rem;
+            margin-right: 0.625rem;
+            border-radius: 50%;
+            overflow: hidden;
+          img {
+            width: 2.25rem;
+          }
         }
         .top-right {
           h5 {
