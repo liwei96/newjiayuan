@@ -103,7 +103,7 @@ export default {
     let city = context.store.state.city;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
-    let [res] = await Promise.all([
+    let [res,res1] = await Promise.all([
       context.$axios
         .get("/jy/help/condition", {
           params: {
@@ -115,26 +115,41 @@ export default {
           let data = resp.data;
           return data;
         }),
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
     ]);
     return {
       jkl: jkl,
       countries: res.countries,
       areas: res.areas,
       house_types: res.house_types,
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-帮我找房",
+      title: this.title || "家园新房-帮我找房",
       meta: [
         {
           name: "description",
-          content:
+          content: this.description || 
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

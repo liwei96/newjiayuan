@@ -20,7 +20,7 @@
     <div class="topnav">
       <!-- <img src="~/assets/banner.png" alt class="topimg"/> -->
       <img src="~/assets/banner.png" alt class="topimg" v-if="city !=1 && city!=3"/>
-      <img src="~/assets/index-luck.jpg" alt class="topimg" v-if="city ==1 || city==3" @click="goluck"/>
+      <img src="~/assets/luck-2k.jpg" alt class="topimg" v-if="city ==1 || city==3" @click="goluck"/>
       <ul>
         <li>
           <nuxt-link :to="'/' + jkl + '/search'">
@@ -318,20 +318,23 @@ export default {
       dynamics: res.dynamics,
       jkl: jkl,
       cityname: res.common.city_info.current.short,
-      city:city
+      city:city,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-" + this.cityname,
+      title: this.title || "家园新房-" + this.cityname,
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

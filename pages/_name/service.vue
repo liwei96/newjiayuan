@@ -17,23 +17,45 @@ import topView from "@/components/header.vue";
 import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
+    let token = context.store.state.cookie.token;
     let jkl = context.params.name;
+    let other = context.store.state.cookie.other;
+    let city = context.store.state.cookie.city;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+            other: other,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
+      tel:res.common.phone,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-关注家园客服",
+      title: this.title || "家园新房-关注家园客服",
       meta: [
         {
           name: "description",
-          content:
+          content: this.description ||
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

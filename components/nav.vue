@@ -47,7 +47,7 @@ export default {
     gotalk() {
       // window.location.href =
       //   "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
-      let urlid = sessionStorage.getItem('proid');
+      let urlid = sessionStorage.getItem("proid");
       let id = sessionStorage.getItem(urlid);
       if (id) {
         sessionStorage.setItem("staffid", id);
@@ -61,14 +61,14 @@ export default {
         }
         sessionStorage.removeItem(id);
       }
-      this.$router.push("/" + this.jkl + "/talk/"+urlid);
+      this.$router.push("/" + this.jkl + "/talk/" + urlid);
     },
   },
   mounted() {
-    if(this.totalnum == 'NaN'){
-      this.totalnum = 0
+    if (this.totalnum == "NaN") {
+      this.totalnum = 0;
     }
-    console.log(this.totalnum)
+    console.log(this.totalnum);
     let url = window.location.href;
     let newurl = url.split("?")[0];
     let id = this.$route.params.id;
@@ -83,6 +83,38 @@ export default {
     if (url && url.indexOf("token") != -1) {
       localStorage.setItem("wstoken", url.split("=")[1]);
     }
+    let city = localStorage.getItem("city");
+    let ip = ip_arr["ip"];
+    console.log(url);
+    let pro = 0;
+    url = window.location.href;
+    if (url.indexOf("content") !== -1) {
+      pro = this.$route.params.id;
+    } else {
+      pro = 0;
+    }
+    
+    let pp = {
+      controller: "Info",
+      action: "register",
+      params: {
+        city: city,
+        project: pro,
+        ip: ip,
+        url: url,
+        uuid: localStorage.getItem("uuid"),
+      },
+    };
+    if (sessionStorage.getItem("url") !== url) {
+      this.$store.state.ws.send(JSON.stringify(pp));
+      sessionStorage.setItem("url", url);
+    }
+    this.$store.state.ws.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      if (data.action == 302) {
+        sessionStorage.setItem('currentid',data.sid)
+      }
+    };
   },
 };
 </script>

@@ -286,21 +286,40 @@ export default {
   },
   async asyncData(context) {
     let jkl = context.params.name;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-地图找房",
+      title: this.title || "家园新房-地图找房",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

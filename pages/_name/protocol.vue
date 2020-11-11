@@ -9,8 +9,8 @@
       <h2>一、定义</h2>
        <p>
         家园新房平台，是指杭州易得房科技有限公司旗下运营的家园新房（
-        <span>www.jy8006.com</span>)、家园新房无线站点（
-        <span>m.jy8006.com</span>）用户，包含注册用户和非注册用户，以下亦称为“您”。注册用户是指通过家园新房平台完成全部注册程序后，使用家园新房平台服务或家园新房网站资料的用户。非注册用户是指未进行注册、直接登录家园新房平台或通过其他家园新房平台允许的方式进入家园新房平台直接或间接地使用家园新房平台服务或家园新房网站资料的用户。
+        <span>www.jy1980.com</span>)、家园新房无线站点（
+        <span>m.jy1980.com</span>）用户，包含注册用户和非注册用户，以下亦称为“您”。注册用户是指通过家园新房平台完成全部注册程序后，使用家园新房平台服务或家园新房网站资料的用户。非注册用户是指未进行注册、直接登录家园新房平台或通过其他家园新房平台允许的方式进入家园新房平台直接或间接地使用家园新房平台服务或家园新房网站资料的用户。
       </p>
       <p>协议方，本协议中协议双方合称“协议方”。杭州易得房科技有限公司及其相关服务可能存在的运营关联单位、家园新房平台在协议中统称为"家园新房"。</p>
       <h6>二、协议的效力</h6>
@@ -135,23 +135,43 @@ export default {
   },
   async asyncData(context) {
     let jkl = context.params.name;
+    let city = context.store.state.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
+    ]);
     return {
       jkl: jkl,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-家园服务",
+      title: this.title || "家园新房-家园服务",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || 
+            "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房",
-        },
-      ],
+          content: this.keywords || "家园新房"
+        }
+      ]
     };
   },
 };

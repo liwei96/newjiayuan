@@ -472,7 +472,7 @@ export default {
             isnull = true;
           }
           //   console.log(data)
-          return data;
+          return resp.data;
         }),
       context.$axios
         .get("/jy/recommend", {
@@ -492,7 +492,7 @@ export default {
       areas: res.conditions.areas,
       types: res.conditions.types,
       features: res.conditions.features,
-      list: res1,
+      list: res1.info,
       type1: type1, //类型
       area: area, //区域
       husid: husid, //户型
@@ -507,19 +507,22 @@ export default {
       cityname: res.common.city_info.current.short,
       special_discount: special_discount,
       near_railway: near_railway,
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-" + this.cityname + "-楼盘查询",
+      title: this.title || "家园新房-" + this.cityname + "-楼盘查询",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

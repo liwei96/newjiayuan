@@ -106,21 +106,24 @@ export default {
       position: position,
       navnum: position,
       isok: true,
-      tops:res1.tops
+      tops:res1.tops,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-咨询列表",
+      title: this.title || "家园新房-咨询列表",
       meta: [
         {
           name: "description",
-          content:
+          content: this.description || 
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

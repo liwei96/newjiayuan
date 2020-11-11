@@ -214,19 +214,22 @@ export default {
       tel: res.common.phone,
       list: res1.data,
       colls: res2.data,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-个人主页",
+      title: this.title || "家园新房-个人主页",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

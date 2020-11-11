@@ -172,19 +172,22 @@ export default {
       others: res.others,
       project: res.project_info,
       phone: res.common.phone,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: this.article.title,
+      title: this.title || this.article.title,
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

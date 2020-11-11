@@ -7,16 +7,18 @@
     <ul class="con">
       <li @click="gotalk(item.id)" v-for="item in list" :key="item.id">
         <div class="left">
-          <img :src="item.img" alt="" />
-          <p v-if="item.num">{{item.num}}</p>
+          <div class="imgbox">
+            <img :src="item.img" alt="" />
+          </div>
+          <p v-if="item.num">{{ item.num }}</p>
         </div>
         <div class="right">
           <div class="top">
-            {{item.name}}
-            <p class="pro">{{item.project}}</p>
-            <span class="time">{{item.time}}</span>
+            {{ item.name }}
+            <p class="pro">{{ item.project }}</p>
+            <span class="time">{{ item.time }}</span>
           </div>
-          <p class="txt">{{item.content}}</p>
+          <p class="txt">{{ item.content }}</p>
         </div>
       </li>
     </ul>
@@ -34,22 +36,23 @@ export default {
   data() {
     return {
       ws: "",
-      list:[]
+      list: [],
+      timer:null
     };
   },
   methods: {
     gotalk(id) {
-      sessionStorage.setItem('staffid',id)
-      let n = parseInt(sessionStorage.getItem(id))
-      let total = parseInt(sessionStorage.getItem('total'))
-      total = total - n
-      if(total != 0){
-        sessionStorage.setItem('total',total)
-      }else{
-        sessionStorage.removeItem('total')
+      sessionStorage.setItem("staffid", id);
+      let n = parseInt(sessionStorage.getItem(id));
+      let total = parseInt(sessionStorage.getItem("total"));
+      total = total - n;
+      if (total != 0) {
+        sessionStorage.setItem("total", total);
+      } else {
+        sessionStorage.removeItem("total");
       }
-      sessionStorage.removeItem(id)
-      sessionStorage.setItem('islist',1)
+      sessionStorage.removeItem(id);
+      sessionStorage.setItem("islist", 1);
       this.$router.push("/" + this.jkl + "/talk");
     },
     back() {
@@ -65,22 +68,25 @@ export default {
     },
   },
   mounted() {
-    let that = this
+    let that = this;
     console.log(this.$store.state.ws);
     this.ws = this.$store.state.ws;
-    let id = localStorage.getItem('uuid')
+    let id = localStorage.getItem("uuid");
     this.ws.onopen = function () {
       that.getlist(id);
     };
     if (this.ws.readyState == 1) {
-        that.getlist(id);
+      that.getlist(id);
     }
+    this.timer = setInterval(()=>{
+      that.getlist(id);
+    },3000)
     that.ws.onmessage = function (event) {
       let data = JSON.parse(event.data);
-      if(data.action == 105) {
+      if (data.action == 105) {
         let date = new Date();
         for (let val of data.data) {
-          let dd = new Date(val.time);
+          let dd = new Date(val.time.replace(/\-/g, "/"));
           let time = date - dd;
           if (time / 1000 < 3600 * 24) {
             val.time =
@@ -98,17 +104,54 @@ export default {
               (dd.getDate() >= 10 ? dd.getDate() : "0" + dd.getDate());
           }
           console.log(time);
-          if(sessionStorage.getItem(val.id)){
-            console.log(sessionStorage.getItem(val.id))
-            val.num = sessionStorage.getItem(val.id)
+          if (sessionStorage.getItem(val.id)) {
+            console.log(sessionStorage.getItem(val.id));
+            val.num = sessionStorage.getItem(val.id);
+          }
+          if (val.content.indexOf("%get your phone%") !== -1) {
+            val.content = "请您报备电话";
+          } else if (val.content.indexOf("%put my card%") !== -1) {
+            val.content = "这是我的名片";
+          } else if (val.content.indexOf("project_card") !== -1) {
+            let msg = JSON.parse(val.content);
+            val.content = "我浏览了" + msg.name;
+          } else if (val.content.length > 300) {
+            val.content = "我发送了一张图片";
           }
         }
         that.list = data.data;
-        console.log(that.list)
+        console.log(that.list);
+      } else if (data.action == 301) {
+        if (data.fromUserName.length < 10) {
+          if (sessionStorage.getItem(data.fromUserName)) {
+            sessionStorage.setItem(
+              data.fromUserName,
+              parseInt(sessionStorage.getItem(data.fromUserName)) + 1
+            );
+          } else {
+            sessionStorage.setItem(data.fromUserName, 1);
+          }
+          if (
+            sessionStorage.getItem("total") &&
+            sessionStorage.getItem("total") != "NaN"
+          ) {
+            sessionStorage.setItem(
+              "total",
+              parseInt(sessionStorage.getItem("total")) + 1
+            );
+            that.totalnum = that.totalnum + 1;
+          } else {
+            sessionStorage.setItem("total", 1);
+            that.totalnum = 1;
+          }
+        }
       }
-    }
+    };
     $("#foott").css("display", "none");
   },
+  beforeDestroy(){
+    clearInterval(this.timer)
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -137,9 +180,16 @@ header {
     .left {
       display: flex;
       position: relative;
-      img {
+      width: 3rem;
+      height: 3rem;
+      .imgbox {
+        border-radius: 50%;
         width: 3rem;
         height: 3rem;
+        overflow: hidden;
+      }
+      img {
+        width: 3rem;
       }
       p {
         width: 1rem;

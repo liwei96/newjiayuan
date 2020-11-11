@@ -3,7 +3,7 @@
     <div class="talk">
       <header>
         <img class="back" src="~/assets/goback.png" alt="" @click="back" />
-        家园{{ staffname }}为您服务
+        {{ typetxt }}{{ staffname }}为您服务
         <div class="status doen" @click="golist" v-if="listtype">
           <img src="~/assets/talk-list.png" alt="" />
           <p v-if="totalnum"></p>
@@ -101,7 +101,7 @@
           />
           <img src="~/assets/talk-icon.png" alt="" @click="seticons" />
           <img src="~/assets/talk-img.png" alt="" v-show="!msg" />
-          <input type="file" id="upload" v-show="!msg" />
+          <input type="file" id="upload" />
           <span v-if="msg" @click="send">发送</span>
         </div>
       </div>
@@ -174,11 +174,9 @@
           />
           <p class="xiyi">
             <input type="checkbox" v-model="check" />我已阅读并同意
-            <nuxt-link :to="'/' + jkl + '/protocol'"
-              >《家园用户协议》</nuxt-link
-            >
+            <nuxt-link :to="'/' + jkl + '/protocol'">{{ xymsg }}</nuxt-link>
           </p>
-          <button @click="sendmsg">确定</button>
+          <button :class="yunjia ? 'yunjia' : ''" @click="sendmsg">确定</button>
         </div>
         <!-- <div class="two" v-if="isok">
           <p class="msg">验证码已发送到187****4376 请注意查看</p>
@@ -193,11 +191,17 @@
         </div> -->
       </div>
     </van-popup>
+    <van-popup
+      v-model="show1"
+      position="center"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+    >
+      <img style="width: 100vw" :src="bigimg" alt="" @click="show1 = false"
+    /></van-popup>
   </div>
 </template>
 <script>
 import { send, check, put } from "@/api/api";
-
 export default {
   async asyncData(context) {
     let token = context.store.state.cookie.token;
@@ -208,6 +212,11 @@ export default {
   },
   data() {
     return {
+      yunjia: false,
+      xymsg: "家园用户协议",
+      bigimg: "",
+      show1: false,
+      typetxt: "家园咨询师",
       faces: [
         "[微笑]",
         "[嘻嘻]",
@@ -324,7 +333,9 @@ export default {
   methods: {
     back() {
       if (sessionStorage.getItem("reconnect")) {
-        window.location.href = sessionStorage.getItem("reconnect");
+        let url = sessionStorage.getItem("reconnect")
+        sessionStorage.removeItem("reconnect")
+        window.location.href = url;
       } else {
         this.$router.go(-1);
       }
@@ -376,7 +387,7 @@ export default {
       this.talktxt = "";
     },
     seticon(con) {
-      console.log(con)
+      console.log(con);
       this.talktxt = this.talktxt + "face" + con;
       this.icon = false;
     },
@@ -409,12 +420,13 @@ export default {
         page: 4,
         city: city,
         project: id,
-        position: 103,
+        position: 112,
         remark: txt,
-        source: "线上推广1",
+        source: "IM",
         other: other,
         kid: kid,
         tel: that.tel,
+        staff_id: sessionStorage.getItem("staffid"),
       }).then((res) => {
         console.log(res);
       });
@@ -466,7 +478,7 @@ export default {
       let pp = {
         controller: "chat",
         action: "index",
-        params: { staff: staffid, customer: id },
+        params: { staff: staffid, customer: id, type: 0 },
       };
       this.ws.send(JSON.stringify(pp));
     },
@@ -494,7 +506,9 @@ export default {
       this.ws = this.$store.state.ws;
       this.id = localStorage.getItem("uuid");
       let id = this.id;
-      that.staffid = sessionStorage.getItem("staffid");
+      that.staffid =
+        sessionStorage.getItem("staffid") ||
+        sessionStorage.getItem("currentid");
       setTimeout(() => {
         // that.load = false;
         that.autotalk(id);
@@ -506,7 +520,9 @@ export default {
           that.loadbox(id, that.staffid);
         }
         that.putcard();
+        sessionStorage.removeItem("type");
       };
+      console.log(this.ws.readyState,that.staffid)
       if (this.ws.readyState == 1) {
         if (that.staffid) {
           that.loadbox(id, that.staffid);
@@ -523,14 +539,14 @@ export default {
         this.totalnum = parseInt(sessionStorage.getItem("total"));
       }
     },
-    seticons(){
-      this.icon = !this.icon
-      this.txt = false
+    seticons() {
+      this.icon = !this.icon;
+      this.txt = false;
     },
-    settxts(){
-      this.txt = !this.txt
-      this.icon = false
-    }
+    settxts() {
+      this.txt = !this.txt;
+      this.icon = false;
+    },
   },
   created() {
     let that = this;
@@ -542,22 +558,30 @@ export default {
     }
   },
   mounted() {
+    sessionStorage.setItem("type", true);
     let url = window.location.href;
     url = url.split("?")[1];
     let id = localStorage.getItem("uuid");
     this.load = true;
-    if (url && url.indexOf("reconnect") != -1) {
+    if (url && url.indexOf("reconnect") !== -1) {
       console.log(decodeURIComponent(url.split("=")[1]));
       let arr = decodeURIComponent(url.split("=")[1]).split("?");
+      if (arr[0].indexOf("yunim") !== -1) {
+        this.xymsg = "允家用户协议";
+        this.yunjia = true;
+        this.typetxt = "允家咨询师";
+        console.log("888888", this.xymsg);
+      }
+      console.log(arr[0]);
       sessionStorage.setItem("reconnect", arr[0]);
       let kk = arr[1].split("&");
       let uuid = kk[1].split("=")[1];
       localStorage.setItem("uuid", uuid);
-      if(!sessionStorage.getItem('isconnect')){
-        sessionStorage.setItem('isconnect',true)
-        setTimeout(()=>{
-          that.$router.go(0)
-        },500)
+      if (!sessionStorage.getItem("isconnect")) {
+        sessionStorage.setItem("isconnect", true);
+        setTimeout(() => {
+          that.$router.go(0);
+        }, 500);
       }
       // this.$store.state.ws.close()
       // this.$store.state.ws = new ReconnectingWebSocket(
@@ -578,12 +602,12 @@ export default {
           project: pro,
           ip: ip,
           url: arr[0],
-          uuid: uuid
+          uuid: uuid,
         },
       };
-      setTimeout(()=>{
+      setTimeout(() => {
         that.$store.state.ws.send(JSON.stringify(pp));
-      },4000)
+      }, 4000);
     } else {
       this.start();
     }
@@ -628,12 +652,10 @@ export default {
         that.staffname = data.staff.name;
         let pro = data.project_info;
         that.promsg = pro;
-        if (pro.length !== 0) {
-          that.proid = pro.id;
-          $(".conbox").html("");
-          that.record(id, that.staffid);
-          this.load = true;
-        }
+        that.proid = pro.id;
+        $(".conbox").html("");
+        that.record(id, that.staffid);
+        this.load = true;
       } else if (data.action == 303) {
         that.load = false;
         $(".conbox").html("");
@@ -651,7 +673,7 @@ export default {
         }
         let dd = new Date();
         if (that.list[0]) {
-          dd = new Date(that.list[0].createtime);
+          dd = new Date(that.list[0].createtime.replace(/\-/g, "/"));
         }
         let date = new Date();
         let time = date - dd;
@@ -672,13 +694,18 @@ export default {
         }
         that.page = that.page + 1;
         that.total = data.total;
-        that.list = that.list.filter((x, index, self) => {
-          var arrids = [];
-          that.list.forEach((item, i) => {
-            arrids.push(item.id);
-          });
-          return arrids.indexOf(x.id) === index;
-        });
+        let obj = {};
+        that.list = that.list.reduce((cur, next) => {
+          obj[next.id] ? "" : (obj[next.id] = true && cur.push(next));
+          return cur;
+        }, []);
+        // that.list = that.list.filter((x, index, self) => {
+        //   var arrids = [];
+        //   that.list.forEach((item, i) => {
+        //     arrids.push(item.id);
+        //   });
+        //   return arrids.indexOf(x.id) === index;
+        // });
         that.list.sort(that.compare("id"));
         for (let val of that.list) {
           let msg = val.content;
@@ -741,6 +768,25 @@ export default {
             </div>
             `;
             $(".conbox").append(dv);
+          } else if (msg.indexOf("project_card") !== -1) {
+            msg = JSON.parse(msg);
+            let txt = `
+                <img src="${that.userimg}" alt="" />
+              <div class="pro">
+                <img src="${msg.img}" alt="" />
+                <div class="pro-msg">
+                  <p class="name">${msg.name}</p>
+                  <p class="area">建面 ${msg.area}/m²</p>
+                  <p class="price">
+                    均价<span><i>${msg.price}</i>元/m²</span>
+                  </p>
+                </div>
+              </div>
+              `;
+            let dv = document.createElement("div");
+            dv.innerHTML = txt;
+            dv.className = "peo-pro alltxt";
+            $(".conbox").append(dv);
           } else {
             if (msg.split("face").length !== 0) {
               let index = msg.indexOf("face");
@@ -767,9 +813,11 @@ export default {
                 let kk = require("~/assets/talk-peo.png");
                 dv.className = "imgbox alltxt";
                 dv.innerHTML = `
+                  <div class="left">
                   <img src="${kk}" alt="" class="peoimg" />
+                </div>
                   <div class="right">
-                    <img src="${img}" alt="" />
+                    <img class="bigimg" src="${img}" alt="" />
                   </div>
                 `;
               } else {
@@ -788,9 +836,11 @@ export default {
                 let kk = that.staffimg;
                 dv.className = "imgs alltxt";
                 dv.innerHTML = `
+                  <div class="left">
                   <img src="${kk}" alt="" class="peoimg" />
+                </div>
                   <div class="right">
-                    <img src="${img}" alt="" />
+                    <img class="bigimg" src="${img}" alt="" />
                   </div>
                 `;
               } else {
@@ -816,23 +866,7 @@ export default {
         } else {
           kk = dds[nn];
         }
-        // let txt = `
-        //     <img src="${that.userimg}" alt="" />
-        //   <div class="pro">
-        //     <img src="${that.promsg.img}" alt="" />
-        //     <div class="pro-msg">
-        //       <p class="name">${that.promsg.name}</p>
-        //       <p class="area">建面 ${that.promsg.area}/m²</p>
-        //       <p class="price">
-        //         均价<span><i>${that.promsg.price}</i>元/m²</span>
-        //       </p>
-        //     </div>
-        //   </div>
-        //   `;
-        // let dv = document.createElement("div");
-        // dv.innerHTML = txt;
-        // dv.className = "peo-pro alltxt";
-        // $(".conbox").prepend(dv);
+
         if (kk) {
           kk.scrollIntoView();
         }
@@ -841,21 +875,21 @@ export default {
           that.load = false;
         }
         if (
-          (data.fromUserName == that.staffid ||
-            !sessionStorage.getItem(that.proid)) &&
+          data.fromUserName == that.staffid &&
           String(data.fromUserName).length < 10
         ) {
-          if (
-            !sessionStorage.getItem(that.proid) &&
-            data.fromUserName.length < 10 &&
-            data.fromUserName !== that.staffid
-          ) {
-            sessionStorage.setItem("staffid", data.fromUserName);
-            sessionStorage.setItem(that.proid, data.fromUserName);
-            that.staffid = data.fromUserName;
-            that.loadbox(id, that.staffid);
-            that.page = 1;
-          }
+          // if (
+          //   !sessionStorage.getItem('currentid') &&
+          //   data.fromUserName.length < 10
+          //   // data.fromUserName !== that.staffid
+          // ) {
+          //   // sessionStorage.setItem("staffid", data.fromUserName);
+          //   sessionStorage.setItem(that.proid, data.fromUserName);
+          //   sessionStorage.setItem('currentid', data.fromUserName)
+          //   // that.staffid = data.fromUserName;
+          //   // that.loadbox(id, that.staffid);
+          //   // that.page = 1;
+          // }
           console.log(data);
           let img = that.staffimg || require("~/assets/people.png");
           let msg = data.content;
@@ -925,11 +959,33 @@ export default {
             let kk = that.staffimg;
             dv.className = "imgs alltxt";
             dv.innerHTML = `
-                <img src="${kk}" alt="" class="peoimg" />
+                <div class="left">
+                  <img src="${kk}" alt="" class="peoimg" />
+                </div>
                 <div class="right">
-                  <img src="${img}" alt="" />
+                  <img class="bigimg" src="${img}" alt="" />
                 </div>
               `;
+            $(".conbox").append(dv);
+            dv.scrollIntoView();
+          } else if (data.content.indexOf("project_card") !== -1) {
+            let msg = JSON.parse(data.content);
+            let txt = `
+                <img src="${that.userimg}" alt="" />
+              <div class="pro">
+                <img src="${msg.img}" alt="" />
+                <div class="pro-msg">
+                  <p class="name">${msg.name}</p>
+                  <p class="area">建面 ${msg.area}/m²</p>
+                  <p class="price">
+                    均价<span><i>${msg.price}</i>元/m²</span>
+                  </p>
+                </div>
+              </div>
+              `;
+            let dv = document.createElement("div");
+            dv.innerHTML = txt;
+            dv.className = "peo-pro alltxt";
             $(".conbox").append(dv);
             dv.scrollIntoView();
           } else {
@@ -1000,7 +1056,10 @@ export default {
         that.start();
       }
     };
-
+    $(".con").on("click", ".bigimg", function () {
+      that.bigimg = $(this).attr("src");
+      that.show1 = true;
+    });
     let dds = document.getElementsByClassName("alltxt");
     let dd = dds[dds.length - 1];
     if (dd) {
@@ -1020,9 +1079,11 @@ export default {
               let dv = document.createElement("div");
               dv.className = "imgbox alltxt";
               dv.innerHTML = `
-                <img src="${img}" alt="" class="peoimg" />
+                <div class="left">
+                  <img src="${img}" alt="" class="peoimg" />
+                </div>
                 <div class="right">
-                  <img src="${imgFile}" alt="">
+                  <img class="bigimg" src="${imgFile}" alt="">
                 </div>
               `;
               let ig = ``;
@@ -1065,8 +1126,9 @@ export default {
   },
   beforeDestroy() {
     sessionStorage.removeItem("islist");
+    sessionStorage.removeItem("type");
     sessionStorage.removeItem(this.proid);
-    // sessionStorage.removeItem("staffid");
+    sessionStorage.removeItem("staffid");
   },
 };
 </script>
@@ -1158,12 +1220,11 @@ header {
       color: #fff;
       font-size: 0.875rem;
       padding: 0.75rem 0.625rem;
-      border-radius: 0.1875rem 0 0.1875rem 0.1875rem;
+      border-radius: 0 0.375rem 0.375rem 0.375rem;
       background-color: #52c2cc;
       position: relative;
       bottom: -0.625rem;
-      max-width: 14.5rem;
-      display: flex;
+      max-width: 14rem;
       align-items: center;
       word-break: break-all;
       img {
@@ -1171,15 +1232,18 @@ header {
         height: 1rem;
         margin: 0 0.25rem;
       }
+      a {
+        color: #fff;
+      }
     }
     .txt::after {
       content: "";
       display: block;
       position: absolute;
-      border: 0.375rem solid transparent;
+      border: 1.25rem solid transparent;
       border-top-color: #52c2cc;
       top: 0;
-      left: -0.1875rem;
+      left: -0.625rem;
     }
   }
   /deep/.peo {
@@ -1195,11 +1259,11 @@ header {
       color: #323233;
       font-size: 0.875rem;
       padding: 0.75rem 0.625rem;
-      border-radius: 0.1875rem 0 0.1875rem 0.1875rem;
+      border-radius: 0.375rem 0 0.375rem 0.375rem;
       background-color: #e8eded;
       position: relative;
       bottom: -0.625rem;
-      max-width: 14.5rem;
+      max-width: 14rem;
       img {
         width: 1rem;
         height: 1rem;
@@ -1210,10 +1274,10 @@ header {
       content: "";
       display: block;
       position: absolute;
-      border: 0.375rem solid transparent;
+      border: 1.25rem solid transparent;
       border-top-color: #e8eded;
       top: 0;
-      right: -0.1875rem;
+      right: -0.625rem;
     }
   }
   /deep/.peo-pro {
@@ -1271,10 +1335,10 @@ header {
     margin-bottom: 1.5rem;
     .left {
       width: 2.5rem;
-        margin-right: 1rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        overflow: hidden;
+      margin-right: 1rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      overflow: hidden;
       .peoimg {
         width: 2.5rem;
       }
@@ -1324,10 +1388,10 @@ header {
     margin-bottom: 1.5rem;
     .left {
       width: 2.5rem;
-        margin-right: 1rem;
-        height: 2.5rem;
-        border-radius: 50%;
-        overflow: hidden;
+      margin-right: 1rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      overflow: hidden;
       .peoimg {
         width: 2.5rem;
       }
@@ -1343,10 +1407,10 @@ header {
         margin-bottom: 1rem;
         .top-left {
           width: 2.25rem;
-            height: 2.25rem;
-            margin-right: 0.625rem;
-            border-radius: 50%;
-            overflow: hidden;
+          height: 2.25rem;
+          margin-right: 0.625rem;
+          border-radius: 50%;
+          overflow: hidden;
           img {
             width: 2.25rem;
           }
@@ -1441,11 +1505,15 @@ header {
     display: flex;
     flex-direction: row;
     margin-bottom: 1.5rem;
-    .peoimg {
+    .left {
       width: 2.5rem;
       margin-right: 1rem;
       height: 2.5rem;
       border-radius: 50%;
+      overflow: hidden;
+    }
+    .peoimg {
+      width: 2.5rem;
     }
     .right {
       img {
@@ -1520,6 +1588,8 @@ header {
       font-size: 0.875rem;
       background-color: #52c2cc;
       margin-left: 0.5rem;
+      position: relative;
+      z-index: 10;
     }
   }
 }
@@ -1743,6 +1813,9 @@ header {
     color: #fff;
     font-size: 0.875rem;
     font-weight: bold;
+  }
+  .yunjia {
+    background-color: #40a2f4;
   }
   .msg {
     color: #999999;

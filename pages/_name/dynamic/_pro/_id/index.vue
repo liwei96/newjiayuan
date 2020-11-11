@@ -169,21 +169,24 @@ export default {
       staff: res.common.staffs.staff,
       phone: res.common.phone,
       houses: res.house_types,
-      id:'0'
+      id:'0',
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
  head() {
     return {
-      title: this.info.title,
+      title: this.title || this.info.title,
       meta: [
         {
           name: "description",
-          content:
+          content: this.description || 
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };
@@ -213,7 +216,7 @@ export default {
       this.typenum = position;
       this.tan = true;
       this.remark = txt;
-      this.id = this.building.id
+      this.id = String(this.building.id)
     },
     cli(e) {
       this.tan = e;
@@ -224,7 +227,7 @@ export default {
       this.typebtn = 1;
       this.tan = true;
       this.remark = "动态页+预约看房";
-      this.id = this.building.id
+      this.id = String(this.building.id)
     },
     btns(){
       if(this.list){

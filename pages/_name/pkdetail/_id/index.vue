@@ -269,7 +269,8 @@ export default {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
-    let [res] = await Promise.all([
+    let city = context.store.state.city;
+    let [res,res1] = await Promise.all([
       context.$axios
         .get("/jy/base/compare", {
           params: {
@@ -283,27 +284,41 @@ export default {
           // console.log(data)
           return data;
         }),
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          return data;
+        }),
     ]);
     return {
       jkl: jkl,
       list: res.recommends,
       one: res.data[0],
       two: res.data[1],
-      phone:res.common.phone
+      phone:res.common.phone,
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-PK详情-"+this.one.name+'PK'+this.two.name,
+      title: this.title || "家园新房-PK详情-"+this.one.name+'PK'+this.two.name,
       meta: [
         {
           name: "description",
-          content:
+          content: this.description || 
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

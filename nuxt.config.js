@@ -21,12 +21,12 @@ export default {
       {
         name: 'viewport',
         content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: process.env.npm_package_description || ''
       }
+      // {
+      //   hid: 'description',
+      //   name: 'description',
+      //   content: process.env.npm_package_description || ''
+      // }
     ],
     link: [{
       rel: 'icon',
@@ -115,7 +115,7 @@ export default {
     '@nuxtjs/axios',
   ],
   /*
-   ** Axios module configuration
+   ** Axios module configuration http: //39.98.227.114:9550/
    ** See https://axios.nuxtjs.org/options
    */
   proxy: {

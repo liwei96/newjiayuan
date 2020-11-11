@@ -6,58 +6,73 @@
       <div class="box">
         <h3>
           限时优惠抢
-          <img src="~/assets/jy-question.png" alt @click="huo=true"/>
+          <img src="~/assets/jy-question.png" alt @click="huo = true" />
         </h3>
         <div class="cards">
-          <div class="card" v-for="(item,key) in discounts" :key="key">
+          <div class="card" v-for="(item, key) in discounts" :key="key">
             <div class="bg">
               <div class="bg2">
                 <div class="pri">
                   <p class="msg">最 高</p>
                   <p class="num">¥5000</p>
                 </div>
-                <button @click="pop('领取优惠', 94, '特价房页+领取优惠',item.id,item.name)">抢优惠</button>
+                <button
+                  @click="
+                    pop('领取优惠', 94, '特价房页+领取优惠', item.id, item.name)
+                  "
+                >
+                  抢优惠
+                </button>
               </div>
-              <nuxt-link :to="'/'+jkl+'/content/'+item.id">
-              <div class="bg-top">
-                <h4>
-                  {{item.name}}
-                  <img src="~/assets/te-more.png" alt />
-                </h4>
-                <p>{{item.address}}</p>
-              </div>
+              <nuxt-link :to="'/' + jkl + '/content/' + item.id">
+                <div class="bg-top">
+                  <h4>
+                    {{ item.name }}
+                    <img src="~/assets/te-more.png" alt />
+                  </h4>
+                  <p>{{ item.address }}</p>
+                </div>
               </nuxt-link>
             </div>
           </div>
         </div>
         <h3>今日特价房</h3>
         <ul class="pro">
-          <li v-for="(item,key) in specials" :key="key">
-            <nuxt-link :to="'/'+jkl+'/content/'+item.id">
-            <div class="top">
-              <div class="img">
-                <img :src="item.img" alt />
-              </div>
-              <div class="right">
-                <h6>{{item.name}}</h6>
-                <div class="pri">
-                  <p class="old">
-                    原价
-                    <span>{{parseInt(item.original/10000)}}</span>万元
+          <li v-for="(item, key) in specials" :key="key">
+            <nuxt-link :to="'/' + jkl + '/content/' + item.id">
+              <div class="top">
+                <div class="img">
+                  <img :src="item.img" alt />
+                </div>
+                <div class="right">
+                  <h6>{{ item.name }}</h6>
+                  <div class="pri">
+                    <p class="old">
+                      原价
+                      <span>{{ parseInt(item.original / 10000) }}</span
+                      >万元
+                    </p>
+                    <p class="new">
+                      现价
+                      <span>{{ parseInt(item.now / 10000) }}</span
+                      >万元
+                    </p>
+                  </div>
+                  <p class="type">
+                    {{ item.type }} | {{ item.city }}-{{
+                      item.country.substr(0, 2)
+                    }}
+                    | {{ item.area }}m²
                   </p>
-                  <p class="new">
-                    现价
-                    <span>{{parseInt(item.now/10000)}}</span>万元
+                  <p class="icon">
+                    <span class="zhang">{{ item.decorate }}</span>
+                    <span v-for="(val, k) in item.features" :key="k">{{
+                      val
+                    }}</span>
                   </p>
                 </div>
-                <p class="type">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
-                <p class="icon">
-                  <span class="zhang">{{item.decorate}}</span>
-                  <span v-for="(val,k) in item.features" :key="k">{{val}}</span>
-                </p>
+                <p class="num">立省{{ parseInt(item.diff / 10000) }}万</p>
               </div>
-              <p class="num">立省{{parseInt(item.diff/10000)}}万</p>
-            </div>
             </nuxt-link>
             <div class="bom">
               <van-notice-bar
@@ -66,7 +81,9 @@
                 background="#F7F7F7"
                 :text="item.dynamic"
               />
-              <button @click="pop('领取优惠', 94, '特价房页+领取优惠')">马上抢</button>
+              <button @click="pop('领取优惠', 94, '特价房页+领取优惠')">
+                马上抢
+              </button>
             </div>
           </li>
         </ul>
@@ -123,11 +140,11 @@
 <script>
 import top from "@/components/header.vue";
 import tan from "@/components/tan.vue";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   components: {
     "top-view": top,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
     let city = context.store.state.city;
@@ -150,53 +167,55 @@ export default {
     return {
       jkl: jkl,
       specials: res.specials,
-      discounts:res.discounts
+      discounts: res.discounts,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-特价房",
+      title: this.title || "家园新房-特价房",
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
     return {
       specials: [],
-      discounts:[],
+      discounts: [],
       tan: false,
       typenum: 0,
       typebtn: 1,
       name: "",
       remark: "",
-      id:0,
-      proname:'',
-      huo:false
+      id: 0,
+      proname: "",
+      huo: false,
     };
   },
-  methods:{
-    pop(name, position, txt,id,proname) {
+  methods: {
+    pop(name, position, txt, id, proname) {
       this.name = name;
       this.typebtn = 1;
       this.typenum = position;
       this.tan = true;
       this.remark = txt;
-      this.id = String(id)
-      this.proname = proname
+      this.id = String(id);
+      this.proname = proname;
     },
     cli(e) {
       this.tan = e;
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>

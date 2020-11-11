@@ -183,21 +183,24 @@ export default {
       jkl: jkl,
       phone: res.common.phone,
       building: res.building,
-      id:position
+      id:position,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-"+this.building.name+'-楼盘详情页',
+      title: this.title || "家园新房-"+this.building.name+'-楼盘详情页',
       meta: [
         {
           name: "description",
-          content:
+          content: this.description || 
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

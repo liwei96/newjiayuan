@@ -58,7 +58,7 @@ export default {
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
-    let [res] = await Promise.all([
+    let [res,res1] = await Promise.all([
       context.$axios
         .get("/jy/us/search", {
           params: {
@@ -68,41 +68,39 @@ export default {
         })
         .then((resp) => {
           let data = resp.data;
-          // console.log(data)
+          return data;
+        }),
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
           return data;
         }),
     ]);
     return {
       jkl: jkl,
       hots: res.hot_search,
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-楼盘名搜索",
+      title: this.title || "家园新房-楼盘名搜索",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
-        },
-      ],
-    };
-  },
-  head() {
-    return {
-      title: "家园新房-楼盘搜索",
-      meta: [
-        {
-          name: "description",
-          content: "家园新房-楼盘搜索",
-        },
-        {
-          name: "keywords",
-          content: "家园新房-楼盘搜索",
+          content: this.keywords || "家园新房",
         },
       ],
     };

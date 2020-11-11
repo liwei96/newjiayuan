@@ -195,19 +195,22 @@ export default {
       staff: res.common.staff.staff,
       cityname: res.common.city_info.current.city,
       phone: res.common.phone,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-" + this.answer.question,
+      title: this.title || "家园新房-" + this.answer.question,
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

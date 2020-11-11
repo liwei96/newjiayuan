@@ -127,19 +127,22 @@ export default {
       phone: res.common.phone,
       lists: res.data,
       id: id,
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-楼盘问答",
+      title: this.title || "家园新房-楼盘问答",
       meta: [
         {
           name: "description",
-          content: "家园新房",
+          content: this.description || "家园新房",
         },
         {
           name: "keywords",
-          content: "家园新房",
+          content: this.keywords || "家园新房",
         },
       ],
     };

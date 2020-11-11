@@ -1505,7 +1505,7 @@ export default {
         that.staffimg = data.staff.img;
         that.talktype = true;
       } else if (data.action == 302) {
-        sessionStorage.setItem('staffid',data.sid)
+        sessionStorage.setItem('currentid',data.sid)
       }
     };
     if (this.kidcode) {

@@ -52,11 +52,11 @@ export default {
     "top-view": topView,
   },
   async asyncData(context) {
-    let id = context.params.id;
+    let city = context.store.state.city;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.query.other;
-    let [res] = await Promise.all([
+    let [res,res1] = await Promise.all([
       context.$axios
         .get("/jy/mine/foots", {
           params: {
@@ -69,24 +69,39 @@ export default {
           let data = resp.data;
           return data;
         }),
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        }),
     ]);
     return {
       jkl: jkl,
       list: res.data,
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
     return {
-      title: "家园新房-浏览足迹",
+      title: this.title || "家园新房-浏览足迹",
       meta: [
         {
           name: "description",
-          content:
+          content: this.description ||
             "家园新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: this.keywords || "家园新房"
         }
       ]
     };

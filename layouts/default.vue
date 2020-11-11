@@ -22,21 +22,31 @@
 
 <script>
 export default {
-  head() {
-    return {
-      title: "家园新房",
-      meta: [
-        {
-          name: "description",
-          content: "家园新房",
-        },
-        {
-          name: "keywords",
-          content: "家园新房",
-        },
-      ],
-    };
+  async asyncData(context) {
+    let [res] = await Promise.all([
+      context.$axios.get("/jy/phone/head/foot").then((resp) => {
+        let data = resp.data;
+        console.log(data);
+        return data;
+      }),
+    ]);
+    return {};
   },
+  // head() {
+  //   return {
+  //     title: "家园新房",
+  //     meta: [
+  //       {
+  //         name: "description",
+  //         content: "家园新房",
+  //       },
+  //       {
+  //         name: "keywords",
+  //         content: "家园新房",
+  //       },
+  //     ],
+  //   };
+  // },
   data() {
     return {
       jkl: "",
@@ -76,6 +86,17 @@ export default {
       var width = html.getBoundingClientRect().width; //获取屏幕的宽度
       html.style.fontSize = width / 23.5 + "px";
     }
+    (function () {
+      var bp = document.createElement("script");
+      var curProtocol = window.location.protocol.split(":")[0];
+      if (curProtocol === "https") {
+        bp.src = "https://zz.bdstatic.com/linksubmit/push.js";
+      } else {
+        bp.src = "http://push.zhanzhang.baidu.com/push.js";
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
   },
   beforeRouteUpdate(to, from, next) {
     console.log(to);
