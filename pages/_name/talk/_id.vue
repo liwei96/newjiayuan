@@ -210,6 +210,21 @@ export default {
       jkl: jkl,
     };
   },
+  head() {
+    return {
+      title: "家园新房",
+      meta: [
+        {
+          name: "description",
+          content: "家园新房"
+        },
+        {
+          name: "keywords",
+          content:  "家园新房"
+        }
+      ]
+    };
+  },
   data() {
     return {
       yunjia: false,
@@ -502,6 +517,9 @@ export default {
       }
     },
     start() {
+      // $('.con').html('')
+      this.list =[]
+      this.page = 1
       let that = this;
       this.ws = this.$store.state.ws;
       this.id = localStorage.getItem("uuid");
@@ -570,7 +588,6 @@ export default {
         this.xymsg = "允家用户协议";
         this.yunjia = true;
         this.typetxt = "允家咨询师";
-        console.log("888888", this.xymsg);
       }
       console.log(arr[0]);
       sessionStorage.setItem("reconnect", arr[0]);
@@ -1022,27 +1039,29 @@ export default {
           }
         } else {
           if (data.fromUserName.length < 10) {
-            if (sessionStorage.getItem(data.fromUserName)) {
-              sessionStorage.setItem(
-                data.fromUserName,
-                parseInt(sessionStorage.getItem(data.fromUserName)) + 1
-              );
-            } else {
-              sessionStorage.setItem(data.fromUserName, 1);
-            }
-            if (
-              sessionStorage.getItem("total") &&
-              sessionStorage.getItem("total") != "NaN"
-            ) {
-              sessionStorage.setItem(
-                "total",
-                parseInt(sessionStorage.getItem("total")) + 1
-              );
-              that.totalnum = that.totalnum + 1;
-            } else {
-              sessionStorage.setItem("total", 1);
-              that.totalnum = 1;
-            }
+            sessionStorage.setItem('staffid',data.fromUserName)
+            that.start()
+            // if (sessionStorage.getItem(data.fromUserName)) {
+            //   sessionStorage.setItem(
+            //     data.fromUserName,
+            //     parseInt(sessionStorage.getItem(data.fromUserName)) + 1
+            //   );
+            // } else {
+            //   sessionStorage.setItem(data.fromUserName, 1);
+            // }
+            // if (
+            //   sessionStorage.getItem("total") &&
+            //   sessionStorage.getItem("total") != "NaN"
+            // ) {
+            //   sessionStorage.setItem(
+            //     "total",
+            //     parseInt(sessionStorage.getItem("total")) + 1
+            //   );
+            //   that.totalnum = that.totalnum + 1;
+            // } else {
+            //   sessionStorage.setItem("total", 1);
+            //   that.totalnum = 1;
+            // }
           }
         }
       } else if (data.action == 206) {

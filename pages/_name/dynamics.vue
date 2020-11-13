@@ -127,9 +127,9 @@ export default {
       lists: res.data,
       ting: true,
       phone: res1.common.phone,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
+      title:res.common.header.title,
+      description:res.common.header.description,
+      keywords:res.common.header.keywords
     };
   },
   head() {

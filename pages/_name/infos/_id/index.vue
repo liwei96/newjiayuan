@@ -107,9 +107,9 @@ export default {
       navnum: position,
       isok: true,
       tops:res1.tops,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
+      title:res1.common.header.title,
+      description:res1.common.header.description,
+      keywords:res1.common.header.keywords
     };
   },
   head() {
