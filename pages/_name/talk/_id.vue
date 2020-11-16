@@ -565,6 +565,17 @@ export default {
       this.txt = !this.txt;
       this.icon = false;
     },
+    isup() {
+      let id = this.staffid;
+      let pp = {
+        controller: "talker",
+        action: "online_one",
+        params: { uuid: id },
+      };
+      if (id) {
+        this.ws.send(JSON.stringify(pp));
+      }
+    }
   },
   created() {
     let that = this;
@@ -1039,29 +1050,10 @@ export default {
           }
         } else {
           if (data.fromUserName.length < 10) {
-            sessionStorage.setItem('staffid',data.fromUserName)
-            that.start()
-            // if (sessionStorage.getItem(data.fromUserName)) {
-            //   sessionStorage.setItem(
-            //     data.fromUserName,
-            //     parseInt(sessionStorage.getItem(data.fromUserName)) + 1
-            //   );
-            // } else {
-            //   sessionStorage.setItem(data.fromUserName, 1);
-            // }
-            // if (
-            //   sessionStorage.getItem("total") &&
-            //   sessionStorage.getItem("total") != "NaN"
-            // ) {
-            //   sessionStorage.setItem(
-            //     "total",
-            //     parseInt(sessionStorage.getItem("total")) + 1
-            //   );
-            //   that.totalnum = that.totalnum + 1;
-            // } else {
-            //   sessionStorage.setItem("total", 1);
-            //   that.totalnum = 1;
-            // }
+            sessionStorage.setItem('testid',data.fromUserName)
+            that.isup()
+            // that.start()
+            
           }
         }
       } else if (data.action == 206) {
@@ -1073,6 +1065,34 @@ export default {
         that.staffid = data.sid;
         sessionStorage.setItem("staffid", data.sid);
         that.start();
+      } else if (data.action == 304) {
+        data.fromUserName = sessionStorage.getItem('testid')
+        if(data.visiting == 0){
+          sessionStorage.setItem('staffid',data.fromUserName)
+          that.start();
+        }else{
+          if (sessionStorage.getItem(data.fromUserName)) {
+              sessionStorage.setItem(
+                data.fromUserName,
+                parseInt(sessionStorage.getItem(data.fromUserName)) + 1
+              );
+            } else {
+              sessionStorage.setItem(data.fromUserName, 1);
+            }
+            if (
+              sessionStorage.getItem("total") &&
+              sessionStorage.getItem("total") != "NaN"
+            ) {
+              sessionStorage.setItem(
+                "total",
+                parseInt(sessionStorage.getItem("total")) + 1
+              );
+              that.totalnum = that.totalnum + 1;
+            } else {
+              sessionStorage.setItem("total", 1);
+              that.totalnum = 1;
+            }
+        }
       }
     };
     $(".con").on("click", ".bigimg", function () {
