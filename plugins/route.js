@@ -97,6 +97,13 @@ export default ({
         }
         store.state.city = 181
         break;
+      case 'shangrao':
+        if (process.server == false) {
+          localStorage.setItem('city', 216)
+          $cookies.set('city', 216)
+        }
+        store.state.city = 216
+        break;
     }
     // let city = localStorage.getItem('city')
     // let ip = ip_arr["ip"];
@@ -108,7 +115,7 @@ export default ({
     // }else{
     //   pro = 0
     // }
-    
+
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
       let timestamp = ''
@@ -133,7 +140,7 @@ export default ({
       localStorage.setItem('uuid', timestamp)
       if (!store.state.ws) {
         let ws = new ReconnectingWebSocket(
-          "ws://39.98.227.114:9509?uuid="+timestamp
+          "ws://39.98.227.114:9509?uuid=" + timestamp
         );
         store.dispatch("setws", ws);
       }

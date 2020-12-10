@@ -13,6 +13,7 @@
               color="#FF761A"
               void-icon="star"
               void-color="#E9ECEE"
+              readonly
             />
           </div>
         </div>

@@ -22,9 +22,9 @@
         </router-link>
       </li>
       <li>
-        <router-link :to="'/' + jkl + '/home'">
-          <img src="~/assets/barsearch.png" />
-          <p>个人中心</p>
+        <router-link :to="'/' + jkl + '/join'">
+          <img src="~/assets/tegother.png" />
+          <p>平台合作</p>
         </router-link>
       </li>
       <li>

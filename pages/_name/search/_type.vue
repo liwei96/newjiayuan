@@ -826,12 +826,6 @@ export default {
           arr.splice(arr.indexOf(String(id)), 1);
         }
       }
-      // if (arr.indexOf(String(id)) == -1) {
-      //   arr.push(id);
-      // } else {
-      //   arr.splice(arr.indexOf(String(id)), 1);
-      // }
-      console.log(arr);
       return arr;
     },
     unlimited(id, arr) {

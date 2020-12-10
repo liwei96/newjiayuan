@@ -814,7 +814,7 @@ export default {
               data.deal_prices[val].price,
             ];
           }
-          // console.log(data.imgs);
+          console.log(data);
           return data;
         }),
     ]);

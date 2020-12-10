@@ -7,7 +7,7 @@
           <nuxt-link :to="'/' + jkl + '/weike/before/56'">买房百科</nuxt-link>
         </li>
         <li><nuxt-link :to="'/' + jkl + '/infos/46'">房产资讯</nuxt-link></li>
-        <li><nuxt-link :to="'/' + jkl + '/join'">城市加盟</nuxt-link></li>
+        <li><nuxt-link :to="'/' + jkl + '/join'">平台合作</nuxt-link></li>
         <li><nuxt-link :to="'/' + jkl + '/privacy'">隐私政策</nuxt-link></li>
       </ul>
       <p>杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
@@ -86,6 +86,10 @@ export default {
       var width = html.getBoundingClientRect().width; //获取屏幕的宽度
       html.style.fontSize = width / 23.5 + "px";
     }
+//     (function(){
+// var src = "https://jspassport.ssl.qhimg.com/11.0.1.js?d182b3f28525f2db83acfaaf6e696dba";
+// document.write('<script src="' + src + '" id="sozz"><\/script>');
+// })();
     (function () {
       var bp = document.createElement("script");
       var curProtocol = window.location.protocol.split(":")[0];

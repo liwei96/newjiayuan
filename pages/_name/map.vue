@@ -282,7 +282,7 @@ export default {
   name: "Map",
   components: {
     MyOverlay,
-    MyOverlays,
+    MyOverlays
   },
   async asyncData(context) {
     let jkl = context.params.name;

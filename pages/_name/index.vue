@@ -19,9 +19,87 @@
     </header>
     <div class="topnav">
       <!-- <img src="~/assets/banner.png" alt class="topimg"/> -->
-      <img src="~/assets/banner.png" alt class="topimg" v-if="city !=1 && city!=3"/>
-      <img src="~/assets/luck-2k.jpg" alt class="topimg" v-if="city ==1 || city==3" @click="goluck"/>
-      <ul>
+      <img
+        src="~/assets/banner.png"
+        alt
+        class="topimg"
+        v-if="city != 1 && city != 3"
+      />
+      <img
+        src="~/assets/luck-2k.jpg"
+        alt
+        class="topimg"
+        v-if="city == 1 || city == 3"
+        @click="goluck"
+      />
+      <div class="swiper-nav">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/search'">
+                  <img src="~/assets/index-xin.png" alt />
+                </nuxt-link>
+                <p>新房</p>
+              </li>
+            </ul>
+          </div>
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/special'">
+                  <img src="~/assets/index-te.png" alt />
+                  <span>优惠</span>
+                </nuxt-link>
+                <p>特价房</p>
+              </li>
+            </ul>
+          </div>
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/weike/before/56'">
+                  <img src="~/assets/index-weiki.png" alt />
+                </nuxt-link>
+                <p>百科</p>
+              </li>
+            </ul>
+          </div>
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/infos/46'">
+                  <img src="~/assets/index-zixun.png" alt />
+                </nuxt-link>
+                <p>资讯</p>
+              </li>
+            </ul>
+          </div>
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/join'">
+                  <img src="~/assets/index-together.png" alt />
+                </nuxt-link>
+                <p>平台合作</p>
+              </li>
+            </ul>
+          </div>
+          <div class="swiper-slide">
+            <ul>
+              <li>
+                <nuxt-link :to="'/' + jkl + '/map'">
+                  <img src="~/assets/index-map.png" alt />
+                </nuxt-link>
+                <p>地图</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- 如果需要分页器 -->
+        <div class="swiper-pagination1"></div>
+      </div>
+      <!-- <ul>
         <li>
           <nuxt-link :to="'/' + jkl + '/search'">
             <img src="~/assets/index-xin.png" alt />
@@ -53,7 +131,7 @@
           </nuxt-link>
           <p>地图</p>
         </li>
-      </ul>
+      </ul> -->
     </div>
     <div class="swipe">
       <img src="~/assets/index-tit.png" alt class="swipe-logo" />
@@ -318,10 +396,10 @@ export default {
       dynamics: res.dynamics,
       jkl: jkl,
       cityname: res.common.city_info.current.short,
-      city:city,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
+      city: city,
+      title: res.common.header.title,
+      description: res.common.header.description,
+      keywords: res.common.header.keywords,
     };
   },
   head() {
@@ -359,13 +437,23 @@ export default {
     goadd() {
       this.$router.push("/" + this.jkl + "/address");
     },
-    goluck(){
-      this.$router.push('/'+this.jkl+'/lucky')
-    }
+    goluck() {
+      this.$router.push("/" + this.jkl + "/lucky");
+    },
   },
   mounted() {
     // this.cityname = $cookies.get('cityname')
     localStorage.setItem("cityname", this.cityname);
+    var swiper07 = new Swiper(".swiper-nav", {
+      slidesPerView: 5,
+      spaceBetween: 0,
+      resistanceRatio:0,
+      slidesOffsetAfter: 0,
+      slidesOffsetBefore: 0,
+      pagination: {
+        el: ".swiper-pagination1",
+      },
+    });
     var swiper08 = new Swiper(".swiper-dynamic", {
       slidesPerView: 1,
       spaceBetween: 10,
@@ -459,11 +547,35 @@ header {
     margin-bottom: 0.6875rem;
     margin-left: 4%;
   }
+  .swiper-nav {
+    position: relative;
+    padding-bottom: 1.1875rem;
+    overflow: hidden;
+    .swiper-pagination1 {
+      position: absolute;
+      bottom: 0.8125rem;
+      display: flex;
+      justify-content: center;
+      /deep/.swiper-pagination-bullet {
+        width: 0.5rem;
+        height: 0.125rem;
+        border-radius: 0.0625rem;
+        background-color: #bfbfbf;
+        margin: 0;
+      }
+      /deep/.swiper-pagination-bullet-active {
+        width: 0.875rem;
+        height: 0.125rem;
+        border-radius: 0.0625rem;
+        background-color: #2ac66e;
+      }
+    }
+  }
   ul {
     display: flex;
     padding: 0 0.5rem;
     li {
-      width: 20%;
+      // width: 20%;
       text-align: center;
       position: relative;
       img {
@@ -496,7 +608,7 @@ header {
 .swipe {
   display: flex;
   margin: 0 4%;
-  margin-top: 0.875rem;
+  // margin-top: 0.875rem;
   border-radius: 0.375rem;
   box-shadow: 0.5px 1px 15px 0px rgba(0, 0, 0, 0.05);
   height: 2.8125rem;

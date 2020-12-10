@@ -16,7 +16,7 @@ const store = () => new Vuex.Store({
     pinyin: '',
     cookie: {},
     proid: '',
-    uuid:''
+    uuid: ''
   },
   mutations: {
     setip(state, data) {
@@ -46,10 +46,10 @@ const store = () => new Vuex.Store({
     setcookie(state, payload) {
       state.cookie = payload.cookie
     },
-    setuuid(state,id){
+    setuuid(state, id) {
       state.cookie.uuid = id
     },
-    setws(state,id){
+    setws(state, id) {
       state.ws = id
     }
   },
@@ -73,7 +73,7 @@ const store = () => new Vuex.Store({
         })
       }
       // if (app.store.state.cookie.uuid) {
-        
+
       //   commit('setuuid', app.store.state.cookie.uuid)
       // }
       let name = req.url.split('/')[1]
@@ -169,15 +169,22 @@ const store = () => new Vuex.Store({
           }
           commit('setcity', 181)
           break;
+        case 'shangrao':
+          if (process.server == false) {
+            localStorage.setItem('city', 216)
+            $cookies.set('city', 216)
+          }
+          commit('setcity', 216)
+          break;
       }
     },
     setoken(context, data) {
       context.commit('settoken', data)
     },
-    setuuid(context, data){
+    setuuid(context, data) {
       context.commit('setuuid', data)
     },
-    setws(context, data){
+    setws(context, data) {
       context.commit('setws', data)
     }
   },

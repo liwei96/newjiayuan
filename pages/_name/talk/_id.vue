@@ -434,7 +434,7 @@ export default {
         ip: ip,
         page: 4,
         city: city,
-        project: id,
+        project: sessionStorage.getItem('proid'),
         position: 112,
         remark: txt,
         source: "IM",
@@ -619,6 +619,7 @@ export default {
       let pro = kk[0].split("=")[1];
       let city = kk[2].split("=")[1];
       sessionStorage.setItem("proid", pro);
+      this.proid = pro
       console.log("city", city);
       let ip = ip_arr["ip"];
       // let city = '1';
