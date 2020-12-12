@@ -2,7 +2,8 @@
   <div id="login">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo.png" alt />
+      <img class="logo" src="~/assets/logo.png" alt v-if="host==0"/>
+      <img class="logo" src="~/assets/logos.png" alt v-if="host==1"/>
     </header>
     <div class="con">
       <img src="~/assets/login.png" alt />
@@ -20,9 +21,11 @@ import { put, send, check } from "@/api/api";
 import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     return {
       jkl: jkl,
+      host:host
     };
   },
   head() {

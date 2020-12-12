@@ -195,7 +195,7 @@
           <input type="tel" placeholder="请输入手机号" v-model="baoming" />
           <p class="xiyi">
             <input type="checkbox" v-model="check1" />我已阅读并同意
-            <router-link :to="'/'">《家园用户协议》</router-link>
+            <router-link :to="'/'">《{{txt}}用户协议》</router-link>
           </p>
           <button @click="send">立即订阅</button>
           <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
@@ -220,6 +220,7 @@ import { put, check, send } from "~/api/api";
 export default {
   name: "Album",
   async asyncData(context) {
+    let host = context.store.state.host
     let id = context.params.id;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
@@ -252,7 +253,8 @@ export default {
       tel: res.common.phone,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -306,6 +308,7 @@ export default {
       tan: false,
       one: true,
       proname: "",
+      txt: '家园'
     };
   },
   methods: {
@@ -453,6 +456,11 @@ export default {
     },
   },
   mounted() {
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
     let that = this;
     that.baoming = $cookies.get("phone");
     this.start();

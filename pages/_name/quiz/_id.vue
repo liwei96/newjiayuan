@@ -2,7 +2,7 @@
   <div id="response">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <p class="tit">家园在线咨询师帮您解答</p>
+      <p class="tit">{{txt}}在线咨询师帮您解答</p>
       <div class="text">
         <textarea
           v-model="text"
@@ -24,11 +24,13 @@ export default {
     "top-view": topView,
   },
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     let id = context.params.id;
     return {
       jkl: jkl,
       id: id,
+      host:host
     };
   },
   head() {
@@ -53,6 +55,7 @@ export default {
       text: "",
       jkl: "",
       id: "",
+      txt: '家园'
     };
   },
   methods: {
@@ -72,6 +75,13 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
   },
   watch: {
     text(val) {

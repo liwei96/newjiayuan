@@ -75,7 +75,7 @@
           <nuxt-link :to="'/' + jkl + '/about'">
             <div>
               <img class="pp" src="~/assets/home-about.png" alt />
-              <p>关于家园</p>
+              <p>关于{{txt}}</p>
               <img class="more" src="~/assets/home-more.png" alt />
             </div>
           </nuxt-link>
@@ -164,6 +164,7 @@
 import tan from "@/components/tan.vue";
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.store.state.cookie.other;
@@ -216,7 +217,8 @@ export default {
       colls: res2.data,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -242,7 +244,8 @@ export default {
       username: "点击登录",
       cardnum: 0,
       viewednum:0,
-      collnum:0
+      collnum:0,
+      txt:'家园'
     };
   },
   components: {
@@ -310,7 +313,11 @@ export default {
       this.cardnum = 1;
     }
     document.getElementById('foott').style.display = 'none'
-    
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
   },
   beforeDestroy() {
     document.getElementById('foott').style.display = 'block'

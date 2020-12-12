@@ -1,7 +1,8 @@
 <template>
   <div id="home">
     <header>
-      <img src="~/assets/logo.png" alt class="logo" />
+      <img v-if="this.$store.state.host === 0" src="~/assets/logo.png" alt class="logo" />
+      <img v-if="this.$store.state.host === 1" src="~/assets/logos.png" alt class="logo" />
       <div class="input">
         <p @click="goadd">
           {{ cityname }}
@@ -23,7 +24,13 @@
         src="~/assets/banner.png"
         alt
         class="topimg"
-        v-if="city != 1 && city != 3"
+        v-if="city != 1 && city != 3 && host == 0"
+      />
+      <img
+        src="~/assets/banner2.jpg"
+        alt
+        class="topimg"
+        v-if="city != 1 && city != 3 && host == 1"
       />
       <img
         src="~/assets/luck-2k.jpg"
@@ -99,42 +106,10 @@
         <!-- 如果需要分页器 -->
         <div class="swiper-pagination1"></div>
       </div>
-      <!-- <ul>
-        <li>
-          <nuxt-link :to="'/' + jkl + '/search'">
-            <img src="~/assets/index-xin.png" alt />
-          </nuxt-link>
-          <p>新房</p>
-        </li>
-        <li>
-          <nuxt-link :to="'/' + jkl + '/special'">
-            <img src="~/assets/index-te.png" alt />
-            <span>优惠</span>
-          </nuxt-link>
-          <p>特价房</p>
-        </li>
-        <li>
-          <nuxt-link :to="'/' + jkl + '/weike/before/56'">
-            <img src="~/assets/index-weiki.png" alt />
-          </nuxt-link>
-          <p>百科</p>
-        </li>
-        <li>
-          <nuxt-link :to="'/' + jkl + '/infos/46'">
-            <img src="~/assets/index-zixun.png" alt />
-          </nuxt-link>
-          <p>资讯</p>
-        </li>
-        <li>
-          <nuxt-link :to="'/' + jkl + '/map'">
-            <img src="~/assets/index-map.png" alt />
-          </nuxt-link>
-          <p>地图</p>
-        </li>
-      </ul> -->
     </div>
     <div class="swipe">
-      <img src="~/assets/index-tit.png" alt class="swipe-logo" />
+      <img src="~/assets/index-tit.png" alt class="swipe-logo" v-if="host==0"/>
+      <img src="~/assets/index-tit1.png" alt class="swipe-logo" v-if="host==1"/>
       <notice-bar :scrollable="false" background="#fff" color="#646566">
         <swipe
           vertical
@@ -226,7 +201,7 @@
     </div>
     <div class="strict" v-if="stricts.length">
       <h3>
-        家园严选
+        {{txt}}严选
         <span class="n">必看好房</span>
         <nuxt-link :to="'/' + jkl + '/search'">
           <span class="more">
@@ -371,6 +346,7 @@ export default {
   async asyncData(context) {
     //   console.log(context.$axios)
     let city = context.store.state.city;
+    let host = context.store.state.host
     // let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let [res] = await Promise.all([
@@ -383,6 +359,7 @@ export default {
         .then((resp) => {
           let data = resp.data;
           //   console.log(data)
+          console.log(host)
           return data;
         }),
     ]);
@@ -400,6 +377,7 @@ export default {
       title: res.common.header.title,
       description: res.common.header.description,
       keywords: res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -428,6 +406,8 @@ export default {
       discounts: [],
       dynamics: [],
       cityname: "",
+      host: 0,
+      txt: '家园'
     };
   },
   methods: {
@@ -442,6 +422,12 @@ export default {
     },
   },
   mounted() {
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
+    console.log(this.$store.state)
     // this.cityname = $cookies.get('cityname')
     localStorage.setItem("cityname", this.cityname);
     var swiper07 = new Swiper(".swiper-nav", {
@@ -556,6 +542,7 @@ header {
       bottom: 0.8125rem;
       display: flex;
       justify-content: center;
+      width: 100%;
       /deep/.swiper-pagination-bullet {
         width: 0.5rem;
         height: 0.125rem;

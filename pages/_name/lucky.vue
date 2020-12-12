@@ -78,19 +78,19 @@
               <div class="swiper-wrapper">
                 <div class="swiper-slide">
                   <img src="~/assets/luck-20.png" alt="" />
-                  <p>家园专享2万元</p>
+                  <p>{{txt}}专享2万元</p>
                 </div>
                 <div class="swiper-slide">
                   <img src="~/assets/luck-5000.png" alt="" />
-                  <p>家园专享5000元</p>
+                  <p>{{txt}}专享5000元</p>
                 </div>
                 <div class="swiper-slide">
                   <img src="~/assets/luck-2000.png" alt="" />
-                  <p>家园专享2000元</p>
+                  <p>{{txt}}专享2000元</p>
                 </div>
                 <div class="swiper-slide">
                   <img src="~/assets/luck-1000.png" alt="" />
-                  <p>家园专享1000元</p>
+                  <p>{{txt}}专享1000元</p>
                 </div>
               </div>
             </div>
@@ -111,7 +111,7 @@
                   :key="key"
                 >
                   <p class="kk">{{ item.tel }}用户获得</p>
-                  <p class="tl">家园专享{{ item.prize }}元优惠券</p>
+                  <p class="tl">{{txt}}专享{{ item.prize }}元优惠券</p>
                 </div>
               </div>
             </div> -->
@@ -126,7 +126,7 @@
               <van-swipe-item v-for="(item, key) in msg.data" :key="key">
                 <div class="ll">
                   <p class="kk">{{ item.tel }}用户获得</p>
-                  <p class="tl">家园专享{{ item.prize }}元优惠券</p>
+                  <p class="tl">{{txt}}专享{{ item.prize }}元优惠券</p>
                 </div>
               </van-swipe-item>
             </van-swipe>
@@ -137,13 +137,13 @@
           活动时间：{{ msg.date.begin }} 00:00-{{ msg.date.end }} 23：59
         </p>
         <p class="txt">
-          适用对象：由开发商或代理公司判定为家园平台客户即可 享受 这个优惠。
+          适用对象：由开发商或代理公司判定为{{txt}}平台客户即可 享受 这个优惠。
         </p>
         <p class="txt">
-          结算方式：提供已实名的支付宝账户 给与您对接的家园 咨询
+          结算方式：提供已实名的支付宝账户 给与您对接的{{txt}} 咨询
           师，规定时间内会将优惠费用打至该账户
         </p>
-        <p class="txt">最终解释权归家园所有</p>
+        <p class="txt">最终解释权归{{txt}}所有</p>
       </div>
     </div>
     <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
@@ -201,13 +201,13 @@
               活动时间：{{ msg.date.begin }} 00:00-{{ msg.date.end }} 23：59
             </p>
             <p>
-              适用对象：由开发商或代理公司判定为家园平台客户即可 享受 这个优惠。
+              适用对象：由开发商或代理公司判定为{{txt}}平台客户即可 享受 这个优惠。
             </p>
             <p>
-              结算方式：提供已实名的支付宝账户 给与您对接的家园 咨询
+              结算方式：提供已实名的支付宝账户 给与您对接的{{txt}} 咨询
               师，规定时间内会将优惠费用打至该账户
             </p>
-            <p>最终解释权归家园所有</p>
+            <p>最终解释权归{{txt}}所有</p>
           </div>
         </div>
       </div>
@@ -221,6 +221,7 @@ import "swiper/css/swiper.min.css";
 import { luck } from "@/api/api";
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     let token = context.store.state.cookie.token;
     let [res] = await Promise.all([
@@ -238,6 +239,7 @@ export default {
     return {
       jkl: jkl,
       msg: res,
+      host:host
     };
   },
   components: {
@@ -257,6 +259,7 @@ export default {
       num: 1,
       huo: false,
       imgnum: 1,
+      txt: ''
     };
   },
   methods: {
@@ -350,6 +353,11 @@ export default {
     },
   },
   mounted() {
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
     // this.rotateFn(220, "免单10元");
     this.num = this.msg.remained;
     $("#foott").css("display", "none");

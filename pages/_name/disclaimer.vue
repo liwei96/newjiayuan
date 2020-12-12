@@ -2,15 +2,15 @@
   <div id="privacy">
     <top-view :jkl="jkl"></top-view>
     <div class="con">
-      <h2>家园新房免责协议</h2>
-      <p>家园新房对于本网服务包含的或用户经由或从任何与本网服务有关的途径所获得的任何内容、信息或广告，不声明或保证其正确性或可靠性；并且对于用户经本服务上的广告、展示而购买、取得的任何产品、信息或资料，本网不负保证责任。用户自行承担担使用本服务的风险。本网有权但无义务，改善或更正本服务任何部分之任何疏漏、错误。本网不保证以下事项（包括但不限于）：</p>
+      <h2>{{txt}}新房免责协议</h2>
+      <p>{{txt}}新房对于本网服务包含的或用户经由或从任何与本网服务有关的途径所获得的任何内容、信息或广告，不声明或保证其正确性或可靠性；并且对于用户经本服务上的广告、展示而购买、取得的任何产品、信息或资料，本网不负保证责任。用户自行承担担使用本服务的风险。本网有权但无义务，改善或更正本服务任何部分之任何疏漏、错误。本网不保证以下事项（包括但不限于）：</p>
       <p>
         （1）楼盘信息免责声明
         <br />楼盘信息由开发商提供，最终以政府部门登记备案为准，请谨慎核查，如该楼盘信息有误，您可以拨打我们的投诉电话400-718-6686。
       </p>
       <p>
         （2）新闻内容免责声明
-        <br />凡本站注明 “来自：XXX(非家园新房)”的新闻稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有新闻稿件和图片作品的内容、版权以及其它问题的，请联系本站新闻中心。
+        <br />凡本站注明 “来自：XXX(非{{txt}}新房)”的新闻稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有新闻稿件和图片作品的内容、版权以及其它问题的，请联系本站新闻中心。
       </p>
       <p>
         （3）用户言论免责声明
@@ -27,6 +27,7 @@ export default {
     "top-view": topView,
   },
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     let city = context.store.state.city;
     let token = context.store.state.cookie.token;
@@ -48,7 +49,8 @@ export default {
       jkl: jkl,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host: host
     };
   },
   head() {
@@ -67,6 +69,18 @@ export default {
       ]
     };
   },
+  data(){
+    return {
+      txt: '家园'
+    }
+  },
+  mounted(){
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

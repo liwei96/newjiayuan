@@ -1,7 +1,8 @@
 <template>
   <header id="hh">
     <img class="back" src="~/assets/goback.png" alt @click="back" />
-    <img class="logo" src="~/assets/logo.png" alt />
+    <img v-if="host == 0" class="logo" src="~/assets/logo.png" alt />
+    <img v-if="host == 1" class="logo" src="~/assets/logos.png" alt />
     <div class="zixuns" @click="gotalk" v-if="kk">
       <img src="~/assets/header-talk.png" alt />
       <p v-if="totalnum>0" >{{totalnum}}</p>
@@ -55,7 +56,8 @@ export default {
   data() {
     return {
       list: false,
-      kk:true
+      kk:true,
+      host: 0
     };
   },
   methods: {
@@ -97,6 +99,7 @@ export default {
     }
   },
   mounted() {
+    this.host = this.$store.state.host
     let url = window.location.href;
     if(url.indexOf('content')==-1){
       this.kk = false

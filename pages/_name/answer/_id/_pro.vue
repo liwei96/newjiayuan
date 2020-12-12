@@ -71,7 +71,7 @@
         <img src="~/assets/jiapeo.png" alt />
         <div class="promsg">
           <h5>138****3845</h5>
-          <p>家园房友</p>
+          <p>{{txt}}房友</p>
         </div>
       </div>
       <p class="msg">
@@ -166,6 +166,7 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
+    let host = context.store.state.host
     let other = context.store.state.cookie.other;
     let jkl = context.params.name;
     let id = context.params.id;
@@ -197,7 +198,8 @@ export default {
       phone: res.common.phone,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -232,6 +234,7 @@ export default {
       id: "0",
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
+      txt: '家园'
     };
   },
   methods: {
@@ -274,6 +277,13 @@ export default {
       }
     },
   },
+  mounted(){
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
+  }
 };
 </script>
 <style lang="less" scoped>

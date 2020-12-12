@@ -1,7 +1,8 @@
 <template>
   <div id="join">
     <top-view :jkl="jkl"></top-view>
-    <img src="~/assets/jia-top.jpg" alt class="topimg" />
+    <img src="~/assets/jia-top.jpg" alt class="topimg" v-if="host==0"/>
+    <img src="~/assets/jia-top1.jpg" alt class="topimg" v-if="host==1"/>
     <div class="con">
       <ul class="topmsg">
         <li>
@@ -27,10 +28,10 @@
       </h2>
       <p class="txt">
         <i v-if="type"
-          >家园新房隶属杭州亚汉网络科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、</i
+          >{{txt}}新房隶属杭州亚汉网络科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、</i
         >
         <i v-if="!type"
-          >家园新房隶属杭州易得房科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、重庆、成都
+          >{{txt}}新房隶属杭州易得房科技有限公司旗下，成立于2016年，拥有三大自营平台。2019年7月开拓了嘉兴加盟城市，全国城市加盟布局正式开始实行。目前加盟城市有：杭州、嘉兴、无锡、湖州、贵阳、重庆、成都
           。公司注重技术开发，最大程度的节省获客时间，最大程度简化与优化客户维护流程，用技术手段无限提高客户的利用率，给购房者带来更加便捷
           真实 及时 全面的房产信息平台</i
         >
@@ -204,7 +205,7 @@
               </div>
               <img src="~/assets/vs.png" alt class="vs" />
               <div class="cn-ll">
-                <h5>家园模式</h5>
+                <h5>{{txt}}模式</h5>
                 <img src="~/assets/jia-ren2.png" alt />
               </div>
             </div>
@@ -224,7 +225,7 @@
               </div>
               <img src="~/assets/vs.png" alt class="vs" />
               <div class="cn-ll">
-                <h5>家园模式</h5>
+                <h5>{{txt}}模式</h5>
                 <img src="~/assets/jia-si2.png" alt />
               </div>
             </div>
@@ -242,7 +243,7 @@
               </div>
               <img src="~/assets/vs.png" alt class="vs" />
               <div class="cn-ll">
-                <h5>家园模式</h5>
+                <h5>{{txt}}模式</h5>
                 <img src="~/assets/jia-li2.png" alt />
               </div>
             </div>
@@ -367,6 +368,7 @@ import "swiper/css/swiper.min.css";
 import { jiameng } from "@/api/api";
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     let city = context.store.state.city;
     let token = context.store.state.cookie.token;
@@ -388,7 +390,8 @@ export default {
       jkl: jkl,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host: host
     };
   },
   head() {
@@ -418,6 +421,7 @@ export default {
       city: "",
       phone: "",
       company: "",
+      txt: '家园'
     };
   },
   methods: {
@@ -480,6 +484,11 @@ export default {
     },
   },
   mounted() {
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
     var swiper08 = new Swiper(".swiper-advantage", {
       slidesPerView: 1.48,
       spaceBetween: 15,

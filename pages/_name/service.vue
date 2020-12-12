@@ -2,7 +2,7 @@
   <div class="Follow">
     <div class="container-fluid m">
       <top-view :jkl="jkl"></top-view>
-      <p>关注家园客服了解更多楼盘资讯</p>
+      <p>关注{{txt}}客服了解更多楼盘资讯</p>
       <img src="~/assets/fllow1.jpg" alt class="two" />
       <button @click="down">点击下载二维码</button>
       <div class="line"></div>
@@ -17,6 +17,7 @@ import topView from "@/components/header.vue";
 import '@/static/css/foot.css'
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let other = context.store.state.cookie.other;
@@ -41,7 +42,8 @@ export default {
       tel:res.common.phone,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -64,6 +66,7 @@ export default {
     return {
       imgs: "http://test.jy8006.com/_nuxt/img/4525797.png",
       jkl: "",
+      txt:'家园'
     };
   },
   components: {
@@ -77,6 +80,13 @@ export default {
       alink.click();
     },
   },
+  mounted(){
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
+  }
 };
 </script>
 <style scoped>

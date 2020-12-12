@@ -16,7 +16,9 @@ const store = () => new Vuex.Store({
     pinyin: '',
     cookie: {},
     proid: '',
-    uuid: ''
+    uuid: '',
+    host: 0,
+    hostname: ''
   },
   mutations: {
     setip(state, data) {
@@ -51,6 +53,12 @@ const store = () => new Vuex.Store({
     },
     setws(state, id) {
       state.ws = id
+    },
+    sethost(state, type) {
+      state.host = type
+    },
+    sethostname(state, type) {
+      state.hostname = type
     }
   },
   actions: {
@@ -59,8 +67,15 @@ const store = () => new Vuex.Store({
     }, {
       req,
       app
-    }) {
+      }) {
       let cookie = req.headers.cookie;
+      commit('sethostname', req.headers.host)
+      // req.headers.host = 'edefang.net'
+      if (req.headers.host.indexOf('edefang.net') !== -1) {
+        commit('sethost', 1)
+      } else {
+        commit('sethost', 0)
+      }
       if (cookie) {
         let cookieArr = cookie.split(";");
         let obj = {}
@@ -76,7 +91,7 @@ const store = () => new Vuex.Store({
 
       //   commit('setuuid', app.store.state.cookie.uuid)
       // }
-      let name = req.url.split('/')[1]
+      let name = req.url.split('/')[1].split('?')[0]
       switch (name) {
         case 'xuzhou':
           if (process.server == false) {

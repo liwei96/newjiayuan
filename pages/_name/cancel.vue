@@ -9,7 +9,7 @@
             <span>5000</span>元购房优惠
             <i>（{{time}}截止）</i>
           </h6>
-          <p>家园新房专供平台客户</p>
+          <p>{{txt}}专供平台客户</p>
         </div>
         <div class="hui-right">
           <button>已领取</button>
@@ -31,9 +31,11 @@ export default {
     "top-view": topView,
   },
   async asyncData(context) {
+    let host = context.store.state.host
     let jkl = context.params.name;
     return {
       jkl: jkl,
+      host:host
     };
   },
   head() {
@@ -55,7 +57,8 @@ export default {
   data() {
     return {
       time: "",
-      have:false
+      have:false,
+      txt:'家园新房'
     };
   },
   mounted() {
@@ -66,6 +69,11 @@ export default {
     this.time = time2;
     if($cookies.get('have')){
       this.have = true
+    }
+    if(this.host == 0) {
+      this.txt = '家园新房'
+    }else {
+      this.txt = '易得房'
     }
   },
 };

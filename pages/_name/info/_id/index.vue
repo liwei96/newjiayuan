@@ -95,7 +95,7 @@
       </div>
       <p class="free">
         <span>免责声明：</span>
-        凡本站注明 “来自：XXX(非家园网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-718-6686
+        凡本站注明 “来自：XXX(非{{txt}}网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-718-6686
       </p>
       <div class="other">
         <h4>大家都在看</h4>
@@ -142,6 +142,7 @@ export default {
     'tan-view':tan
   },
   async asyncData(context) {
+    let host = context.store.state.host
     let other = context.query.other;
     let city = context.store.state.city;
     let token = context.store.state.cookie.token;
@@ -171,7 +172,8 @@ export default {
       phone: res.common.phone,
       title:res.common.header.title,
       description:res.common.header.description,
-      keywords:res.common.header.keywords
+      keywords:res.common.header.keywords,
+      host:host
     };
   },
   head() {
@@ -205,6 +207,7 @@ export default {
       img: "",
       img1: require("~/assets/noclick.png"),
       img2: require("~/assets/checked.png"),
+      txt: '家园'
     };
   },
   methods: {
@@ -260,6 +263,11 @@ export default {
     }
   },
   mounted(){
+    if(this.host == 0) {
+      this.txt = '家园'
+    }else {
+      this.txt = '易得房'
+    }
     // console.log(this.project)
     if (this.article.my_like) {
       this.img = this.img2

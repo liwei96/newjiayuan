@@ -204,10 +204,12 @@
 import { send, check, put } from "@/api/api";
 export default {
   async asyncData(context) {
+    let host = context.store.state.host
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     return {
       jkl: jkl,
+      host
     };
   },
   head() {
@@ -587,6 +589,13 @@ export default {
     }
   },
   mounted() {
+    if(this.host == 0) {
+      this.typetxt = '家园咨询师'
+      this.xymsg = '家园用户协议'
+    }else {
+      this.typetxt = '易得房咨询师'
+      this.xymsg = '易得房用户协议'
+    }
     sessionStorage.setItem("type", true);
     let url = window.location.href;
     url = url.split("?")[1];
