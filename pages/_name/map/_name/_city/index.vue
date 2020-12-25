@@ -1,14 +1,14 @@
 <template>
   <div class="Map">
     <div class="top">
-      <img class="back" src="~/assets/return.png" alt />
+      <!-- <img class="back" src="~/assets/return.png" alt @click="back"/>
       <input
         class="inpu"
         type="button"
         value="请输入楼盘名称"
         @click="gosearch"
       />
-      <img class="search" src="~/assets/search.png" alt />
+      <img class="search" src="~/assets/search.png" alt /> -->
       <div class="sou_box">
         <ul class="select">
           <li class="click_qu">
@@ -211,11 +211,15 @@
         <my-overlay
           :key="index"
           :position="item"
-          :text="zoom<14?` <h4 id='m_name'> ${item.country || item.street}</h4>
+          :text="
+            zoom < 14
+              ? ` <h4 id='m_name'> ${item.country || item.street}</h4>
                  <p id='m_num'>${item.Num}个</p>
-                 `:` <h4 id='b_name'> ${item.building_name}</h4>
+                 `
+              : ` <h4 id='b_name'> ${item.building_name}</h4>
                  <p id='b_price'>约${parseInt(item.price)}元/m²</p>
-                 `"
+                 `
+          "
           :active="zoom"
           @mouseover.native="active = true"
           @mouseleave.native="active = false"
@@ -224,37 +228,35 @@
       </template>
     </baidu-map>
     <div class="project" v-show="pro">
-      <router-link :to="'/' + jkl + '/content/' + building.id">
-        <div class="re-list">
-          <div class="re-con-left">
-            <img :src="building.img" />
-            <span>
-              <i class="iconfont iconyanjing"></i>
-              {{ building.count }}
-            </span>
-          </div>
-          <div class="re-con-right">
-            <h5>
-              {{ building.name }}
-              <span>{{ building.status }}</span>
-            </h5>
-            <p class="price">
-              <span>{{ building.single_price }}</span
-              >元/m²
-            </p>
-            <p class="area">
-              <span>{{ building.area_name }}</span>
-              <span>建面</span>
-              <span> {{ building.area }}m² </span>
-            </p>
-            <p class="tabs">
-              <span class="strong">{{ building.decorate }}</span>
-              <span v-show="building.railways">{{ building.railways }}</span>
-              <span v-show="building.features">{{ building.features }}</span>
-            </p>
-          </div>
+      <div class="re-list" @click="gobuild(building.id)">
+        <div class="re-con-left">
+          <img :src="building.img" />
+          <span>
+            <i class="iconfont iconyanjing"></i>
+            {{ building.count }}
+          </span>
         </div>
-      </router-link>
+        <div class="re-con-right">
+          <h5>
+            {{ building.name }}
+            <span>{{ building.status }}</span>
+          </h5>
+          <p class="price">
+            <span>{{ building.single_price }}</span
+            >元/m²
+          </p>
+          <p class="area">
+            <span>{{ building.area_name }}</span>
+            <span>建面</span>
+            <span> {{ building.area }}m² </span>
+          </p>
+          <p class="tabs">
+            <span class="strong">{{ building.decorate }}</span>
+            <span v-show="building.railways">{{ building.railways }}</span>
+            <span v-show="building.features">{{ building.features }}</span>
+          </p>
+        </div>
+      </div>
     </div>
     <div class="you" @click="gohui">
       <img src="~/assets/map-hui.png" alt="" />
@@ -282,11 +284,11 @@ export default {
   name: "Map",
   components: {
     MyOverlay,
-    MyOverlays
+    MyOverlays,
   },
   async asyncData(context) {
     let jkl = context.params.name;
-    let city = context.store.state.city;
+    let city = context.params.city;
     let token = context.store.state.cookie.token;
     let [res] = await Promise.all([
       context.$axios
@@ -304,9 +306,9 @@ export default {
     ]);
     return {
       jkl: jkl,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
+      title: res.common.header.title,
+      description: res.common.header.description,
+      keywords: res.common.header.keywords,
     };
   },
   head() {
@@ -373,7 +375,8 @@ export default {
   },
   created() {
     if (process.client) {
-      let name = localStorage.getItem("cityname");
+      console.log(this.$route.params.name);
+      let name = this.$route.params.name;
       if (name) {
         this.cityname = name;
       } else {
@@ -450,6 +453,17 @@ export default {
           console.log(error);
         });
     },
+    gobuild(id) {
+      swan.webView.redirectTo({
+        url: "/pages/content/content?id=" + id,
+        success() {
+          console.log("to-web-view success");
+        },
+        fail() {
+          console.log("fail");
+        },
+      });
+    },
     move(e) {
       e.target.enableDragging();
     },
@@ -459,7 +473,7 @@ export default {
     start() {
       let ip = ip_arr["ip"];
       // let ip = returnCitySN["cip"];;
-      let city = localStorage.getItem("city");
+      let city = this.$route.params.city;
       let token = localStorage.getItem("token");
       $cookies.set("mapwhere", { ip: ip, city: city, token: token });
       search_start({ ip: ip, city: city, platform: "2", token: token })
@@ -600,28 +614,8 @@ export default {
         });
     },
     putid(id, e) {
-      // map.panTo(new BMap.Point(jk[0],jk[1]));
-      // let n = e.target.parentElement.parentElement.parentElement.children;
-
-      //   console.log(n, id, e.currentTarget);
-      //   return
-      // for (let i = 1; i < n.length; i++) {
-      //   n[i].style.backgroundColor = "#40A2F4";
-      //   n[i].style.zIndex = "1";
-      // }
-      // e.currentTarget.style.background =
-      //   "linear-gradient(270deg, #FF8D41, #FFAE2D)";
       $(e.currentTarget).addClass("dv").siblings().removeClass("dv");
-      // e.currentTarget.style.zIndex = 2;
-      //   if (e.target.id == "b_name") {
-      //     e.target.style.backgroundColor = "#FF6666";
-      //     e.target.parentElement.parentElement.style.zIndex='2'
-      //   } else {
-      //     e.target.previousElementSibling.style.backgroundColor = "#FF6666";
-      //     e.target.parentElement.parentElement.style.zIndex='2'
-      //   }
       let ip = ip_arr["ip"];
-      // let ip = returnCitySN["cip"];
       let token = $cookies.get("token");
       let that = this;
       mapProject({ ip: ip, id: id, token: token, platform: 2 })
@@ -683,10 +677,27 @@ export default {
       this.$router.push("/" + this.$route.params.name + "/searchname");
     },
     gohui() {
-      this.$router.push("/" + this.$route.params.name + "/special");
+      swan.webView.redirectTo({
+        url: "/pages/special/special",
+        success() {
+          console.log("to-web-view success");
+        },
+        fail() {
+          console.log("fail");
+        },
+      });
+      // this.$router.push("/" + this.$route.params.name + "/special");
     },
     search() {
-      this.$router.push("/" + this.$route.params.name + "/search");
+      swan.webView.switchTab({
+        url: "/pages/building/building",
+        success() {
+          console.log("to-web-view success");
+        },
+        fail() {
+          console.log("fail");
+        },
+      });
     },
     checkbox(e) {
       console.log(e.target);
@@ -715,9 +726,6 @@ export default {
     this.start();
     $(".sea").on("click", function () {
       window.location.href = "/search";
-    });
-    $(".back").on("click", function () {
-      history.go(-1);
     });
     $(".type li").click(function () {
       $(this).addClass("active").siblings("li").removeClass("active");
@@ -1105,7 +1113,7 @@ export default {
 }
 .top {
   width: 100%;
-  height: 8rem;
+  height: 5.5rem;
   background-color: #fff;
   z-index: 20;
 }

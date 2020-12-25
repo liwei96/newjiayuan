@@ -1427,10 +1427,11 @@ export default {
     putcard() {
       let urlid = this.$route.params.id;
       let id = sessionStorage.getItem(urlid);
+      let host = this.$store.state.hostname
       let pp = {
         controller: "Staff",
         action: "info",
-        params: { uuid: id },
+        params: { uuid: id, host: host },
       };
       if (id) {
         this.ws.send(JSON.stringify(pp));

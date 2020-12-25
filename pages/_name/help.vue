@@ -205,8 +205,8 @@ export default {
         return;
       }
       let ip = ip_arr["ip"];
-      let city = $cookies.get("city");
-      let other = $cookies.get("other");
+      let city = $cookies.get("city") || '';
+      let other = $cookies.get("other") || '';
       let kid = $cookies.get("kid");
       let txt = `客户想找总价为：${that.start}万到${that.end}万`;
       if (that.huid) {

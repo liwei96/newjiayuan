@@ -1,10 +1,12 @@
 <template>
   <div id="Zhou">
-    <top-view :jkl="jkl" :baidu="isbaidu"></top-view>
+    <!-- <div class="top">
+      <img class="back" src="~/assets/return.png" alt @click="back"/>
+    </div> -->
     <div class="map-con">
       <div id="map"></div>
       <div id="panel" style="display:none"></div>
-      <div class="map-type tel">
+      <!-- <div class="map-type tel">
         <a :href="'tel:'+phone">
           <p>电话</p>
           <p>咨询</p>
@@ -13,7 +15,7 @@
       <div class="map-type" @click="pop('预约看房',95,'周边详情页+预约看房')">
         <p>预约</p>
         <p>看房</p>
-      </div>
+      </div> -->
     </div>
     <div class="map-mm">
       <div class="swiper-map">
@@ -145,16 +147,16 @@ export default {
   },
   head() {
     return {
-      title: "家园新房-"+this.building.name+'-周边详情',
+      title: "允家新房-"+this.building.name+'-周边详情',
       meta: [
         {
           name: "description",
           content:
-            "家园新房"
+            "允家新房"
         },
         {
           name: "keywords",
-          content: "家园新房"
+          content: "允家新房"
         }
       ]
     };
@@ -179,6 +181,17 @@ export default {
     };
   },
   methods: {
+    back() {
+      swan.webView.redirectTo({
+            url: '/pages/content/content?id='+this.$route.params.id,
+            success() {
+                console.log('to-web-view');
+            },
+            fail() {
+                console.log('fail');
+            }
+        });
+    },
     mmap() {
       this.over = false;
       let that = this;
@@ -304,6 +317,20 @@ export default {
   height: 100vh;
   display: flex;
 }
+.top {
+  width: 100%;
+  height: 2.75rem;
+  background-color: #fff;
+  z-index: 20;
+  position: absolute;
+}
+.top .back {
+  width: 20px;
+  margin-left: 14px;
+  margin-right: 16px;
+  position: absolute;
+  top: 0.6875rem;
+}
 header {
   text-align: center;
   height: 2.75rem;
@@ -330,7 +357,7 @@ header {
 .map-con {
   width: 100%;
   flex: 1;
-  padding-top: 2.5rem;
+  // padding-top: 2.5rem;
   padding-bottom: 15.3125rem;
   position: relative;
   background-color: pink;

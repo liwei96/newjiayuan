@@ -68,6 +68,7 @@ export default {
     if (this.totalnum == "NaN") {
       this.totalnum = 0;
     }
+    let that = this
     console.log(this.totalnum);
     let url = window.location.href;
     let newurl = url.split("?")[0];
@@ -103,6 +104,7 @@ export default {
         ip: ip,
         url: url,
         uuid: localStorage.getItem("uuid"),
+        host: that.$store.state.hostname
       },
     };
     if (sessionStorage.getItem("url") !== url) {

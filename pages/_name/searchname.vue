@@ -37,7 +37,7 @@
           <div class="li" @click="go(item.id, item.name)" :key="key">
             <h4>
               <strong v-html="item.name"></strong> <i>{{ item.city }}</i>
-              <span>在售</span>
+              <span class="kk">在售</span>
             </h4>
             <div class="msg">
               <p>{{ item.country }} - <span v-html="item.address"></span></p>
@@ -336,7 +336,7 @@ header {
       font-size: 1rem;
       font-weight: 400;
       margin-bottom: 0.75rem;
-      span {
+      .kk {
         float: right;
         padding: 0.1875rem 0.4375rem;
         color: #20c657;

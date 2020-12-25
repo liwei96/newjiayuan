@@ -2,7 +2,7 @@
   <div id="Talk">
     <div class="talk">
       <header>
-        <img class="back" src="~/assets/goback.png" alt="" @click="back" />
+        <!-- <img class="back" src="~/assets/goback.png" alt="" @click="back" /> -->
         {{ typetxt }}{{ staffname }}为您服务
         <div class="status doen" @click="golist" v-if="listtype">
           <img src="~/assets/talk-list.png" alt="" />
@@ -12,78 +12,6 @@
       <div class="con">
         <p class="time">{{ time }}</p>
         <div class="conbox"></div>
-        <!-- <div class="you alltxt">
-          <div class="left">
-            <img src="~/assets/people.png" alt="" />
-          </div>
-          <p class="txt">
-            您好！很高兴为您服务,看楼盘项目 本人可提供免费接送服务
-          </p>
-        </div>
-        <div class="peo alltxt">
-          <img src="~/assets/talk-peo.png" alt="" />
-          <p class="txt">
-            您好！很高兴为您服务,看楼盘项目 本人可提供免费接送服务
-          </p>
-        </div>
-        <div class="gettel alltxt">
-          <div class="left">
-            <img src="~/assets/people.png" alt="" class="peoimg" />
-          </div>
-          <div class="telbox">
-            <img src="~/assets/talk-tel.jpg" alt="" />
-            <div class="telbox-bom">
-              <p class="tit">为您制定专属分析报告</p>
-              <p class="msg">
-                向咨询师免费领取专属分析报告,内附有购房 流程全盘解读
-              </p>
-              <button @click="show = true">免费领取</button>
-            </div>
-          </div>
-        </div>
-        <div class="putcard alltxt">
-           <div class="left">
-            <img src="~/assets/people.png" alt="" class="peoimg" />
-          </div>
-          <div class="cardbox">
-            <div class="top">
-              <img src="~/assets/people.png" alt="" />
-              <div class="top-right">
-                <h5>王烨城 <span>新房咨询</span></h5>
-                <p>从业咨询服务6年</p>
-              </div>
-            </div>
-            <div class="bom">
-              <div class="txt">
-                <p class="num"><span>134</span>人</p>
-                <p class="type">服务客户</p>
-              </div>
-              <div class="txt">
-                <p class="num"><span>134</span>次</p>
-                <p class="type">带看客户</p>
-              </div>
-              <div class="txt">
-                <p class="num"><span>99</span>%</p>
-                <p class="type">好评率</p>
-              </div>
-            </div>
-            <a href="tel:400">
-              <button>电话咨询</button>
-            </a>
-          </div>
-        </div>
-        <div class="imgbox alltxt">
-          <img src="~/assets/people.png" alt="" class="peoimg" />
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt="" />
-          </div>
-        </div>
-        <div class="imgs alltxt">
-          <img src="~/assets/people.png" alt="" class="peoimg" />
-          <div class="right">
-            <img src="~/assets/lun02.jpg" alt="" />
-          </div>
-        </div> -->
       </div>
       <div class="nav">
         <div class="top">
@@ -178,17 +106,6 @@
           </p>
           <button :class="yunjia ? 'yunjia' : ''" @click="sendmsg">确定</button>
         </div>
-        <!-- <div class="two" v-if="isok">
-          <p class="msg">验证码已发送到187****4376 请注意查看</p>
-          <input
-            class="txt"
-            type="text"
-            placeholder="请输入验证码"
-            v-model="code"
-          />
-          <span @click="sendmsg">{{ message }}</span>
-          <button @click="sure">确定</button>
-        </div> -->
       </div>
     </van-popup>
     <van-popup
@@ -205,7 +122,7 @@ import { send, check, put } from "@/api/api";
 var self
 export default {
   async asyncData(context) {
-    let host = context.store.state.host
+    let host = context.store.state.hostname
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     return {
@@ -215,15 +132,15 @@ export default {
   },
   head() {
     return {
-      title: "家园新房",
+      title: "允家新房",
       meta: [
         {
           name: "description",
-          content: "家园新房"
+          content: "允家新房"
         },
         {
           name: "keywords",
-          content:  "家园新房"
+          content:  "允家新房"
         }
       ]
     };
@@ -475,7 +392,16 @@ export default {
       this.show = false;
     },
     golist() {
-      this.$router.push("/" + this.jkl + "/talklist");
+      swan.webView.switchTab({
+            url: '/pages/message/message',
+            success() {
+                console.log('to-web-view success');
+            },
+            fail() {
+                console.log('fail');
+            }
+        });
+      // this.$router.push("/" + this.jkl + "/talklist");
     },
     compare(key) {
       return function (value1, value2) {
@@ -528,9 +454,7 @@ export default {
       this.ws = this.$store.state.ws;
       this.id = localStorage.getItem("uuid");
       let id = this.id;
-      that.staffid =
-        sessionStorage.getItem("staffid") ||
-        sessionStorage.getItem("currentid");
+      that.staffid = this.$route.params.staffid;
       setTimeout(() => {
         // that.load = false;
         that.autotalk(id);
@@ -594,48 +518,32 @@ export default {
     }
   },
   mounted() {
-    if(this.host == 0) {
-      this.typetxt = '家园咨询师'
-      this.xymsg = '家园用户协议'
-    }else {
-      this.typetxt = '易得房咨询师'
-      this.xymsg = '易得房用户协议'
-    }
+      this.typetxt = '允家咨询师'
+      this.xymsg = '允家用户协议'
     sessionStorage.setItem("type", true);
-    let url = window.location.href;
-    url = url.split("?")[1];
-    let id = localStorage.getItem("uuid");
     this.load = true;
-    if (url && url.indexOf("reconnect") !== -1) {
-      console.log(decodeURIComponent(url.split("=")[1]));
-      let arr = decodeURIComponent(url.split("=")[1]).split("?");
-      if (arr[0].indexOf("yunim") !== -1) {
-        this.xymsg = "允家用户协议";
-        this.yunjia = true;
-        this.typetxt = "允家咨询师";
-      }
-      console.log(arr[0]);
-      sessionStorage.setItem("reconnect", arr[0]);
-      let kk = arr[1].split("&");
-      let uuid = kk[1].split("=")[1];
+      let uuid = this.$route.params.uuid
       localStorage.setItem("uuid", uuid);
-      if (!sessionStorage.getItem("isconnect")) {
-        sessionStorage.setItem("isconnect", true);
-        setTimeout(() => {
-          that.$router.go(0);
-        }, 500);
-      }
-      // this.$store.state.ws.close()
+    let id = localStorage.getItem("uuid");
+      // if (!sessionStorage.getItem("isconnect")) {
+      //   sessionStorage.setItem("isconnect", true);
+      //   setTimeout(() => {
+      //     that.$router.go(0);
+      //   }, 500);
+      // }
+      // this.$store.state.ws.close() kWNznYTEzB3s1608096182000
       // this.$store.state.ws = new ReconnectingWebSocket(
       //     "ws://139.155.128.107:9509?uuid="+uuid
       //   );
       console.log(uuid);
-      let pro = kk[0].split("=")[1];
-      let city = kk[2].split("=")[1];
+      let ids = this.$route.params.ids
+      let pro = ids.split(',')[0];
+      let city = ids.split(',')[1];
       sessionStorage.setItem("proid", pro);
       this.proid = pro
       console.log("city", city);
       let ip = ip_arr["ip"];
+      let url = window.location.href
       // let city = '1';
       let pp = {
         controller: "Info",
@@ -644,7 +552,7 @@ export default {
           city: city,
           project: pro,
           ip: ip,
-          url: arr[0],
+          url: url,
           uuid: uuid,
           host:self.host
         },
@@ -652,9 +560,7 @@ export default {
       setTimeout(() => {
         that.$store.state.ws.send(JSON.stringify(pp));
       }, 4000);
-    } else {
-      this.start();
-    }
+    
     // return
     let that = this;
     this.ws = this.$store.state.ws;

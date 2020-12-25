@@ -48,6 +48,12 @@ export default {
       {
         src: '/jQueryRotate.js'
       },
+      {
+        src: 'https://b.bdstatic.com/searchbox/icms/searchbox/js/swan-2.0.21.js'
+      },
+      {
+        src: 'https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js'
+      }
       // {
       //   src: '//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js'
       // }
