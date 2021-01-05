@@ -187,7 +187,7 @@ header {
         display: flex;
         align-items: center;
       }
-      p {
+      p { 
         border-bottom: 0.5px solid #545454;
         flex: 1;
         color: #e6e6e6;

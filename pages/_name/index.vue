@@ -1,8 +1,18 @@
 <template>
   <div id="home">
     <header>
-      <img v-if="this.$store.state.host === 0" src="~/assets/logo.png" alt class="logo" />
-      <img v-if="this.$store.state.host === 1" src="~/assets/logos.png" alt class="logo" />
+      <img
+        v-if="this.$store.state.host === 0"
+        src="~/assets/logo.png"
+        alt
+        class="logo"
+      />
+      <img
+        v-if="this.$store.state.host === 1"
+        src="~/assets/logos.png"
+        alt
+        class="logo"
+      />
       <div class="input">
         <p @click="goadd">
           {{ cityname }}
@@ -24,22 +34,162 @@
         src="~/assets/banner.png"
         alt
         class="topimg"
-        v-if="city != 1 && city != 3 && host == 0"
+        v-if="host == 0 && false"
+      />
+      <img
+        src="~/assets/backbanner.jpg"
+        alt
+        class="topimg"
+        v-if="host == 0"
       />
       <img
         src="~/assets/banner2.jpg"
         alt
         class="topimg"
-        v-if="city != 1 && city != 3 && host == 1"
+        v-if="host == 1"
       />
-      <img
+      <!-- <img
         src="~/assets/luck-2k.jpg"
         alt
         class="topimg"
         v-if="city == 1 || city == 3"
         @click="goluck"
-      />
-      <div class="swiper-nav">
+      /> -->
+      <div class="navs" v-if="false">
+        <ul>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/search'">
+              <img src="~/assets/index-xin.png" alt />
+            </nuxt-link>
+            <p>新房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/special'">
+              <img src="~/assets/index-te.png" alt />
+              <span>优惠</span>
+            </nuxt-link>
+            <p>特价房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/weike/before/56'">
+              <img src="~/assets/index-weiki.png" alt />
+            </nuxt-link>
+            <p>百科</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/infos/46'">
+              <img src="~/assets/index-zixun.png" alt />
+            </nuxt-link>
+            <p>资讯</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/join'">
+              <img src="~/assets/index-together.png" alt />
+            </nuxt-link>
+            <p>平台合作</p>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/search'">
+              <img src="~/assets/index-xin.png" alt />
+            </nuxt-link>
+            <p>新房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/special'">
+              <img src="~/assets/index-te.png" alt />
+              <span>优惠</span>
+            </nuxt-link>
+            <p>特价房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/weike/before/56'">
+              <img src="~/assets/index-weiki.png" alt />
+            </nuxt-link>
+            <p>百科</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/infos/46'">
+              <img src="~/assets/index-zixun.png" alt />
+            </nuxt-link>
+            <p>资讯</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/join'">
+              <img src="~/assets/index-together.png" alt />
+            </nuxt-link>
+            <p>平台合作</p>
+          </li>
+        </ul>
+      </div>
+      <div class="navs">
+        <ul class="bold">
+          <li>
+            <nuxt-link :to="'/' + jkl + '/search'">
+              <img src="~/assets/index-build.png" alt />
+            </nuxt-link>
+            <p>新房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/backhome'">
+              <img src="~/assets/index-back.png" alt />
+            </nuxt-link>
+            <p>返乡置业</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/special'">
+              <img src="~/assets/index-special.png" alt />
+            </nuxt-link>
+            <p>特价房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/map'">
+              <img src="~/assets/index-navmap.png" alt />
+            </nuxt-link>
+            <p>地图找房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/join'">
+              <img src="~/assets/index-join.png" alt />
+            </nuxt-link>
+            <p>平台合作</p>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/help'">
+              <img src="~/assets/index-help.png" alt />
+            </nuxt-link>
+            <p>帮我找房</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/weike/before/56'">
+              <img src="~/assets/index-weike.png" alt />
+            </nuxt-link>
+            <p>百科</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/infos/46'">
+              <img src="~/assets/index-infos.png" alt />
+            </nuxt-link>
+            <p>资讯</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/dynamics'">
+              <img src="~/assets/index-dynamic.png" alt />
+            </nuxt-link>
+            <p>新房动态</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/questions'">
+              <img src="~/assets/index-questions.png" alt />
+            </nuxt-link>
+            <p>楼盘问答</p>
+          </li>
+        </ul>
+      </div>
+      <!-- <div class="swiper-nav">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
             <ul>
@@ -103,13 +253,22 @@
             </ul>
           </div>
         </div>
-        <!-- 如果需要分页器 -->
         <div class="swiper-pagination1"></div>
-      </div>
+      </div> -->
     </div>
     <div class="swipe">
-      <img src="~/assets/index-tit.png" alt class="swipe-logo" v-if="host==0"/>
-      <img src="~/assets/index-tit1.png" alt class="swipe-logo" v-if="host==1"/>
+      <img
+        src="~/assets/index-tit.png"
+        alt
+        class="swipe-logo"
+        v-if="host == 0"
+      />
+      <img
+        src="~/assets/index-tit1.png"
+        alt
+        class="swipe-logo"
+        v-if="host == 1"
+      />
       <notice-bar :scrollable="false" background="#fff" color="#646566">
         <swipe
           vertical
@@ -201,7 +360,7 @@
     </div>
     <div class="strict" v-if="stricts.length">
       <h3>
-        {{txt}}严选
+        {{ txt }}严选
         <span class="n">必看好房</span>
         <nuxt-link :to="'/' + jkl + '/search'">
           <span class="more">
@@ -346,7 +505,7 @@ export default {
   async asyncData(context) {
     //   console.log(context.$axios)
     let city = context.store.state.city;
-    let host = context.store.state.host
+    let host = context.store.state.host;
     // let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     let [res] = await Promise.all([
@@ -359,7 +518,7 @@ export default {
         .then((resp) => {
           let data = resp.data;
           //   console.log(data)
-          console.log(host)
+          console.log(host);
           return data;
         }),
     ]);
@@ -377,7 +536,7 @@ export default {
       title: res.common.header.title,
       description: res.common.header.description,
       keywords: res.common.header.keywords,
-      host:host
+      host: host,
     };
   },
   head() {
@@ -407,7 +566,7 @@ export default {
       dynamics: [],
       cityname: "",
       host: 0,
-      txt: '家园'
+      txt: "家园",
     };
   },
   methods: {
@@ -422,18 +581,18 @@ export default {
     },
   },
   mounted() {
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
-    console.log(this.$store.state)
+    console.log(this.$store.state);
     // this.cityname = $cookies.get('cityname')
     localStorage.setItem("cityname", this.cityname);
     var swiper07 = new Swiper(".swiper-nav", {
       slidesPerView: 5,
       spaceBetween: 0,
-      resistanceRatio:0,
+      resistanceRatio: 0,
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 0,
       pagination: {
@@ -558,9 +717,13 @@ header {
       }
     }
   }
+  .navs {
+    margin-bottom: 1.25rem;
+  }
   ul {
     display: flex;
     padding: 0 0.5rem;
+    justify-content: space-between;
     li {
       // width: 20%;
       text-align: center;
@@ -589,6 +752,11 @@ header {
         right: 0;
         top: 0;
       }
+    }
+  }
+  .bold {
+    p {
+      font-weight: bold;
     }
   }
 }

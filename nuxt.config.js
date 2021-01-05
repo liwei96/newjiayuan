@@ -53,16 +53,16 @@ export default {
       },
       {
         src: 'https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.2.js'
+      },
+      {
+        src: 'https://res.wx.qq.com/open/js/jweixin-1.3.2.js'
       }
-      // {
-      //   src: '//cdnjs.cloudflare.com/ajax/libs/reconnecting-websocket/1.0.0/reconnecting-websocket.min.js'
-      // }
     ]
   },
   /*
    ** Global CSS
    */
-  loading: {
+  loading: { 
     color: '#6ACCFF',
     height: '2px'
   },

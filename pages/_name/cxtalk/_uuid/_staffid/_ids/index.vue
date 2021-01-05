@@ -119,15 +119,15 @@
 </template>
 <script>
 import { send, check, put } from "@/api/api";
-var self
+var self;
 export default {
   async asyncData(context) {
-    let host = context.store.state.hostname
+    let host = context.store.state.hostname;
     let token = context.store.state.cookie.token;
     let jkl = context.params.name;
     return {
       jkl: jkl,
-      host
+      host,
     };
   },
   head() {
@@ -136,13 +136,13 @@ export default {
       meta: [
         {
           name: "description",
-          content: "允家新房"
+          content: "允家新房",
         },
         {
           name: "keywords",
-          content:  "允家新房"
-        }
-      ]
+          content: "允家新房",
+        },
+      ],
     };
   },
   data() {
@@ -263,14 +263,14 @@ export default {
       isonce: 0,
       message: "获取验证码",
       promsg: {},
-      host: ''
+      host: "",
     };
   },
   methods: {
     back() {
       if (sessionStorage.getItem("reconnect")) {
-        let url = sessionStorage.getItem("reconnect")
-        sessionStorage.removeItem("reconnect")
+        let url = sessionStorage.getItem("reconnect");
+        sessionStorage.removeItem("reconnect");
         window.location.href = url;
       } else {
         this.$router.go(-1);
@@ -307,7 +307,7 @@ export default {
       let pp = {
         controller: "chat",
         action: "send",
-        params: { content: ll, username: id, host:self.host },
+        params: { content: ll, username: id, host: self.host },
       };
       this.ws.send(JSON.stringify(pp));
       let dv = document.createElement("div");
@@ -355,7 +355,7 @@ export default {
         ip: ip,
         page: 4,
         city: city,
-        project: sessionStorage.getItem('proid'),
+        project: sessionStorage.getItem("proid"),
         position: 112,
         remark: txt,
         source: "IM",
@@ -392,15 +392,24 @@ export default {
       this.show = false;
     },
     golist() {
-      swan.webView.switchTab({
-            url: '/pages/message/message',
+      $(document).ready(function () {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pages/talklist/talklist" });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pages/talklist/talklist",
             success() {
-                console.log('to-web-view success');
+              console.log("to-web-view success");
             },
             fail() {
-                console.log('fail');
-            }
-        });
+              console.log("fail");
+            },
+          });
+        }
+      });
+
       // this.$router.push("/" + this.jkl + "/talklist");
     },
     compare(key) {
@@ -415,7 +424,13 @@ export default {
       let pp = {
         controller: "chat",
         action: "history",
-        params: { mine: id, customer: staffid, page: page, limit: 15, host:self.host },
+        params: {
+          mine: id,
+          customer: staffid,
+          page: page,
+          limit: 15,
+          host: self.host,
+        },
       };
       this.ws.send(JSON.stringify(pp));
     },
@@ -423,7 +438,7 @@ export default {
       let pp = {
         controller: "chat",
         action: "index",
-        params: { staff: staffid, customer: id, type: 0, host:self.host },
+        params: { staff: staffid, customer: id, type: 0, host: self.host },
       };
       this.ws.send(JSON.stringify(pp));
     },
@@ -431,7 +446,7 @@ export default {
       let pp = {
         controller: "chat",
         action: "auto",
-        params: { uuid: id, host:self.host },
+        params: { uuid: id, host: self.host },
       };
       this.ws.send(JSON.stringify(pp));
     },
@@ -440,7 +455,7 @@ export default {
       let pp = {
         controller: "Staff",
         action: "info",
-        params: { uuid: id, host:self.host },
+        params: { uuid: id, host: self.host },
       };
       if (id) {
         this.ws.send(JSON.stringify(pp));
@@ -448,13 +463,13 @@ export default {
     },
     start() {
       // $('.con').html('')
-      this.list =[]
-      this.page = 1
+      this.list = [];
+      this.page = 1;
       let that = this;
       this.ws = this.$store.state.ws;
       this.id = localStorage.getItem("uuid");
       let id = this.id;
-      that.staffid = this.$route.params.staffid;
+
       setTimeout(() => {
         // that.load = false;
         that.autotalk(id);
@@ -468,7 +483,7 @@ export default {
         that.putcard();
         sessionStorage.removeItem("type");
       };
-      console.log(this.ws.readyState,that.staffid)
+      console.log(this.ws.readyState, that.staffid);
       if (this.ws.readyState == 1) {
         if (that.staffid) {
           that.loadbox(id, that.staffid);
@@ -498,17 +513,17 @@ export default {
       let pp = {
         controller: "talker",
         action: "online_one",
-        params: { uuid: id, host:self.host },
+        params: { uuid: id, host: self.host },
       };
       if (id) {
         this.ws.send(JSON.stringify(pp));
       }
-    }
+    },
   },
   created() {
-    self = this
-    this.host = this.$store.state.hostname
-    console.log(this.host)
+    self = this;
+    this.host = this.$store.state.hostname;
+    console.log(this.host);
     let that = this;
     for (let val in that.faces) {
       that.faces[val] = {
@@ -518,51 +533,54 @@ export default {
     }
   },
   mounted() {
-      this.typetxt = '允家咨询师'
-      this.xymsg = '允家用户协议'
+    this.typetxt = "允家咨询师";
+    this.xymsg = "允家用户协议";
     sessionStorage.setItem("type", true);
     this.load = true;
-      let uuid = this.$route.params.uuid
-      localStorage.setItem("uuid", uuid);
+    let uuid = this.$route.params.uuid;
+    localStorage.setItem("uuid", uuid);
     let id = localStorage.getItem("uuid");
-      // if (!sessionStorage.getItem("isconnect")) {
-      //   sessionStorage.setItem("isconnect", true);
-      //   setTimeout(() => {
-      //     that.$router.go(0);
-      //   }, 500);
-      // }
-      // this.$store.state.ws.close() kWNznYTEzB3s1608096182000
-      // this.$store.state.ws = new ReconnectingWebSocket(
-      //     "ws://139.155.128.107:9509?uuid="+uuid
-      //   );
-      console.log(uuid);
-      let ids = this.$route.params.ids
-      let pro = ids.split(',')[0];
-      let city = ids.split(',')[1];
-      sessionStorage.setItem("proid", pro);
-      this.proid = pro
-      console.log("city", city);
-      let ip = ip_arr["ip"];
-      let url = window.location.href
-      // let city = '1';
-      let pp = {
-        controller: "Info",
-        action: "register",
-        params: {
-          city: city,
-          project: pro,
-          ip: ip,
-          url: url,
-          uuid: uuid,
-          host:self.host
-        },
-      };
-      setTimeout(() => {
-        that.$store.state.ws.send(JSON.stringify(pp));
-      }, 4000);
-    
+
+    // if (!sessionStorage.getItem("isconnect")) {
+    //   sessionStorage.setItem("isconnect", true);
+    //   setTimeout(() => {
+    //     that.$router.go(0);
+    //   }, 500);
+    // }
+    // this.$store.state.ws.close() kWNznYTEzB3s1608096182000
+    // this.$store.state.ws = new ReconnectingWebSocket(
+    //     "ws://139.155.128.107:9509?uuid="+uuid
+    //   );
+    console.log(uuid);
+    let ids = this.$route.params.ids;
+    let pro = ids.split(",")[0];
+    let city = ids.split(",")[1];
+    sessionStorage.setItem("proid", pro);
+    this.proid = pro;
+    console.log("city", city);
+    let ip = ip_arr["ip"];
+    let url = window.location.href;
+    // let city = '1';
+    // let pp = {
+    //   controller: "Info",
+    //   action: "register",
+    //   params: {
+    //     city: city,
+    //     project: pro,
+    //     ip: ip,
+    //     url: url,
+    //     uuid: uuid,
+    //     host:self.host
+    //   },
+    // };
+    // setTimeout(() => {
+    //   that.$store.state.ws.send(JSON.stringify(pp));
+    // }, 4000);
+
     // return
     let that = this;
+    that.start();
+    that.staffid = this.$route.params.staffid;
     this.ws = this.$store.state.ws;
     // $(".con").on("click", ".mfbtn", function () {
     //   that.show = true;
@@ -972,10 +990,9 @@ export default {
           }
         } else {
           if (data.fromUserName.length < 10) {
-            sessionStorage.setItem('testid',data.fromUserName)
-            that.isup()
+            sessionStorage.setItem("testid", data.fromUserName);
+            that.isup();
             // that.start()
-            
           }
         }
       } else if (data.action == 206) {
@@ -988,32 +1005,33 @@ export default {
         sessionStorage.setItem("staffid", data.sid);
         that.start();
       } else if (data.action == 304) {
-        data.fromUserName = sessionStorage.getItem('testid')
-        if(data.visiting == 0){
-          sessionStorage.setItem('staffid',data.fromUserName)
+        data.fromUserName = sessionStorage.getItem("testid");
+        if (data.visiting == 0) {
+          // sessionStorage.setItem('staffid',data.fromUserName)
+          that.staffid = data.fromUserName;
           that.start();
-        }else{
+        } else {
           if (sessionStorage.getItem(data.fromUserName)) {
-              sessionStorage.setItem(
-                data.fromUserName,
-                parseInt(sessionStorage.getItem(data.fromUserName)) + 1
-              );
-            } else {
-              sessionStorage.setItem(data.fromUserName, 1);
-            }
-            if (
-              sessionStorage.getItem("total") &&
-              sessionStorage.getItem("total") != "NaN"
-            ) {
-              sessionStorage.setItem(
-                "total",
-                parseInt(sessionStorage.getItem("total")) + 1
-              );
-              that.totalnum = that.totalnum + 1;
-            } else {
-              sessionStorage.setItem("total", 1);
-              that.totalnum = 1;
-            }
+            sessionStorage.setItem(
+              data.fromUserName,
+              parseInt(sessionStorage.getItem(data.fromUserName)) + 1
+            );
+          } else {
+            sessionStorage.setItem(data.fromUserName, 1);
+          }
+          if (
+            sessionStorage.getItem("total") &&
+            sessionStorage.getItem("total") != "NaN"
+          ) {
+            sessionStorage.setItem(
+              "total",
+              parseInt(sessionStorage.getItem("total")) + 1
+            );
+            that.totalnum = that.totalnum + 1;
+          } else {
+            sessionStorage.setItem("total", 1);
+            that.totalnum = 1;
+          }
         }
       }
     };
@@ -1054,7 +1072,11 @@ export default {
               let pp = {
                 controller: "chat",
                 action: "send",
-                params: { content: ll, username: that.staffid, host:self.host },
+                params: {
+                  content: ll,
+                  username: that.staffid,
+                  host: self.host,
+                },
               };
               that.ws.send(JSON.stringify(pp));
             };

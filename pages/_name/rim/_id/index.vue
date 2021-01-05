@@ -197,14 +197,14 @@ export default {
             dragEnable: true,
           });
           let content = `<div
-          style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:4px;padding-left: 17px;position: relative;background: #fff;">
-          <div style="float: left;width:72%">
-            <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${pro}</h5>
-            <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${add}</p>
+          style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:4px;padding-left: 17px;position: relative;background: #fff;" id="buildbox">
+          <div style="float: left;width:72%" id="buildbox">
+            <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${pro}</h5>
+            <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${add}</p>
           </div>
-          <div style="float: left;"><img style="width: 29px;margin-top:3px" src="${img}" alt=""></div>
+          <div style="float: left;"><img style="width: 29px;margin-top:3px" src="${img}" alt="" id="buildbox"></div>
           <div
-            style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;">
+            style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;" id="buildbox">
           </div>
         </div>`;
           let marker = new AMap.Marker({
@@ -293,6 +293,7 @@ export default {
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 14,
     });
+    
   },
   beforeDestroy(){
     document.getElementById('foott').style.display = 'block'

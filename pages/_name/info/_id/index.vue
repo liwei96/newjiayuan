@@ -2,7 +2,9 @@
   <div id="aritle">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo1.png" alt />
+      <!-- <img class="logo" src="~/assets/logo1.png" alt /> -->
+      <img v-if="host == 0" class="logo" src="~/assets/logo.png" alt />
+    <img v-if="host == 1" class="logo" src="~/assets/logos.png" alt />
       <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
       <ul class="cailist" v-if="list">
       <li class="cmn">

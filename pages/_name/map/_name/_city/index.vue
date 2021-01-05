@@ -454,14 +454,22 @@ export default {
         });
     },
     gobuild(id) {
-      swan.webView.redirectTo({
-        url: "/pages/content/content?id=" + id,
-        success() {
-          console.log("to-web-view success");
-        },
-        fail() {
-          console.log("fail");
-        },
+      $(document).ready(function () {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pages/content/content?id=" + id });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pages/content/content?id=" + id,
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            },
+          });
+        }
       });
     },
     move(e) {
@@ -677,26 +685,43 @@ export default {
       this.$router.push("/" + this.$route.params.name + "/searchname");
     },
     gohui() {
-      swan.webView.redirectTo({
-        url: "/pages/special/special",
-        success() {
-          console.log("to-web-view success");
-        },
-        fail() {
-          console.log("fail");
-        },
+      $(document).ready(function () {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pages/special/special" });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pages/special/special",
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            },
+          });
+        }
       });
+
       // this.$router.push("/" + this.$route.params.name + "/special");
     },
     search() {
-      swan.webView.switchTab({
-        url: "/pages/building/building",
-        success() {
-          console.log("to-web-view success");
-        },
-        fail() {
-          console.log("fail");
-        },
+      $(document).ready(function () {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pages/building/building" });
+        } else {
+          swan.webView.switchTab({
+            url: "/pages/building/building",
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            },
+          });
+        }
       });
     },
     checkbox(e) {

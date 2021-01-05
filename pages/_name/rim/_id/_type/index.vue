@@ -5,7 +5,7 @@
     </div> -->
     <div class="map-con">
       <div id="map"></div>
-      <div id="panel" style="display:none"></div>
+      <div id="panel" style="display: none"></div>
       <!-- <div class="map-type tel">
         <a :href="'tel:'+phone">
           <p>电话</p>
@@ -21,44 +21,64 @@
       <div class="swiper-map">
         <div class="swiper-wrapper">
           <div class="swiper-slide">
-            <div :class="mapnum === 1 ? 'tegood active' : 'tegood'" @click="setmap(1, '公交')">
+            <div
+              :class="mapnum === 1 ? 'tegood active' : 'tegood'"
+              @click="setmap(1, '公交')"
+            >
               公交
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 0 ? 'tegood active' : 'tegood'" @click="setmap(0 ,'地铁')">
-              
+            <div
+              :class="mapnum === 0 ? 'tegood active' : 'tegood'"
+              @click="setmap(0, '地铁')"
+            >
               地铁
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 2 ? 'tegood active' : 'tegood'" @click="setmap(2, '教育')">
+            <div
+              :class="mapnum === 2 ? 'tegood active' : 'tegood'"
+              @click="setmap(2, '教育')"
+            >
               教育
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 3 ? 'tegood active' : 'tegood'" @click="setmap(3, '医院')">
+            <div
+              :class="mapnum === 3 ? 'tegood active' : 'tegood'"
+              @click="setmap(3, '医院')"
+            >
               医院
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 4 ? 'tegood active' : 'tegood'" @click="setmap(4, '购物')">
+            <div
+              :class="mapnum === 4 ? 'tegood active' : 'tegood'"
+              @click="setmap(4, '购物')"
+            >
               购物
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 5 ? 'tegood active' : 'tegood'" @click="setmap(5, '美食')">
+            <div
+              :class="mapnum === 5 ? 'tegood active' : 'tegood'"
+              @click="setmap(5, '美食')"
+            >
               美食
               <i></i>
             </div>
           </div>
           <div class="swiper-slide">
-            <div :class="mapnum === 6 ? 'tegood active' : 'tegood'" @click="setmap(6, '娱乐')">
+            <div
+              :class="mapnum === 6 ? 'tegood active' : 'tegood'"
+              @click="setmap(6, '娱乐')"
+            >
               娱乐
               <i></i>
             </div>
@@ -71,22 +91,20 @@
             <h5>武林广场</h5>
             <p>
               地铁1号线
-              <span>
-                <img src="~/assets/dian.png" />800m
-              </span>
+              <span> <img src="~/assets/dian.png" />800m </span>
             </p>
           </li>
           <li>
             <h5>武林广场</h5>
             <p>
               地铁1号线
-              <span>
-                <img src="~/assets/dian.png" />800m
-              </span>
+              <span> <img src="~/assets/dian.png" />800m </span>
             </p>
           </li>
         </ul>
-        <p class="map-tishi" v-if="isnull">附近没有{{mapname}}，您可以看看其他信息</p>
+        <p class="map-tishi" v-if="isnull">
+          附近没有{{ mapname }}，您可以看看其他信息
+        </p>
       </div>
     </div>
     <van-popup
@@ -114,21 +132,21 @@ import tan from "@/components/tan.vue";
 export default {
   components: {
     "top-view": topView,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
     let other = context.query.other;
     let jkl = context.params.name;
     let id = context.params.id;
-    let token = context.store.state.cookie.token
-    let baidu = context.query.isbaidu
+    let token = context.store.state.cookie.token;
+    let baidu = context.query.isbaidu;
     let [res] = await Promise.all([
       context.$axios
         .get("/jy/building/map", {
           params: {
             other: other,
             id: id,
-            token:token
+            token: token,
           },
         })
         .then((resp) => {
@@ -141,24 +159,23 @@ export default {
       jkl: jkl,
       phone: res.common.phone,
       building: res.building,
-      id:id,
-      isbaidu:baidu
+      id: id,
+      isbaidu: baidu,
     };
   },
   head() {
     return {
-      title: "允家新房-"+this.building.name+'-周边详情',
+      title: "允家新房-" + this.building.name + "-周边详情",
       meta: [
         {
           name: "description",
-          content:
-            "允家新房"
+          content: "允家新房",
         },
         {
           name: "keywords",
-          content: "允家新房"
-        }
-      ]
+          content: "允家新房",
+        },
+      ],
     };
   },
   data() {
@@ -174,23 +191,33 @@ export default {
       tan: false,
       tel: "",
       proname: "",
-      building:{},
-      phone:'',
-      remark:'',
-      isbaidu: '0'
+      building: {},
+      phone: "",
+      remark: "",
+      isbaidu: "0",
     };
   },
   methods: {
     back() {
-      swan.webView.redirectTo({
-            url: '/pages/content/content?id='+this.$route.params.id,
+      $(document).ready(function () {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({
+            url: "/pages/content/content?id=" + this.$route.params.id,
+          });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pages/content/content?id=" + this.$route.params.id,
             success() {
-                console.log('to-web-view');
+              console.log("to-web-view");
             },
             fail() {
-                console.log('fail');
-            }
-        });
+              console.log("fail");
+            },
+          });
+        }
+      });
     },
     mmap() {
       this.over = false;
@@ -210,14 +237,14 @@ export default {
             dragEnable: true,
           });
           let content = `<div
-          style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:4px;padding-left: 17px;position: relative;background: #fff;">
-          <div style="float: left;width:72%">
-            <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${pro}</h5>
-            <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">${add}</p>
+          style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:4px;padding-left: 17px;position: relative;background: #fff;" id="buildbox">
+          <div style="float: left;width:72%" id="buildbox">
+            <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${pro}</h5>
+            <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${add}</p>
           </div>
-          <div style="float: left;"><img style="width: 29px;margin-top:3px" src="${img}" alt=""></div>
+          <div style="float: left;"><img style="width: 29px;margin-top:3px" src="${img}" alt="" id="buildbox"></div>
           <div
-            style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;">
+            style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;" id="buildbox">
           </div>
         </div>`;
           let marker = new AMap.Marker({
@@ -288,17 +315,17 @@ export default {
     cli(e) {
       this.tan = e;
     },
-    pop(name,position,txt){
-      this.name = name
-      this.typebtn = 1
-      this.typenum = position
-      this.tan = true
-      this.remark=txt
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
     },
   },
   mounted() {
     // this.isbaidu = this.$route.query.isbaidu
-    document.getElementById('foott').style.display = 'none'
+    document.getElementById("foott").style.display = "none";
     this.mmap();
     var swiper08 = new Swiper(".swiper-map", {
       slidesPerView: 5.5,
@@ -306,10 +333,37 @@ export default {
       slidesOffsetAfter: 0,
       slidesOffsetBefore: 14,
     });
+    let box = document.getElementById("Zhou");
+    let id = this.$route.params.id;
+    box.onclick = function (e) {
+      console.log(e.target.id);
+      if (e.target.id == "buildbox") {
+        $(document).ready(function () {
+          var u = navigator.userAgent;
+          var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+          if (!isbaidu) {
+            console.log(55)
+            wx.miniProgram.navigateTo({
+              url: "/pages/content/content?id=" + id,
+            });
+          } else {
+            swan.webView.redirectTo({
+              url: "/pages/content/content?id=" + id,
+              success() {
+                console.log("to-web-view success");
+              },
+              fail() {
+                console.log("fail");
+              },
+            });
+          }
+        });
+      }
+    };
   },
-  beforeDestroy(){
-    document.getElementById('foott').style.display = 'block'
-  }
+  beforeDestroy() {
+    document.getElementById("foott").style.display = "block";
+  },
 };
 </script>
 <style lang="less" scoped>
