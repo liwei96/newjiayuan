@@ -5,140 +5,207 @@
       <span class="txt">返乡置业</span>
       <img src="~/assets/mapcai.png" alt class="list" @click="btns" />
       <ul class="cailist" v-if="list">
-        <li class="cmn">
+        <li class="cmn" v-if="types == 0">
           <router-link :to="'/' + jkl">
             <span></span>
             <img src="~/assets/barhome.png" />
             <p>首 页</p>
           </router-link>
         </li>
-        <li>
+        <li v-if="types == 0">
           <router-link :to="'/' + jkl + '/search'">
             <img src="~/assets/barsearch.png" />
             <p>楼盘查询</p>
           </router-link>
         </li>
-        <li>
+        <li v-if="types == 0">
           <router-link :to="'/' + jkl + '/join'">
             <img src="~/assets/tegother.png" />
             <p>平台合作</p>
           </router-link>
         </li>
-        <li>
+        <li v-if="types == 0">
           <router-link :to="'/' + jkl + '/weike/before/56'">
             <img src="~/assets/barke.png" />
             <p>买房百科</p>
           </router-link>
         </li>
-        <li>
+        <li v-if="types == 0">
           <router-link :to="'/' + jkl + '/infos/46'">
             <img src="~/assets/barxun.png" />
             <p>房产资讯</p>
           </router-link>
         </li>
+        <li class="cmn" @click="goyun(0)" v-if="types == 1">
+          <span></span>
+          <img src="~/assets/barhome.png" />
+          <p>首 页</p>
+        </li>
+        <li @click="goyun(1)" v-if="types == 1">
+          <img src="~/assets/barsearch.png" />
+          <p>楼盘查询</p>
+        </li>
+        <li @click="goyun(2)" v-if="types == 1">
+          <img src="~/assets/tegother.png" />
+          <p>平台合作</p>
+        </li>
+        <li @click="goyun(3)" v-if="types == 1">
+          <img src="~/assets/barke.png" />
+          <p>买房百科</p>
+        </li>
+        <li @click="goyun(4)" v-if="types == 1">
+          <img src="~/assets/barxun.png" />
+          <p>房产资讯</p>
+        </li>
       </ul>
     </header>
     <div class="topbox">
-      <img src="~/assets/backhome-top.png" alt="" class="topimg" />
+      <div class="topbox-box">
+        <img src="~/assets/backhome-top.png" alt="" class="topimg" />
+        <p class="left" @click="gocity">
+          {{cityname}}<img src="~/assets/backhome-downs.png" alt="" />
+        </p>
+        <p class="right" @click="showtxt">活动规则</p>
+      </div>
       <div class="white">
         <ul class="lists">
-          <li>
+          <van-swipe
+            style="height: 24px"
+            :height="28"
+            vertical
+            :show-indicators="false"
+            :loop="true"
+            :autoplay="3000"
+          >
+            <van-swipe-item v-for="(item, key) in carousel" :key="key">
+              <div class="ll">
+                <img src="~/assets/backhome-la.png" alt="" />
+                <span>{{ item.tel }}成功领取{{ item.name }}购房补贴</span>
+              </div>
+            </van-swipe-item>
+          </van-swipe>
+
+          <!-- <li >
             <img src="~/assets/backhome-la.png" alt="" />
-            <span>用户4875成功领取禹洲宋都望林府购房补贴</span>
-          </li>
+            <span>{{item.tel}}成功领取{{item.name}}购房补贴</span>
+          </li> -->
+          <!-- <notice-bar :scrollable="false" background="#fff" color="#646566">
+        <swipe
+          vertical
+          class="notice-swipe"
+          :autoplay="3000"
+          :show-indicators="false"
+        >
+          <swipe-item v-for="(item, key) in carousel" :key="key">
+            <div class="ll">
+                <img src="~/assets/backhome-la.png" alt="" />
+                <span>{{ item.tel }}成功领取{{ item.name }}购房补贴</span>
+              </div>
+          </swipe-item>
+        </swipe>
+      </notice-bar> -->
         </ul>
         <div class="num">
-          — 共<span>1</span><span>2</span><span>9</span
-          ><span class="last">3</span>位用户已领取 —
+          — 共<span v-for="(item, key) in totalnum" :key="key">{{ item }}</span
+          >位用户已领取 —
         </div>
-        <p class="txt">累计领取购房补贴金<span>1878.7</span>万元</p>
+        <p class="txt">
+          累计领取购房补贴金<span>{{ total }}</span
+          >万元
+        </p>
       </div>
     </div>
     <ul class="nav">
-      <li :class="type == 0 ? 'active' : ''">
+      <li
+        :class="type == 0 ? 'active' : ''"
+        @click="goto(0)"
+        v-if="activity.length != 0"
+      >
         大额补贴
         <p></p>
       </li>
-      <li :class="type == 1 ? 'active' : ''">
+      <li
+        :class="type == 1 ? 'active' : ''"
+        @click="goto(1)"
+        v-if="discount.length != 0"
+      >
         好房特价
         <p></p>
       </li>
-      <li :class="type == 2 ? 'active' : ''">
+      <li :class="type == 2 ? 'active' : ''" @click="goto(2)">
         精选好盘
         <p></p>
       </li>
-      <li :class="type == 3 ? 'active' : ''">
+      <li :class="type == 3 ? 'active' : ''" @click="goto(3)">
         猜你喜欢
         <p></p>
       </li>
     </ul>
-    <div class="bu">
+    <div class="bu" v-if="activity.length != 0" id="one">
       <img src="~/assets/backhome-butit.png" alt="" class="tit" />
       <div class="bu-box">
         <div class="box-box">
-          <div class="box">
-            <div class="ti">
-              <p class="name">北樾府</p>
+          <div class="box" v-for="item in activity" :key="item.id">
+            <div class="ti" @click="go(item.id)">
+              <p class="name">{{ item.name }}</p>
             </div>
-            <p class="city">杭州-临安</p>
-            <p class="price">¥18000</p>
-            <p class="btn">立即领</p>
-            <p class="text">已有47人领取</p>
-          </div>
-          <div class="box">
-            <div class="ti">
-              <p class="name">北樾府</p>
-            </div>
-            <p class="city">杭州-临安</p>
-            <p class="price">¥18000</p>
-            <p class="btn">立即领</p>
-            <p class="text">已有47人领取</p>
-          </div>
-          <div class="box">
-            <div class="ti">
-              <p class="name">北樾府</p>
-            </div>
-            <p class="city">杭州-临安</p>
-            <p class="price">¥18000</p>
-            <p class="btn">立即领</p>
-            <p class="text">已有47人领取</p>
-          </div>
-          <div class="box">
-            <div class="ti">
-              <p class="name">北樾府</p>
-            </div>
-            <p class="city">杭州-临安</p>
-            <p class="price">¥18000</p>
-            <p class="btn">立即领</p>
-            <p class="text">已有47人领取</p>
+            <p class="city">{{ item.city }}-{{ item.country }}</p>
+            <p class="price">¥{{ item.money }}</p>
+            <p
+              class="btn"
+              @click="
+                tan(
+                  '领取优惠',
+                  115,
+                  '返乡置业+领取补贴',
+                  item.id,
+                  item.name,
+                  104,
+                  item.money
+                )
+              "
+            >
+              立即领
+            </p>
+            <p class="text">已有{{ item.num }}人领取</p>
           </div>
         </div>
-        <p class="button">
+        <p class="button" @click="amore" v-if="anum > 6 && isok">
           更多补贴<img src="~/assets/backhome-down1.png" alt="" />
         </p>
       </div>
     </div>
-    <h3>—— 好房特价 ——</h3>
-    <ul class="ll">
-      <li>
-        <div class="top">
+    <h3 id="two" v-if="discount.length != 0">—— 好房特价 ——</h3>
+    <ul class="ll" v-if="discount.length != 0">
+      <li v-for="item in discount" :key="item.id">
+        <div class="top" @click="go(item.id)">
           <div class="left">
-            <img src="~/assets/lun02.jpg" alt="" />
+            <img :src="item.img" alt="" />
           </div>
           <div class="right">
             <h4>
-              武林ONE
-              <p>立省5万</p>
+              {{ item.name }}
+              <p>立省{{ (item.diff / 10000).toFixed(0) }}万</p>
             </h4>
             <div class="pri">
-              <p class="old">原价<span>217</span>万元</p>
-              <p class="new">原价<span>217</span>万元</p>
+              <p class="old">
+                现价<span>{{ (item.original / 10000).toFixed(1) }}</span
+                >万元
+              </p>
+              <p class="new">
+                特价<span>{{ (item.now / 10000).toFixed(1) }}</span
+                >万元
+              </p>
             </div>
-            <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
+            <p class="msg">
+              {{ item.type }} | {{ item.city }}-{{ item.country }} |
+              {{ item.area }}m²
+            </p>
             <p class="icons">
-              <span class="zhuang">精装</span>
-              <span>精装</span>
-              <span>精装</span>
+              <span class="zhuang">{{ item.decorate }}</span>
+              <span v-for="(dd, key) in item.features" :key="key">{{
+                dd
+              }}</span>
             </p>
           </div>
         </div>
@@ -147,248 +214,447 @@
             left-icon="volume-o"
             color="#646566"
             background="#F7F7F7"
-            text="特价房页+领取优惠特价房页+领取优惠"
+            :text="item.dynamic"
           />
-          <button>马上抢</button>
-        </div>
-      </li>
-      <li>
-        <div class="top">
-          <div class="left">
-            <img src="~/assets/lun02.jpg" alt="" />
-          </div>
-          <div class="right">
-            <h4>
-              武林ONE
-              <p>立省5万</p>
-            </h4>
-            <div class="pri">
-              <p class="old">原价<span>217</span>万元</p>
-              <p class="new">原价<span>217</span>万元</p>
-            </div>
-            <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
-            <p class="icons">
-              <span class="zhuang">精装</span>
-              <span>精装</span>
-              <span>精装</span>
-            </p>
-          </div>
-        </div>
-        <div class="bom">
-          <van-notice-bar
-            left-icon="volume-o"
-            color="#646566"
-            background="#F7F7F7"
-            text="特价房页+领取优惠特价房页+领取优惠"
-          />
-          <button>马上抢</button>
-        </div>
-      </li>
-      <li>
-        <div class="top">
-          <div class="left">
-            <img src="~/assets/lun02.jpg" alt="" />
-          </div>
-          <div class="right">
-            <h4>
-              武林ONE
-              <p>立省5万</p>
-            </h4>
-            <div class="pri">
-              <p class="old">原价<span>217</span>万元</p>
-              <p class="new">原价<span>217</span>万元</p>
-            </div>
-            <p class="msg">住宅 | 杭州-江干 | 80-140m²</p>
-            <p class="icons">
-              <span class="zhuang">精装</span>
-              <span>精装</span>
-              <span>精装</span>
-            </p>
-          </div>
-        </div>
-        <div class="bom">
-          <van-notice-bar
-            left-icon="volume-o"
-            color="#646566"
-            background="#F7F7F7"
-            text="特价房页+领取优惠特价房页+领取优惠"
-          />
-          <button>马上抢</button>
+          <button
+            @click="
+              sign(
+                '抢特价房',
+                114,
+                '返乡置业+抢特价房',
+                item.id,
+                item.name,
+                true
+              )
+            "
+          >
+            马上抢
+          </button>
         </div>
       </li>
     </ul>
-    <p class="btn1">展开更多<img src="~/assets/backhome-down1.png" alt="" /></p>
+    <p class="btn1" @click="dismore" v-if="discount.length != 0">
+      展开更多<img src="~/assets/backhome-down1.png" alt="" />
+    </p>
     <div class="kk">
       <div class="xuan">
-        <h4>
-          精选好盘<img src="~/assets/backhome-question.png" alt="" />
-          <p>更多楼盘<img src="~/assets/backhome-more.png" alt="" /></p>
+        <h4 id="three">
+          精选好盘<img
+            src="~/assets/backhome-question.png"
+            alt=""
+            @click="showtxt"
+          />
+          <p @click="gosearch">
+            更多楼盘<img src="~/assets/backhome-more.png" alt="" />
+          </p>
         </h4>
         <div class="swiper-strict">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="top">
-                <img src="~/assets/lun02.jpg" alt />
-                <p class="city">临安</p>
-                <p class="name">中天雅境</p>
+            <div class="swiper-slide" v-for="item in chosen" :key="item.id">
+              <div class="top" @click="go(item.id)">
+                <img :src="item.img" alt />
+                <p class="city">{{ item.country }}</p>
+                <p class="name">{{ item.name }}</p>
                 <p class="zhao"></p>
               </div>
               <div class="strict-bom">
-                <p class="btn">领优惠</p>
-                <p class="num">56人已领取</p>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="top">
-                <img src="~/assets/lun02.jpg" alt />
-                <p class="city">临安</p>
-                <p class="name">中天雅境</p>
-                <p class="zhao"></p>
-              </div>
-              <div class="strict-bom">
-                <p class="btn">领优惠</p>
-                <p class="num">56人已领取</p>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="top">
-                <img src="~/assets/lun02.jpg" alt />
-                <p class="city">临安</p>
-                <p class="name">中天雅境</p>
-                <p class="zhao"></p>
-              </div>
-              <div class="strict-bom">
-                <p class="btn">领优惠</p>
-                <p class="num">56人已领取</p>
+                <p
+                  class="btn"
+                  @click="
+                    sign(
+                      '领取优惠',
+                      37,
+                      '返乡置业+领取优惠',
+                      item.id,
+                      item.name
+                    )
+                  "
+                >
+                  领优惠
+                </p>
+                <p class="num">{{ item.count }}人已领取</p>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="guess">
-        <h4>
+        <h4 id="four">
           猜你喜欢
-          <span>更多楼盘<img src="~/assets/backhome-more1.png" alt="" /></span>
+          <span @click="gosearch"
+            >更多楼盘<img src="~/assets/backhome-more1.png" alt=""
+          /></span>
         </h4>
         <div class="box">
-          <div class="li">
-            <div class="top">
-              <img src="~/assets/lun02.jpg" alt="" />
+          <div class="li" v-for="item in guess" :key="item.id">
+            <div class="top" @click="go(item.id)">
+              <img :src="item.img" alt="" />
               <p class="zhao"></p>
-              <p class="city">杭州-江干区</p>
+              <p class="city">{{ item.city }}-{{ item.country }}</p>
             </div>
             <div class="bom">
-              <h5>锦云澜天里</h5>
-              <p class="price"><span>17500</span>元/m²</p>
-              <p class="btn">查底价</p>
-            </div>
-          </div>
-          <div class="li">
-            <div class="top">
-              <img src="~/assets/lun02.jpg" alt="" />
-              <p class="zhao"></p>
-              <p class="city">杭州-江干区</p>
-            </div>
-            <div class="bom">
-              <h5>锦云澜天里</h5>
-              <p class="price"><span>17500</span>元/m²</p>
-              <p class="btn">查底价</p>
-            </div>
-          </div>
-          <div class="li">
-            <div class="top">
-              <img src="~/assets/lun02.jpg" alt="" />
-              <p class="zhao"></p>
-              <p class="city">杭州-江干区</p>
-            </div>
-            <div class="bom">
-              <h5>锦云澜天里</h5>
-              <p class="price"><span>17500</span>元/m²</p>
-              <p class="btn">查底价</p>
-            </div>
-          </div>
-          <div class="li">
-            <div class="top">
-              <img src="~/assets/lun02.jpg" alt="" />
-              <p class="zhao"></p>
-              <p class="city">杭州-江干区</p>
-            </div>
-            <div class="bom">
-              <h5>锦云澜天里</h5>
-              <p class="price"><span>17500</span>元/m²</p>
-              <p class="btn">查底价</p>
+              <h5>{{ item.name }}</h5>
+              <p class="price">
+                <span>{{ item.price }}</span
+                >元/m²
+              </p>
+              <p
+                class="btn"
+                @click="
+                  sign('咨询底价', 105, '返乡置业+咨询底价', item.id, item.name)
+                "
+              >
+                查底价
+              </p>
             </div>
           </div>
         </div>
       </div>
       <div class="rule">
         <h4>活动说明：</h4>
-        <p>活动时间：2020年10月8日00:00-2020年11月7日23：59</p>
         <p>
-          适用对象：中奖者由开发商或代理公司判定为家园平台客户即可享受这个优惠。
+          平台优惠发放时间：待开发商或总代理公司补贴发放到位后尽快发放。
         </p>
-        <p>
-          结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户
-          最终解释权归家园所有
-        </p>
+        <p>核算方式：由开发商或代理公司判定为{{pingname}}平台客户即可享受这个优惠。</p>
+        <p>结算方式：提供已实名的支付宝账户给与您对接的{{pingname}}咨询师，规定时间内会将优惠费用打至该账户。</p>
+        <p>详细活动方案请致电{{pingname}}客服电话：4007186686</p>
+        <p>注：活动最终解释权归{{pingname}}所有。</p>
       </div>
     </div>
+    <van-popup v-model="huo" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="huo-msg">
+        <div class="msg-con">
+          <h4>活动规则</h4>
+          <img @click="huo = false" src="~/assets/w-del.png" alt />
+          <div>
+            <p>
+              平台优惠发放时间：待开发商或总代理公司补贴发放到位后尽快发放。
+            </p>
+            <p>
+              核算方式：由开发商或代理公司判定为{{pingname}}平台客户即可享受这个优惠。
+            </p>
+            <p>
+              结算方式：提供已实名的支付宝账户给与您对接的{{pingname}}咨询师，规定时间内会将优惠费用打至该账户。
+            </p>
+            <p>详细活动方案请致{{pingname}}电客服电话：4007186686</p>
+            <p>注：活动最终解释权归{{pingname}}所有</p>
+          </div>
+        </div>
+      </div>
+    </van-popup>
     <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
-      <hong @close="close"></hong>
+      <hong
+        @close="close"
+        :id="id"
+        :txt="remark"
+        :name="name"
+        :typebtn="typebtn"
+        :typenum="typenum"
+        :proname="proname"
+        :num="num"
+        :types="types"
+      ></hong>
+    </van-popup>
+    <van-popup v-model="show1" :style="{ background: 'rgba(0,0,0,0)' }">
+      <sign
+        @close="close"
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        :typebtn="typebtn"
+        :proname="proname"
+        :checked="checked"
+        :room="room"
+        @check="checkroom"
+        :types="types"
+      ></sign>
+    </van-popup>
+    <van-popup v-model="showPicker" round position="bottom">
+      <van-picker
+        show-toolbar
+        :columns="columns"
+        @cancel="showPicker = false"
+        @confirm="onConfirm"
+      />
     </van-popup>
   </div>
 </template>
 <script>
 import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
-import hong from "@/components/hong.vue"
+import hong from "@/components/hong.vue";
+import sign from "@/components/sign.vue";
+import { activity, discount, list } from "@/api/api";
 export default {
-    components:{
-        hong
-    },
+  components: {
+    hong,
+    sign,
+  },
+  async asyncData(context) {
+    let host = context.store.state.hostname;
+    let city = context.store.state.city;
+    let jkl = context.params.name;
+    let hostnum = context.store.state.host
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/mobile/home_purchase", {
+          params: {
+            city: city,
+            host: host,
+          },
+        })
+        .then((resp) => {
+          let data = resp.data.data;
+          return data;
+        }),
+    ]);
+    return {
+      jkl: jkl,
+      guess: res.guesses,
+      activity: res.activity,
+      chosen: res.chosen,
+      discount: res.discount,
+      total: res.first_banner.money,
+      carousel: res.first_banner.carousel,
+      totalnum: String(res.first_banner.num),
+      anum: res.activity_total_num,
+      cityname: res.cityname || '杭州',
+      host: host,
+      hostnum: hostnum
+    };
+  },
   data() {
     return {
+      cityname: '杭州',
+      pingname: '家园',
+      guess: [],
+      showPicker: false,
       list: false,
       type: 0,
-      show: true
+      show: false,
+      show1: false,
+      typenum: 0,
+      typebtn: 1,
+      proname: "",
+      name: "",
+      id: 0,
+      remark: "",
+      columns: [],
+      checked: false,
+      num: 0,
+      dpage: 2,
+      room: "",
+      apage: 2,
+      huo: false,
+      isok: true,
+      types: 0,
+    };
+  },
+  head() {
+    return {
+      title: "返乡置业活动",
+      meta: [
+        {
+          name: "description",
+          content: "返乡置业活动",
+        },
+        {
+          name: "keywords",
+          content: "返乡置业活动",
+        },
+      ],
     };
   },
   methods: {
+    goyun(n) {
+      switch (n) {
+        case 0:
+          window.location.href = `http://m.jy8006.com/${this.jkl}`;
+          break;
+        case 1:
+          window.location.href = `http://m.jy8006.com/${this.jkl}/search`;
+          break;
+        case 2:
+          window.location.href = `http://m.jy8006.com/${this.jkl}/participate`;
+          break;
+        case 3:
+          window.location.href = `http://m.jy8006.com/${this.jkl}/encyclopedia/before/56`;
+          break;
+        case 4:
+          window.location.href = `http://m.jy8006.com/${this.jkl}/realinformations/46`;
+          break;
+      }
+    },
+    gocity() {
+      if (this.types == 0) {
+        this.$router.push("/" + this.jkl + "/address");
+      } else {
+        window.location.href = `http://m.jy8006.com/${this.jkl}/address`;
+      }
+    },
+    goto(n) {
+      this.type = n;
+      switch (n) {
+        case 0:
+          window.scrollTo(0, $("#one").offset().top - 100);
+          break;
+        case 1:
+          window.scrollTo(0, $("#two").offset().top - 100);
+          break;
+        case 2:
+          window.scrollTo(0, $("#three").offset().top - 100);
+          break;
+        case 3:
+          window.scrollTo(0, $("#four").offset().top - 100);
+          break;
+      }
+    },
+    showtxt() {
+      this.huo = true;
+    },
+    go(id) {
+      if (this.types == 0) {
+        this.$router.push("/" + this.jkl + "/content/" + id);
+      } else {
+        window.location.href = `http://m.jy8006.com/${this.jkl}/content/${id}`;
+      }
+    },
+    amore() {
+      let that = this;
+      let city = this.$store.state.city;
+      let dd = { city: city, type: 1, page: this.apage };
+      activity(dd).then((res) => {
+        console.log(res);
+        that.activity = that.activity.concat(res.data.data);
+        if (res.data.data.length < 6) {
+          that.isok = false;
+        }
+        that.apage = that.apage + 1;
+      });
+    },
+    checkroom() {
+      console.log(88);
+      let id = this.id;
+      list({ id: id }).then((res) => {
+        console.log(res);
+        this.columns = res.data.numbers;
+        this.showPicker = true;
+      });
+    },
+    onConfirm(e) {
+      console.log(e);
+      this.room = e;
+      this.showPicker = false;
+    },
+    sign(name, position, txt, id, proname, type) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.show1 = true;
+      this.remark = txt;
+      this.id = String(id);
+      this.proname = proname;
+      this.checked = type;
+    },
+    tan(name, position, txt, id, proname, type, num) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.show = true;
+      this.remark = txt;
+      this.id = String(id);
+      this.proname = proname;
+      this.checked = type;
+      this.num = num;
+      console.log(num);
+    },
     back() {
       this.$router.go(-1);
     },
     btns() {
       this.list = !this.list;
     },
+    dismore() {
+      let city = this.$store.state.city;
+      let dd = { city: city, type: 1, page: this.dpage };
+      let that = this;
+      discount(dd).then((res) => {
+        console.log(res);
+        that.discount = that.discount.concat(res.data.data);
+        that.dpage = that.dpage + 1;
+      });
+    },
     setnav() {
       let that = this;
       var scrollTop = window.scrollY;
-      if(scrollTop>=288) {
-          $(".nav").css({ position: "fixed", top: "2.75rem",width: "100%",marginTop: '0',zIndex: 10 });
-          $('.bu').css({ marginTop: '5.9375rem' })
+      if (scrollTop >= 288) {
+        $(".nav").css({
+          position: "fixed",
+          top: "2.75rem",
+          width: "100%",
+          marginTop: "0",
+          zIndex: 10,
+        });
+        $(".bu").css({ marginTop: "5.9375rem" });
       }
-      if(scrollTop >=288 && scrollTop<=660) {
-          this.type = 0
-      }else if(scrollTop >=660 && scrollTop<=1200) {
-          this.type = 1
-      }else if(scrollTop >=1200 && scrollTop<=1400) {
-          this.type = 2
-      }else if (scrollTop>1400) {
-          this.type = 3
-      }
-      if(scrollTop<288) {
-           $(".nav").css({ position: "relative", top: "0",width: "100%",marginTop: '2.125rem',zIndex: 10 });
-           $('.bu').css({ marginTop: '0.75rem' })
+      // if(this.activity.length != 0) {
+      //   if (scrollTop >= 288 && scrollTop <= ($('#one').offset().top-100)) {
+      //     this.type = 0;
+      //   }
+      // }
+      // if (this.discount.length != 0 && this.activity.length != 0) {
+      //   if (scrollTop >= ($('#one').offset().top-100) && scrollTop <= ($('#two').offset().top-100)) {
+      //     this.type = 1;
+      //   }
+      // }
+      // if(this.discount.length != 0) {
+      //   if (scrollTop >= ($('#two').offset().top-100) && scrollTop <= ($('#three').offset().top-100)) {
+      //     this.type = 2;
+      //   }
+      // }
+      // if (scrollTop > ($('#three').offset().top-100)) {
+      //   this.type = 3;
+      // }
+      if (scrollTop < 288) {
+        $(".nav").css({
+          position: "relative",
+          top: "0",
+          width: "100%",
+          marginTop: "2.125rem",
+          zIndex: 10,
+        });
+        $(".bu").css({ marginTop: "0.75rem" });
       }
     },
     close() {
-        this.show = false
-    }
+      this.show = false;
+      this.show1 = false;
+    },
+    gosearch() {
+      let jkl = this.jkl;
+      if(this.types == 0) {
+        this.$router.push("/" + jkl + "/search");
+      } else {
+        window.location.href=`http://m.jy8006.com/${jkl}/search`
+      }
+    },
   },
   mounted() {
+    if (this.$route.query.type) {
+      this.types = this.$route.query.type;
+      this.pingname = '允家'
+    }else {
+      if(this.host == 0) {
+        this.pingname = '家园'
+      }else {
+        this.pingname = '易得房'
+      }
+    }
+    $('#foott').css('display', 'none')
     var swiper08 = new Swiper(".swiper-strict", {
       slidesPerView: 2.5,
-      spaceBetween: 15,
+      spaceBetween: 8,
       slidesOffsetAfter: 14,
       slidesOffsetBefore: 14,
     });
@@ -397,11 +663,23 @@ export default {
   beforeDestroy() {
     window.removeEventListener("scroll", this.setnav);
   },
+  watch: {
+    show1(val) {
+      if (!val) {
+        this.room = "";
+      }
+    }
+  },
 };
 </script>
 <style lang="less" scoped>
 #backhome {
+  padding-bottom: 0.9375rem;
   background-color: #e6222f;
+}
+.notice-swipe {
+  height: 40px;
+  line-height: 40px;
 }
 header {
   display: flex;
@@ -469,6 +747,8 @@ header {
       color: #e6e6e6;
       font-size: 0.9375rem;
       line-height: 3.125rem;
+      display: flex;
+      align-items: center;
       a {
         width: 100%;
         display: flex;
@@ -502,6 +782,39 @@ header {
 .topbox {
   position: relative;
 }
+.topbox-box {
+  position: relative;
+  .right {
+    width: 3.75rem;
+    height: 1.375rem;
+    border-radius: 0.6875rem;
+    text-align: center;
+    line-height: 1.375rem;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 0.75rem;
+    position: absolute;
+    right: 0.9375rem;
+    top: 3.625rem;
+  }
+  .left {
+    width: 3.75rem;
+    height: 1.375rem;
+    border-radius: 0.6875rem;
+    text-align: center;
+    line-height: 1.375rem;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 0.75rem;
+    position: absolute;
+    left: 0.9375rem;
+    top: 3.625rem;
+    img {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+  }
+}
 .topimg {
   margin-top: 2.75rem;
   width: 100%;
@@ -531,7 +844,7 @@ header {
     span:nth-of-type(1) {
       margin-left: 0.3125rem;
     }
-    .last {
+    span:nth-of-type(4) {
       margin-right: 0.3125rem;
     }
   }
@@ -545,17 +858,38 @@ header {
     }
   }
   .lists {
-    li {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -64px;
+    height: 1.5rem;
+    overflow: hidden;
+    /deep/.van-swipe-item {
+      // margin-bottom: 0.375rem;
+      display: flex;
+    }
+    /deep/.van-notice-bar__wrap {
+      width: 100%;
+    }
+    .van-swipe {
+      width: 100%;
+    }
+    .van-notice-bar {
+      width: 100%;
+    }
+
+    .ll {
       background-color: #ffc75c;
-      width: 16.25rem;
       height: 1.5rem;
       border-radius: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: absolute;
+      position: relative;
       left: 50%;
       transform: translateX(-50%);
+      padding: 0 0.875rem;
+      // margin-bottom: 0.375rem;
       img {
         width: 1rem;
         height: 1rem;
@@ -563,6 +897,7 @@ header {
       }
       span {
         font-size: 0.75rem;
+        white-space: nowrap;
         color: #fff;
       }
     }
@@ -600,8 +935,9 @@ header {
   width: 92%;
   margin-left: 4%;
   margin-top: 0.75rem;
-  height: 22.375rem;
   background-color: #fff;
+  padding-bottom: 0.625rem;
+  overflow: hidden;
   border-radius: 0.625rem;
   .tit {
     width: 100%;
@@ -613,7 +949,7 @@ header {
       padding-top: 0.625rem;
       .box {
         position: relative;
-        width: 6.4375rem;
+        width: 6.4rem;
         height: 7rem;
         background: url("~assets/backhome-bao.png");
         background-size: contain;
@@ -811,7 +1147,6 @@ h3 {
   line-height: 2.25rem;
   color: #5d0808;
   font-size: 0.875rem;
-  margin-bottom: 1.5rem;
   img {
     width: 1rem;
     margin-bottom: -0.125rem;
@@ -822,6 +1157,7 @@ h3 {
   padding: 0 4%;
 }
 .xuan {
+  margin-top: 1.5rem;
   border-radius: 0.625rem;
   background-color: #fff;
   padding-top: 1.25rem;
@@ -873,6 +1209,9 @@ h3 {
           left: 0;
           top: 0;
           font-size: 0.625rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .name {
           color: #ffffff;
@@ -905,6 +1244,7 @@ h3 {
           margin-bottom: 0.3rem;
           margin-top: 0.7rem;
           background-color: #f83d44;
+          font-size: 0.75rem;
         }
         .num {
           color: #f83d44;
@@ -970,7 +1310,10 @@ h3 {
           color: #323233;
           font-size: 0.8125rem;
           margin-top: 0.375rem;
-          margin-bottom: 0.25rem;
+          margin-bottom: 0.2rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .price {
           color: #f83d44;
@@ -989,7 +1332,7 @@ h3 {
           background-color: #f83d44;
           color: #fff;
           font-size: 0.75rem;
-          margin-top: 0.375rem;
+          margin-top: 0.3rem;
         }
       }
     }
@@ -1014,5 +1357,38 @@ h3 {
     line-height: 1.25rem;
     margin-bottom: 0.75rem;
   }
+}
+.huo-msg .msg-con {
+  width: 74vw;
+  border-radius: 0.75rem;
+  padding: 1.5625rem;
+  background-color: #fff;
+  z-index: 300;
+}
+.huo-msg .msg-con div {
+  max-height: 280px;
+  overflow-x: auto;
+}
+.huo-msg h4 {
+  color: #2f3133;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  font-weight: bold;
+}
+.huo-msg p {
+  color: #626466;
+  font-size: 0.8125rem;
+  line-height: 1.1875rem;
+  margin-bottom: 0.625rem;
+}
+.huo-msg p span {
+  font-weight: bold;
+}
+.huo-msg img {
+  width: 1rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 </style>

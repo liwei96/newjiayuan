@@ -17,11 +17,11 @@
         <span> <img src="~/assets/dian.png" />地图 </span>
       </nuxt-link>
     </header>
-    <div class="input">
+    <img :src="banner.img" alt="" class="backhome" v-if="banner.length!=0" @click="goback">
+    <div :class="banner.length == 0 ?'input':'input input1'">
       <nuxt-link :to="'/' + jkl + '/searchname'">
         <input type="text" placeholder="请输入楼盘名称" />
       </nuxt-link>
-
       <img src="~/assets/search.png" alt class="sea" />
     </div>
     <div class="nav">
@@ -252,7 +252,13 @@
       <template v-for="(item, key) in list">
         <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
           <div class="pro">
-            <img :src="item.img" alt />
+            <div class="left">
+              <div class="imgbox" v-if="item.allowance > 0">
+                补贴<span>￥{{item.allowance}}</span>
+                <!-- <img src="~/assets/imgbox.png" alt=""> -->
+              </div>
+              <img class="leftimg" :src="item.img" alt />
+            </div>
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
@@ -509,7 +515,8 @@ export default {
       near_railway: near_railway,
       title:res1.common.header.title,
       description:res1.common.header.description,
-      keywords:res1.common.header.keywords
+      keywords:res1.common.header.keywords,
+      banner: res.common.banner
     };
   },
   head() {
@@ -565,6 +572,11 @@ export default {
     Loading,
   },
   methods: {
+    goback() {
+      if(this.banner.url) {
+        window.location.href = this.banner.url
+      }
+    },
     setnull() {
       this.unlimited(0, this.citys);
       this.unlimited(1, this.ties);
@@ -1159,6 +1171,12 @@ header {
     }
   }
 }
+.backhome {
+  width: 92%;
+  margin-left: 4%;
+  margin-top: 2.75rem;
+  border-radius: .25rem;
+}
 .input {
   height: 2.5rem;
   padding: 0 4%;
@@ -1204,6 +1222,9 @@ header {
     left: 7.5rem;
     // left: 5.3rem;
   }
+}
+.input1 {
+  margin-top: 0;
 }
 .nav {
   height: 3rem;
@@ -1586,11 +1607,32 @@ header {
     width: 100%;
     display: flex;
     text-decoration: none;
-    img {
+    .leftimg {
       width: 6.875rem;
       height: 5rem;
       margin-right: 0.75rem;
       border-radius: 0.1875rem;
+    }
+    .left {
+      position: relative;
+      .imgbox {
+        width: 4.1875rem;
+        position: absolute;
+        height: 1.25rem;
+        left: -0.3125rem;
+        text-align: center;
+        top: .5rem;
+        background: url(~assets/imgbox.png);
+        background-size: contain;
+        color: #fff;
+        font-size: .625rem;
+        line-height: 1.25rem;
+        font-weight: bold;
+        white-space: nowrap;
+        span {
+          font-size: .6875rem;
+        }
+      }
     }
     .pro-msg {
       flex: 1;

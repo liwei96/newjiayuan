@@ -219,3 +219,24 @@ export const infolike = (msg) => {
     params: msg
   })
 }
+export const activity = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/jy/mobile/activity_info',
+    params: msg
+  })
+}
+export const discount = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/jy/mobile/discount/info',
+    params: msg
+  })
+}
+export const list = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/jy/mobile/discount/list',
+    params: msg
+  })
+}

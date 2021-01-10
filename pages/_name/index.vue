@@ -34,19 +34,20 @@
         src="~/assets/banner.png"
         alt
         class="topimg"
-        v-if="host == 0 && false"
+        v-if="host == 0 && banner.length == 0"
       />
       <img
-        src="~/assets/backbanner.jpg"
+        :src="banner.img"
         alt
         class="topimg"
-        v-if="host == 0"
+        v-if="banner.length != 0"
+        @click="goback"
       />
       <img
         src="~/assets/banner2.jpg"
         alt
         class="topimg"
-        v-if="host == 1"
+        v-if="host == 1 && banner.length == 0"
       />
       <!-- <img
         src="~/assets/luck-2k.jpg"
@@ -55,76 +56,74 @@
         v-if="city == 1 || city == 3"
         @click="goluck"
       /> -->
-      <div class="navs" v-if="false">
-        <ul>
+      <div class="navs n1" v-if="banner.length ==0">
+        <ul class="bold b1">
           <li>
             <nuxt-link :to="'/' + jkl + '/search'">
-              <img src="~/assets/index-xin.png" alt />
+              <img src="~/assets/normal-search.png" alt />
             </nuxt-link>
             <p>新房</p>
           </li>
           <li>
+            <nuxt-link :to="'/' + jkl + '/search/feature-3'">
+              <img src="~/assets/normal-static.png" alt />
+            </nuxt-link>
+            <p>严选</p>
+          </li>
+          <li>
             <nuxt-link :to="'/' + jkl + '/special'">
-              <img src="~/assets/index-te.png" alt />
-              <span>优惠</span>
+              <img src="~/assets/normal-special.png" alt />
             </nuxt-link>
             <p>特价房</p>
           </li>
           <li>
-            <nuxt-link :to="'/' + jkl + '/weike/before/56'">
-              <img src="~/assets/index-weiki.png" alt />
+            <nuxt-link :to="'/' + jkl + '/map'">
+              <img src="~/assets/normal-map.png" alt />
             </nuxt-link>
-            <p>百科</p>
-          </li>
-          <li>
-            <nuxt-link :to="'/' + jkl + '/infos/46'">
-              <img src="~/assets/index-zixun.png" alt />
-            </nuxt-link>
-            <p>资讯</p>
+            <p>地图找房</p>
           </li>
           <li>
             <nuxt-link :to="'/' + jkl + '/join'">
-              <img src="~/assets/index-together.png" alt />
+              <img src="~/assets/normal-join.png" alt />
             </nuxt-link>
             <p>平台合作</p>
           </li>
         </ul>
         <ul>
           <li>
-            <nuxt-link :to="'/' + jkl + '/search'">
-              <img src="~/assets/index-xin.png" alt />
+            <nuxt-link :to="'/' + jkl + '/help'">
+              <img src="~/assets/normal-help.png" alt />
             </nuxt-link>
-            <p>新房</p>
-          </li>
-          <li>
-            <nuxt-link :to="'/' + jkl + '/special'">
-              <img src="~/assets/index-te.png" alt />
-              <span>优惠</span>
-            </nuxt-link>
-            <p>特价房</p>
+            <p>帮我找房</p>
           </li>
           <li>
             <nuxt-link :to="'/' + jkl + '/weike/before/56'">
-              <img src="~/assets/index-weiki.png" alt />
+              <img src="~/assets/normal-weike.png" alt />
             </nuxt-link>
             <p>百科</p>
           </li>
           <li>
             <nuxt-link :to="'/' + jkl + '/infos/46'">
-              <img src="~/assets/index-zixun.png" alt />
+              <img src="~/assets/normal-infos.png" alt />
             </nuxt-link>
             <p>资讯</p>
           </li>
           <li>
-            <nuxt-link :to="'/' + jkl + '/join'">
-              <img src="~/assets/index-together.png" alt />
+            <nuxt-link :to="'/' + jkl + '/dynamics'">
+              <img src="~/assets/normal-dynamic.png" alt />
             </nuxt-link>
-            <p>平台合作</p>
+            <p>新盘动态</p>
+          </li>
+          <li>
+            <nuxt-link :to="'/' + jkl + '/questions'">
+              <img src="~/assets/normal-question.png" alt />
+            </nuxt-link>
+            <p>楼盘问答</p>
           </li>
         </ul>
       </div>
-      <div class="navs">
-        <ul class="bold">
+      <div class="navs navs1" v-if="banner.length !=0">
+        <ul class="bold bold1">
           <li>
             <nuxt-link :to="'/' + jkl + '/search'">
               <img src="~/assets/index-build.png" alt />
@@ -537,6 +536,7 @@ export default {
       description: res.common.header.description,
       keywords: res.common.header.keywords,
       host: host,
+      banner: res.banner
     };
   },
   head() {
@@ -570,6 +570,9 @@ export default {
     };
   },
   methods: {
+    goback() {
+      window.location.href=this.banner.url
+    },
     gohelp() {
       this.$router.push("/" + this.jkl + "/help");
     },
@@ -720,17 +723,20 @@ header {
   .navs {
     margin-bottom: 1.25rem;
   }
+  .n1 {
+    padding-top: .125rem;
+  }
   ul {
     display: flex;
-    padding: 0 0.5rem;
+    padding: 0 1.25rem;
     justify-content: space-between;
     li {
       // width: 20%;
       text-align: center;
       position: relative;
       img {
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 2.75rem;
+        height: 2.75rem;
       }
       p {
         color: #313233;
@@ -757,6 +763,26 @@ header {
   .bold {
     p {
       font-weight: bold;
+    }
+  }
+  .bold1 {
+    margin-bottom: .625rem;
+  }
+  .b1 {
+    margin-bottom: .375rem;
+    li {
+      img {
+        margin-bottom: .25rem;
+      }
+    }
+  }
+  .navs1 {
+    ul {
+      li {
+        img {
+          margin-bottom: .125rem;
+        }
+      }
     }
   }
 }

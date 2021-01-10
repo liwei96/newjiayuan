@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <h3>今日特价房</h3>
+        <h3 v-if="specials.length !=0">今日特价房</h3>
         <ul class="pro">
           <li v-for="(item, key) in specials" :key="key">
             <nuxt-link :to="'/' + jkl + '/content/' + item.id">

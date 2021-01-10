@@ -163,7 +163,24 @@
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
       </h3>
-      <div class="hui-con">
+      <div class="hong-tit" v-if="activity.length != 0"><span>返乡置业</span>1亿购房补贴大放送</div>
+      <div class="hui-con hong" v-if="activity.length != 0">
+        <div class="hui-left">
+          <h6>
+            <span>￥{{activity.money}}</span>购房补贴
+          </h6>
+          <p>购房补贴金后将与您手机号绑定</p>
+        </div>
+        <div class="hui-right">
+          <button @click="sign('领取优惠', 115, '返乡置业+领取补贴',activity.money)">
+            立即领取
+          </button>
+          <p>
+            <span>{{ activity.num }}人</span>已领取
+          </p>
+        </div>
+      </div>
+      <div class="hui-con" v-if="activity.length == 0">
         <div class="hui-left">
           <h6>
             最高
@@ -671,8 +688,8 @@
         </div>
       </div> -->
     </div>
-    <div :class="lucktypes ? 'luck' : 'luck lucked'" @click="goluck">
-      <img src="~/assets/content-luck.png" alt="" />
+    <div :class="lucktypes ? 'luck' : 'luck lucked'" @click="sign('领取优惠', 115, '返乡置业+领取补贴',activity.money)" v-show="activity.length != 0">
+      <img src="~/assets/index-hong.png" alt="" />
     </div>
     <nav-view
       :phone="phone"
@@ -749,29 +766,24 @@
           <img @click="huo = false" src="~/assets/w-del.png" alt />
           <div>
             <p>
-              1、本次团购活动以分档累计补发的方案执行，通过{{txt}}网站成交该项目具体团购费用如下所示：
+              平台优惠发放时间：待开发商或总代理公司补贴发放到位后尽快发放。
             </p>
-            <p>0-5套---------每套1000元</p>
-            <p>6-10套--------每套2000元</p>
-            <p>11-15套-------每套3000元</p>
-            <p>16-20套-------每套4000元</p>
-            <p>21套以上------每套5000元</p>
-            <p>
-              2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
-            </p>
-            <p>
-              3、核算方式：由开发商或代理公司判定为{{txt}}平台客户即可享受这个优惠
-            </p>
-            <p>
-              4、结算方式：提供已实名的支付宝账户给与您对接的{{txt}}咨询师，规定时间内会将优惠费用打至该账户
-            </p>
-            <p>
-              详细活动方案请致电{{txt}}客服电话：
-              <span>400-718-6686</span> 注：活动最终解释权归{{txt}}所有
-            </p>
+            <p>核算方式：由开发商或代理公司判定为{{txt}}平台客户即可享受这个优惠。</p>
+            <p>结算方式：提供已实名的支付宝账户给与您对接的{{txt}}咨询师，规定时间内会将优惠费用打至该账户。</p>
+            <p>详细活动方案请致{{txt}}电客服电话：4007186686</p>
+            <p>注：活动最终解释权归{{txt}}所有</p>
           </div>
         </div>
       </div>
+    </van-popup>
+    <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
+      <hong @close="close" :id="id"
+        :txt="remark"
+        :name="name"
+        :typebtn="typebtn"
+        :typenum="typenum"
+        :proname="abstract.name"
+        :num="num"></hong>
     </van-popup>
   </div>
 </template>
@@ -793,7 +805,7 @@ export default {
   async asyncData(context) {
     let host = context.store.state.host
     let id = context.params.id;
-    let token = context.store.state.cookie.token;
+    let token = context.store.state.cookie.token || '';
     let jkl = context.params.name;
     let other = context.query.other;
     let kid = context.query.kid;
@@ -819,10 +831,10 @@ export default {
         }),
     ]);
     return {
-      effects: res ? res.imgs.img.effects : [],
-      examples: res ? res.imgs.img.examples : [],
-      traffics: res ? res.imgs.img.traffics : [],
-      imgnum: res ? res.imgs.num : [],
+      effects: res.imgs ? res.imgs.img.effects : [],
+      examples: res.imgs ? res.imgs.img.examples : [],
+      traffics: res.imgs ? res.imgs.img.traffics : [],
+      imgnum: res.imgs ? res.imgs.num : [],
       abstract: res.abstract,
       phone: res.common.phone,
       scores: res.scores,
@@ -846,7 +858,8 @@ export default {
       title:res.common.header.title,
       description:res.common.header.description,
       keywords:res.common.header.keywords,
-      host:host
+      host:host,
+      activity: res.common.activity || []
     };
   },
   head() {
@@ -866,6 +879,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       talktype: false,
       time: "7月24日",
       count: {},
@@ -924,10 +938,23 @@ export default {
       stafftel: 0,
       staffname: "",
       staffimg: "",
-      txt: '家园'
+      txt: '家园',
+      num: ''
     };
   },
   methods: {
+    sign(name, position, txt, num) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.show = true;
+      this.remark = txt;
+      this.num = num
+    },
+    close() {
+      console.log(55)
+      this.show = false
+    },
     handleScroll() {
       this.lucktypes = false;
       if (this.timer) {
@@ -939,7 +966,7 @@ export default {
       }, 800);
     },
     goluck() {
-      this.$router.push("/" + this.jkl + "/lucky");
+      this.$router.push("/" + this.jkl + "/backhome");
     },
     dianping() {
       let token = $cookies.get("token");
@@ -2118,6 +2145,7 @@ export default {
           font-size: 0.625rem;
         }
       }
+
       p {
         color: #af917d;
         font-size: 0.75rem;
@@ -2142,6 +2170,41 @@ export default {
         color: #ff7519;
         font-size: 0.75rem;
         margin-top: 0.1875rem;
+      }
+    }
+  }
+  .hong-tit {
+    height: 1.75rem;
+    border-radius: .25rem .25rem 0 0;
+    line-height: 1.75rem;
+    background: linear-gradient(90deg, #FF4B2D, #FFA146);
+    color: #fff;
+    font-size: .8125rem;
+    margin-top: 1.125rem;
+    span {
+      margin-left: .75rem;
+      margin-right: .5rem;
+    }
+  }
+  .hong {
+    margin-top: 0;
+    .hui-left {
+      h6 {
+        color: #FF4B28;
+        font-size: 1rem;
+        span {
+          font-size: 1.25rem;
+        }
+      }
+      p {
+        color: #D95B42;
+        font-size: .75rem;
+      }
+    }
+    .hui-right {
+      button {
+        background: linear-gradient(90deg, #FF4B2D, #FFA146);
+        border-radius: .8125rem;
       }
     }
   }
@@ -2947,12 +3010,12 @@ export default {
 }
 .luck {
   position: fixed;
-  right: 0.4375rem;
+  right: .9375rem;
   bottom: 7.5rem;
   z-index: 1001;
   transition: right 0.5s linear;
   img {
-    width: 4rem;
+    width: 3.125rem;
   }
 }
 .lucked {
