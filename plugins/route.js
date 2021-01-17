@@ -154,7 +154,7 @@ export default ({
       localStorage.setItem('uuid', timestamp)
       if (!store.state.ws) {
         let ws = new ReconnectingWebSocket(
-          "ws://39.98.227.114:9509?uuid=" + timestamp
+          "wss://ws.edefang.net?uuid=" + timestamp
         );
         store.dispatch("setws", ws);
       }
@@ -165,7 +165,7 @@ export default ({
     } else {
       if (!store.state.ws) {
         let ws = new ReconnectingWebSocket(
-          "ws://39.98.227.114:9509?uuid=" + to.query.uuid
+          "wss://ws.edefang.net?uuid=" + to.query.uuid
         );
         store.dispatch("setws", ws);
       }

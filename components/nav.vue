@@ -45,8 +45,6 @@ export default {
       this.$emit("fot", { position: id, name: name });
     },
     gotalk() {
-      // window.location.href =
-      //   "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
       let urlid = sessionStorage.getItem("proid");
       let id = sessionStorage.getItem(urlid);
       if (id) {

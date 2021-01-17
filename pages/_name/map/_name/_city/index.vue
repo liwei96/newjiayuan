@@ -461,7 +461,7 @@ export default {
           wx.miniProgram.navigateTo({ url: "/pages/content/content?id=" + id });
         } else {
           swan.webView.redirectTo({
-            url: "/pages/content/content?id=" + id,
+            url: "/pageA/content/content?id=" + id,
             success() {
               console.log("to-web-view success");
             },

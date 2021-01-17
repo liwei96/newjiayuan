@@ -157,6 +157,20 @@ export default {
         changeOrigin: true
       }
     },
+    "/detail": {
+      target: "http://39.98.227.114:9550/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/detail": "/detail" // 去掉接口地址中的api字符串
+      }
+    },
+    "/front": {
+      target: "http://ll.edefang.net/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/front": "/front" // 去掉接口地址中的api字符串
+      }
+    }
   },
   axios: {
     proxy: true,

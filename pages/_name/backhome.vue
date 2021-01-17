@@ -1064,7 +1064,7 @@ h3 {
             background: url(~assets/te-bg.png);
             background-size: 100%;
             width: 3.375rem;
-            height: 1.125rem;
+            height: 1.07rem;
             color: #f83d44;
             font-size: 0.625rem;
             font-weight: 400;
