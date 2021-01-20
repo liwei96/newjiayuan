@@ -230,6 +230,7 @@ export default {
   },
   data() {
     return {
+      onpage: true,
       yunjia: false,
       xymsg: "家园用户协议",
       bigimg: "",
@@ -346,7 +347,8 @@ export default {
       isonce: 0,
       message: "获取验证码",
       promsg: {},
-      host: ''
+      host: '',
+      othertype: false
     };
   },
   methods: {
@@ -467,7 +469,6 @@ export default {
             }
           }, 1000);
         }
-        console.log(res);
       });
     },
     sure() {},
@@ -541,10 +542,11 @@ export default {
         if (that.staffid) {
           that.loadbox(id, that.staffid);
         }
-        that.putcard();
+        if(that.onpage || that.othertype) {
+          that.putcard();
+        }
         sessionStorage.removeItem("type");
       };
-      console.log(this.ws.readyState,that.staffid)
       if (this.ws.readyState == 1) {
         if (that.staffid) {
           that.loadbox(id, that.staffid);
@@ -584,7 +586,6 @@ export default {
   created() {
     self = this
     this.host = this.$store.state.hostname
-    console.log(this.host)
     let that = this;
     for (let val in that.faces) {
       that.faces[val] = {
@@ -594,6 +595,7 @@ export default {
     }
   },
   mounted() {
+    let that = this
     if(this.host == 0) {
       this.typetxt = '家园咨询师'
       this.xymsg = '家园用户协议'
@@ -607,6 +609,7 @@ export default {
     let id = localStorage.getItem("uuid");
     this.load = true;
     if (url && url.indexOf("reconnect") !== -1) {
+      this.othertype = true
       console.log(decodeURIComponent(url.split("=")[1]));
       let arr = decodeURIComponent(url.split("=")[1]).split("?");
       if (arr[0].indexOf("yunim") !== -1) {
@@ -633,30 +636,38 @@ export default {
       let pro = kk[0].split("=")[1];
       let city = kk[2].split("=")[1];
       sessionStorage.setItem("proid", pro);
+      console.log(kk[3].split('=').length)
       this.proid = pro
-      console.log("city", city);
-      let ip = ip_arr["ip"];
-      // let city = '1';
-      let pp = {
-        controller: "Info",
-        action: "register",
-        params: {
-          city: city,
-          project: pro,
-          ip: ip,
-          url: arr[0],
-          uuid: uuid,
-          host:self.host
-        },
-      };
-      setTimeout(() => {
-        that.$store.state.ws.send(JSON.stringify(pp));
-      }, 4000);
+      if (kk[3].split('=').length == 2) {
+        let staff = kk[3].split("=")[1];
+        console.log(staff)
+        this.staffid = staff
+        sessionStorage.setItem('staffid',staff)
+        this.start()
+      } else {
+        console.log("city", city);
+        let ip = ip_arr["ip"];
+        // let city = '1';
+        let pp = {
+          controller: "Info",
+          action: "register",
+          params: {
+            city: city,
+            project: pro,
+            ip: ip,
+            url: arr[0],
+            uuid: uuid,
+            host:self.host
+          },
+        };
+        setTimeout(() => {
+          that.$store.state.ws.send(JSON.stringify(pp));
+        }, 4000);
+      }
     } else {
       this.start();
     }
     // return
-    let that = this;
     this.ws = this.$store.state.ws;
     // $(".con").on("click", ".mfbtn", function () {
     //   that.show = true;
@@ -687,7 +698,6 @@ export default {
     //   that.putcard();
     // }
     that.ws.onmessage = function (event) {
-      // 0 5 0 1 11
       let data = JSON.parse(event.data);
       if (data.action == 305) {
         that.load = false;
@@ -698,6 +708,7 @@ export default {
         that.promsg = pro;
         that.proid = pro.id;
         $(".conbox").html("");
+        console.log('is here')
         that.record(id, that.staffid);
         this.load = true;
       } else if (data.action == 303) {
@@ -1184,6 +1195,7 @@ export default {
     sessionStorage.removeItem("type");
     sessionStorage.removeItem(this.proid);
     sessionStorage.removeItem("staffid");
+    this.onpage = false
   },
 };
 </script>

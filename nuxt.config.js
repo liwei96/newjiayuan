@@ -158,7 +158,7 @@ export default {
       }
     },
     "/detail": {
-      target: "http://39.98.227.114:9550/", // 重新映射的新地址 
+      target: "http://39.98.227.114:9560/", // 重新映射的新地址 
       changeOrigin: true, // 是否跨域
       pathRewrite: {
         "^/detail": "/detail" // 去掉接口地址中的api字符串

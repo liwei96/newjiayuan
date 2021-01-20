@@ -4,7 +4,7 @@
       <img class="back" src="~/assets/goback.png" alt @click="home" />
       <img
         class="logo"
-        src="~/assets/logo.png"
+        src="~/assets/logo3.png"
         alt
         @click="home"
         v-if="host == '易得房'"
@@ -675,7 +675,7 @@
         <div class="t-top">
           <h6>预约看房</h6>
           <p>一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘</p>
-          <img id="w-esc" src="~/assets/w-del.png" alt @click="close1" />
+          <img id="w-esc" src="~/assets/w-del.png" alt @click="closeall" />
         </div>
         <div class="t-bottom">
           <div class="t-b-first">
@@ -721,10 +721,10 @@
     </transition>
     <transition name="change">
       <div class="m-o-succ" v-show="succ">
-        <img class="o-esc" src="~/assets/m-esc.png" alt @click="close2" />
+        <img class="o-esc" src="~/assets/m-esc.png" alt @click="closeall" />
         <img src="~/assets/m-success.png" alt class="o-success" />
         <p id="o_p">已成功订阅最新动态，我们会第一时间通过短信通知您！</p>
-        <button id="o_btn" @click="close2">确定</button>
+        <button id="o_btn" @click="closeall">确定</button>
       </div>
     </transition>
     <transition name="change">
@@ -885,6 +885,7 @@ export default {
   },
   data() {
     return {
+      interval: '',
       totalnum: 0,
       other: "",
       navtype: false,
@@ -1125,7 +1126,6 @@ export default {
           }
         ]
       };
-      console.log(that.prices);
       myChart.setOption(options);
     },
     drawlei() {
@@ -1307,15 +1307,14 @@ export default {
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
         // $(".l-p").attr("placeholder", "手机号不能为空");
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
         // $(".l-p").val("");
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         // $(".l-p").attr("placeholder", "手机号码不合法");
         return;
       }
-
       let data = { phone: phone, channel: 2 };
       let id = this.id;
       let ip = this.ip;
@@ -1350,17 +1349,23 @@ export default {
                 $(".t-b-scode").html("重新发送" + time + "s");
                 $(".t-b-scode").attr("disabled", true);
               } else {
-                clearInterval(interval);
+                clearInterval(that.interval);
                 $(".t-b-scode").html("获取验证码");
                 $(".t-b-scode").attr("disabled", false);
               }
             };
             fn();
-            var interval = setInterval(fn, 1000);
+            that.interval = setInterval(fn, 1000);
             $("#ytel").html(tel);
-            window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
+            // window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            this.$toast("请不要重复报名");
+            
+            this.toast(resp.data.message);
+            this.wss = false;
+            this.ch = false;
+            this.zhe = false;
+            this.succ = false;
+            this.tetype = false;
           }
         })
         .catch(error => {
@@ -1380,11 +1385,11 @@ export default {
       var pattern_phone = /^1[3-9][0-9]{9}$/;
       if (phone == "") {
         // $(".l-p").attr("placeholder", "手机号不能为空");
-        this.$toast("手机号不能为空");
+        this.toast("手机号不能为空");
         return;
       } else if (!pattern_phone.test(phone)) {
         // $(".l-p").val("");
-        this.$toast("手机号码不合法");
+        this.toast("手机号码不合法");
         // $(".l-p").attr("placeholder", "手机号码不合法");
         return;
       }
@@ -1428,17 +1433,17 @@ export default {
                 $(".t-b-scode").html("重新发送" + time + "s");
                 $(".t-b-scode").attr("disabled", true);
               } else {
-                clearInterval(interval);
+                clearInterval(that.interval);
                 $(".t-b-scode").html("获取验证码");
                 $(".t-b-scode").attr("disabled", false);
               }
             };
             fn();
-            var interval = setInterval(fn, 1000);
+            that.interval = setInterval(fn, 1000);
             $("#ytel").html(tel);
-            window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
+            // window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            this.$toast("请不要重复报名");
+            this.toast(resp.data.message);
           }
         })
         .catch(error => {
@@ -1448,7 +1453,7 @@ export default {
     yan() {
       var ma = this.yanz;
       if (!ma) {
-        this.$toast("验证码不能为空");
+        this.toast("验证码不能为空");
         // $("#ma-ll").attr("placeholder", "验证码不能为空");
         return;
       }
@@ -1577,6 +1582,7 @@ export default {
       this.tetype = false;
       $(".t-b-first").show();
       $(".t-b-second").hide();
+      clearInterval(this.interval);
     },
     close1() {
       this.wss = false;
@@ -1594,8 +1600,8 @@ export default {
       url = url.split("?")[1];
       if (url && url.indexOf("kid") !== -1) {
         url = url.split("&");
-        let kid = url[0].split("=")[1];
-        let other = url[1].split("=")[1];
+        let kid = this.$route.query.kid;
+        let other = this.$route.query.other;
         sessionStorage.setItem("kid", kid);
         sessionStorage.setItem("other", other);
       }
@@ -1607,6 +1613,10 @@ export default {
           for (let val of this.all.customers) {
             let n = val.mobile.substr(0, 3) + "****" + val.mobile.substr(7);
             val.mobile = n;
+            if(val.time == null) {
+              val.min = 12
+              return
+            }
             let time = new Date(val.time.replace(/-/g, "/"));
             let k = new Date().getTime() - new Date(time).getTime();
             let m = (k / 1000 / 60) % 60;
@@ -1678,7 +1688,7 @@ export default {
               this.ju.push(val);
             }
           }
-          this.ip = res.data.common.client_ip;
+          this.ip = ip_arr["ip"];
           let newurl = url.split("?")[0];
           let uuid = this.$route.query.uuid;
           let name = this.basic.name;
@@ -1800,18 +1810,18 @@ export default {
                 $(".t-b-scode").html("重新发送" + time + "s");
                 $(".t-b-scode").attr("disabled", true);
               } else {
-                clearInterval(interval);
+                clearInterval(that.interval);
                 $(".t-b-scode").html("获取验证码");
                 $(".t-b-scode").attr("disabled", false);
               }
             };
             fn();
-            var interval = setInterval(fn, 1000);
+            that.interval = setInterval(fn, 1000);
             $("#ytel").html(tel);
-            window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
+            // window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            $(".l-p").val("");
-            $(".l-p").attr("placeholder", "报名失败");
+            this.baoming = ''
+            this.toast(resp.data.message)
           }
         })
         .catch(error => {
@@ -2299,9 +2309,9 @@ export default {
       } else if (n == 1) {
         $("html").animate({ scrollTop: 1100 }, 500);
       } else if (n == 2) {
-        $("html").animate({ scrollTop: 1500 }, 500);
+        $("html").animate({ scrollTop: 1300 }, 500);
       } else if (n == 3) {
-        $("html").animate({ scrollTop: 3300 }, 500);
+        $("html").animate({ scrollTop: 3000 }, 500);
       }
     },
     putcard() {
@@ -2320,6 +2330,7 @@ export default {
   },
   mounted() {
     let that = this;
+    $('#foott').css('display','none')
     this.start();
     if (
       sessionStorage.getItem("total") &&
@@ -2334,6 +2345,7 @@ export default {
       if (data.action == 301) {
         let urlid = that.$route.params.id;
         if (!sessionStorage.getItem(urlid)) {
+          console.log(sessionStorage.getItem(urlid),urlid)
           sessionStorage.setItem(urlid, data.fromUserName);
           that.putcard();
         } else {
@@ -2401,7 +2413,7 @@ export default {
     // this.swipernum = 0;
   },
   updated() {
-    if (this.swipernum == 0) {
+    if(this.swipernum ==0 && this.basic.appointment_num){
       if (localStorage.getItem(this.$route.params.id)) {
         this.hour = localStorage.getItem(this.$route.params.id);
       } else {
@@ -2422,11 +2434,11 @@ export default {
       }
       let that = this;
       var date = new Date();
-      that.huinum =
+      this.huinum =
         date.getDate() +
         (date.getMonth() + 1) * 10 +
-        that.basic.appointment_num;
-      that.huinum1 = that.huinum + Number(that.hour);
+        this.basic.appointment_num;
+      this.huinum1 = this.huinum + Number(that.hour);
       var mySwiper1 = new Swiper(".swiper-hu", {
         slidesPerView: 2.08,
         spaceBetween: 10,
@@ -2459,13 +2471,13 @@ export default {
           if (scrollTop >= 300 && scrollTop < 1100) {
             that.topnum = 0;
           }
-          if (scrollTop >= 1100 && scrollTop < 1500) {
+          if (scrollTop >= 1100 && scrollTop < 1300) {
             that.topnum = 1;
           }
-          if (scrollTop >= 1500 && scrollTop < 3300) {
+          if (scrollTop >= 1300 && scrollTop < 3000) {
             that.topnum = 2;
           }
-          if (scrollTop >= 3300) {
+          if (scrollTop >= 3000) {
             that.topnum = 3;
           }
         } else {
@@ -2474,6 +2486,7 @@ export default {
       });
       this.swipernum = 1;
     }
+      
   },
   destroyed() {
     // this.ws.close();
@@ -3969,6 +3982,7 @@ export default {
     // height: 11.25rem;
     background-color: #fff;
     border-radius: 0 0 12px 12px;
+    position: relative;
   }
 
   .weiter .t-bottom .t-b-first {
@@ -4094,7 +4108,7 @@ export default {
     font-size: 13px;
     position: absolute;
     right: 10%;
-    top: 58%;
+    top: 25%;
     background-color: #fff;
   }
 

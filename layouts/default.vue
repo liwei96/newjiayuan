@@ -10,16 +10,17 @@
         <li><nuxt-link :to="'/' + jkl + '/join'">平台合作</nuxt-link></li>
         <li><nuxt-link :to="'/' + jkl + '/privacy'">隐私政策</nuxt-link></li>
       </ul>
-      <p>杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
+      <p v-if="host==0">杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
+      <p v-if="host==1">杭州易得房科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
       <p>
-        网络经营许可证：<a href="http://www.beian.gov.cn/portal/index.do"
-          >浙ICP备19015909号-1</a
-        >
+        网络经营许可证：<a v-if="host==0" href="http://www.beian.gov.cn/portal/index.do"
+          >浙ICP备19015909号-1</a>
+          <a v-if="host==1" href="http://www.beian.gov.cn/portal/index.do"
+          >浙ICP备18057005号-1</a>
       </p>
     </footer>
   </div>
 </template>
-
 <script>
 export default {
   async asyncData(context) {
@@ -52,6 +53,7 @@ export default {
       jkl: "",
       home: true,
       url: "",
+      host: 0
     };
   },
   mounted() {
@@ -59,6 +61,7 @@ export default {
       $cookies.set("uuid", localStorage.getItem("uuid"));
       this.$store.dispatch("setuuid", localStorage.getItem("uuid"));
     }
+    this.host = this.$store.state.host
     // this.ws = new ReconnectingWebSocket(
     //   "ws://39.98.227.114:9509?uuid=zhYfTSJ3yQt71602841160013"
     // );
