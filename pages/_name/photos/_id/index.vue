@@ -46,7 +46,7 @@
                       v-for="(item, key) in efects"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big" :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page1"></div>
@@ -69,7 +69,7 @@
                       v-for="(item, key) in reals"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big"  :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page2"></div>
@@ -90,7 +90,7 @@
                       v-for="(item, key) in templates"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big"  :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page3"></div>
@@ -111,7 +111,7 @@
                       v-for="(item, key) in traffics"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big"  :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page4"></div>
@@ -132,7 +132,7 @@
                       v-for="(item, key) in apartments"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big"  :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page5"></div>
@@ -153,7 +153,7 @@
                       v-for="(item, key) in matchings"
                       :key="key"
                     >
-                      <img v-lazy="item.big" />
+                      <img v-lazy="item.big"  :alt="title" :title="title"/>
                     </div>
                   </div>
                   <div class="swiper-pagination page5"></div>

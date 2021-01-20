@@ -5,7 +5,7 @@
       <div class="swiper-topimg" @click="goimg">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in imgs" :key="key">
-            <img :src="item.small" alt />
+            <img :src="item.small" :alt="abstract.name" :title="abstract.name"/>
           </div>
         </div>
       </div>
@@ -307,7 +307,7 @@
           >
             <nuxt-link :to="'/' + jkl + '/hu/' + item.id">
               <div class="hu-top">
-                <img :src="item.small" alt />
+                <img :src="item.small" :alt="abstract.name+item.title+'户型图'" :title="abstract.name+item.title+'户型图'"/>
                 <p>
                   <img src="~/assets/home-heart.png" alt />{{
                     item.like_num
@@ -352,7 +352,7 @@
           <p>{{ item.introduce }}</p>
           <span>{{ item.time }}</span>
           <div class="dynamicimgs" v-if="item.img">
-            <img :src="item.img" alt />
+            <img :src="item.img" :alt="abstract.name+'实时动态'" :title="abstract.name+'实时动态'"/>
           </div>
         </li>
       </ul>
@@ -632,7 +632,7 @@
       <template v-for="(item, key) in recommends">
         <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
           <div class="pro">
-            <img :src="item.img" alt />
+            <img :src="item.img" :alt="item.name" :title="item.name"/>
             <div class="pro-msg">
               <h5>
                 {{ item.name }}

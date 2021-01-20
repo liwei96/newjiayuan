@@ -12,7 +12,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item,key) in tops" :key="key">
             <nuxt-link :to="'/'+jkl+'/info/'+item.id">
-            <img :src="item.img" alt />
+            <img :src="item.img" :alt="item.title" />
             <p>{{item.title}}</p>
             </nuxt-link>
           </div>
@@ -48,7 +48,7 @@
               </p>
             </div>
             <div class="right">
-              <img :src="item.img" alt />
+              <img :src="item.img" :alt="item.title" />
             </div>
           </div>
         </nuxt-link>

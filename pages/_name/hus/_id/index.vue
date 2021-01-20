@@ -6,7 +6,7 @@
         <nuxt-link :to="'/' + jkl + '/hu/' + id + '/' + item.id" :key="key">
           <div class="li">
             <div class="left">
-              <img :src="item.small" alt />
+              <img :src="item.small" :alt="title+item.title" :title="title+item.title"/>
             </div>
             <div class="right">
               <h4>

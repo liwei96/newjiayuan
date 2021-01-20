@@ -303,7 +303,7 @@
             <li>
               <div class="li-top">
                 <p class="top-area">{{ item.country.substr(0, 2) }}</p>
-                <img :src="item.img" alt />
+                <img :src="item.img" :alt="item.name" :title="item.name"/>
                 <p class="top-name">{{ item.name }}</p>
                 <div class="ze"></div>
               </div>
@@ -341,7 +341,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in dynamics" :key="key">
             <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
-              <img :src="item.img" alt />
+              <img :src="item.img" :alt="item.title" :title="item.title"/>
               <div class="swper-con">
                 <h5>{{ item.title }}</h5>
                 <p>
@@ -372,7 +372,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in stricts" :key="key">
             <nuxt-link :to="'/' + jkl + '/content/' + item.id">
-              <img :src="item.img" alt />
+              <img :src="item.img" :alt="item.name" :title="item.name"/>
               <div class="strict-bom">
                 <h6>{{ item.name }}</h6>
                 <p>
@@ -405,7 +405,7 @@
                 <h5>客户：{{ item.customer }}</h5>
                 <p class="time">时间：{{ item.time }}</p>
                 <p class="name">购买{{ item.project }}</p>
-                <img :src="item.img" alt />
+                <img :src="item.img" :alt="item.project" :title="item.project"/>
               </div>
               <div class="bom">
                 <p>{{ item.content }}</p>
@@ -444,7 +444,7 @@
                   {{ item.time }}
                 </p>
               </div>
-              <img :src="item.img" alt />
+              <img :src="item.img" :alt="item.title" :title="item.title"/>
             </li>
           </nuxt-link>
         </template>
@@ -455,7 +455,7 @@
       <template v-for="(item, key) in recommends">
         <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
-            <img :src="item.img" alt />
+            <img :src="item.img" :alt="item.name" :title="item.name"/>
             <div class="pro-msg">
               <h5>
                 {{ item.name }}

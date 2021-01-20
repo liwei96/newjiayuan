@@ -34,7 +34,7 @@ export default {
       href: '/bitbug_favicon.ico'
     }],
     script: [{
-        src: '//libs.baidu.com/jquery/2.0.0/jquery.min.js'
+        src: '/jquery.min.js'
       },
       {
         src: '//webapi.amap.com/maps?v=1.4.14&key=729ac4d779c7e625bc11bd5ba3ff3112'

@@ -2,7 +2,7 @@
   <div id="hu">
     <top-view :jkl="jkl"></top-view>
     <div class="topimg" @click="big(now.small)">
-      <img :src="now.small" alt />
+      <img :src="now.small" :alt="now.title" :title="title+now.title"/>
       <p>共1张</p>
     </div>
     <div class="msg">
@@ -124,7 +124,7 @@
         <nuxt-link :key="key" :to="'/' + jkl + '/hu/' + item.id">
           <div class="li">
             <div class="left">
-              <img :src="item.small" alt />
+              <img :src="item.small" :alt="title+item.title" :title="title+item.title"/>
             </div>
             <div class="right">
               <h4>
@@ -158,7 +158,7 @@
       <template v-for="(item, key) in recommends">
         <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
-            <img :src="item.img" alt />
+            <img :src="item.img" :alt="item.name" :title="item.name"/>
             <div class="pro-msg">
               <h5>
                 {{ item.name }}

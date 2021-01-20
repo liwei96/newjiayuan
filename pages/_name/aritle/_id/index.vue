@@ -115,7 +115,7 @@
                 </p>
               </div>
               <div class="right">
-                <img :src="item.img" alt />
+                <img :src="item.img" :alt="item.title" />
               </div>
             </div>
           </nuxt-link>
