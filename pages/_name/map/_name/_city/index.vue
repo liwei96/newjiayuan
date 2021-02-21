@@ -458,7 +458,7 @@ export default {
         var u = navigator.userAgent;
         var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
         if (!isbaidu) {
-          wx.miniProgram.navigateTo({ url: "/pages/content/content?id=" + id });
+          wx.miniProgram.navigateTo({ url: "/pageA/content/content?id=" + id });
         } else {
           swan.webView.redirectTo({
             url: "/pageA/content/content?id=" + id,
