@@ -65,9 +65,10 @@ export default {
   },
   methods: {
     back() {
-        if(this.$route.path.indexOf('weike') !=-1 || this.$route.path.indexOf('infos') !=-1){
-          this.$router.push('/'+this.jkl)
-        }else if(this.$route.path.indexOf('order') != -1){
+        // if(this.$route.path.indexOf('weike') !=-1 || this.$route.path.indexOf('infos') !=-1){
+        //   this.$router.push('/'+this.jkl)
+        // }else 
+        if(this.$route.path.indexOf('order') != -1){
           this.$router.push('/'+this.jkl+'/home')
         }else{
           this.$router.go(-1);

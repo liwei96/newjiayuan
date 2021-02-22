@@ -340,7 +340,7 @@
     <div class="dynamic">
       <h3>
         实时动态
-        <nuxt-link :to="'/' + jkl + '/promsg/' + id">
+        <nuxt-link :to="'/' + jkl + '/promsg/' + id+'/0'">
           <span>
             全部动态
             <img src="~/assets/j-more.png" alt />
@@ -627,6 +627,17 @@
       <button @click="tiwen">我要提问</button>
     </div>
     <div class="line"></div>
+    <div class="my-infos" v-if="infos.length>0">
+        <h4>
+          相关资讯<nuxt-link :to="'/'+jkl+'/promsg/'+id+'/1'"><span>更多资讯 <img src="~/assets/go.png" alt/></span></nuxt-link>
+        </h4>
+        <ul>
+          <nuxt-link v-for="(item,key) in infos" :key="item.id" :to="'/'+jkl+'/info/'+item.id">
+            <li v-if="key<=2">{{item.title}}</li>
+          </nuxt-link>
+        </ul>
+      </div>
+    <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
       <template v-for="(item, key) in recommends">
@@ -859,7 +870,8 @@ export default {
       description:res.common.header.description,
       keywords:res.common.header.keywords,
       host:host,
-      activity: res.common.activity || []
+      activity: res.common.activity || [],
+      infos: res.article
     };
   },
   head() {
@@ -3297,6 +3309,52 @@ export default {
       background-color: #f0f7f3;
       color: #3da56a;
       margin-left: 0.625rem;
+    }
+  }
+}
+.my-infos {
+  h4 {
+    color: #121212;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0 4%;
+    margin-top: 1.125rem;
+    margin-bottom: 1.5rem;
+    span {
+      color: #646466;
+      font-size: 0.875rem;
+      float: right;
+      font-weight: normal;
+      img {
+        width: 0.875rem;
+        margin-left: 0.25rem;
+        margin-bottom: -0.125rem;
+      }
+    }
+  }
+  ul {
+    padding: 0 4%;
+    li {
+      color: #323233;
+      font-size: .875rem;
+      line-height: 1.375rem;
+      padding-bottom: 1.125rem;
+      border-bottom: .03125rem solid #F2F2F2;
+      margin-bottom: 1.0625rem;
+    }
+    li:before {
+      content: "";
+      display: inline-block;
+      width: .1875rem;
+      height: .1875rem;
+      background-color: #333;
+      border-radius: 50%;
+      margin-right: .3125rem;
+      vertical-align: middle;
+    }
+    li:last-child {
+      border: 0;
+      margin-bottom: .4375rem;
     }
   }
 }

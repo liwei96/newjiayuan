@@ -90,7 +90,7 @@ export default {
     if (url.indexOf("content") !== -1) {
       pro = this.$route.params.id;
     } else {
-      pro = 0;
+      pro = this.$route.params.id;
     }
     
     let pp = {
