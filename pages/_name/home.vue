@@ -80,9 +80,10 @@
             </div>
           </nuxt-link>
         </li>
-        <li @click="show = true">
+        <!-- <li @click="show = true"> -->
+        <li @click="gozhao">
           <img class="pp" src="~/assets/home-tel.png" alt />
-          <p>联系我们</p>
+          <p>诚聘英才</p>
           <img class="more" src="~/assets/home-more.png" alt />
         </li>
         <li>
@@ -252,6 +253,13 @@ export default {
     "tan-view": tan,
   },
   methods: {
+    gozhao(){
+      if(this.host==0){
+        window.location.href="http://recruit.jy1980.com?type=0&city="+localStorage.getItem('city')
+      }else{
+        window.location.href="http://recruit.jy1980.com?type=1&city="+localStorage.getItem('city')
+      }
+    },
     back() {
       this.$router.push("/" + this.jkl);
     },

@@ -187,6 +187,11 @@ export default {
     }else {
       this.txt = '易得房'
     }
+    let id = this.$route.query.cid
+    if(id){
+      sessionStorage.setItem('ccid',id)
+      sessionStorage.setItem('hostnum',this.$route.query.host)
+    }
   }
 };
 </script>

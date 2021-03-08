@@ -5,9 +5,9 @@
     <img v-if="host == 1" class="logo" src="~/assets/logos.png" alt />
     <div class="zixuns" @click="gotalk" v-if="kk">
       <img src="~/assets/header-talk.png" alt />
-      <p v-if="totalnum>0" >{{totalnum}}</p>
+      <p v-if="totalnum > 0">{{ totalnum }}</p>
     </div>
-    <img src="~/assets/mapcai.png" alt class="list" @click="btns"/>
+    <img src="~/assets/mapcai.png" alt class="list" @click="btns" />
     <ul class="cailist" v-if="list">
       <li class="cmn">
         <router-link :to="'/' + jkl">
@@ -45,12 +45,12 @@
 </template>
 <script>
 export default {
-  props:{
-    jkl:{
-      type:String
+  props: {
+    jkl: {
+      type: String
     },
-    totalnum:{
-      type:Number
+    totalnum: {
+      type: Number
     },
     baidu: {
       type: String
@@ -59,32 +59,37 @@ export default {
   data() {
     return {
       list: false,
-      kk:true,
+      kk: true,
       host: 0
     };
   },
   methods: {
     back() {
-        // if(this.$route.path.indexOf('weike') !=-1 || this.$route.path.indexOf('infos') !=-1){
-        //   this.$router.push('/'+this.jkl)
-        // }else 
-        if(this.$route.path.indexOf('order') != -1){
-          this.$router.push('/'+this.jkl+'/home')
-        }else{
+      // if(this.$route.path.indexOf('weike') !=-1 || this.$route.path.indexOf('infos') !=-1){
+      //   this.$router.push('/'+this.jkl)
+      // }else
+      if (sessionStorage.getItem("ccid")) {
+        window.location.href =
+          "http://recruit.jy1980.com/content/"+sessionStorage.getItem("ccid")+"?type="+sessionStorage.getItem('hostnum')
+      } else {
+        if (this.$route.path.indexOf("order") != -1) {
+          this.$router.push("/" + this.jkl + "/home");
+        } else {
           this.$router.go(-1);
         }
+      }
     },
-    btns(){
-      if(this.list){
-        this.list=false
-      }else{
-        this.list= true
+    btns() {
+      if (this.list) {
+        this.list = false;
+      } else {
+        this.list = true;
       }
     },
     gotalk() {
       // window.location.href =
       //   "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
-      let urlid = sessionStorage.getItem('proid');
+      let urlid = sessionStorage.getItem("proid");
       let id = sessionStorage.getItem(urlid);
       if (id) {
         sessionStorage.setItem("staffid", id);
@@ -98,14 +103,14 @@ export default {
         }
         sessionStorage.removeItem(id);
       }
-      this.$router.push("/" + this.jkl + "/talk/"+urlid);
+      this.$router.push("/" + this.jkl + "/talk/" + urlid);
     }
   },
   mounted() {
-    this.host = this.$store.state.host
+    this.host = this.$store.state.host;
     let url = window.location.href;
-    if(url.indexOf('content')==-1){
-      this.kk = false
+    if (url.indexOf("content") == -1) {
+      this.kk = false;
     }
     let newurl = url.split("?")[0];
     let id = this.$route.params.id;
@@ -117,7 +122,7 @@ export default {
     if (url && url.indexOf("token") != -1) {
       localStorage.setItem("wstoken", url.split("=")[1]);
     }
-  },
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -188,7 +193,7 @@ header {
         display: flex;
         align-items: center;
       }
-      p { 
+      p {
         border-bottom: 0.5px solid #545454;
         flex: 1;
         color: #e6e6e6;

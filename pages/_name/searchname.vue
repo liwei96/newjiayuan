@@ -200,7 +200,7 @@ export default {
 <style lang="less" scoped>
 header {
   height: 2.75rem;
-  line-height: 2.75rem;
+  // line-height: 2.75rem;
   position: relative;
   display: flex;
   align-items: center;
