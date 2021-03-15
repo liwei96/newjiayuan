@@ -320,7 +320,7 @@ export default {
           content: this.description || "家园新房",
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: this.keywords || "家园新房",
         },
       ],

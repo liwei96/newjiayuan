@@ -2,7 +2,7 @@
   <div id="Dynamic">
     <header>
       <img class="back" src="~/assets/goback.png" alt @click="back" />
-      <img class="logo" src="~/assets/logo1.png" alt />
+      <img class="logo" src="~/assets/logo.png" alt />
       <img src="~/assets/searchtop.png" alt class="search" @click="search" />
       <img src="~/assets/mapcai.png" alt class="list" @click="btns" />
       <ul class="cailist" v-if="list">
@@ -141,7 +141,7 @@ export default {
           content: this.description || "家园新房",
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: this.keywords || "家园新房",
         },
       ],

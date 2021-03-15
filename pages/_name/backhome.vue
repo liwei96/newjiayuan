@@ -460,7 +460,7 @@ export default {
           content: "返乡置业活动",
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: "返乡置业活动",
         },
       ],

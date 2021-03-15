@@ -63,7 +63,7 @@ export default {
             "家园新房"
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: this.keywords || "家园新房"
         }
       ]

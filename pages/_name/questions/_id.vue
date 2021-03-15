@@ -11,7 +11,7 @@
           {{ item.question }}
         </p>
         <div class="answer" v-if="item.answer">
-          <div class="top">
+          <div class="top" v-if="item.staff">
             <img :src="item.staff.head_img" alt />
             <div class="promsg">
               <h5>
@@ -141,7 +141,7 @@ export default {
           content: this.description || "家园新房",
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: this.keywords || "家园新房",
         },
       ],

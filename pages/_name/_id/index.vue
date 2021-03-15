@@ -876,7 +876,7 @@ export default {
             this.basic.name + "-" + this.basic.city + "-" + this.basic.country
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content:
             this.basic.name + "-" + this.basic.city + "-" + this.basic.country
         }
@@ -1029,7 +1029,7 @@ export default {
       huinum: 10,
       huinum1: 11,
       city: 1,
-      host: "易得房",
+      host: "",
       usernum: "",
       looknum: "",
       rate: "",

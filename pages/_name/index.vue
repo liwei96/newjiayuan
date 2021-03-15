@@ -114,11 +114,9 @@
             </nuxt-link>
             <p>新盘动态</p>
           </li>
-          <li>
-            <nuxt-link :to="'/' + jkl + '/questions'">
-              <img src="~/assets/normal-question.png" alt />
-            </nuxt-link>
-            <p>楼盘问答</p>
+          <li @click="zhaopin">
+              <img src="~/assets/index-zhao.png" alt />
+            <p>招聘英才</p>
           </li>
         </ul>
       </div>
@@ -180,11 +178,9 @@
             </nuxt-link>
             <p>新房动态</p>
           </li>
-          <li>
-            <nuxt-link :to="'/' + jkl + '/questions'">
-              <img src="~/assets/index-questions.png" alt />
-            </nuxt-link>
-            <p>楼盘问答</p>
+          <li @click="zhaopin">
+              <img src="~/assets/index-zhao.png" alt />
+            <p>诚聘英才</p>
           </li>
         </ul>
       </div>
@@ -548,7 +544,7 @@ export default {
           content: this.description || "家园新房",
         },
         {
-          name: "keywords",
+          name: "Keywords",
           content: this.keywords || "家园新房",
         },
       ],
@@ -570,6 +566,13 @@ export default {
     };
   },
   methods: {
+    zhaopin(){
+      if(this.host==0){
+        window.location.href="http://recruit.jy1980.com?type=0&city="+localStorage.getItem('city')
+      }else{
+        window.location.href="http://recruit.jy1980.com?type=1&city="+localStorage.getItem('city')
+      }
+    },
     goback() {
       window.location.href=this.banner.url
     },
