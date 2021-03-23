@@ -175,6 +175,7 @@ export default {
         // console.log(res);
         that.lists = that.lists.concat(res.data.data);
         that.ting = true;
+        that.page++
       });
     },
     cli(e) {

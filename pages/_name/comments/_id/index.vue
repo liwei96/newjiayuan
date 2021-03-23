@@ -35,7 +35,7 @@
                 {{ item.like_num }}
               </span>
               <span @click="talk(item.id)">
-                <img src="~/assets/zixun.png" alt />
+                <img :src="item.children.length==0?zx1:zx" alt />
                 {{ item.children.length }}
               </span>
             </p>
@@ -133,6 +133,8 @@ export default {
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
       proname: "",
+      zx: require('~/assets/zixun.png'),
+      zx1: require('~/assets/zixuned.png')
     };
   },
   methods: {

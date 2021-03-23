@@ -4,15 +4,16 @@
     <footer v-if="home" id="foott">
       <ul>
         <li>
-          <nuxt-link :to="'/' + jkl + '/weike/before/56'">买房百科</nuxt-link>
+          <nuxt-link :to="'/' + jkl + '/about'">关于我们</nuxt-link>
         </li>
-        <li><nuxt-link :to="'/' + jkl + '/infos/46'">房产资讯</nuxt-link></li>
-        <li><nuxt-link :to="'/' + jkl + '/join'">平台合作</nuxt-link></li>
+        <li @click="gozhao">诚聘英才</li>
+        <li><nuxt-link :to="'/' + jkl + '/join'">城市加盟</nuxt-link></li>
         <li><nuxt-link :to="'/' + jkl + '/privacy'">隐私政策</nuxt-link></li>
       </ul>
       <p v-if="host==0">杭州亚汉网络科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
       <p v-if="host==1">杭州易得房科技有限公司版权所有 &nbsp;&nbsp;电话：400-718-6686</p>
       <p>
+        <img src="~/assets/logobom.png" alt="">
         网络经营许可证：<a v-if="host==0" href="http://www.beian.gov.cn/portal/index.do"
           >浙ICP备19015909号-1</a>
           <a v-if="host==1" href="http://www.beian.gov.cn/portal/index.do"
@@ -24,14 +25,12 @@
 <script>
 export default {
   async asyncData(context) {
-    let [res] = await Promise.all([
-      context.$axios.get("/jy/phone/head/foot").then((resp) => {
-        let data = resp.data;
-        console.log(data);
-        return data;
-      }),
-    ]);
-    return {};
+    let jkl = context.params.name;
+    let host = context.store.state.host
+    return {
+      jkl:jkl,
+      host:host
+    };
   },
   data() {
     return {
@@ -90,6 +89,15 @@ export default {
       s.parentNode.insertBefore(bp, s);
     })();
   },
+  methods:{
+    gozhao(){
+      if(this.host==0){
+        window.location.href="http://recruit.jy1980.com?type=0&city="+localStorage.getItem('city')
+      }else{
+        window.location.href="http://recruit.jy1980.com?type=1&city="+localStorage.getItem('city')
+      }
+    },
+  },
   beforeRouteUpdate(to, from, next) {
     console.log(to);
   },
@@ -134,6 +142,10 @@ footer {
   p {
     text-align: center;
     margin-bottom: 0.5rem;
+    img {
+      width: 1.875rem;
+      margin-right: .3125rem;
+    }
     a {
       color: #88a1ae;
       text-decoration: underline;

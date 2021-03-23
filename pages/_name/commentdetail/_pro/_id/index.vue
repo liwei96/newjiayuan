@@ -35,7 +35,7 @@
       </p>
       <div class="msg" v-if="answer.children.length">
         <div v-for="(item, key) in answer.children" :key="key">
-          <span class="name">{{ item.name }}:</span>{{ answer.content }}
+          <span class="name">{{ item.name }}:</span>{{ item.content }}
           <p>
             {{ item.time }}
             <span v-if="item.mine" @click="del(item.id, key)">删除</span>
