@@ -173,7 +173,7 @@ export default {
     }
   },
   axios: {
-    proxy: true,
+    proxy: true
   },
   /*
    ** Build configuration

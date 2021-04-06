@@ -288,9 +288,8 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.params.type) {
-      this.navnum = this.$route.params.type
-    }
+    console.log(this.$route.params.type,3333)
+    console.log(2222)
     window.addEventListener("scroll", this.getmore);
     document.getElementById("foott").style.display = "none";
     sessionStorage.setItem('proid',this.id)
