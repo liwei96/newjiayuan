@@ -2,10 +2,12 @@
   <div id="detail">
     <top-view :jkl="jkl"></top-view>
     <div class="name">
-      <h2>{{building.name}}</h2>
+      <h2>{{ building.name }}</h2>
       <p>
-        <span class="zhuang">{{building.decorate}}</span>
-        <span v-for="(item,key) in building.features" :key="key">{{item}}</span>
+        <span class="zhuang">{{ building.decorate }}</span>
+        <span v-for="(item, key) in building.features" :key="key">{{
+          item
+        }}</span>
       </p>
     </div>
     <div class="line"></div>
@@ -15,33 +17,37 @@
         <li class="pri">
           参考单价：
           <span>
-            <i>{{building.price}}</i>元/m²
+            <i>{{ building.price }}</i
+            >元/m²
           </span>
         </li>
         <li class="pri">
           参考总价：
           <span>
-            <i>{{building.total_price}}</i>万起
+            <i>{{ building.total_price }}</i
+            >万起
           </span>
-          <button @click="pop('询底价',105,'楼盘详情内页+询底价')">询底价</button>
+          <button @click="pop('询底价', 105, '楼盘详情内页+询底价')">
+            询底价
+          </button>
         </li>
         <li>
           类 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
-          <span>{{building.type}}</span>
+          <span>{{ building.type }}</span>
         </li>
         <li>
           户 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
-          <span>{{building.room_types}}</span>
-          <nuxt-link :to="'/'+jkl+'/hus/'+id">
-          <p>
-            更多户型
-            <img src="~/assets/j-more.png" alt />
-          </p>
+          <span>{{ building.room_types }}</span>
+          <nuxt-link :to="'/' + jkl + '/hus/' + id">
+            <p>
+              更多户型
+              <img src="~/assets/j-more.png" alt />
+            </p>
           </nuxt-link>
         </li>
         <li class="address">
           楼盘地址：
-          <span>{{building.address}}</span>
+          <span>{{ building.address }}</span>
         </li>
       </ul>
     </div>
@@ -51,28 +57,30 @@
       <ul>
         <li>
           开盘时间：
-          <span>{{building.open_time}}</span>
-          <button @click="pop('最新开盘通知',92,'楼盘详情内页+最新开盘通知')">最新开盘通知</button>
+          <span>{{ building.open_time }}</span>
+          <button @click="pop('最新开盘通知', 92, '楼盘详情内页+最新开盘通知')">
+            最新开盘通知
+          </button>
         </li>
         <li>
           加推时间：
-          <span>{{building.push_time}}</span>
+          <span>{{ building.push_time }}</span>
         </li>
         <li>
           交房时间：
-          <span>{{building.give_time}}</span>
+          <span>{{ building.give_time }}</span>
         </li>
         <li>
           预 售 证：
-          <span>{{building.license}}</span>
+          <span>{{ building.license }}</span>
         </li>
         <li>
           产权年限：
-          <span>{{building.year}}年</span>
+          <span>{{ building.year }}年</span>
         </li>
         <li>
           开 发 商：
-          <span>{{building.developer}}</span>
+          <span>{{ building.developer }}</span>
         </li>
       </ul>
     </div>
@@ -82,43 +90,43 @@
       <ul>
         <li>
           户型面积：
-          <span>{{building.area}}m²</span>
+          <span>{{ building.area }}m²</span>
         </li>
         <li>
           建筑面积：
-          <span>{{building.built_area}}m²</span>
+          <span>{{ building.built_area }}m²</span>
         </li>
         <li>
           容&nbsp;积&nbsp;率：
-          <span>{{building.capacity_rate}}</span>
+          <span>{{ building.capacity_rate }}</span>
         </li>
         <li>
           绿&nbsp;化&nbsp;率：
-          <span>{{parseInt(building.green_rate)}}%</span>
+          <span>{{ parseInt(building.green_rate) }}%</span>
         </li>
         <li>
           层&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;高：
-          <span>{{building.height}}</span>
+          <span>{{ building.height }}</span>
         </li>
         <li>
           车位情况：
-          <span>{{building.parking_num}}</span>
+          <span>{{ building.parking_num }}</span>
         </li>
         <li>
           装修状况：
-          <span>{{building.decorate}}</span>
+          <span>{{ building.decorate }}</span>
         </li>
-        <li  class="traffic">
+        <li class="traffic">
           公交路线：
-          <span>{{building.traffic}}</span>
+          <span>{{ building.traffic }}</span>
         </li>
         <li>
           物业费用：
-          <span>{{building.property_fee}}</span>
+          <span>{{ building.property_fee }}</span>
         </li>
         <li>
           物业公司：
-          <span>{{building.proprety_company}}</span>
+          <span>{{ building.proprety_company }}</span>
         </li>
       </ul>
     </div>
@@ -126,12 +134,12 @@
     <div class="intro">
       <h3>项目介绍</h3>
       <p>
-        <i v-if="!showmore">{{building.introduce.substr(0,46)}}...</i>
-        <span @click="showmore=true" v-if="!showmore">[展开]</span>
-        <i v-if="showmore">{{building.introduce}}</i>
+        <i v-if="!showmore">{{ building.introduce.substr(0, 46) }}...</i>
+        <span @click="showmore = true" v-if="!showmore">[展开]</span>
+        <i v-if="showmore">{{ building.introduce }}</i>
       </p>
     </div>
-     <van-popup
+    <van-popup
       v-model="tan"
       :style="{ background: 'rgba(0,0,0,0)' }"
       @click-overlay="typebtn = 0"
@@ -156,53 +164,57 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
-    let other = context.query.other;
-    let city = context.store.state.city;
-    let jkl = context.params.name;
-    let position = context.params.id;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/project/base/phone", {
-          params: {
-            city: city,
-            id: position,
-            page: 1,
-            limit: 10,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      building: res.building,
-      id:position,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
-    };
+    try {
+      let other = context.query.other;
+      let city = context.store.state.city;
+      let jkl = context.params.name;
+      let position = context.params.id;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/project/base/phone", {
+            params: {
+              city: city,
+              id: position,
+              page: 1,
+              limit: 10,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        building: res.building,
+        id: position,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
-      title: this.title || "家园新房-"+this.building.name+'-楼盘详情页',
+      title: this.title || "家园新房-" + this.building.name + "-楼盘详情页",
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -210,16 +222,16 @@ export default {
       jkl: "",
       phone: "",
       building: {},
-      showmore:false,
+      showmore: false,
       tan: false,
       typenum: 0,
       typebtn: 1,
       name: "",
       remark: "",
-      id:'0',
+      id: "0",
     };
   },
-  methods:{
+  methods: {
     cli(e) {
       this.tan = e;
     },
@@ -230,14 +242,14 @@ export default {
       this.tan = true;
       this.remark = "成交案例详情页+预约看房";
     },
-    pop(name,position,txt){
-      this.name = name
-      this.typebtn = 1
-      this.typenum = position
-      this.tan = true
-      this.remark=txt
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -431,7 +443,7 @@ header {
     }
     .pri {
       span {
-        color: #FF5454;
+        color: #ff5454;
         font-size: 0.5625rem;
         i {
           font-style: normal;
@@ -477,7 +489,7 @@ header {
         text-overflow: ellipsis;
         white-space: nowrap;
         top: 0.75rem;
-        left: 4.5rem
+        left: 4.5rem;
       }
     }
   }

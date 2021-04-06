@@ -35,7 +35,7 @@
                 {{ item.like_num }}
               </span>
               <span @click="talk(item.id)">
-                <img :src="item.children.length==0?zx1:zx" alt />
+                <img :src="item.children.length == 0 ? zx1 : zx" alt />
                 {{ item.children.length }}
               </span>
             </p>
@@ -43,7 +43,12 @@
         </div>
       </li>
     </ul>
-      <img src="~/assets/comments-fixed.png" alt class="fixed" @click="gocomment"/>
+    <img
+      src="~/assets/comments-fixed.png"
+      alt
+      class="fixed"
+      @click="gocomment"
+    />
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
     <van-popup
       v-model="tan"
@@ -74,33 +79,38 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let other = context.query.other;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/comments/phone", {
-          params: {
-            id: id,
-            page: 1,
-            limit: 10,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      lists: res.data,
-      id: id,
-    };
+    try {
+      let other = context.query.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/comments/phone", {
+            params: {
+              id: id,
+              page: 1,
+              limit: 10,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        lists: res.data,
+        id: id,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -133,12 +143,12 @@ export default {
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
       proname: "",
-      zx: require('~/assets/zixun.png'),
-      zx1: require('~/assets/zixuned.png')
+      zx: require("~/assets/zixun.png"),
+      zx1: require("~/assets/zixuned.png"),
     };
   },
   methods: {
-    gocomment(){
+    gocomment() {
       let token = $cookies.get("token");
       if (token) {
         this.$router.push("/" + this.jkl + "/comment/" + this.id);

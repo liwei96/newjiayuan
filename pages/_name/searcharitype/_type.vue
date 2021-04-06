@@ -28,7 +28,11 @@
     <div class="con" v-if="!isnull">
       <h3>猜你喜欢</h3>
       <template v-for="(item, key) in recommends">
-        <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key" v-if="key<4">
+        <nuxt-link
+          :to="'/' + jkl + '/aritle/' + item.id"
+          :key="key"
+          v-if="key < 4"
+        >
           <div class="pro">
             <div class="left">
               <h5>{{ item.title }}</h5>
@@ -55,15 +59,19 @@
           <nuxt-link :to="'/' + jkl + '/aritle/' + item.id" :key="key">
             <div class="pro">
               <div class="left">
-                <h5 v-html="item.replace.title.indexOf('em')!=-1?item.replace.title:item.replace.description"></h5>
+                <h5
+                  v-html="
+                    item.replace.title.indexOf('em') != -1
+                      ? item.replace.title
+                      : item.replace.description
+                  "
+                ></h5>
                 <p v-if="item.tags.length">
-                    <span v-for="(val, k) in item.tags" :key="k">{{
-                      val
-                    }}</span>
-                  </p>
-                  <p v-if="!item.tags.length">
-                    {{ item.source }} &nbsp;&nbsp;&nbsp;{{ item.time }}
-                  </p>
+                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
+                </p>
+                <p v-if="!item.tags.length">
+                  {{ item.source }} &nbsp;&nbsp;&nbsp;{{ item.time }}
+                </p>
               </div>
               <div class="right">
                 <img :src="item.img ? item.img : img" alt />
@@ -77,48 +85,53 @@
 </template>
 <script>
 import { souari } from "@/api/api";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let city = context.store.state.city;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res,res1] = await Promise.all([
-      context.$axios
-        .get("/jy/article/recommends", {
-          params: {
-            city: city,
-            token: token,
-            limit: 10,
-            page: 1,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      id: id,
-      recommends: res.recommends,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let city = context.store.state.city;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/article/recommends", {
+            params: {
+              city: city,
+              token: token,
+              limit: 10,
+              page: 1,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        id: id,
+        recommends: res.recommends,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -145,8 +158,8 @@ export default {
       num: 0,
       recommends: [],
       img: require("~/assets/default-info.png"),
-      isok:true,
-      page:2
+      isok: true,
+      page: 2,
     };
   },
   methods: {
@@ -174,23 +187,25 @@ export default {
       var scrollHeight = window.screen.availHeight;
       var windowHeight = document.body.scrollHeight;
       if (scrollTop + scrollHeight >= windowHeight) {
-        if (that.isok &&that.name) {
+        if (that.isok && that.name) {
           that.isok = false;
-          souari({ name: that.name, page: that.page, limit: 10 }).then((res) => {
-            that.isok = true;
-            that.list = that.list.concat(res.data.data);
-            that.page = that.page+1
-          });
+          souari({ name: that.name, page: that.page, limit: 10 }).then(
+            (res) => {
+              that.isok = true;
+              that.list = that.list.concat(res.data.data);
+              that.page = that.page + 1;
+            }
+          );
         }
       }
     },
   },
   mounted() {
-    document.getElementById('foott').style.display = 'none'
+    document.getElementById("foott").style.display = "none";
     // window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {
-    document.getElementById('foott').style.display = 'block'
+    document.getElementById("foott").style.display = "block";
     // window.removeEventListener("scroll", this.getmore);
   },
   watch: {
@@ -322,7 +337,7 @@ li {
         position: absolute;
         bottom: 0.4375rem;
         color: #626466;
-          font-size: 0.625rem;
+        font-size: 0.625rem;
         span {
           padding: 0.15625rem 0.3125rem 0.1875rem 0.3125rem;
           border-radius: 0.125rem;

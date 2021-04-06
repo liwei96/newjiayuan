@@ -8,7 +8,19 @@
           <img src="~/assets/downsan.png" alt />
         </p>
       </nuxt-link>
-      <img class="logo" src="~/assets/logo.png" alt />
+      <!-- <img class="logo" src="~/assets/logo.png" alt /> -->
+      <img
+        v-if="this.$store.state.host === 0"
+        src="~/assets/logo.png"
+        alt
+        class="logo"
+      />
+      <img
+        v-if="this.$store.state.host === 1"
+        src="~/assets/logos.png"
+        alt
+        class="logo"
+      />
       <!-- <div class="zixuns" @click="gotalk" v-show="false">
         <img src="~/assets/zixun.png" alt />
         <p></p>
@@ -17,8 +29,14 @@
         <span> <img src="~/assets/dian.png" />地图 </span>
       </nuxt-link>
     </header>
-    <img :src="banner.img" alt="" class="backhome" v-if="banner.length!=0" @click="goback">
-    <div :class="banner.length == 0 ?'input':'input input1'">
+    <img
+      :src="banner.img"
+      alt=""
+      class="backhome"
+      v-if="banner.length != 0"
+      @click="goback"
+    />
+    <div :class="banner.length == 0 ? 'input' : 'input input1'">
       <nuxt-link :to="'/' + jkl + '/searchname'">
         <input type="text" placeholder="请输入楼盘名称" />
       </nuxt-link>
@@ -254,7 +272,7 @@
           <div class="pro">
             <div class="left">
               <div class="imgbox" v-if="item.allowance > 0">
-                补贴<span>￥{{item.allowance}}</span>
+                补贴<span>￥{{ item.allowance }}</span>
                 <!-- <img src="~/assets/imgbox.png" alt=""> -->
               </div>
               <img class="leftimg" :src="item.img" alt />
@@ -347,177 +365,182 @@ import { pros } from "@/api/api";
 import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let area1 = 0;
-    let price1 = 0;
-    let type1 = 0;
-    let typenum = 0;
-    let shai1 = 0;
-    let area = [];
-    let railway = [];
-    let total = 0;
-    let price = 0;
-    let feature = [];
-    let husid = [];
-    let options = {
-      city: city,
-      phone: 1,
-      page: 1,
-      limit: 10,
-    };
-    let ordernum = 0;
-    let region = 0;
-    let isnull = false;
-    let special_discount = "";
-    let near_railway = "";
-    if (context.route.path.split("/").length == 4) {
-      let arr = context.route.path.split("/")[3].split("+");
-      for (let val of arr) {
-        let ll = val.split("-");
-        switch (ll[0]) {
-          case "country":
-            area1 = 1;
-            area = ll[1].split(",");
-            break;
-          case "railway":
-            area1 = 1;
-            railway = ll[1].split(",");
-            break;
-          case "total_price":
-            price1 = 1;
-            total = ll[1];
-            break;
-          case "single_price":
-            price1 = 1;
-            price = ll[1];
-            break;
-          case "house_type":
-            typenum = 1;
-            husid = ll[1].split(",");
-            break;
-          case "type":
-            shai1 = 1;
-            if (ll[1] == "公寓") {
-              type1 = "公寓";
-            } else if (ll[1] == "写字楼") {
-              type1 = "写字楼";
-            } else if (ll[1] == "住宅") {
-              type1 = "住宅";
-            } else if (ll[1] == "商铺") {
-              type1 = "商铺";
-            }
-            break;
-          case "feature":
-            shai1 = 1;
-            feature = ll[1].split(",");
-            break;
-          case "order":
-            shai1 = 1;
-            ordernum = ll[1];
-            break;
-          case "area":
-            shai1 = 1;
-            region = ll[1];
-            break;
-          case "special_discount":
-            special_discount = 1;
-            break;
-          case "near_railway":
-            near_railway = 1;
-            break;
+    try {
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let area1 = 0;
+      let price1 = 0;
+      let type1 = 0;
+      let typenum = 0;
+      let shai1 = 0;
+      let area = [];
+      let railway = [];
+      let total = 0;
+      let price = 0;
+      let feature = [];
+      let husid = [];
+      let options = {
+        city: city,
+        phone: 1,
+        page: 1,
+        limit: 10,
+      };
+      let ordernum = 0;
+      let region = 0;
+      let isnull = false;
+      let special_discount = "";
+      let near_railway = "";
+      if (context.route.path.split("/").length == 4) {
+        let arr = context.route.path.split("/")[3].split("+");
+        for (let val of arr) {
+          let ll = val.split("-");
+          switch (ll[0]) {
+            case "country":
+              area1 = 1;
+              area = ll[1].split(",");
+              break;
+            case "railway":
+              area1 = 1;
+              railway = ll[1].split(",");
+              break;
+            case "total_price":
+              price1 = 1;
+              total = ll[1];
+              break;
+            case "single_price":
+              price1 = 1;
+              price = ll[1];
+              break;
+            case "house_type":
+              typenum = 1;
+              husid = ll[1].split(",");
+              break;
+            case "type":
+              shai1 = 1;
+              if (ll[1] == "公寓") {
+                type1 = "公寓";
+              } else if (ll[1] == "写字楼") {
+                type1 = "写字楼";
+              } else if (ll[1] == "住宅") {
+                type1 = "住宅";
+              } else if (ll[1] == "商铺") {
+                type1 = "商铺";
+              }
+              break;
+            case "feature":
+              shai1 = 1;
+              feature = ll[1].split(",");
+              break;
+            case "order":
+              shai1 = 1;
+              ordernum = ll[1];
+              break;
+            case "area":
+              shai1 = 1;
+              region = ll[1];
+              break;
+            case "special_discount":
+              special_discount = 1;
+              break;
+            case "near_railway":
+              near_railway = 1;
+              break;
+          }
+          options[ll[0]] = ll[1];
         }
-        options[ll[0]] = ll[1];
       }
+      let [res, res1, res2] = await Promise.all([
+        context.$axios
+          .get("/jy/phone/search/conditions", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            for (let val of data.conditions.countries) {
+              val.btn = 0;
+              for (let v of area) {
+                if (val.id == v) {
+                  val.btn = 1;
+                }
+              }
+            }
+            for (let val of data.conditions.railways) {
+              val.btn = 0;
+              for (let v of railway) {
+                if (val.id == v) {
+                  val.btn = 1;
+                }
+              }
+            }
+            for (let val of data.conditions.features) {
+              val.btn = 0;
+              for (let v of feature) {
+                if (val.id == v) {
+                  val.btn = 1;
+                }
+              }
+            }
+            //   console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/search/info", {
+            params: options,
+          })
+          .then((resp) => {
+            let data = resp.data.info;
+            if (data.length == 0) {
+              isnull = true;
+            }
+            //   console.log(data)
+            return resp.data;
+          }),
+        context.$axios
+          .get("/jy/recommend", {
+            params: { city: city, count: 4 },
+          })
+          .then((res) => {
+            return res.data.recommends;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        citys: res.conditions.countries,
+        ties: res.conditions.railways,
+        hus: res.conditions.house_types,
+        single_prices: res.conditions.single_prices,
+        total_prices: res.conditions.total_prices,
+        areas: res.conditions.areas,
+        types: res.conditions.types,
+        features: res.conditions.features,
+        list: res1.info,
+        type1: type1, //类型
+        area: area, //区域
+        husid: husid, //户型
+        railway: railway, //地铁
+        feature: feature, //特色
+        ordernum: ordernum, //排序
+        price: price, //单价
+        total: total, //总价
+        region: region, //面积
+        other: res2,
+        isnull: isnull,
+        cityname: res.common.city_info.current.short,
+        special_discount: special_discount,
+        near_railway: near_railway,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+        banner: res.common.banner,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
     }
-    let [res, res1, res2] = await Promise.all([
-      context.$axios
-        .get("/jy/phone/search/conditions", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          for (let val of data.conditions.countries) {
-            val.btn = 0;
-            for (let v of area) {
-              if (val.id == v) {
-                val.btn = 1;
-              }
-            }
-          }
-          for (let val of data.conditions.railways) {
-            val.btn = 0;
-            for (let v of railway) {
-              if (val.id == v) {
-                val.btn = 1;
-              }
-            }
-          }
-          for (let val of data.conditions.features) {
-            val.btn = 0;
-            for (let v of feature) {
-              if (val.id == v) {
-                val.btn = 1;
-              }
-            }
-          }
-          //   console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/search/info", {
-          params: options,
-        })
-        .then((resp) => {
-          let data = resp.data.info;
-          if (data.length == 0) {
-            isnull = true;
-          }
-          //   console.log(data)
-          return resp.data;
-        }),
-      context.$axios
-        .get("/jy/recommend", {
-          params: { city: city, count: 4 },
-        })
-        .then((res) => {
-          return res.data.recommends;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      citys: res.conditions.countries,
-      ties: res.conditions.railways,
-      hus: res.conditions.house_types,
-      single_prices: res.conditions.single_prices,
-      total_prices: res.conditions.total_prices,
-      areas: res.conditions.areas,
-      types: res.conditions.types,
-      features: res.conditions.features,
-      list: res1.info,
-      type1: type1, //类型
-      area: area, //区域
-      husid: husid, //户型
-      railway: railway, //地铁
-      feature: feature, //特色
-      ordernum: ordernum, //排序
-      price: price, //单价
-      total: total, //总价
-      region: region, //面积
-      other: res2,
-      isnull: isnull,
-      cityname: res.common.city_info.current.short,
-      special_discount: special_discount,
-      near_railway: near_railway,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords,
-      banner: res.common.banner
-    };
   },
   head() {
     return {
@@ -573,8 +596,8 @@ export default {
   },
   methods: {
     goback() {
-      if(this.banner.url) {
-        window.location.href = this.banner.url
+      if (this.banner.url) {
+        window.location.href = this.banner.url;
       }
     },
     setnull() {
@@ -1175,7 +1198,7 @@ header {
   width: 92%;
   margin-left: 4%;
   margin-top: 2.75rem;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 .input {
   height: 2.5rem;
@@ -1621,16 +1644,16 @@ header {
         height: 1.25rem;
         left: -0.3125rem;
         text-align: center;
-        top: .5rem;
+        top: 0.5rem;
         background: url(~assets/imgbox.png);
         background-size: contain;
         color: #fff;
-        font-size: .625rem;
+        font-size: 0.625rem;
         line-height: 1.25rem;
         font-weight: bold;
         white-space: nowrap;
         span {
-          font-size: .6875rem;
+          font-size: 0.6875rem;
         }
       }
     }

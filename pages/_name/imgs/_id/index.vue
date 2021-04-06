@@ -3,47 +3,98 @@
     <top-view :jkl="jkl"></top-view>
     <div class="con">
       <div class="imgs">
-        <h4>效果图({{efects.length}}）</h4>
+        <h4>效果图({{ efects.length }}）</h4>
         <div class="imgbox">
-          <img v-lazy="item.small"  :alt="title" :title="title" v-for="(item,key) in efects" :key="key" @click="big(efectsbig,key)"/>
+          <img
+            v-lazy="item.small"
+            :alt="title"
+            :title="title"
+            v-for="(item, key) in efects"
+            :key="key"
+            @click="big(efectsbig, key)"
+          />
         </div>
       </div>
       <div class="imgs">
-        <h4>实景图({{reals.length}})</h4>
+        <h4>实景图({{ reals.length }})</h4>
         <div class="imgbox">
-          <img v-lazy="item.small"  :alt="title" :title="title" v-for="(item,key) in reals" :key="key" @click="big(realbig,key)"/>
+          <img
+            v-lazy="item.small"
+            :alt="title"
+            :title="title"
+            v-for="(item, key) in reals"
+            :key="key"
+            @click="big(realbig, key)"
+          />
         </div>
       </div>
       <div class="imgs">
-        <h4>样板房({{templates.length}})</h4>
+        <h4>样板房({{ templates.length }})</h4>
         <div class="imgbox">
-          <img v-lazy="item.small"  :alt="title" :title="title" v-for="(item,key) in templates" :key="key" @click="big(examplebig,key)"/>
+          <img
+            v-lazy="item.small"
+            :alt="title"
+            :title="title"
+            v-for="(item, key) in templates"
+            :key="key"
+            @click="big(examplebig, key)"
+          />
         </div>
       </div>
       <div class="imgs">
-        <h4>配套({{matchings.length}})</h4>
+        <h4>配套({{ matchings.length }})</h4>
         <div class="imgbox">
-          <img v-lazy="item.small"  :alt="title" :title="title" v-for="(item,key) in matchings" :key="key" @click="big(matchingbig,key)"/>
+          <img
+            v-lazy="item.small"
+            :alt="title"
+            :title="title"
+            v-for="(item, key) in matchings"
+            :key="key"
+            @click="big(matchingbig, key)"
+          />
         </div>
       </div>
       <div class="imgs">
-        <h4>交通图({{traffics.length}})</h4>
+        <h4>交通图({{ traffics.length }})</h4>
         <div class="imgbox">
-          <img v-lazy="item.small"  :alt="title" :title="title" v-for="(item,key) in traffics" :key="key" @click="big(trafficbig,key)"/>
+          <img
+            v-lazy="item.small"
+            :alt="title"
+            :title="title"
+            v-for="(item, key) in traffics"
+            :key="key"
+            @click="big(trafficbig, key)"
+          />
         </div>
       </div>
       <div class="huimg">
-        <h4>户型图({{apartments.length}})</h4>
+        <h4>户型图({{ apartments.length }})</h4>
         <div class="imgbox">
-          <div class="img" v-for="(item,key) in apartments" :key="key" @click="big(departmentsbig,key)">
-            <img v-lazy="item.small"  :alt="title" :title="title" />
+          <div
+            class="img"
+            v-for="(item, key) in apartments"
+            :key="key"
+            @click="big(departmentsbig, key)"
+          >
+            <img v-lazy="item.small" :alt="title" :title="title" />
           </div>
         </div>
       </div>
     </div>
     <nav-view :phone="phone" @fot="chang($event)"></nav-view>
-    <van-popup v-model="tan" :style="{background:'rgba(0,0,0,0)'}" @click-overlay="typebtn = 0">
-      <tan-view :txt="remark" :typenum="typenum" :id="id" :name="name" @close="cli($event)" :typebtn="typebtn"></tan-view>
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+      ></tan-view>
     </van-popup>
   </div>
 </template>
@@ -51,77 +102,82 @@
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 import tan from "@/components/tan.vue";
-import { ImagePreview } from 'vant';
+import { ImagePreview } from "vant";
 export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    "tan-view":tan
+    "tan-view": tan,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/imgs/phone", {
-          params: {
-            id: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          data.efectsbig = []
-          for(let val of data.imgs.effect){
-              data.efectsbig.push(val.big)
-          }
-          data.trafficbig = []
-          for(let val of data.imgs.traffic){
-              data.trafficbig.push(val.big)
-          }
-          data.matchingbig = []
-          for(let val of data.imgs.matching){
-              data.matchingbig.push(val.big)
-          }
-          data.realbig = []
-          for(let val of data.imgs.real){
-              data.realbig.push(val.big)
-          }
-          data.examplebig = []
-          for(let val of data.imgs.example){
-              data.examplebig.push(val.big)
-          }
-          data.departmentsbig = []
-          for(let val of data.imgs.departments){
-              data.departmentsbig.push(val.big)
-          }
-          // console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      efects: res.imgs.effect,
-      efectsbig:res.efectsbig,
-      traffics: res.imgs.traffic,
-      matchings: res.imgs.matching,
-      reals: res.imgs.real,
-      templates: res.imgs.example,
-      apartments: res.imgs.departments,
-      phone: res.common.phone,
-      trafficbig:res.trafficbig,
-      matchingbig:res.matchingbig,
-      realbig:res.realbig,
-      examplebig:res.examplebig,
-      departmentsbig:res.departmentsbig,
-      jkl: jkl,
-      id:id,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/imgs/phone", {
+            params: {
+              id: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            data.efectsbig = [];
+            for (let val of data.imgs.effect) {
+              data.efectsbig.push(val.big);
+            }
+            data.trafficbig = [];
+            for (let val of data.imgs.traffic) {
+              data.trafficbig.push(val.big);
+            }
+            data.matchingbig = [];
+            for (let val of data.imgs.matching) {
+              data.matchingbig.push(val.big);
+            }
+            data.realbig = [];
+            for (let val of data.imgs.real) {
+              data.realbig.push(val.big);
+            }
+            data.examplebig = [];
+            for (let val of data.imgs.example) {
+              data.examplebig.push(val.big);
+            }
+            data.departmentsbig = [];
+            for (let val of data.imgs.departments) {
+              data.departmentsbig.push(val.big);
+            }
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        efects: res.imgs.effect,
+        efectsbig: res.efectsbig,
+        traffics: res.imgs.traffic,
+        matchings: res.imgs.matching,
+        reals: res.imgs.real,
+        templates: res.imgs.example,
+        apartments: res.imgs.departments,
+        phone: res.common.phone,
+        trafficbig: res.trafficbig,
+        matchingbig: res.matchingbig,
+        realbig: res.realbig,
+        examplebig: res.examplebig,
+        departmentsbig: res.departmentsbig,
+        jkl: jkl,
+        id: id,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -129,32 +185,31 @@ export default {
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
     return {
       navnum: 0,
-      efects:[],
-      traffics:[],
-      matchings:[],
-      reals:[],
-      templates:[],
-      phone:'',
-      jkl:'',
-      efectsbig:[],
-      tan:false,
-      typenum:0,
-      typebtn:1,
-      name:'',
-      remark:'',
+      efects: [],
+      traffics: [],
+      matchings: [],
+      reals: [],
+      templates: [],
+      phone: "",
+      jkl: "",
+      efectsbig: [],
+      tan: false,
+      typenum: 0,
+      typebtn: 1,
+      name: "",
+      remark: "",
     };
   },
   methods: {
@@ -174,9 +229,9 @@ export default {
       this.typenum = data.position;
       this.name = data.name;
 
-      this.typebtn = 1
-      this.tan = true
-      this.remark='相册页+预约看房'
+      this.typebtn = 1;
+      this.tan = true;
+      this.remark = "相册页+预约看房";
     },
   },
 };

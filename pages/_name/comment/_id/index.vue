@@ -56,37 +56,42 @@
 <script>
 import topView from "@/components/header.vue";
 import { comm } from "@/api/api";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   components: {
     "top-view": topView,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let city = context.store.state.city;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/compare/cards", {
-          params: {
-            ids: id,
-            token: token,
-            city: city,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      id: id,
-      list: res.data,
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let city = context.store.state.city;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/compare/cards", {
+            params: {
+              ids: id,
+              token: token,
+              city: city,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        id: id,
+        list: res.data,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -94,14 +99,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "Keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -169,10 +173,10 @@ export default {
     },
   },
   mounted() {
-    document.getElementById('foott').style.display = 'none'
+    document.getElementById("foott").style.display = "none";
   },
   beforeDestroy() {
-    document.getElementById('foott').style.display = 'block'
+    document.getElementById("foott").style.display = "block";
   },
 };
 </script>

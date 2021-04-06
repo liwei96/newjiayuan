@@ -63,55 +63,60 @@ export default {
     "top-view": top,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let city = context.store.state.city;
-    let res = {
-      data: [],
-    };
-    let res1 = {}
-    if (id) {
-      [res,res1] = await Promise.all([
-        context.$axios
-          .get("/jy/compare/cards", {
-            params: {
-              ids: id,
-              token: token,
-              city: city,
-            },
-          })
-          .then((resp) => {
-            let arr = id.split(",");
-            let data = resp.data;
-            let kk = [];
-            for (let val of arr) {
-            }
-            // console.log(data)
-            return data;
-          }),
-        context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-      ]);
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let city = context.store.state.city;
+      let res = {
+        data: [],
+      };
+      let res1 = {};
+      if (id) {
+        [res, res1] = await Promise.all([
+          context.$axios
+            .get("/jy/compare/cards", {
+              params: {
+                ids: id,
+                token: token,
+                city: city,
+              },
+            })
+            .then((resp) => {
+              let arr = id.split(",");
+              let data = resp.data;
+              let kk = [];
+              for (let val of arr) {
+              }
+              // console.log(data)
+              return data;
+            }),
+          context.$axios
+            .get("/jy/phone/head/foot", {
+              params: {
+                city: city,
+                token: token,
+              },
+            })
+            .then((resp) => {
+              let data = resp.data;
+              return data;
+            }),
+        ]);
+      }
+      return {
+        jkl: jkl,
+        id: id,
+        list: res.data,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
     }
-    return {
-      jkl: jkl,
-      id: id,
-      list: res.data,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
   },
   head() {
     return {

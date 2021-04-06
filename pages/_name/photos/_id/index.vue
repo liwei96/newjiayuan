@@ -46,7 +46,7 @@
                       v-for="(item, key) in efects"
                       :key="key"
                     >
-                      <img v-lazy="item.big" :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page1"></div>
@@ -69,7 +69,7 @@
                       v-for="(item, key) in reals"
                       :key="key"
                     >
-                      <img v-lazy="item.big"  :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page2"></div>
@@ -90,7 +90,7 @@
                       v-for="(item, key) in templates"
                       :key="key"
                     >
-                      <img v-lazy="item.big"  :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page3"></div>
@@ -111,7 +111,7 @@
                       v-for="(item, key) in traffics"
                       :key="key"
                     >
-                      <img v-lazy="item.big"  :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page4"></div>
@@ -132,7 +132,7 @@
                       v-for="(item, key) in apartments"
                       :key="key"
                     >
-                      <img v-lazy="item.big"  :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page5"></div>
@@ -153,7 +153,7 @@
                       v-for="(item, key) in matchings"
                       :key="key"
                     >
-                      <img v-lazy="item.big"  :alt="title" :title="title"/>
+                      <img v-lazy="item.big" :alt="title" :title="title" />
                     </div>
                   </div>
                   <div class="swiper-pagination page5"></div>
@@ -195,7 +195,7 @@
           <input type="tel" placeholder="请输入手机号" v-model="baoming" />
           <p class="xiyi">
             <input type="checkbox" v-model="check1" />我已阅读并同意
-            <router-link :to="'/'">《{{txt}}用户协议》</router-link>
+            <router-link :to="'/'">《{{ txt }}用户协议》</router-link>
           </p>
           <button @click="send">立即订阅</button>
           <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
@@ -220,42 +220,47 @@ import { put, check, send } from "~/api/api";
 export default {
   name: "Album",
   async asyncData(context) {
-    let host = context.store.state.host
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/imgs/phone", {
-          params: {
-            id: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      efects: res.imgs.effect,
-      traffics: res.imgs.traffic,
-      matching: res.imgs.matching,
-      reals: res.imgs.real,
-      templates: res.imgs.example,
-      apartments: res.imgs.departments,
-      phone: res.common.phone,
-      jkl: jkl,
-      id: id,
-      tel: res.common.phone,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords,
-      host:host
-    };
+    try {
+      let host = context.store.state.host;
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/imgs/phone", {
+            params: {
+              id: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        efects: res.imgs.effect,
+        traffics: res.imgs.traffic,
+        matching: res.imgs.matching,
+        reals: res.imgs.real,
+        templates: res.imgs.example,
+        apartments: res.imgs.departments,
+        phone: res.common.phone,
+        jkl: jkl,
+        id: id,
+        tel: res.common.phone,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -308,7 +313,7 @@ export default {
       tan: false,
       one: true,
       proname: "",
-      txt: '家园'
+      txt: "家园",
     };
   },
   methods: {
@@ -330,7 +335,7 @@ export default {
       //   $cookies.set('time',kk)
       // }
       let check1 = this.check1;
-      let that = this
+      let that = this;
       if (!check1) {
         this.toast("请勾选用户协议");
         return;
@@ -361,8 +366,8 @@ export default {
         name: "未知",
         position: typenum,
         city: city,
-        kid:kid,
-        other:other
+        kid: kid,
+        other: other,
       }).then((res) => {
         if (res.data.code == 200) {
           send({ ip: ip, phone: phone, source: 3 }).then((res) => {
@@ -391,9 +396,9 @@ export default {
         }
         if (res.data.code == 500) {
           this.toast(res.data.msg || res.data.message);
-          setTimeout(()=>{
-            that.tan=false
-          },2000)
+          setTimeout(() => {
+            that.tan = false;
+          }, 2000);
         }
       });
     },
@@ -456,18 +461,18 @@ export default {
     },
   },
   mounted() {
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
     let that = this;
     that.baoming = $cookies.get("phone");
     this.start();
-    document.getElementById('foott').style.display = 'none'
+    document.getElementById("foott").style.display = "none";
   },
   beforeDestroy() {
-    document.getElementById('foott').style.display = 'block'
+    document.getElementById("foott").style.display = "block";
   },
   updated() {
     if (this.one) {

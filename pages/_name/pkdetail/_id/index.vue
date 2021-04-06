@@ -7,44 +7,42 @@
         <span>楼盘信息</span>
       </div>
       <div class="center">
-        <img class="topimg" :src="one.img" alt @click="godetail(one.id)"/>
+        <img class="topimg" :src="one.img" alt @click="godetail(one.id)" />
         <div class="msg">
-          <h6>{{one.name}}</h6>
+          <h6>{{ one.name }}</h6>
           <p class="type">
-            <span class="zhuang">{{one.decorate}}</span>
-            <template v-for="(item,key) in one.features">
-            <span :key="key" v-if="key==0">{{item}}</span>
+            <span class="zhuang">{{ one.decorate }}</span>
+            <template v-for="(item, key) in one.features">
+              <span :key="key" v-if="key == 0">{{ item }}</span>
             </template>
           </p>
           <p class="pri">
             约
-            <span>{{one.price}}</span>元/m²
+            <span>{{ one.price }}</span
+            >元/m²
           </p>
-          <a :href="'tel:'+phone">
-          <button>
-            <img src="~/assets/navtel.png" />电话咨询
-          </button>
+          <a :href="'tel:' + phone">
+            <button><img src="~/assets/navtel.png" />电话咨询</button>
           </a>
         </div>
       </div>
       <div class="center">
-        <img class="topimg" :src="two.img" alt @click="godetail(two.id)"/>
+        <img class="topimg" :src="two.img" alt @click="godetail(two.id)" />
         <div class="msg">
-          <h6>{{two.name}}</h6>
+          <h6>{{ two.name }}</h6>
           <p class="type">
-            <span class="zhuang">{{two.decorate}}</span>
-            <template v-for="(item,key) in two.features">
-            <span :key="key" v-if="key==0">{{item}}</span>
+            <span class="zhuang">{{ two.decorate }}</span>
+            <template v-for="(item, key) in two.features">
+              <span :key="key" v-if="key == 0">{{ item }}</span>
             </template>
           </p>
           <p class="pri">
             约
-            <span>{{two.price}}</span>元/m²
+            <span>{{ two.price }}</span
+            >元/m²
           </p>
-          <a :href="'tel:'+phone">
-          <button>
-            <img src="~/assets/navtel.png" />电话咨询
-          </button>
+          <a :href="'tel:' + phone">
+            <button><img src="~/assets/navtel.png" />电话咨询</button>
           </a>
         </div>
       </div>
@@ -55,55 +53,59 @@
           <td>楼盘地址</td>
           <td>
             <img src="~/assets/icon-path.png" alt />
-            <span>{{one.address}}</span>
+            <span>{{ one.address }}</span>
           </td>
           <td>
             <img src="~/assets/icon-path.png" alt />
-            <span>{{two.address}}</span>
+            <span>{{ two.address }}</span>
           </td>
         </tr>
         <tr>
           <td>项目特色</td>
           <td>
-            <span class="type" v-for="(item,key) in one.features" :key="key">{{item}}</span>
+            <span class="type" v-for="(item, key) in one.features" :key="key">{{
+              item
+            }}</span>
           </td>
           <td>
-            <span class="type" v-for="(item,key) in two.features" :key="key">{{item}}</span>
+            <span class="type" v-for="(item, key) in two.features" :key="key">{{
+              item
+            }}</span>
           </td>
         </tr>
         <tr>
           <td>销售状态</td>
-          <td>{{one.state}}</td>
-          <td>{{two.state}}</td>
+          <td>{{ one.state }}</td>
+          <td>{{ two.state }}</td>
         </tr>
         <tr>
           <td>建筑类型</td>
-          <td>{{one.type}}</td>
-          <td>{{two.type}}</td>
+          <td>{{ one.type }}</td>
+          <td>{{ two.type }}</td>
         </tr>
         <tr class="shou">
           <td>预售许可</td>
           <td>
-            <p>{{one.license||'待更新'}}</p>
+            <p>{{ one.license || "待更新" }}</p>
           </td>
           <td>
-            <p>{{two.license||'待更新'}}</p>
+            <p>{{ two.license || "待更新" }}</p>
           </td>
         </tr>
         <tr>
           <td>装修状况</td>
-          <td>{{one.decorate}}</td>
-          <td>{{two.decorate}}</td>
+          <td>{{ one.decorate }}</td>
+          <td>{{ two.decorate }}</td>
         </tr>
         <tr>
           <td>层高</td>
-          <td>{{one.height}}</td>
-          <td>{{two.height}}</td>
+          <td>{{ one.height }}</td>
+          <td>{{ two.height }}</td>
         </tr>
         <tr>
           <td>产权年限</td>
-          <td>{{one.year}}</td>
-          <td>{{one.year}}</td>
+          <td>{{ one.year }}</td>
+          <td>{{ one.year }}</td>
         </tr>
         <tr>
           <td>距地铁</td>
@@ -116,36 +118,44 @@
         <tr class="pri">
           <td>参考单价</td>
           <td>
-            <p>约{{one.price}}元/m²</p>
-            <button @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价',one.id)">咨询底价</button>
+            <p>约{{ one.price }}元/m²</p>
+            <button
+              @click="pop('咨询楼盘底价', 105, '详情页+咨询楼盘底价', one.id)"
+            >
+              咨询底价
+            </button>
           </td>
           <td>
-            <p>约{{two.price}}元/m²</p>
-            <button @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价',two.id)">咨询底价</button>
+            <p>约{{ two.price }}元/m²</p>
+            <button
+              @click="pop('咨询楼盘底价', 105, '详情页+咨询楼盘底价', two.id)"
+            >
+              咨询底价
+            </button>
           </td>
         </tr>
         <tr>
           <td>参考总价</td>
-          <td>{{one.total_price}}</td>
-          <td>{{two.total_price}}</td>
+          <td>{{ one.total_price }}</td>
+          <td>{{ two.total_price }}</td>
         </tr>
         <tr>
           <td>开盘时间</td>
-          <td>{{one.open_time}}</td>
-          <td>{{two.open_time}}</td>
+          <td>{{ one.open_time }}</td>
+          <td>{{ two.open_time }}</td>
         </tr>
         <tr>
           <td>交房时间</td>
-          <td>{{one.give_time}}</td>
-          <td>{{two.give_time}}</td>
+          <td>{{ one.give_time }}</td>
+          <td>{{ two.give_time }}</td>
         </tr>
         <tr class="shou">
           <td>开发商</td>
           <td>
-            <p>{{one.builder}}</p>
+            <p>{{ one.builder }}</p>
           </td>
           <td>
-            <p>{{two.builder}}</p>
+            <p>{{ two.builder }}</p>
           </td>
         </tr>
 
@@ -181,56 +191,71 @@
         </tr>
         <tr>
           <td>建筑面积</td>
-          <td>{{one.built_area}}</td>
-          <td>{{two.built_area}}</td>
+          <td>{{ one.built_area }}</td>
+          <td>{{ two.built_area }}</td>
         </tr>
         <tr>
           <td>物业费用</td>
-          <td>{{one.property_fee}}</td>
-          <td>{{two.property_fee}}</td>
+          <td>{{ one.property_fee }}</td>
+          <td>{{ two.property_fee }}</td>
         </tr>
         <tr>
           <td>容积率</td>
-          <td>{{one.capacity_rate}}</td>
-          <td>{{two.capacity_rate}}</td>
+          <td>{{ one.capacity_rate }}</td>
+          <td>{{ two.capacity_rate }}</td>
         </tr>
         <tr class="com">
           <td>物业公司</td>
-          <td>{{one.property_company}}</td>
-          <td>{{two.property_company}}</td>
+          <td>{{ one.property_company }}</td>
+          <td>{{ two.property_company }}</td>
         </tr>
         <tr>
           <td>绿化率</td>
-          <td>{{one.green}}</td>
-          <td>{{two.green}}</td>
+          <td>{{ one.green }}</td>
+          <td>{{ two.green }}</td>
         </tr>
         <tr>
           <td>车位情况</td>
-          <td>{{one.parking}}</td>
-          <td>{{two.parking}}</td>
+          <td>{{ one.parking }}</td>
+          <td>{{ two.parking }}</td>
         </tr>
       </table>
-      <button class="btn" @click="pop('咨询详细楼盘信息',90,'详情页+咨询详细楼盘信息',one.id)">咨询详细楼盘信息</button>
+      <button
+        class="btn"
+        @click="pop('咨询详细楼盘信息', 90, '详情页+咨询详细楼盘信息', one.id)"
+      >
+        咨询详细楼盘信息
+      </button>
     </div>
     <div class="other">
       <h3>猜你喜欢</h3>
-      <template v-for="(item,key) in list">
-        <nuxt-link :key="key" :to="'/'+jkl+'/content/'+item.id">
+      <template v-for="(item, key) in list">
+        <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
-                {{item.name}}
-                <span>{{item.state}}</span>
+                {{ item.name }}
+                <span>{{ item.state }}</span>
               </h5>
               <p class="pro-price">
-                <span>{{item.price}}</span>
+                <span>{{ item.price }}</span>
                 <i>元/m²</i>起
               </p>
-              <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="attr">
+                {{ item.type }} | {{ item.city }}-{{
+                  item.country.substr(0, 2)
+                }}
+                | {{ item.area }}m²
+              </p>
               <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(val, k) in item.feature"
+                  :key="k"
+                  >{{ val }}</span
+                >
               </p>
             </div>
           </div>
@@ -265,62 +290,67 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let city = context.store.state.city;
-    let [res,res1] = await Promise.all([
-      context.$axios
-        .get("/jy/base/compare", {
-          params: {
-            ids: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      list: res.recommends,
-      one: res.data[0],
-      two: res.data[1],
-      phone:res.common.phone,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let city = context.store.state.city;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/base/compare", {
+            params: {
+              ids: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        list: res.recommends,
+        one: res.data[0],
+        two: res.data[1],
+        phone: res.common.phone,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
-      title: this.title || "家园新房-PK详情-"+this.one.name+'PK'+this.two.name,
+      title:
+        this.title || "家园新房-PK详情-" + this.one.name + "PK" + this.two.name,
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -331,10 +361,10 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      id:'0'
+      id: "0",
     };
   },
-  methods:{
+  methods: {
     cli(e) {
       this.tan = e;
     },
@@ -346,25 +376,25 @@ export default {
       this.tan = true;
       this.remark = "楼盘PK页+预约看房";
     },
-    godetail(id){
-      this.$router.push('/'+this.jkl+'/content/'+id)
+    godetail(id) {
+      this.$router.push("/" + this.jkl + "/content/" + id);
     },
-    pop(name,position,txt,id){
-      this.name = name
-      this.typebtn = 1
-      this.typenum = position
-      this.tan = true
-      this.remark=txt
-      this.id = id
+    pop(name, position, txt, id) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt;
+      this.id = id;
     },
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
 .top {
   display: flex;
   padding-bottom: 1.25rem;
-  border-bottom: 0.03125rem solid #F3F3F3;
+  border-bottom: 0.03125rem solid #f3f3f3;
   position: fixed;
   top: 2.75rem;
   background-color: #fff;
@@ -491,7 +521,7 @@ export default {
       td:nth-of-type(2) {
         border-right: 0.03125rem solid #e6e6e6;
         width: 8rem;
-        padding: 0 .25rem;
+        padding: 0 0.25rem;
       }
     }
     .address {
@@ -582,10 +612,10 @@ export default {
     }
     .hui {
       td:nth-of-type(2) {
-        color:#FF5454;
+        color: #ff5454;
       }
       td:nth-of-type(3) {
-        color:#FF5454;
+        color: #ff5454;
       }
     }
     .hu {
@@ -610,7 +640,6 @@ export default {
       td:nth-of-type(2) {
         padding: 0 0.25rem;
       }
-      
     }
   }
   h3 {
@@ -676,12 +705,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color:#FF5454;
+          color: #ff5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color:#FF5454;
+          color: #ff5454;
         }
       }
       .attr {

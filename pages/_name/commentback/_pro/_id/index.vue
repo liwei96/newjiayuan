@@ -20,37 +20,42 @@
 <script>
 import topView from "@/components/header.vue";
 import { commentback } from "@/api/api";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   components: {
     "top-view": topView,
   },
   async asyncData(context) {
-    let other = context.query.other;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/comment/single", {
-          params: {
-            id: id,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      question: res.comment,
-      id: id,
-    };
+    try {
+      let other = context.query.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/comment/single", {
+            params: {
+              id: id,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        question: res.comment,
+        id: id,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -58,14 +63,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "Keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {

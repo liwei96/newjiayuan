@@ -56,7 +56,7 @@
         v-if="city == 1 || city == 3"
         @click="goluck"
       /> -->
-      <div class="navs n1" v-if="banner.length ==0">
+      <div class="navs n1" v-if="banner.length == 0">
         <ul class="bold b1">
           <li>
             <nuxt-link :to="'/' + jkl + '/search'">
@@ -115,12 +115,12 @@
             <p>新盘动态</p>
           </li>
           <li @click="zhaopin">
-              <img src="~/assets/index-zhao.png" alt />
+            <img src="~/assets/index-zhao.png" alt />
             <p>招聘英才</p>
           </li>
         </ul>
       </div>
-      <div class="navs navs1" v-if="banner.length !=0">
+      <div class="navs navs1" v-if="banner.length != 0">
         <ul class="bold bold1">
           <li>
             <nuxt-link :to="'/' + jkl + '/search'">
@@ -179,7 +179,7 @@
             <p>新房动态</p>
           </li>
           <li @click="zhaopin">
-              <img src="~/assets/index-zhao.png" alt />
+            <img src="~/assets/index-zhao.png" alt />
             <p>诚聘英才</p>
           </li>
         </ul>
@@ -299,7 +299,7 @@
             <li>
               <div class="li-top">
                 <p class="top-area">{{ item.country.substr(0, 2) }}</p>
-                <img :src="item.img" :alt="item.name" :title="item.name"/>
+                <img :src="item.img" :alt="item.name" :title="item.name" />
                 <p class="top-name">{{ item.name }}</p>
                 <div class="ze"></div>
               </div>
@@ -337,7 +337,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in dynamics" :key="key">
             <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
-              <img :src="item.img" :alt="item.title" :title="item.title"/>
+              <img :src="item.img" :alt="item.title" :title="item.title" />
               <div class="swper-con">
                 <h5>{{ item.title }}</h5>
                 <p>
@@ -368,7 +368,7 @@
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in stricts" :key="key">
             <nuxt-link :to="'/' + jkl + '/content/' + item.id">
-              <img :src="item.img" :alt="item.name" :title="item.name"/>
+              <img :src="item.img" :alt="item.name" :title="item.name" />
               <div class="strict-bom">
                 <h6>{{ item.name }}</h6>
                 <p>
@@ -401,7 +401,11 @@
                 <h5>客户：{{ item.customer }}</h5>
                 <p class="time">时间：{{ item.time }}</p>
                 <p class="name">购买{{ item.project }}</p>
-                <img :src="item.img" :alt="item.project" :title="item.project"/>
+                <img
+                  :src="item.img"
+                  :alt="item.project"
+                  :title="item.project"
+                />
               </div>
               <div class="bom">
                 <p>{{ item.content }}</p>
@@ -440,7 +444,7 @@
                   {{ item.time }}
                 </p>
               </div>
-              <img :src="item.img" :alt="item.title" :title="item.title"/>
+              <img :src="item.img" :alt="item.title" :title="item.title" />
             </li>
           </nuxt-link>
         </template>
@@ -451,7 +455,7 @@
       <template v-for="(item, key) in recommends">
         <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
-            <img :src="item.img" :alt="item.name" :title="item.name"/>
+            <img :src="item.img" :alt="item.name" :title="item.name" />
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
@@ -498,42 +502,45 @@ export default {
     SwipeItem,
   },
   async asyncData(context) {
-    //   console.log(context.$axios)
-    let city = context.store.state.city;
-    let host = context.store.state.host;
-    // let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/phone/first", {
-          params: {
-            city: city,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data)
-          console.log(host);
-          return data;
-        }),
-    ]);
-    return {
-      tops: res.tops,
-      stricts: res.stricts,
-      finishes: res.finishes,
-      articles: res.articles,
-      recommends: res.recommends,
-      discounts: res.discounts,
-      dynamics: res.dynamics,
-      jkl: jkl,
-      cityname: res.common.city_info.current.short,
-      city: city,
-      title: res.common.header.title,
-      description: res.common.header.description,
-      keywords: res.common.header.keywords,
-      host: host,
-      banner: res.banner
-    };
+    try {
+      let city = context.store.state.city;
+      let host = context.store.state.host;
+      let jkl = context.params.name;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/phone/first", {
+            params: {
+              city: city,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data)
+            console.log(host);
+            return data;
+          }),
+      ]);
+      return {
+        tops: res.tops,
+        stricts: res.stricts,
+        finishes: res.finishes,
+        articles: res.articles,
+        recommends: res.recommends,
+        discounts: res.discounts,
+        dynamics: res.dynamics,
+        jkl: jkl,
+        cityname: res.common.city_info.current.short,
+        city: city,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+        banner: res.banner,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -566,15 +573,19 @@ export default {
     };
   },
   methods: {
-    zhaopin(){
-      if(this.host==0){
-        window.location.href="http://recruit.jy1980.com?type=0&city="+localStorage.getItem('city')
-      }else{
-        window.location.href="http://recruit.jy1980.com?type=1&city="+localStorage.getItem('city')
+    zhaopin() {
+      if (this.host == 0) {
+        window.location.href =
+          "http://recruit.jy1980.com?type=0&city=" +
+          localStorage.getItem("city");
+      } else {
+        window.location.href =
+          "http://recruit.jy1980.com?type=1&city=" +
+          localStorage.getItem("city");
       }
     },
     goback() {
-      window.location.href=this.banner.url
+      window.location.href = this.banner.url;
     },
     gohelp() {
       this.$router.push("/" + this.jkl + "/help");
@@ -727,7 +738,7 @@ header {
     margin-bottom: 1.25rem;
   }
   .n1 {
-    padding-top: .125rem;
+    padding-top: 0.125rem;
   }
   ul {
     display: flex;
@@ -769,13 +780,13 @@ header {
     }
   }
   .bold1 {
-    margin-bottom: .625rem;
+    margin-bottom: 0.625rem;
   }
   .b1 {
-    margin-bottom: .375rem;
+    margin-bottom: 0.375rem;
     li {
       img {
-        margin-bottom: .25rem;
+        margin-bottom: 0.25rem;
       }
     }
   }
@@ -783,7 +794,7 @@ header {
     ul {
       li {
         img {
-          margin-bottom: .125rem;
+          margin-bottom: 0.125rem;
         }
       }
     }

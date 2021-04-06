@@ -4,112 +4,126 @@
       <img class="back" src="~/assets/goback.png" alt @click="back" />
       <!-- <img class="logo" src="~/assets/logo1.png" alt /> -->
       <img v-if="host == 0" class="logo" src="~/assets/logo.png" alt />
-    <img v-if="host == 1" class="logo" src="~/assets/logos.png" alt />
-      <img src="~/assets/mapcai.png" alt class="list" @click="btn"/>
+      <img v-if="host == 1" class="logo" src="~/assets/logos.png" alt />
+      <img src="~/assets/mapcai.png" alt class="list" @click="btn" />
       <ul class="cailist" v-if="list">
-      <li class="cmn">
-        <router-link :to="'/' + jkl">
-          <span></span>
-          <img src="~/assets/barhome.png" />
-          <p>首 页</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="'/' + jkl + '/search'">
-          <img src="~/assets/barsearch.png" />
-          <p>楼盘查询</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="'/' + jkl + '/home'">
-          <img src="~/assets/barsearch.png" />
-          <p>个人中心</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="'/' + jkl + '/weike/before/56'">
-          <img src="~/assets/barke.png" />
-          <p>买房百科</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="'/' + jkl + '/infos/46'">
-          <img src="~/assets/barxun.png" />
-          <p>房产资讯</p>
-        </router-link>
-      </li>
-    </ul>
+        <li class="cmn">
+          <router-link :to="'/' + jkl">
+            <span></span>
+            <img src="~/assets/barhome.png" />
+            <p>首 页</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/search'">
+            <img src="~/assets/barsearch.png" />
+            <p>楼盘查询</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/home'">
+            <img src="~/assets/barsearch.png" />
+            <p>个人中心</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/weike/before/56'">
+            <img src="~/assets/barke.png" />
+            <p>买房百科</p>
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="'/' + jkl + '/infos/46'">
+            <img src="~/assets/barxun.png" />
+            <p>房产资讯</p>
+          </router-link>
+        </li>
+      </ul>
     </header>
     <div class="con">
-      <h3>{{article.title}}</h3>
+      <h3>{{ article.title }}</h3>
       <p class="time">
-        发布： {{article.begin}}
-        <span>来源：{{article.source}}</span>
-        <i>浏览： {{article.visit_num}}</i>
+        发布： {{ article.begin }}
+        <span>来源：{{ article.source }}</span>
+        <i>浏览： {{ article.visit_num }}</i>
       </p>
       <div class="pop" v-if="article.description.length">
         <span>摘要：</span>
-        {{article.description}}
+        {{ article.description }}
       </div>
       <div class="ari" v-html="article.content"></div>
       <div class="type" v-if="article.tags.length">
         标签：
-        <span v-for="(item,key) in article.tags" :key="key">{{item}}</span>
+        <span v-for="(item, key) in article.tags" :key="key">{{ item }}</span>
       </div>
-      <div class="project" v-if="project.length!=0">
-        <nuxt-link :to="'/'+this.jkl+'/content/'+project.id">
-        <div class="ject-top">
-          <div class="top-left">
-            <img :src="project.img" alt />
+      <div class="project" v-if="project.length != 0">
+        <nuxt-link :to="'/' + this.jkl + '/content/' + project.id">
+          <div class="ject-top">
+            <div class="top-left">
+              <img :src="project.img" alt />
+            </div>
+            <div class="top-right">
+              <h4>
+                {{ project.name }}
+                <span>{{ project.state }}</span>
+              </h4>
+              <p class="pri">
+                <span>{{ project.price }}</span
+                >元/m²
+              </p>
+              <p class="typemsg">
+                {{ project.type }} | {{ project.city }}-{{
+                  project.country
+                    ? project.country.substr(0, 2)
+                    : project.country
+                }}
+                | {{ project.area }}m²
+              </p>
+              <p class="icon">
+                <span class="zu">{{ project.decorate }}</span>
+                <span v-for="(item, key) in project.features" :key="key">{{
+                  item
+                }}</span>
+              </p>
+            </div>
           </div>
-          <div class="top-right">
-            <h4>
-              {{project.name}}
-              <span>{{project.state}}</span>
-            </h4>
-            <p class="pri">
-              <span>{{project.price}}</span>元/m²
-            </p>
-            <p
-              class="typemsg"
-            >{{project.type}} | {{project.city}}-{{project.country?project.country.substr(0,2):project.country}} | {{project.area}}m²</p>
-            <p class="icon">
-              <span class="zu">{{project.decorate}}</span>
-              <span v-for="(item,key) in project.features" :key="key">{{item}}</span>
-            </p>
-          </div>
-        </div>
         </nuxt-link>
         <div class="bom">
-          <a :href="'tel:'+phone">
+          <a :href="'tel:' + phone">
             <button>电话咨询</button>
           </a>
-          <button class="wen" @click="pop('咨询服务', 104, '详情页+咨询服务')">在线问</button>
+          <button class="wen" @click="pop('咨询服务', 104, '详情页+咨询服务')">
+            在线问
+          </button>
         </div>
       </div>
       <p class="icon">
         <img src="~/assets/typeicon.png" alt />
-        {{article.source_type}}
+        {{ article.source_type }}
       </p>
       <div class="agre" @click="like">
         <img :src="img" alt />
-        <p>{{article.like_num}}</p>
+        <p>{{ article.like_num }}</p>
       </div>
       <p class="free">
         <span>免责声明：</span>
-        凡本站注明 “来自：XXX(非{{txt}}网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-718-6686
+        凡本站注明 “来自：XXX(非{{
+          txt
+        }}网)”的资讯稿件和图片作品，系本站转载自其它媒体，转载目的在于信息传递，并不代表本站赞同其观点和对其真实性负责。如有资讯稿件和图片作品的内容、版权以及其它问题的，请联系本站，电话：400-718-6686
       </p>
       <div class="other">
         <h4>大家都在看</h4>
-        <template v-for="(item,key) in others">
-          <nuxt-link :key="key" :to="'/'+jkl+'/info/'+item.id">
+        <template v-for="(item, key) in others">
+          <nuxt-link :key="key" :to="'/' + jkl + '/info/' + item.id">
             <div class="pro">
               <div class="left">
-                <h5>{{item.title}}</h5>
+                <h5>{{ item.title }}</h5>
                 <p v-if="item.tags.length">
-                  <span v-for="(val,k) in item.tags" :key="k">{{val}}</span>
+                  <span v-for="(val, k) in item.tags" :key="k">{{ val }}</span>
                 </p>
-                <p v-if="!item.tags.length">{{item.source}}  &nbsp;&nbsp;&nbsp;&nbsp;{{item.time}}</p>
+                <p v-if="!item.tags.length">
+                  {{ item.source }} &nbsp;&nbsp;&nbsp;&nbsp;{{ item.time }}
+                </p>
               </div>
               <div class="right">
                 <img :src="item.img" :alt="item.title" />
@@ -136,62 +150,66 @@
   </div>
 </template>
 <script>
-import { infolike } from '@/api/api'
+import { infolike } from "@/api/api";
 import tan from "@/components/tan.vue";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   components: {
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
-    let host = context.store.state.host
-    let other = context.query.other;
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/phone/article/detail", {
-          params: {
-            id: id,
-            other: other,
-            city: city,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // data.article.content = decodeURIComponent(data.article.content);
-          //   console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      article: res.article,
-      others: res.others,
-      project: res.project_info,
-      phone: res.common.phone,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords,
-      host:host
-    };
+    try {
+      let host = context.store.state.host;
+      let other = context.query.other;
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/phone/article/detail", {
+            params: {
+              id: id,
+              other: other,
+              city: city,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // data.article.content = decodeURIComponent(data.article.content);
+            //   console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        article: res.article,
+        others: res.others,
+        project: res.project_info,
+        phone: res.common.phone,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
-      title: this.title || "家园新房-"+this.article.title,
+      title: this.title || "家园新房-" + this.article.title,
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -204,12 +222,12 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      id:'0',
-      list:false,
+      id: "0",
+      list: false,
       img: "",
       img1: require("~/assets/noclick.png"),
       img2: require("~/assets/checked.png"),
-      txt: '家园'
+      txt: "家园",
     };
   },
   methods: {
@@ -225,33 +243,33 @@ export default {
       this.typenum = position;
       this.tan = true;
       this.remark = txt;
-      this.id = this.project.id
+      this.id = this.project.id;
     },
-    btn(){
-      if(this.list){
-        this.list=false
-      }else{
-        this.list= true
+    btn() {
+      if (this.list) {
+        this.list = false;
+      } else {
+        this.list = true;
       }
     },
-    like(){
+    like() {
       let token = $cookies.get("token");
-      let id = this.article.id
+      let id = this.article.id;
       if (token) {
         infolike({ token: token, id: id }).then((res) => {
           if (res.data.code == 200) {
-            if(this.article.my_like){
-              this.article.like_num = this.article.like_num-1
-              this.article.my_like = 0
-              this.toast('取消成功')
-              this.img = this.img1
-            }else{
-              this.article.like_num = this.article.like_num+1
-              this.article.my_like = 1
-              this.toast('点赞成功')
-              this.img = this.img2
+            if (this.article.my_like) {
+              this.article.like_num = this.article.like_num - 1;
+              this.article.my_like = 0;
+              this.toast("取消成功");
+              this.img = this.img1;
+            } else {
+              this.article.like_num = this.article.like_num + 1;
+              this.article.my_like = 1;
+              this.toast("点赞成功");
+              this.img = this.img2;
             }
-          }else{
+          } else {
             let url = this.$route.path;
             sessionStorage.setItem("path", url);
             this.$router.push("/" + this.jkl + "/login");
@@ -262,21 +280,21 @@ export default {
         sessionStorage.setItem("path", url);
         this.$router.push("/" + this.jkl + "/login");
       }
-    }
+    },
   },
-  mounted(){
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+  mounted() {
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
     // console.log(this.project)
     if (this.article.my_like) {
-      this.img = this.img2
+      this.img = this.img2;
     } else {
-      this.img=this.img1
+      this.img = this.img1;
     }
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -290,7 +308,7 @@ header {
   height: 2.75rem;
   z-index: 1;
   background-color: #fff;
-  border-bottom: 0.03125rem solid #F7F7F7;
+  border-bottom: 0.03125rem solid #f7f7f7;
   // position: relative;
   .back {
     width: 1.5rem;
@@ -399,7 +417,7 @@ header {
     color: rgba(47, 49, 51, 1);
     font-size: 0.9375rem;
     margin-top: 1.25rem;
-    
+
     span {
       color: rgba(150, 151, 153, 1);
       margin-right: 0.6875rem;

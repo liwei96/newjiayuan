@@ -5,7 +5,11 @@
       <div class="swiper-topimg" @click="goimg">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(item, key) in imgs" :key="key">
-            <img :src="item.small" :alt="abstract.name" :title="abstract.name"/>
+            <img
+              :src="item.small"
+              :alt="abstract.name"
+              :title="abstract.name"
+            />
           </div>
         </div>
       </div>
@@ -163,16 +167,21 @@
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
       </h3>
-      <div class="hong-tit" v-if="activity.length != 0"><span>返乡置业</span>1亿购房补贴大放送</div>
+      <div class="hong-tit" v-if="activity.length != 0">
+        <span>返乡置业</span>1亿购房补贴大放送
+      </div>
       <div class="hui-con hong" v-if="activity.length != 0">
         <div class="hui-left">
           <h6>
-            <span>￥{{activity.money}}</span>购房补贴
+            <span>￥{{ activity.money }}</span
+            >购房补贴
           </h6>
           <p>购房补贴金后将与您手机号绑定</p>
         </div>
         <div class="hui-right">
-          <button @click="sign('领取优惠', 115, '返乡置业+领取补贴',activity.money)">
+          <button
+            @click="sign('领取优惠', 115, '返乡置业+领取补贴', activity.money)"
+          >
             立即领取
           </button>
           <p>
@@ -187,7 +196,7 @@
             <span>5000</span>元购房优惠
             <i>（{{ time }}截止）</i>
           </h6>
-          <p>售楼处专供{{txt}}平台客户</p>
+          <p>售楼处专供{{ txt }}平台客户</p>
         </div>
         <div class="hui-right">
           <button @click="pop('领取优惠', 94, '详情页+领取优惠')">
@@ -226,7 +235,7 @@
           </span>
         </nuxt-link>
       </h3>
-      <p>{{txt}}通过多个角度对比（10分制）进行楼盘专业评分</p>
+      <p>{{ txt }}通过多个角度对比（10分制）进行楼盘专业评分</p>
       <div class="con">
         <div id="leiecharts"></div>
         <div class="img" @click="leipk">
@@ -307,7 +316,11 @@
           >
             <nuxt-link :to="'/' + jkl + '/hu/' + item.id">
               <div class="hu-top">
-                <img :src="item.small" :alt="abstract.name+item.title+'户型图'" :title="abstract.name+item.title+'户型图'"/>
+                <img
+                  :src="item.small"
+                  :alt="abstract.name + item.title + '户型图'"
+                  :title="abstract.name + item.title + '户型图'"
+                />
                 <p>
                   <img src="~/assets/home-heart.png" alt />{{
                     item.like_num
@@ -340,7 +353,7 @@
     <div class="dynamic">
       <h3>
         实时动态
-        <nuxt-link :to="'/' + jkl + '/promsg/' + id+'/0'">
+        <nuxt-link :to="'/' + jkl + '/promsg/' + id + '/0'">
           <span>
             全部动态
             <img src="~/assets/j-more.png" alt />
@@ -352,7 +365,11 @@
           <p>{{ item.introduce }}</p>
           <span>{{ item.time }}</span>
           <div class="dynamicimgs" v-if="item.img">
-            <img :src="item.img" :alt="abstract.name+'实时动态'" :title="abstract.name+'实时动态'"/>
+            <img
+              :src="item.img"
+              :alt="abstract.name + '实时动态'"
+              :title="abstract.name + '实时动态'"
+            />
           </div>
         </li>
       </ul>
@@ -362,7 +379,7 @@
     </div>
     <div class="line"></div>
     <div class="zixun">
-      <h3>{{txt}}咨询师</h3>
+      <h3>{{ txt }}咨询师</h3>
       <p class="xun-icon">
         <span> <img src="~/assets/save.png" alt />专业服务 </span>
         <span> <img src="~/assets/icon-path.png" alt />区域解读 </span>
@@ -627,23 +644,29 @@
       <button @click="tiwen">我要提问</button>
     </div>
     <div class="line"></div>
-    <div class="my-infos" v-if="infos.length>0">
-        <h4>
-          相关资讯<nuxt-link :to="'/'+jkl+'/promsg/'+id+'/1'"><span>更多资讯 <img src="~/assets/go.png" alt/></span></nuxt-link>
-        </h4>
-        <ul>
-          <nuxt-link v-for="(item,key) in infos" :key="item.id" :to="'/'+jkl+'/info/'+item.id">
-            <li v-if="key<=2">{{item.title}}</li>
-          </nuxt-link>
-        </ul>
-      </div>
+    <div class="my-infos" v-if="infos.length > 0">
+      <h4>
+        相关资讯<nuxt-link :to="'/' + jkl + '/promsg/' + id + '/1'"
+          ><span>更多资讯 <img src="~/assets/go.png" alt /></span
+        ></nuxt-link>
+      </h4>
+      <ul>
+        <nuxt-link
+          v-for="(item, key) in infos"
+          :key="item.id"
+          :to="'/' + jkl + '/info/' + item.id"
+        >
+          <li v-if="key <= 2">{{ item.title }}</li>
+        </nuxt-link>
+      </ul>
+    </div>
     <div class="line"></div>
     <div class="other">
       <h3>为你推荐</h3>
       <template v-for="(item, key) in recommends">
         <nuxt-link :to="'/' + jkl + '/content/' + item.id" :key="key">
           <div class="pro">
-            <img :src="item.img" :alt="item.name" :title="item.name"/>
+            <img :src="item.img" :alt="item.name" :title="item.name" />
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
@@ -699,7 +722,11 @@
         </div>
       </div> -->
     </div>
-    <div :class="lucktypes ? 'luck' : 'luck lucked'" @click="sign('领取优惠', 115, '返乡置业+领取补贴',activity.money)" v-show="activity.length != 0">
+    <div
+      :class="lucktypes ? 'luck' : 'luck lucked'"
+      @click="sign('领取优惠', 115, '返乡置业+领取补贴', activity.money)"
+      v-show="activity.length != 0"
+    >
       <img src="~/assets/index-hong.png" alt="" />
     </div>
     <nav-view
@@ -779,22 +806,33 @@
             <p>
               平台优惠发放时间：待开发商或总代理公司补贴发放到位后尽快发放。
             </p>
-            <p>核算方式：由开发商或代理公司判定为{{txt}}平台客户即可享受这个优惠。</p>
-            <p>结算方式：提供已实名的支付宝账户给与您对接的{{txt}}咨询师，规定时间内会将优惠费用打至该账户。</p>
-            <p>详细活动方案请致{{txt}}电客服电话：4007186686</p>
-            <p>注：活动最终解释权归{{txt}}所有</p>
+            <p>
+              核算方式：由开发商或代理公司判定为{{
+                txt
+              }}平台客户即可享受这个优惠。
+            </p>
+            <p>
+              结算方式：提供已实名的支付宝账户给与您对接的{{
+                txt
+              }}咨询师，规定时间内会将优惠费用打至该账户。
+            </p>
+            <p>详细活动方案请致{{ txt }}电客服电话：4007186686</p>
+            <p>注：活动最终解释权归{{ txt }}所有</p>
           </div>
         </div>
       </div>
     </van-popup>
     <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
-      <hong @close="close" :id="id"
+      <hong
+        @close="close"
+        :id="id"
         :txt="remark"
         :name="name"
         :typebtn="typebtn"
         :typenum="typenum"
         :proname="abstract.name"
-        :num="num"></hong>
+        :num="num"
+      ></hong>
     </van-popup>
   </div>
 </template>
@@ -814,65 +852,70 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let host = context.store.state.host
-    let id = context.params.id;
-    let token = context.store.state.cookie.token || '';
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let kid = context.query.kid;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/building/detail", {
-          params: {
-            id: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          data.prices = [];
-          for (let val in data.deal_prices) {
-            data.prices[val] = [
-              data.deal_prices[val].time.substr(5),
-              data.deal_prices[val].price,
-            ];
-          }
-          return data;
-        }),
-    ]);
-    return {
-      effects: res.imgs ? res.imgs.img.effects : [],
-      examples: res.imgs ? res.imgs.img.examples : [],
-      traffics: res.imgs ? res.imgs.img.traffics : [],
-      imgnum: res.imgs ? res.imgs.num : [],
-      abstract: res.abstract,
-      phone: res.common.phone,
-      scores: res.scores,
-      house_types: res.house_types,
-      dynamics: res.dynamics,
-      staffs: res.common.staffs,
-      analysis: res.analysis,
-      deal_prices: res.deal_prices,
-      prices: res.prices,
-      comments: res.comments,
-      questions: res.questions,
-      recommends: res.recommends,
-      jkl: jkl,
-      id: id,
-      specials: res.specials,
-      count: res.count,
-      collect: res.collect,
-      cityname: res.common.city_info.current.short,
-      othercode: other,
-      kidcode: kid,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords,
-      host:host,
-      activity: res.common.activity || [],
-      infos: res.article
-    };
+    try {
+      let host = context.store.state.host;
+      let id = context.params.id;
+      let token = context.store.state.cookie.token || "";
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let kid = context.query.kid;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/building/detail", {
+            params: {
+              id: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            data.prices = [];
+            for (let val in data.deal_prices) {
+              data.prices[val] = [
+                data.deal_prices[val].time.substr(5),
+                data.deal_prices[val].price,
+              ];
+            }
+            return data;
+          }),
+      ]);
+      return {
+        effects: res.imgs ? res.imgs.img.effects : [],
+        examples: res.imgs ? res.imgs.img.examples : [],
+        traffics: res.imgs ? res.imgs.img.traffics : [],
+        imgnum: res.imgs ? res.imgs.num : [],
+        abstract: res.abstract,
+        phone: res.common.phone,
+        scores: res.scores,
+        house_types: res.house_types,
+        dynamics: res.dynamics,
+        staffs: res.common.staffs,
+        analysis: res.analysis,
+        deal_prices: res.deal_prices,
+        prices: res.prices,
+        comments: res.comments,
+        questions: res.questions,
+        recommends: res.recommends,
+        jkl: jkl,
+        id: id,
+        specials: res.specials,
+        count: res.count,
+        collect: res.collect,
+        cityname: res.common.city_info.current.short,
+        othercode: other,
+        kidcode: kid,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+        activity: res.common.activity || [],
+        infos: res.article
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -950,8 +993,8 @@ export default {
       stafftel: 0,
       staffname: "",
       staffimg: "",
-      txt: '家园',
-      num: ''
+      txt: "家园",
+      num: "",
     };
   },
   methods: {
@@ -961,11 +1004,11 @@ export default {
       this.typenum = position;
       this.show = true;
       this.remark = txt;
-      this.num = num
+      this.num = num;
     },
     close() {
-      console.log(55)
-      this.show = false
+      console.log(55);
+      this.show = false;
     },
     handleScroll() {
       this.lucktypes = false;
@@ -1466,7 +1509,7 @@ export default {
     putcard() {
       let urlid = this.$route.params.id;
       let id = sessionStorage.getItem(urlid);
-      let host = this.$store.state.hostname
+      let host = this.$store.state.hostname;
       let pp = {
         controller: "Staff",
         action: "info",
@@ -1497,10 +1540,10 @@ export default {
     },
   },
   mounted() {
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
     sessionStorage.setItem("proid", this.$route.params.id);
     let that = this;
@@ -1552,7 +1595,7 @@ export default {
         that.staffimg = data.staff.img;
         that.talktype = true;
       } else if (data.action == 302) {
-        sessionStorage.setItem('currentid',data.sid)
+        sessionStorage.setItem("currentid", data.sid);
       }
     };
     if (this.kidcode) {
@@ -2187,36 +2230,36 @@ export default {
   }
   .hong-tit {
     height: 1.75rem;
-    border-radius: .25rem .25rem 0 0;
+    border-radius: 0.25rem 0.25rem 0 0;
     line-height: 1.75rem;
-    background: linear-gradient(90deg, #FF4B2D, #FFA146);
+    background: linear-gradient(90deg, #ff4b2d, #ffa146);
     color: #fff;
-    font-size: .8125rem;
+    font-size: 0.8125rem;
     margin-top: 1.125rem;
     span {
-      margin-left: .75rem;
-      margin-right: .5rem;
+      margin-left: 0.75rem;
+      margin-right: 0.5rem;
     }
   }
   .hong {
     margin-top: 0;
     .hui-left {
       h6 {
-        color: #FF4B28;
+        color: #ff4b28;
         font-size: 1rem;
         span {
           font-size: 1.25rem;
         }
       }
       p {
-        color: #D95B42;
-        font-size: .75rem;
+        color: #d95b42;
+        font-size: 0.75rem;
       }
     }
     .hui-right {
       button {
-        background: linear-gradient(90deg, #FF4B2D, #FFA146);
-        border-radius: .8125rem;
+        background: linear-gradient(90deg, #ff4b2d, #ffa146);
+        border-radius: 0.8125rem;
       }
     }
   }
@@ -3022,7 +3065,7 @@ export default {
 }
 .luck {
   position: fixed;
-  right: .9375rem;
+  right: 0.9375rem;
   bottom: 7.5rem;
   z-index: 1001;
   transition: right 0.5s linear;
@@ -3336,25 +3379,25 @@ export default {
     padding: 0 4%;
     li {
       color: #323233;
-      font-size: .875rem;
+      font-size: 0.875rem;
       line-height: 1.375rem;
       padding-bottom: 1.125rem;
-      border-bottom: .03125rem solid #F2F2F2;
+      border-bottom: 0.03125rem solid #f2f2f2;
       margin-bottom: 1.0625rem;
     }
     li:before {
       content: "";
       display: inline-block;
-      width: .1875rem;
-      height: .1875rem;
+      width: 0.1875rem;
+      height: 0.1875rem;
       background-color: #333;
       border-radius: 50%;
-      margin-right: .3125rem;
+      margin-right: 0.3125rem;
       vertical-align: middle;
     }
     li:last-child {
       border: 0;
-      margin-bottom: .4375rem;
+      margin-bottom: 0.4375rem;
     }
   }
 }

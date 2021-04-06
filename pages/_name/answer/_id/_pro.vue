@@ -71,7 +71,7 @@
         <img src="~/assets/jiapeo.png" alt />
         <div class="promsg">
           <h5>138****3845</h5>
-          <p>{{txt}}房友</p>
+          <p>{{ txt }}房友</p>
         </div>
       </div>
       <p class="msg">
@@ -166,41 +166,46 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let host = context.store.state.host
-    let other = context.store.state.cookie.other;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/question/detail/phone", {
-          params: {
-            other: other,
-            id: id,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      answer: res.data,
-      building: res.building,
-      other: res.recommends,
-      relevant: res.relevant,
-      staff: res.common.staff.staff,
-      cityname: res.common.city_info.current.city,
-      phone: res.common.phone,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords,
-      host:host
-    };
+    try {
+      let host = context.store.state.host;
+      let other = context.store.state.cookie.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/question/detail/phone", {
+            params: {
+              other: other,
+              id: id,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        answer: res.data,
+        building: res.building,
+        other: res.recommends,
+        relevant: res.relevant,
+        staff: res.common.staff.staff,
+        cityname: res.common.city_info.current.city,
+        phone: res.common.phone,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -234,7 +239,7 @@ export default {
       id: "0",
       img: require("~/assets/noclick.png"),
       img1: require("~/assets/checked.png"),
-      txt: '家园'
+      txt: "家园",
     };
   },
   methods: {
@@ -277,13 +282,13 @@ export default {
       }
     },
   },
-  mounted(){
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+  mounted() {
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -324,7 +329,7 @@ export default {
         font-size: 0.9375rem;
         margin-bottom: 0.175rem;
         position: relative;
-        top:-0.1875rem;
+        top: -0.1875rem;
         span {
           float: right;
           display: block;
@@ -549,12 +554,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color:#FF5454;
+          color: #ff5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color:#FF5454;
+          color: #ff5454;
         }
       }
       .attr {

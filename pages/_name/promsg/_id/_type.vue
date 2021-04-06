@@ -24,7 +24,7 @@
     <div class="dynamic" v-if="navnum == 0">
       <ul>
         <template v-for="(item, key) in dynamics">
-          <li :key="'dynamic'+key" v-if="key == 0&&item.add_push=='否'">
+          <li :key="'dynamic' + key" v-if="key == 0 && item.add_push == '否'">
             <p class="time">{{ item.time }}</p>
             <div class="con">
               <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
@@ -42,7 +42,7 @@
           </li>
         </template>
         <template v-for="(item, key) in addpushs">
-          <li :key="key" v-if="key==0">
+          <li :key="key" v-if="key == 0">
             <p class="time">{{ item.time }}</p>
             <div class="con">
               <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
@@ -57,7 +57,7 @@
           </li>
         </template>
         <template v-for="(item, key) in dynamics">
-          <li :key="key" v-if="key > 0&&item.add_push=='否'">
+          <li :key="key" v-if="key > 0 && item.add_push == '否'">
             <p class="time">{{ item.time }}</p>
             <div class="con">
               <nuxt-link :to="'/' + jkl + '/dynamic/' + item.id">
@@ -81,17 +81,17 @@
         </li>
       </ul> -->
       <div class="con">
-        <template v-for="(item,key) in arts">
+        <template v-for="(item, key) in arts">
           <nuxt-link :to="'/' + jkl + '/info/' + item.id" :key="item.id">
             <div class="li">
               <div class="left">
                 <h5>
-                  <span v-if="key==0">新</span>
-                  {{item.title}}
+                  <span v-if="key == 0">新</span>
+                  {{ item.title }}
                 </h5>
                 <p>
-                  {{item.source}}
-                  <span>{{item.time}}</span>
+                  {{ item.source }}
+                  <span>{{ item.time }}</span>
                 </p>
               </div>
               <div class="right">
@@ -146,75 +146,80 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    "tan-view": tan
+    "tan-view": tan,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let other = context.query.other;
-    let jkl = context.params.name;
-    let token = context.store.state.cookie.token;
-    let [res, res1, res2] = await Promise.all([
-      context.$axios
-        .get("/jy/dynamic/info/phone", {
-          params: {
-            id: id,
-            page: 1,
-            limit: 10
-          }
-        })
-        .then(resp => {
-          let data = resp.data;
-          let arr = []
-          for(let item of data.data) {
-            if(item.add_push=='是'){
-              arr.push(item)
+    try {
+      let id = context.params.id;
+      let other = context.query.other;
+      let jkl = context.params.name;
+      let token = context.store.state.cookie.token;
+      let [res, res1, res2] = await Promise.all([
+        context.$axios
+          .get("/jy/dynamic/info/phone", {
+            params: {
+              id: id,
+              page: 1,
+              limit: 10,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            let arr = [];
+            for (let item of data.data) {
+              if (item.add_push == "是") {
+                arr.push(item);
+              }
             }
-          }
-          data.addpush = arr
-          // console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/dynamic/condition/phone", {
-          params: {
-            id: id,
-            token: token,
-            other: other
-          }
-        })
-        .then(resp => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/project/article", {
-          params: {
-            project: id,
-            limit: 20,
-            page: 1,
-            site: 1
-          }
-        })
-        .then(resp => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        })
-    ]);
-    return {
-      jkl: jkl,
-      dynamics: res.data,
-      addpushs: res.addpush,
-      push_times: res1.push_times,
-      phone: res1.common.phone,
-      info: res1.info,
-      id: id,
-      title: res1.common.header.title,
-      description: res1.common.header.description,
-      keywords: res1.common.header.keywords,
-      arts: res2.data,
-    };
+            data.addpush = arr;
+            // console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/dynamic/condition/phone", {
+            params: {
+              id: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/project/article", {
+            params: {
+              project: id,
+              limit: 20,
+              page: 1,
+              site: 1,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        dynamics: res.data,
+        addpushs: res.addpush,
+        push_times: res1.push_times,
+        phone: res1.common.phone,
+        info: res1.info,
+        id: id,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+        arts: res2.data,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -222,13 +227,13 @@ export default {
       meta: [
         {
           name: "description",
-          content: this.description || "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -246,7 +251,7 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      arts: []
+      arts: [],
     };
   },
   methods: {
@@ -262,8 +267,8 @@ export default {
           dynamics({
             id: that.id,
             page: that.page,
-            limit: 10
-          }).then(res => {
+            limit: 10,
+          }).then((res) => {
             that.dynamics = that.dynamics.concat(res.data.data);
             that.page = that.page + 1;
             that.isok = true;
@@ -273,7 +278,7 @@ export default {
     },
     big(arr) {
       ImagePreview({
-        images: [arr]
+        images: [arr],
       });
     },
     chang(data) {
@@ -285,26 +290,26 @@ export default {
     },
     cli(e) {
       this.tan = e;
-    }
+    },
   },
   mounted() {
-    console.log(this.$route.params.type,3333)
-    console.log(2222)
+    console.log(this.$route.params.type, 3333);
+    console.log(2222);
     window.addEventListener("scroll", this.getmore);
     document.getElementById("foott").style.display = "none";
-    sessionStorage.setItem('proid',this.id)
+    sessionStorage.setItem("proid", this.id);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.getmore);
     document.getElementById("foott").style.display = "block";
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
 .topnav {
   padding-top: 2.875rem;
   ul {
-    padding-top: .625rem;
+    padding-top: 0.625rem;
     padding-bottom: 0.8125rem;
     display: flex;
     justify-content: space-around;

@@ -51,44 +51,49 @@
 </template>
 <script>
 import { souname } from "@/api/api";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res,res1] = await Promise.all([
-      context.$axios
-        .get("/jy/us/search", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      hots: res.hot_search,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
+    try {
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/us/search", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        hots: res.hot_search,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err)
+      context.error({ statusCode: 404, message: '页面未找到或无数据' })
+    }
   },
   head() {
     return {
@@ -112,7 +117,7 @@ export default {
       name: "",
       ll: false,
       isok: true,
-      page:2
+      page: 2,
     };
   },
   methods: {
@@ -124,8 +129,8 @@ export default {
         this.ll = false;
       } else {
         this.ll = true;
-        let city = localStorage.getItem('cityname')
-        souname(name,1,city).then((res) => {
+        let city = localStorage.getItem("cityname");
+        souname(name, 1, city).then((res) => {
           for (let val of res.data.data) {
             var text = val.where.replace(/<[^<>]+>/g, "");
             if (text == val.name) {
@@ -153,9 +158,9 @@ export default {
         this.$router.push("/" + this.jkl + "/content/" + id);
       }
     },
-    ss(){
-      this.$router.push('/'+this.jkl+'/search')
-    }
+    ss() {
+      this.$router.push("/" + this.jkl + "/search");
+    },
   },
   mounted() {
     // let that = this;
@@ -185,7 +190,7 @@ export default {
     //     }
     //   }
     // });
-    document.getElementById('foott').style.display = 'none'
+    document.getElementById("foott").style.display = "none";
   },
   watch: {
     name(val) {
@@ -193,7 +198,7 @@ export default {
     },
   },
   beforeDestroy() {
-    document.getElementById('foott').style.display = 'block'
+    document.getElementById("foott").style.display = "block";
   },
 };
 </script>

@@ -156,35 +156,40 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let other = context.store.state.cookie.other;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/comment/phone", {
-          params: {
-            other: other,
-            id: id,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      answer: res.comment,
-      building: res.building,
-      other: res.recommends,
-      staff: res.common.staff,
-      cityname: res.common.city_info.current.city,
-      phone: res.common.phone,
-    };
+    try {
+      let other = context.store.state.cookie.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/comment/phone", {
+            params: {
+              other: other,
+              id: id,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        answer: res.comment,
+        building: res.building,
+        other: res.recommends,
+        staff: res.common.staff,
+        cityname: res.common.city_info.current.city,
+        phone: res.common.phone,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -192,14 +197,13 @@ export default {
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "家园新房",
         },
         {
           name: "Keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -243,7 +247,9 @@ export default {
       this.id = this.building.id;
     },
     talk(kid) {
-      this.$router.push("/" + this.jkl + "/commentback/" + this.building.id + "/" + kid);
+      this.$router.push(
+        "/" + this.jkl + "/commentback/" + this.building.id + "/" + kid
+      );
     },
     like(id) {
       let token = $cookies.get("token");
@@ -257,7 +263,7 @@ export default {
       } else {
         let url = this.$route.path;
         sessionStorage.setItem("path", url);
-        this.$router.push('/'+this.jkl+'/login')
+        this.$router.push("/" + this.jkl + "/login");
       }
     },
     del(id, key) {
@@ -521,12 +527,12 @@ export default {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color:#FF5454;
+          color: #ff5454;
           font-size: 0.9375rem;
         }
         i {
           font-style: normal;
-          color:#FF5454;
+          color: #ff5454;
         }
       }
       .attr {

@@ -2,7 +2,7 @@
   <div id="hu">
     <top-view :jkl="jkl"></top-view>
     <div class="topimg" @click="big(now.small)">
-      <img :src="now.small" :alt="now.title" :title="title+now.title"/>
+      <img :src="now.small" :alt="now.title" :title="title + now.title" />
       <p>共1张</p>
     </div>
     <div class="msg">
@@ -49,13 +49,17 @@
         </p>
       </nuxt-link>
       <div class="btn">
-        <button  @click="pop('咨询详细户型',97,'详情页+咨询详细户型')">咨询详细户型</button>
-        <button  @click="pop('咨询楼盘底价',105,'详情页+咨询楼盘底价')">咨询楼盘底价</button>
+        <button @click="pop('咨询详细户型', 97, '详情页+咨询详细户型')">
+          咨询详细户型
+        </button>
+        <button @click="pop('咨询楼盘底价', 105, '详情页+咨询楼盘底价')">
+          咨询楼盘底价
+        </button>
       </div>
     </div>
     <div class="line"></div>
     <div class="ana">
-      <h3>{{txt}}咨询师</h3>
+      <h3>{{ txt }}咨询师</h3>
       <p class="xun-icon">
         <span> <img src="~/assets/save.png" alt />专业服务 </span>
         <span> <img src="~/assets/icon-path.png" alt />区域解读 </span>
@@ -74,7 +78,9 @@
             >人咨询
           </p>
         </div>
-        <button @click="pop('一键咨询',104,'详情页+一键咨询')">一键咨询</button>
+        <button @click="pop('一键咨询', 104, '详情页+一键咨询')">
+          一键咨询
+        </button>
       </div>
       <h4>户型分析</h4>
       <p class="analy" v-html="now.analysis"></p>
@@ -83,7 +89,9 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span @click="huo=true"> <img src="~/assets/ques.png" alt /> 活动规则 </span>
+        <span @click="huo = true">
+          <img src="~/assets/ques.png" alt /> 活动规则
+        </span>
       </h3>
       <div class="hui-con">
         <div class="hui-left">
@@ -92,10 +100,12 @@
             <span>5000</span>元购房优惠
             <i>（{{ hui.dead_line }}截止）</i>
           </h6>
-          <p>售楼处专供{{txt}}平台客户</p>
+          <p>售楼处专供{{ txt }}平台客户</p>
         </div>
         <div class="hui-right">
-          <button @click="pop('领取优惠',94,'详情页+领取优惠')">领取优惠</button>
+          <button @click="pop('领取优惠', 94, '详情页+领取优惠')">
+            领取优惠
+          </button>
           <p>
             <span>{{ hui.receive_num }}人</span>已领取
           </p>
@@ -110,7 +120,9 @@
           <p>免费专车1对1服务限时劵</p>
         </div>
         <div class="hui-right">
-          <button @click="pop('免费专车看房',95,'详情页+免费专车看房')">免费领取</button>
+          <button @click="pop('免费专车看房', 95, '详情页+免费专车看房')">
+            免费领取
+          </button>
           <p>
             <span>{{ hui.receive_num }}人</span>已领取
           </p>
@@ -124,7 +136,11 @@
         <nuxt-link :key="key" :to="'/' + jkl + '/hu/' + item.id">
           <div class="li">
             <div class="left">
-              <img :src="item.small" :alt="title+item.title" :title="title+item.title"/>
+              <img
+                :src="item.small"
+                :alt="title + item.title"
+                :title="title + item.title"
+              />
             </div>
             <div class="right">
               <h4>
@@ -158,7 +174,7 @@
       <template v-for="(item, key) in recommends">
         <nuxt-link :key="key" :to="'/' + jkl + '/content/' + item.id">
           <div class="pro">
-            <img :src="item.img" :alt="item.name" :title="item.name"/>
+            <img :src="item.img" :alt="item.name" :title="item.name" />
             <div class="pro-msg">
               <h5>
                 {{ item.name }}
@@ -211,7 +227,9 @@
           <img @click="huo = false" src="~/assets/w-del.png" alt />
           <div>
             <p>
-              1、本次团购活动以分档累计补发的方案执行，通过{{txt}}网站成交该项目具体团购费用如下所示：
+              1、本次团购活动以分档累计补发的方案执行，通过{{
+                txt
+              }}网站成交该项目具体团购费用如下所示：
             </p>
             <p>0-5套---------每套1000元</p>
             <p>6-10套--------每套2000元</p>
@@ -222,14 +240,18 @@
               2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
             </p>
             <p>
-              3、核算方式：由开发商或代理公司判定为{{txt}}平台客户即可享受这个优惠
+              3、核算方式：由开发商或代理公司判定为{{
+                txt
+              }}平台客户即可享受这个优惠
             </p>
             <p>
-              4、结算方式：提供已实名的支付宝账户给与您对接的{{txt}}咨询师，规定时间内会将优惠费用打至该账户
+              4、结算方式：提供已实名的支付宝账户给与您对接的{{
+                txt
+              }}咨询师，规定时间内会将优惠费用打至该账户
             </p>
             <p>
-              详细活动方案请致电{{txt}}客服电话：
-              <span>400-718-6686</span> 注：活动最终解释权归{{txt}}所有
+              详细活动方案请致电{{ txt }}客服电话：
+              <span>400-718-6686</span> 注：活动最终解释权归{{ txt }}所有
             </p>
           </div>
         </div>
@@ -238,7 +260,7 @@
   </div>
 </template>
 <script>
-import { ImagePreview } from 'vant'
+import { ImagePreview } from "vant";
 import topView from "@/components/header.vue";
 import nav from "@/components/nav.vue";
 import tan from "@/components/tan.vue";
@@ -250,56 +272,62 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let host = context.store.state.host
-    let id = context.params.id;
-    let pro = context.params.pro;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/room/single", {
-          params: {
-            id: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      now: res.one,
-      other: res.other_rooms,
-      recommends: res.recommends,
-      hui: res.num,
-      id: pro,
-      staff: res.common.staff,
-      phone: res.common.phone,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords,
-      host:host
-    };
+    try {
+      let host = context.store.state.host;
+      let id = context.params.id;
+      let pro = context.params.pro;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/room/single", {
+            params: {
+              id: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        now: res.one,
+        other: res.other_rooms,
+        recommends: res.recommends,
+        hui: res.num,
+        id: pro,
+        staff: res.common.staff,
+        phone: res.common.phone,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+        host: host,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
-      title: this.title || "家园新房-"+this.now.name+'-户型详情-'+this.now.title,
+      title:
+        this.title ||
+        "家园新房-" + this.now.name + "-户型详情-" + this.now.title,
       meta: [
         {
           name: "description",
-          content:this.description ||
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -315,8 +343,8 @@ export default {
       typebtn: 1,
       name: "",
       remark: "",
-      huo:false,
-      txt:''
+      huo: false,
+      txt: "",
     };
   },
   methods: {
@@ -325,32 +353,32 @@ export default {
       this.name = data.name;
       this.typebtn = 1;
       this.tan = true;
-      this.remark = "户型页+预约看房+"+this.now.title;
-      this.id = String(this.now.bid)
+      this.remark = "户型页+预约看房+" + this.now.title;
+      this.id = String(this.now.bid);
     },
     cli(e) {
       this.tan = e;
     },
-    pop(name,position,txt){
-      this.name = name
-      this.typebtn = 1
-      this.typenum = position
-      this.tan = true
-      this.remark=txt+'+'+this.now.title
-      this.id = String(this.now.bid)
+    pop(name, position, txt) {
+      this.name = name;
+      this.typebtn = 1;
+      this.typenum = position;
+      this.tan = true;
+      this.remark = txt + "+" + this.now.title;
+      this.id = String(this.now.bid);
     },
-    big(url){
-      let arr = [url]
+    big(url) {
+      let arr = [url];
       ImagePreview(arr);
-    }
+    },
   },
   mounted() {
-    if(this.host == 0) {
-      this.txt = '家园'
-    }else {
-      this.txt = '易得房'
+    if (this.host == 0) {
+      this.txt = "家园";
+    } else {
+      this.txt = "易得房";
     }
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -760,7 +788,7 @@ header {
       }
     }
   }
-  a:last-child .li{
+  a:last-child .li {
     border: 0;
     margin-bottom: 0;
   }
@@ -807,13 +835,13 @@ header {
         font-size: 0.75rem;
         margin-bottom: 0.1875rem;
         span {
-          color: #FF5454;
+          color: #ff5454;
           font-size: 0.9375rem;
           font-weight: bold;
         }
         i {
           font-style: normal;
-          color: #FF5454;
+          color: #ff5454;
         }
       }
       .attr {

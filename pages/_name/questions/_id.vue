@@ -88,49 +88,54 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let other = context.query.other;
-    let jkl = context.params.name;
-    let id = context.params.id;
-    let city = context.store.state.city;
-    let dd;
-    let token = context.store.state.cookie.token;
-    if (id) {
-      dd = {
-        other: other,
-        project: id,
-        page: 1,
-        limit: 10,
-        token: token,
+    try {
+      let other = context.query.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let city = context.store.state.city;
+      let dd;
+      let token = context.store.state.cookie.token;
+      if (id) {
+        dd = {
+          other: other,
+          project: id,
+          page: 1,
+          limit: 10,
+          token: token,
+        };
+      } else {
+        dd = {
+          other: other,
+          city: city,
+          page: 1,
+          limit: 10,
+          token: token,
+        };
+      }
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/question/list/phone", {
+            params: dd,
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data);
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        phone: res.common.phone,
+        lists: res.data,
+        id: id,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
       };
-    } else {
-      dd = {
-        other: other,
-        city: city,
-        page: 1,
-        limit: 10,
-        token: token,
-      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
     }
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/question/list/phone", {
-          params: dd,
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      phone: res.common.phone,
-      lists: res.data,
-      id: id,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
-    };
   },
   head() {
     return {

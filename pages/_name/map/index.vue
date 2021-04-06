@@ -1,7 +1,7 @@
 <template>
   <div class="Map">
     <div class="top">
-      <img class="back" src="~/assets/return.png" alt @click="back"/>
+      <img class="back" src="~/assets/return.png" alt @click="back" />
       <input
         class="inpu"
         type="button"
@@ -211,11 +211,15 @@
         <my-overlay
           :key="index"
           :position="item"
-          :text="zoom<14?` <h4 id='m_name'> ${item.country || item.street}</h4>
+          :text="
+            zoom < 14
+              ? ` <h4 id='m_name'> ${item.country || item.street}</h4>
                  <p id='m_num'>${item.Num}个</p>
-                 `:` <h4 id='b_name'> ${item.building_name}</h4>
+                 `
+              : ` <h4 id='b_name'> ${item.building_name}</h4>
                  <p id='b_price'>约${parseInt(item.price)}元/m²</p>
-                 `"
+                 `
+          "
           :active="zoom"
           @mouseover.native="active = true"
           @mouseleave.native="active = false"
@@ -282,32 +286,37 @@ export default {
   name: "Map",
   components: {
     MyOverlay,
-    MyOverlays
+    MyOverlays,
   },
   async asyncData(context) {
-    let jkl = context.params.name;
-    let city = context.store.state.city;
-    let token = context.store.state.cookie.token;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
-    };
+    try {
+      let jkl = context.params.name;
+      let city = context.store.state.city;
+      let token = context.store.state.cookie.token;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -374,7 +383,7 @@ export default {
   created() {
     if (process.client) {
       let name = this.$route.query.cityname || localStorage.getItem("cityname");
-      localStorage.setItem('cityname',name)
+      localStorage.setItem("cityname", name);
       if (name) {
         this.cityname = name;
       } else {
@@ -388,7 +397,7 @@ export default {
   },
   methods: {
     back() {
-        this.$router.go(-1)
+      this.$router.go(-1);
     },
     handler({ BMap, map }) {
       this.Bmap = BMap;

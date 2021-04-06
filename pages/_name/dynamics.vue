@@ -59,7 +59,11 @@
           <h6>{{ item.title }}</h6>
           <p class="txt">{{ item.content }}</p>
           <p class="time">{{ item.time }}</p>
-          <button @click="pop('订阅实时动态', 98, '动态页+订阅实时动态',item.bid)">订阅此楼盘动态</button>
+          <button
+            @click="pop('订阅实时动态', 98, '动态页+订阅实时动态', item.bid)"
+          >
+            订阅此楼盘动态
+          </button>
         </div>
       </div>
     </div>
@@ -90,47 +94,52 @@ export default {
     "tan-view": tan,
   },
   async asyncData(context) {
-    let city = context.store.state.city;
-    let jkl = context.params.name;
-    let token = context.store.state.cookie.token;
-    let other = context.store.state.cookie.other;
-    let [res, res1] = await Promise.all([
-      context.$axios
-        .get("/jy/dynamic/info/phone", {
-          params: {
-            city: city,
-            page: 1,
-            limit: 10,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          //   console.log(data)
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      lists: res.data,
-      ting: true,
-      phone: res1.common.phone,
-      title:res.common.header.title,
-      description:res.common.header.description,
-      keywords:res.common.header.keywords
-    };
+    try {
+      let city = context.store.state.city;
+      let jkl = context.params.name;
+      let token = context.store.state.cookie.token;
+      let other = context.store.state.cookie.other;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/dynamic/info/phone", {
+            params: {
+              city: city,
+              page: 1,
+              limit: 10,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            //   console.log(data)
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        lists: res.data,
+        ting: true,
+        phone: res1.common.phone,
+        title: res.common.header.title,
+        description: res.common.header.description,
+        keywords: res.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
@@ -175,7 +184,7 @@ export default {
         // console.log(res);
         that.lists = that.lists.concat(res.data.data);
         that.ting = true;
-        that.page++
+        that.page++;
       });
     },
     cli(e) {
@@ -198,13 +207,13 @@ export default {
     search() {
       this.$router.push("/" + this.jkl + "/search");
     },
-    pop(name, position, txt,id) {
+    pop(name, position, txt, id) {
       this.name = name;
       this.typebtn = 1;
       this.typenum = position;
       this.tan = true;
       this.remark = txt;
-      this.id = id
+      this.id = id;
     },
   },
   mounted() {

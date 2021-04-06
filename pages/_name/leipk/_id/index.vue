@@ -6,17 +6,18 @@
         <div class="center fir">
           <img class="topimg" :src="list[0].img" alt />
           <div class="msg">
-            <h6>{{list[0].name}}</h6>
+            <h6>{{ list[0].name }}</h6>
             <p class="type">
-              <span class="zhuang">{{list[0].state}}</span>
-              <span>{{list[0].type}}</span>
+              <span class="zhuang">{{ list[0].state }}</span>
+              <span>{{ list[0].type }}</span>
             </p>
             <p class="pri">
               约
-              <span>{{list[0].price}}</span>元/m²
+              <span>{{ list[0].price }}</span
+              >元/m²
             </p>
-            <a :href="'tel:'+phone">
-            <button><img src="~/assets/navtel.png" />电话咨询</button>
+            <a :href="'tel:' + phone">
+              <button><img src="~/assets/navtel.png" />电话咨询</button>
             </a>
           </div>
         </div>
@@ -24,17 +25,18 @@
         <div class="center">
           <img class="topimg" :src="list[1].img" alt />
           <div class="msg">
-            <h6>{{list[1].name}}</h6>
+            <h6>{{ list[1].name }}</h6>
             <p class="type">
-              <span class="zhuang">{{list[1].state}}</span>
-              <span>{{list[1].type}}</span>
+              <span class="zhuang">{{ list[1].state }}</span>
+              <span>{{ list[1].type }}</span>
             </p>
             <p class="pri">
               约
-              <span>{{list[1].price}}</span>元/m²
+              <span>{{ list[1].price }}</span
+              >元/m²
             </p>
-            <a :href="'tel:'+phone">
-            <button><img src="~/assets/navtel.png" />电话咨询</button>
+            <a :href="'tel:' + phone">
+              <button><img src="~/assets/navtel.png" />电话咨询</button>
             </a>
           </div>
         </div>
@@ -44,106 +46,110 @@
         <div class="line">
           <div class="left">
             <p class="l"></p>
-            <p class="name">{{list[0].name}}</p>
+            <p class="name">{{ list[0].name }}</p>
           </div>
           <div class="left">
             <p class="l n"></p>
-            <p class="name">{{list[1].name}}</p>
+            <p class="name">{{ list[1].name }}</p>
           </div>
         </div>
         <table>
           <tr>
             <td>
               <p class="name">休闲</p>
-              <p class="val">{{list[0].scores.score.leisure}}</p>
+              <p class="val">{{ list[0].scores.score.leisure }}</p>
             </td>
             <td>
               <p class="name">休闲</p>
-              <p class="val">{{list[1].scores.score.leisure}}</p>
+              <p class="val">{{ list[1].scores.score.leisure }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">品质</p>
-              <p class="val">{{list[0].scores.score.quality}}</p>
+              <p class="val">{{ list[0].scores.score.quality }}</p>
             </td>
             <td>
               <p class="name">品质</p>
-              <p class="val">{{list[1].scores.score.quality}}</p>
+              <p class="val">{{ list[1].scores.score.quality }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">教育</p>
-              <p class="val">{{list[0].scores.score.education}}</p>
+              <p class="val">{{ list[0].scores.score.education }}</p>
             </td>
             <td>
               <p class="name">教育</p>
-              <p class="val">{{list[1].scores.score.education}}</p>
+              <p class="val">{{ list[1].scores.score.education }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">医疗</p>
-              <p class="val">{{list[0].scores.score.medical}}</p>
+              <p class="val">{{ list[0].scores.score.medical }}</p>
             </td>
             <td>
               <p class="name">医疗</p>
-              <p class="val">{{list[1].scores.score.medical}}</p>
+              <p class="val">{{ list[1].scores.score.medical }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">交通</p>
-              <p class="val">{{list[0].scores.score.traffic}}</p>
+              <p class="val">{{ list[0].scores.score.traffic }}</p>
             </td>
             <td>
               <p class="name">交通</p>
-              <p class="val">{{list[1].scores.score.traffic}}</p>
+              <p class="val">{{ list[1].scores.score.traffic }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">商业</p>
-              <p class="val">{{list[0].scores.score.commercial}}</p>
+              <p class="val">{{ list[0].scores.score.commercial }}</p>
             </td>
             <td>
               <p class="name">商业</p>
-              <p class="val">{{list[1].scores.score.commercial}}</p>
+              <p class="val">{{ list[1].scores.score.commercial }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">层高</p>
-              <p class="val">{{list[0].scores.score.height}}</p>
+              <p class="val">{{ list[0].scores.score.height }}</p>
             </td>
             <td>
               <p class="name">层高</p>
-              <p class="val">{{list[1].scores.score.height}}</p>
+              <p class="val">{{ list[1].scores.score.height }}</p>
             </td>
           </tr>
           <tr>
             <td>
               <p class="name">户型</p>
-              <p class="val">{{list[0].scores.score.house_types}}</p>
+              <p class="val">{{ list[0].scores.score.house_types }}</p>
             </td>
             <td>
               <p class="name">户型</p>
-              <p class="val">{{list[1].scores.score.house_types}}</p>
+              <p class="val">{{ list[1].scores.score.house_types }}</p>
             </td>
           </tr>
         </table>
         <div class="rate">
           <div class="cel">
             <p class="name">综合评分：</p>
-            <p class="pri">{{list[0].scores.avg}}</p>
+            <p class="pri">{{ list[0].scores.avg }}</p>
           </div>
           <div class="cel">
             <p class="name">综合评分：</p>
-            <p class="pri">{{list[1].scores.avg}}</p>
+            <p class="pri">{{ list[1].scores.avg }}</p>
           </div>
         </div>
-        <button @click="pop('获取详细分析报告', 96, '雷达PK页+获取详细分析报告')">获取详细分析报告</button>
+        <button
+          @click="pop('获取详细分析报告', 96, '雷达PK页+获取详细分析报告')"
+        >
+          获取详细分析报告
+        </button>
       </div>
       <div class="other">
         <h3>猜你喜欢</h3>
@@ -153,17 +159,27 @@
               <img :src="item.img" alt />
               <div class="pro-msg">
                 <h5>
-                  {{item.name}}
-                  <span>{{item.state}}</span>
+                  {{ item.name }}
+                  <span>{{ item.state }}</span>
                 </h5>
                 <p class="pro-price">
-                  <span>{{item.price}}</span>
+                  <span>{{ item.price }}</span>
                   <i>元/m²</i>起
                 </p>
-                <p class="attr">{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+                <p class="attr">
+                  {{ item.type }} | {{ item.city }}-{{
+                    item.country.substr(0, 2)
+                  }}
+                  | {{ item.area }}m²
+                </p>
                 <p class="pro-icon">
-                  <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                  <span class="pro-icon-type" v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                  <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                  <span
+                    class="pro-icon-type"
+                    v-for="(val, k) in item.feature"
+                    :key="k"
+                    >{{ val }}</span
+                  >
                 </p>
               </div>
             </div>
@@ -196,64 +212,70 @@ export default {
   components: {
     "top-view": topView,
     "nav-view": nav,
-    'tan-view':tan
+    "tan-view": tan,
   },
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let jkl = context.params.name;
-    let other = context.store.state.cookie.other;
-    let city = context.store.state.city;
-    let [res,res1] = await Promise.all([
-      context.$axios
-        .get("/jy/score/compare", {
-          params: {
-            ids: id,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      list: res.data,
-      other: res.recommends,
-      phone: res.common.phone,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let jkl = context.params.name;
+      let other = context.store.state.cookie.other;
+      let city = context.store.state.city;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/score/compare", {
+            params: {
+              ids: id,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        list: res.data,
+        other: res.recommends,
+        phone: res.common.phone,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   head() {
     return {
-      title: this.title || "家园新房-雷达图PK-"+this.list[0].name+'PK'+this.list[1].name,
+      title:
+        this.title ||
+        "家园新房-雷达图PK-" + this.list[0].name + "PK" + this.list[1].name,
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   data() {
@@ -266,7 +288,7 @@ export default {
       typenum: 0,
       typebtn: 1,
       name: "",
-      id:'0',
+      id: "0",
       remark: "",
     };
   },
@@ -447,7 +469,7 @@ export default {
     background-color: #fff;
     z-index: 1;
     padding-top: 1.25rem;
-    top:2.77125rem;
+    top: 2.77125rem;
     .center {
       width: 7.5rem;
       height: 10.8rem;
@@ -661,12 +683,12 @@ export default {
           font-size: 0.75rem;
           margin-bottom: 0.1875rem;
           span {
-            color: #FF5454;
+            color: #ff5454;
             font-size: 0.9375rem;
           }
           i {
             font-style: normal;
-            color: #FF5454;
+            color: #ff5454;
           }
         }
         .attr {

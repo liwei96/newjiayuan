@@ -3,26 +3,42 @@
     <top-view :jkl="jkl"></top-view>
     <div class="pks">
       <van-checkbox-group v-model="result" :max="4">
-        <template v-for="(item,key) in list">
-          <van-checkbox :name="item.id" checked-color="#1FC365" class="new" :key="key">
+        <template v-for="(item, key) in list">
+          <van-checkbox
+            :name="item.id"
+            checked-color="#1FC365"
+            class="new"
+            :key="key"
+          >
             <div class="pro">
               <div class="left">
                 <img :src="item.img" alt />
               </div>
               <div class="right">
-                <h6>{{item.name}}</h6>
+                <h6>{{ item.name }}</h6>
                 <p class="pri">
-                  <span>{{item.price}}</span>元/m²
+                  <span>{{ item.price }}</span
+                  >元/m²
                 </p>
-                <p
-                  class="msg"
-                >{{item.type}} | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+                <p class="msg">
+                  {{ item.type }} | {{ item.city }}-{{
+                    item.country.substr(0, 2)
+                  }}
+                  | {{ item.area }}m²
+                </p>
                 <p class="type">
-                  <span class="zhuang">{{item.decorate}}</span>
-                  <span v-for="(val,k) in item.feature" :key="k">{{val}}</span>
+                  <span class="zhuang">{{ item.decorate }}</span>
+                  <span v-for="(val, k) in item.feature" :key="k">{{
+                    val
+                  }}</span>
                 </p>
               </div>
-              <img class="newimg" v-if="key==0&too" src="~/assets/new-view.png" alt="">
+              <img
+                class="newimg"
+                v-if="(key == 0) & too"
+                src="~/assets/new-view.png"
+                alt=""
+              />
             </div>
           </van-checkbox>
         </template>
@@ -56,48 +72,53 @@
 </template>
 <script>
 import top from "@/components/header";
-import '@/static/css/foot.css'
+import "@/static/css/foot.css";
 export default {
   async asyncData(context) {
-    let id = context.params.id;
-    let token = context.store.state.cookie.token;
-    let city = context.store.state.city;
-    let jkl = context.params.name;
-    let other = context.query.other;
-    let [res,res1] = await Promise.all([
-      context.$axios
-        .get("/jy/compare/some", {
-          params: {
-            city: city,
-            token: token,
-            other: other,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          // console.log(data)
-          return data;
-        }),
-      context.$axios
-        .get("/jy/phone/head/foot", {
-          params: {
-            city: city,
-            token: token,
-          },
-        })
-        .then((resp) => {
-          let data = resp.data;
-          return data;
-        }),
-    ]);
-    return {
-      jkl: jkl,
-      id: id,
-      list: res.data,
-      title:res1.common.header.title,
-      description:res1.common.header.description,
-      keywords:res1.common.header.keywords
-    };
+    try {
+      let id = context.params.id;
+      let token = context.store.state.cookie.token;
+      let city = context.store.state.city;
+      let jkl = context.params.name;
+      let other = context.query.other;
+      let [res, res1] = await Promise.all([
+        context.$axios
+          .get("/jy/compare/some", {
+            params: {
+              city: city,
+              token: token,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            // console.log(data)
+            return data;
+          }),
+        context.$axios
+          .get("/jy/phone/head/foot", {
+            params: {
+              city: city,
+              token: token,
+            },
+          })
+          .then((resp) => {
+            let data = resp.data;
+            return data;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        id: id,
+        list: res.data,
+        title: res1.common.header.title,
+        description: res1.common.header.description,
+        keywords: res1.common.header.keywords,
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
   },
   data() {
     return {
@@ -105,7 +126,7 @@ export default {
       result: [],
       isadd: false,
       list: [],
-      too:true
+      too: true,
     };
   },
   head() {
@@ -114,14 +135,13 @@ export default {
       meta: [
         {
           name: "description",
-          content: this.description || 
-            "家园新房"
+          content: this.description || "家园新房",
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房"
-        }
-      ]
+          content: this.keywords || "家园新房",
+        },
+      ],
     };
   },
   components: {
@@ -139,7 +159,7 @@ export default {
             kk.unshift(val);
           }
         }
-        kk = kk.slice(0,4)
+        kk = kk.slice(0, 4);
         ids = kk.join(",");
         $cookies.set("ids", ids);
       } else {
@@ -160,13 +180,13 @@ export default {
       }
     },
   },
-  mounted(){
-    if($cookies.get('token')){
-      this.too = true
-    }else{
-      this.too = false
+  mounted() {
+    if ($cookies.get("token")) {
+      this.too = true;
+    } else {
+      this.too = false;
     }
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -251,7 +271,7 @@ export default {
       transform: rotate(-45deg);
       // height: 2.25rem;
       top: 1.5rem;
-      right: -0.5625rem
+      right: -0.5625rem;
     }
   }
   h3 {
