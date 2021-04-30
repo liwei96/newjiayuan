@@ -30,7 +30,7 @@
         <nuxt-link :to="'/'+jkl+'/info/'+item.id" :key="key">
           <div class="pro">
             <div class="left">
-              <h5 v-html="item.replace.title.indexOf('em')!=-1?item.replace.title:item.replace.description"></h5>
+              <h5 v-html="item.replace.title.indexOf('span')!=-1?item.replace.title:item.replace.description"></h5>
               <p>
                 {{item.source}} &nbsp; {{item.time.substr(0,10)}}
               </p>

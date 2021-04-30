@@ -277,12 +277,8 @@ export default {
         this.$emit("close", false);
       });
     },
-  },
-  mounted() {
-    let type = this.name;
-    if ($cookies.get("phone")) {
-      this.baoming = $cookies.get("phone");
-    }
+    settxt(type) {
+      
     if (type == "变价通知我") {
       this.str =
         "价格变动这么快？订阅楼盘变价通知，楼盘变价我们将第一时间通知您";
@@ -323,6 +319,16 @@ export default {
       this.str = "向家园咨询师免费领取楼盘资料,内附有购房流程全盘解读";
     } else if (type == "免费专车看房") {
       this.str = "免费专车看房，楼下接您随时出发，可带家人一起看楼盘";
+    } else if (type == "家园专享购房送手机") {
+      this.str = "本平台成交项目即送苹果12 pro max一台，平台合计1000台手机送完为止";
+    }
+    }
+  },
+  mounted() {
+    let type = this.name;
+    this.settxt(type)
+    if ($cookies.get("phone")) {
+      this.baoming = $cookies.get("phone");
     }
   },
   watch: {
@@ -332,6 +338,10 @@ export default {
         this.type = false;
       }
     },
+    name(val) {
+      console.log(val)
+      this.settxt(val)
+    }
   },
 };
 </script>

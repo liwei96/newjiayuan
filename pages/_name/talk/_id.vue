@@ -431,7 +431,7 @@ export default {
         return;
       }
       let ip = ip_arr["ip"];
-      let city = $cookies.get("city");
+      let city = $cookies.get("city") || sessionStorage.getItem('semcity');
       let other = $cookies.get("other");
       let kid = $cookies.get("kid");
       let txt = "聊天界面进客";

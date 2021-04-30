@@ -89,6 +89,8 @@ export default {
     url = window.location.href;
     if (url.indexOf("content") !== -1) {
       pro = this.$route.params.id;
+    }else if(this.$route.params.pro){
+      pro = this.$route.params.pro;
     } else {
       pro = this.$route.params.id;
     }

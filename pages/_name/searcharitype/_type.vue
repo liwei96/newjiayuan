@@ -61,7 +61,7 @@
               <div class="left">
                 <h5
                   v-html="
-                    item.replace.title.indexOf('em') != -1
+                    item.replace.title.indexOf('span') != -1
                       ? item.replace.title
                       : item.replace.description
                   "
@@ -202,11 +202,11 @@ export default {
   },
   mounted() {
     document.getElementById("foott").style.display = "none";
-    // window.addEventListener("scroll", this.getmore);
+    window.addEventListener("scroll", this.getmore);
   },
   beforeDestroy() {
     document.getElementById("foott").style.display = "block";
-    // window.removeEventListener("scroll", this.getmore);
+    window.removeEventListener("scroll", this.getmore);
   },
   watch: {
     name(val) {

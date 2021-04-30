@@ -151,6 +151,8 @@ export default {
       this.str = "特价房火爆热销中，抢到就是赚到";
     } else if (type == "咨询底价") {
       this.str = "咨询楼盘最低价，买房不花冤枉钱";
+    } else if (type == "家园专享购房送手机") {
+      this.str = "本平台成交项目即送苹果12 pro max一台，平台合计1000台手机送完为止";
     }
     },
     checkroom() {

@@ -163,7 +163,10 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span @click="huo = true">
+        <span @click="huo = true" v-if="participate==0">
+          <img src="~/assets/ques.png" alt /> 活动规则
+        </span>
+        <span @click="huo1 = true" v-if="participate!=0">
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
       </h3>
@@ -189,7 +192,12 @@
           </p>
         </div>
       </div>
-      <div class="hui-con" v-if="activity.length == 0">
+      <div class="phone-huo" v-if="participate!=0">
+        <img src="~/assets/phone-huo.jpg" alt="">
+        <p>{{participate}}人已领</p>
+        <button @click="pop('家园专享购房送手机', 121, '详情页+家园专享购房送手机')">立即抢</button>
+      </div>
+      <div class="hui-con" v-if="activity.length == 0 && participate==0">
         <div class="hui-left">
           <h6>
             最高
@@ -314,7 +322,7 @@
             v-for="(item, key) in house_types"
             :key="key"
           >
-            <nuxt-link :to="'/' + jkl + '/hu/' + item.id">
+            <nuxt-link :to="'/' + jkl + '/hu/'+abstract.id+'/' + item.id">
               <div class="hu-top">
                 <img
                   :src="item.small"
@@ -822,6 +830,20 @@
         </div>
       </div>
     </van-popup>
+    <van-popup v-model="huo1" :style="{ background: 'rgba(0,0,0,0)' }">
+      <div class="huo-msg">
+        <div class="msg-con">
+          <h4>活动规则</h4>
+          <img @click="huo1 = false" src="~/assets/w-del.png" alt />
+          <div>
+            <p>
+              即日起，凡是通过本线上营销中心成交的本项目，即送苹果12 pro max一台，平台合计1000台手机送完为止。具体活动详情来电咨询
+            </p>
+            <p>注：活动最终解释权归{{ txt }}所有</p>
+          </div>
+        </div>
+      </div>
+    </van-popup>
     <van-popup v-model="show" :style="{ background: 'rgba(0,0,0,0)' }">
       <hong
         @close="close"
@@ -886,6 +908,7 @@ export default {
         traffics: res.imgs ? res.imgs.img.traffics : [],
         imgnum: res.imgs ? res.imgs.num : [],
         abstract: res.abstract,
+        participate: res.participate,
         phone: res.common.phone,
         scores: res.scores,
         house_types: res.house_types,
@@ -934,6 +957,7 @@ export default {
   },
   data() {
     return {
+      huo1: false,
       show: false,
       talktype: false,
       time: "7月24日",
@@ -2130,7 +2154,7 @@ export default {
   border-bottom: 0.03125rem solid #f5f5f5;
   background-color: #fff;
   z-index: 900;
-  width: 100%;
+  width: 100vw;
   .swiper-nav {
     overflow: hidden;
     .swiper-slide {
@@ -2138,6 +2162,10 @@ export default {
       font-size: 1rem;
       height: 3.25rem;
       line-height: 3.25rem;
+      min-width: 2.125rem!important;
+      p {
+        width: 2.125rem;
+      }
       .active {
         position: relative;
         height: 100%;
@@ -2284,6 +2312,35 @@ export default {
         color: #29c56d;
         font-size: 0.75rem;
       }
+    }
+  }
+  .phone-huo {
+    position: relative;
+    margin-top: .875rem;
+    img {
+      width: 100%;
+    }
+    p {
+      position: absolute;
+      font-size: .75rem;
+      color: #fff;
+      right: 1.25rem;
+      bottom: .625rem;
+    }
+    button {
+      width: 4rem;
+      height: 1.5rem;
+      border-radius: .75rem;
+      background-color: #fff;
+      text-align: center;
+      line-height: 1.5rem;
+      border: 0;
+      outline: none;
+      position: absolute;
+      right: .9375rem;
+      top: 1.875rem;
+      color: #153870;
+      font-size: .75rem;
     }
   }
 }

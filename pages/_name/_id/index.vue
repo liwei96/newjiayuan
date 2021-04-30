@@ -873,19 +873,19 @@ export default {
         {
           name: "description",
           content:
-            this.basic.name + "-" + this.basic.city + "-" + this.basic.country
+            this.basic.name + "-" + this.basic.city + "-" + this.basic.country,
         },
         {
           name: "Keywords",
           content:
-            this.basic.name + "-" + this.basic.city + "-" + this.basic.country
-        }
-      ]
+            this.basic.name + "-" + this.basic.city + "-" + this.basic.country,
+        },
+      ],
     };
   },
   data() {
     return {
-      interval: '',
+      interval: "",
       totalnum: 0,
       other: "",
       navtype: false,
@@ -1009,7 +1009,7 @@ export default {
         "[钟]",
         "[话筒]",
         "[蜡烛]",
-        "[蛋糕]"
+        "[蛋糕]",
       ],
       min: 0,
       min: 0,
@@ -1036,7 +1036,7 @@ export default {
       stafftel: "",
       staffname: "",
       staffimg: "",
-      talktype: false
+      talktype: false,
     };
   },
   methods: {
@@ -1067,14 +1067,14 @@ export default {
       var options = {
         //定义一个标题
         legend: {
-          data: ["AI"]
+          data: ["AI"],
         },
         color: ["rgba(77,181,255,1)"],
         grid: {
           top: "10%",
           left: "6%",
           right: 0,
-          bottom: "10%"
+          bottom: "10%",
         },
         //X轴设置
         xAxis: [
@@ -1083,10 +1083,10 @@ export default {
             data: that.times,
             axisLine: {
               lineStyle: {
-                color: "#919499"
-              }
-            }
-          }
+                color: "#919499",
+              },
+            },
+          },
         ],
         yAxis: [
           {
@@ -1095,16 +1095,16 @@ export default {
             splitLine: {
               lineStyle: {
                 type: "dashed",
-                color: "#E4E4EB"
-              }
+                color: "#E4E4EB",
+              },
             },
             axisLine: {
               lineStyle: {
-                color: "#919499"
+                color: "#919499",
               },
-              show: false
-            }
-          }
+              show: false,
+            },
+          },
         ],
         series: [
           {
@@ -1113,18 +1113,18 @@ export default {
             // symbol: "circle",
             lineStyle: {
               color: "#E4BA4B",
-              width: 1
+              width: 1,
             },
             // areaStyle: {},
             type: "bar",
             itemStyle: {
               // 转折点 控制
-              color: "#2AC66D"
+              color: "#2AC66D",
             },
             barWidth: 20, // 柱形的宽度
-            barCategoryGap: "10%" // 柱形的间距
-          }
-        ]
+            barCategoryGap: "10%", // 柱形的间距
+          },
+        ],
       };
       myChart.setOption(options);
     },
@@ -1138,28 +1138,28 @@ export default {
             0, // 上
             10, // 右
             5, // 下
-            0 // 左
-          ]
+            0, // 左
+          ],
         },
         grid: {
           left: "0%",
           right: "0%",
           top: "33%",
-          bottom: "20%"
+          bottom: "20%",
         },
         radar: {
           name: {
             textStyle: {
               color: "#646566",
               borderRadius: 3,
-              padding: [3, 5]
-            }
+              padding: [3, 5],
+            },
           },
           splitLine: {
             //配置雷达图的每一圈的网格线颜色
             lineStyle: {
-              color: "#E6E6E6"
-            }
+              color: "#E6E6E6",
+            },
           },
           nameGap: 3,
           indicator: [
@@ -1170,14 +1170,14 @@ export default {
             { name: "交通", max: 10 },
             { name: "商业", max: 10 },
             { name: "层高", max: 10 },
-            { name: "户型", max: 10 }
+            { name: "户型", max: 10 },
           ],
           radius: 50,
           splitArea: {
             areaStyle: {
-              color: "#fff" //圆环颜色
-            }
-          }
+              color: "#fff", //圆环颜色
+            },
+          },
         },
         series: [
           {
@@ -1188,17 +1188,17 @@ export default {
             itemStyle: {
               //此属性的颜色和下面areaStyle属性的颜色都设置成相同色即可实现
               color: "#29CC72",
-              borderColor: "#29CC72"
+              borderColor: "#29CC72",
             },
             areaStyle: {
-              color: "#29CC72"
+              color: "#29CC72",
             },
             lineStyle: {
               // 单项线条样式。
               normal: {
                 opacity: 0.5, // 图形透明度
-                width: 0.6
-              }
+                width: 0.6,
+              },
             },
             data: [
               {
@@ -1211,17 +1211,17 @@ export default {
                   that.scores.traffic,
                   that.scores.business,
                   that.scores.height,
-                  that.scores.house_types
+                  that.scores.house_types,
                 ],
                 areaStyle: {
                   normal: {
-                    color: "rgba(41,204,114,0.1)" // 选择区域颜色
-                  }
-                }
-              }
-            ]
-          }
-        ]
+                    color: "rgba(41,204,114,0.1)", // 选择区域颜色
+                  },
+                },
+              },
+            ],
+          },
+        ],
       };
       var myChart = this.$echarts.init(document.getElementById("leiecharts"));
       myChart.setOption(option);
@@ -1233,7 +1233,7 @@ export default {
       let img = require("~/assets/mappro.png");
       let pro = that.basic.name;
       let add = that.basic.address;
-      AMap.convertFrom(baidu, "baidu", function(status, result) {
+      AMap.convertFrom(baidu, "baidu", function (status, result) {
         if (result.info === "ok") {
           var lnglats = result.locations; // Array.<LngLat>
           that.pois = [lnglats[0].lng, lnglats[0].lat];
@@ -1241,7 +1241,7 @@ export default {
             zoom: 14, //初始化地图层级
             center: that.pois, //初始化地图中心点
             zoomEnable: true,
-            dragEnable: true
+            dragEnable: true,
           });
           let content = `<div
           style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:18px;padding-left: 17px;position: relative;background: #fff;z-index:10">
@@ -1256,18 +1256,18 @@ export default {
           let marker = new AMap.Marker({
             content: content,
             position: that.pois,
-            offset: new AMap.Pixel(-78, -44)
+            offset: new AMap.Pixel(-78, -44),
           });
           let con =
             '<div style="width: 24px;height: 24px;border-radius: 50%;background:rgba(71,161,255,0.3);position: relative;"><div style="width: 6px;height: 6px;border-radius: 50%;background:rgba(71,161,255,1);position: absolute;top:50%;left:50%;margin-top: -3px;margin-left: -3px;"></div></div>';
           let mark = new AMap.Marker({
             content: con,
             position: that.pois,
-            offset: new AMap.Pixel(-12, -12)
+            offset: new AMap.Pixel(-12, -12),
           });
           mark.setMap(map);
           marker.setMap(map);
-          AMap.service(["AMap.PlaceSearch"], function() {
+          AMap.service(["AMap.PlaceSearch"], function () {
             // eslint-disable-line no-unused-vars
             //构造地点查询类
             var placeSearch = new AMap.PlaceSearch({
@@ -1277,11 +1277,11 @@ export default {
               citylimit: false, //是否强制限制在设置的城市内搜索
               map: map, // 展现结果的地图实例
               panel: "panel", // 结果列表将在此容器中进行展示。
-              autoFitView: false // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
+              autoFitView: false, // 是否自动调整地图视野使绘制的 Marker点都处于视口的可见范围
             });
             var cpoint = that.pois;
             let name = that.mapname;
-            placeSearch.searchNearBy(name, cpoint, 1200, function(
+            placeSearch.searchNearBy(name, cpoint, 1200, function (
               // eslint-disable-line no-unused-vars
               status,
               result
@@ -1333,17 +1333,17 @@ export default {
         token: token,
         kid: kid,
         other: other,
-        source: "线上推广1"
+        source: "线上推广1",
       };
       top_sure(dd)
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.code == 200) {
-            msg(data).then(res => {});
+            msg(data).then((res) => {});
             $(".t-b-first").hide();
             $(".t-b-second").show();
             var time = 60;
             var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-            var fn = function() {
+            var fn = function () {
               time--;
               if (time > 0) {
                 $(".t-b-scode").html("重新发送" + time + "s");
@@ -1359,7 +1359,6 @@ export default {
             $("#ytel").html(tel);
             // window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            
             this.toast(resp.data.message);
             this.wss = false;
             this.ch = false;
@@ -1368,7 +1367,7 @@ export default {
             this.tetype = false;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -1417,17 +1416,17 @@ export default {
         kid: kid,
         other: other,
         source: "线上推广1",
-        remark: v
+        remark: v,
       };
       top_sure(dd)
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.code == 200) {
-            msg(data).then(res => {});
+            msg(data).then((res) => {});
             $(".t-b-first").hide();
             $(".t-b-second").show();
             var time = 60;
             var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-            var fn = function() {
+            var fn = function () {
               time--;
               if (time > 0) {
                 $(".t-b-scode").html("重新发送" + time + "s");
@@ -1446,7 +1445,7 @@ export default {
             this.toast(resp.data.message);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -1460,7 +1459,7 @@ export default {
       let tel = this.baoming;
       let that = this;
       verification({ phone: tel, code: ma, channel: 2 })
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.code == 200) {
             that.change = false;
             that.succ = true;
@@ -1473,7 +1472,7 @@ export default {
             $("#ma-ll").attr("placeholder", "验证码不正确");
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -1593,6 +1592,7 @@ export default {
     async start() {
       this.id = this.$route.params.id.replace(/[^0-9]/gi, "");
       let id = this.id;
+      sessionStorage.setItem('proid',id)
       if (id == 785) {
         this.$router.push("/index/1405");
       }
@@ -1608,14 +1608,14 @@ export default {
       let other = sessionStorage.getItem("other");
       this.other = other;
       if (id != 785) {
-        await get(id, other).then(res => {
+        await get(id, other).then((res) => {
           this.all = res.data;
           for (let val of this.all.customers) {
             let n = val.mobile.substr(0, 3) + "****" + val.mobile.substr(7);
             val.mobile = n;
-            if(val.time == null) {
-              val.min = 12
-              return
+            if (val.time == null) {
+              val.min = 12;
+              return;
             }
             let time = new Date(val.time.replace(/-/g, "/"));
             let k = new Date().getTime() - new Date(time).getTime();
@@ -1623,25 +1623,7 @@ export default {
             val.min = parseInt(m);
           }
           this.basic = res.data.data.basic;
-          let url = window.location.href;
-          let ip = ip_arr["ip"];
-          let pro = this.$route.params.id;
-          let pp = {
-            controller: "Info",
-            action: "register",
-            params: {
-              city: res.data.data.basic.pid,
-              project: pro,
-              ip: ip,
-              url: url,
-              uuid: localStorage.getItem("uuid"),
-              host: this.$store.state.hostname
-            }
-          };
-          if (sessionStorage.getItem("url") !== url) {
-            this.$store.state.ws.send(JSON.stringify(pp));
-            sessionStorage.setItem("url", url);
-          }
+          sessionStorage.setItem('semcity',this.basic.pid)
           this.img_num = res.data.data.basic.img_num;
           this.basic.total_price = String(this.basic.total_price).split("-")[0];
           this.hus = res.data.data.departments;
@@ -1667,7 +1649,7 @@ export default {
           for (let val in this.chengjiao) {
             this.prices[val] = [
               this.chengjiao[val].date.substr(5),
-              this.chengjiao[val].money
+              this.chengjiao[val].money,
             ];
             /* if (this.chengjiao[val].money > max) {
             max = this.chengjiao[val].money;
@@ -1745,17 +1727,17 @@ export default {
         token: token,
         kid: kid,
         other: other,
-        source: "线上推广1"
+        source: "线上推广1",
       };
       top_sure(dd)
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.code == 200) {
             that.ch = false;
             that.zhe = false;
             window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -1792,19 +1774,19 @@ export default {
         token: token,
         kid: kid,
         other: other,
-        source: "线上推广1"
+        source: "线上推广1",
       };
       top_sure(dd)
-        .then(resp => {
+        .then((resp) => {
           if (resp.data.code == 200) {
             that.wss = true;
             that.ch = true;
-            msg(data).then(res => {});
+            msg(data).then((res) => {});
             $(".t-b-first").hide();
             $(".t-b-second").show();
             var time = 60;
             var tel = phone.substr(0, 3) + "****" + phone.substr(7, 11);
-            var fn = function() {
+            var fn = function () {
               time--;
               if (time > 0) {
                 $(".t-b-scode").html("重新发送" + time + "s");
@@ -1820,11 +1802,11 @@ export default {
             $("#ytel").html(tel);
             // window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            this.baoming = ''
-            this.toast(resp.data.message)
+            this.baoming = "";
+            this.toast(resp.data.message);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -1884,7 +1866,7 @@ export default {
       for (let val in that.faces) {
         that.faces[val] = {
           img: require(`~/assets/${val}.gif`),
-          con: that.faces[val]
+          con: that.faces[val],
         };
       }
       this.sids = [];
@@ -1899,66 +1881,66 @@ export default {
         alert("不支持");
       }
       let request = indexedDB.open("staffmsg", 2);
-      request.onupgradeneeded = function(e) {
+      request.onupgradeneeded = function (e) {
         db = e.target.result;
         if (!db.objectStoreNames.contains("staffmsg")) {
           var objectStore = db.createObjectStore("staffmsg", {
             keyPath: "id",
-            autoIncrement: true
+            autoIncrement: true,
           });
           objectStore.createIndex("sid", "sid", {
-            unique: true
+            unique: true,
           });
           objectStore.createIndex("con", "con", {
-            unique: false
+            unique: false,
           });
           objectStore.createIndex("img", "img", {
-            unique: false
+            unique: false,
           });
           objectStore.createIndex("name", "name", {
-            unique: false
+            unique: false,
           });
           objectStore.createIndex("time", "time", {
-            unique: false
+            unique: false,
           });
           objectStore.createIndex("buildname", "buildname", {
-            unique: false
+            unique: false,
           });
         }
       };
-      request.onsuccess = function(e) {
+      request.onsuccess = function (e) {
         db = request.result;
         that.db = request.result;
         var transaction = db.transaction("staffmsg", "readwrite");
         var store = transaction.objectStore("staffmsg");
         // 取出所有数据
         var all = store.getAll();
-        all.onsuccess = function() {
+        all.onsuccess = function () {
           that.cons = all.result;
           for (let val of that.cons) {
             that.sids.push(val.sid);
           }
         };
       };
-      request.onerror = function(e) {
+      request.onerror = function (e) {
         console.log("false");
       };
     },
     init() {
       let that = this;
-      this.ws.onopen = function(event) {
+      this.ws.onopen = function (event) {
         let options = {
           //要发送的数据
           class: "Info",
           action: "project",
           content: {
             token: localStorage.getItem("wstoken"),
-            Id: that.basic.id
-          }
+            Id: that.basic.id,
+          },
         };
         that.ws.send(JSON.stringify(options));
       };
-      this.ws.onmessage = function(event) {
+      this.ws.onmessage = function (event) {
         if (event.data != "connect success") {
           let data = JSON.parse(event.data);
           if (data.code != 500) {
@@ -1976,7 +1958,7 @@ export default {
                 var myDate = new Date();
                 let time = myDate.toLocaleTimeString();
                 let timenum = Date.parse(new Date());
-                search.onsuccess = function(e) {
+                search.onsuccess = function (e) {
                   let result = e.target.result;
                   if (result) {
                     result.txt = data.content.content;
@@ -1999,7 +1981,7 @@ export default {
                 let img = data.content.avatar;
                 img = decodeURIComponent(img);
                 let request = indexedDB.open("staff" + data.content.id, 2);
-                request.onsuccess = function(e) {
+                request.onsuccess = function (e) {
                   db = request.result;
                   let transaction = db.transaction(
                     "staff" + data.content.id,
@@ -2033,7 +2015,7 @@ export default {
                     con: msg,
                     img: img,
                     name1: "worker-left",
-                    name2: "worker-right"
+                    name2: "worker-right",
                   });
                 };
               } else {
@@ -2055,14 +2037,14 @@ export default {
                 staff.type = 1;
                 staff.num = timenum;
                 let otheradd = store.add(staff);
-                otheradd.onsuccess = function() {
+                otheradd.onsuccess = function () {
                   var index =
                     window.indexedDB ||
                     window.webkitIndexedDB ||
                     window.mozIndexedDB ||
                     window.msIndexedDB;
                   let req = index.open("staff" + data.content.id, 2);
-                  req.onupgradeneeded = function(e) {
+                  req.onupgradeneeded = function (e) {
                     let db = e.target.result;
                     if (
                       !db.objectStoreNames.contains("staff" + data.content.id)
@@ -2071,27 +2053,27 @@ export default {
                         "staff" + data.content.id,
                         {
                           keyPath: "id",
-                          autoIncrement: true
+                          autoIncrement: true,
                         }
                       );
                       objectStore.createIndex("classname", "classname", {
-                        unique: true
+                        unique: true,
                       });
                       objectStore.createIndex("con", "con", {
-                        unique: false
+                        unique: false,
                       });
                       objectStore.createIndex("img", "img", {
-                        unique: false
+                        unique: false,
                       });
                       objectStore.createIndex("name1", "name1", {
-                        unique: false
+                        unique: false,
                       });
                       objectStore.createIndex("name2", "name2", {
-                        unique: false
+                        unique: false,
                       });
                     }
                   };
-                  req.onsuccess = function(e) {
+                  req.onsuccess = function (e) {
                     let db = req.result;
                     let tran = db.transaction(
                       "staff" + data.content.id,
@@ -2104,9 +2086,9 @@ export default {
                       con: data.content.content,
                       img: img,
                       name1: "worker-left",
-                      name2: "worker-right"
+                      name2: "worker-right",
                     });
-                    addPersonRequest.onsuccess = function() {
+                    addPersonRequest.onsuccess = function () {
                       that.wsstart();
                     };
                   };
@@ -2127,7 +2109,7 @@ export default {
         //要发送的数据
         class: "Chat",
         action: "send",
-        content: { staff_id: sid, msg: msg, token: token, project: id }
+        content: { staff_id: sid, msg: msg, token: token, project: id },
       };
       sessionStorage.setItem("lastone", msg);
       let dd = JSON.stringify(actions);
@@ -2140,8 +2122,8 @@ export default {
         action: "project",
         content: {
           token: localStorage.getItem("wstoken"),
-          Id: id
-        }
+          Id: id,
+        },
       };
       this.ws.send(JSON.stringify(options));
     },
@@ -2257,9 +2239,9 @@ export default {
         project: id,
         kid: kid,
         other: other,
-        source: "线上推广1"
+        source: "线上推广1",
       };
-      top_sure(normal).then(res => {
+      top_sure(normal).then((res) => {
         if (res.data.code == 200) {
           that.warning = "领取成功";
           that.warningbtn = true;
@@ -2321,31 +2303,47 @@ export default {
       let pp = {
         controller: "Staff",
         action: "info",
-        params: { uuid: id, host: host }
+        params: { uuid: id, host: host },
       };
       if (id) {
         this.ws.send(JSON.stringify(pp));
       }
-    }
+    },
   },
   mounted() {
     let that = this;
-    $('#foott').css('display','none')
+    $("#foott").css("display", "none");
     this.start();
+    let url = window.location.href;
+    let ip = ip_arr["ip"];
+    let pro = this.$route.params.id;
+    
+    let pp = {
+      controller: "Info",
+      action: "register",
+      params: {
+        city: this.basic.pid,
+        project: pro,
+        ip: ip,
+        url: url,
+        uuid: localStorage.getItem("uuid"),
+        host: this.$store.state.hostname,
+      },
+    };
+    this.$store.state.ws.send(JSON.stringify(pp));
     if (
       sessionStorage.getItem("total") &&
       sessionStorage.getItem("total") !== "NaN"
     ) {
       this.totalnum = parseInt(sessionStorage.getItem("total"));
     }
-    let url = window.location.href;
     this.ws = this.$store.state.ws;
-    this.$store.state.ws.onmessage = function(event) {
+    this.$store.state.ws.onmessage = function (event) {
       let data = JSON.parse(event.data);
       if (data.action == 301) {
         let urlid = that.$route.params.id;
         if (!sessionStorage.getItem(urlid)) {
-          console.log(sessionStorage.getItem(urlid),urlid)
+          console.log(sessionStorage.getItem(urlid), urlid);
           sessionStorage.setItem(urlid, data.fromUserName);
           that.putcard();
         } else {
@@ -2413,7 +2411,7 @@ export default {
     // this.swipernum = 0;
   },
   updated() {
-    if(this.swipernum ==0 && this.basic.appointment_num){
+    if (this.swipernum == 0 && this.basic.appointment_num) {
       if (localStorage.getItem(this.$route.params.id)) {
         this.hour = localStorage.getItem(this.$route.params.id);
       } else {
@@ -2445,25 +2443,25 @@ export default {
         observer: true,
         slidesOffsetAfter: 2,
         resistanceRatio: 0.1,
-        slidesOffsetBefore: 14
+        slidesOffsetBefore: 14,
       });
       var mySwiper = new Swiper(".top-msg", {
         direction: "vertical", // 垂直切换选项
-        autoplay: true
+        autoplay: true,
       });
       var mySwiper2 = new Swiper(".swiper-topimg", {
         slidesPerView: 1,
         spaceBetween: 0,
         observer: true,
         resistanceRatio: 0.1,
-        autoplay: true
+        autoplay: true,
       });
       that.mmap();
       this.$nextTick(() => {
         this.drawlei();
         this.drawline();
       });
-      $(window).scroll(function() {
+      $(window).scroll(function () {
         var scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
         if (scrollTop >= 300) {
@@ -2486,11 +2484,10 @@ export default {
       });
       this.swipernum = 1;
     }
-      
   },
   destroyed() {
     // this.ws.close();
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
