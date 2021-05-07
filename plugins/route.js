@@ -175,7 +175,7 @@ export default ({
       localStorage.setItem('uuid', timestamp)
       if (!store.state.ws) {
         let ws = new ReconnectingWebSocket(
-          "ws://ws.jy1980.com?uuid=" + timestamp
+          "wss://ws.jy1980.com?uuid=" + timestamp
         );
         store.dispatch("setws", ws);
       }
@@ -186,7 +186,7 @@ export default ({
     } else {
       if (!store.state.ws) {
         let ws = new ReconnectingWebSocket(
-          "ws://ws.jy1980.com?uuid=" + to.query.uuid
+          "wss://ws.jy1980.com?uuid=" + to.query.uuid
         );
         store.dispatch("setws", ws);
       }
