@@ -225,6 +225,13 @@ const store = () => new Vuex.Store({
           $cookies.set('city', 129)
         }
         commit('setcity', 129)
+          break;
+        case 'kunming':
+        if (process.server == false) {
+          localStorage.setItem('city', 291)
+          $cookies.set('city', 291)
+        }
+        commit('setcity', 291)
         break;
       }
     },

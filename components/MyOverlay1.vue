@@ -37,8 +37,9 @@ export default {
   width: 4.375rem;
   height: 4.375rem;
   border-radius: 50%;
-  background: linear-gradient(270deg, #20C466, #3FD6A7);
+  background: linear-gradient(270deg, #28C567, #81DB85);
   box-shadow: 1px 5px 10px 0px rgba(44, 204, 128, 0.2);
+  opacity: 0.9;
   overflow: hidden;
   color: #fff;
   text-align: center;
@@ -52,7 +53,7 @@ export default {
   height: 2.25rem;
   border-radius: 1.125rem;
   position: absolute;
-  background: linear-gradient(270deg, #20c466, #3fd6a7);
+  background: linear-gradient(270deg, #28C567, #81DB85);
   box-shadow: 1px 5px 10px 0px rgba(44, 204, 128, 0.2);
   display: flex;
   justify-content: center;
@@ -70,7 +71,7 @@ export default {
   border-color: #20c466 transparent transparent transparent;
 }
 .dv {
-  background: linear-gradient(270deg, #FF8D41, #FFAE2D)!important;
+  background: linear-gradient(270deg, #FF4B2D, #FFB753)!important;
   z-index: 2;
 }
 .dv::after {

@@ -307,7 +307,6 @@ li {
 }
 
 .shaixuan_list {
-    width: 100%;
     height: 293px;
     background: #fff;
     position: absolute;
@@ -389,9 +388,9 @@ li {
 }
 
 .zhao {
-    width: 455px;
+    width: 100%;
     display: none;
-    height: 730px;
+    height: 800px;
     background-color: #000000;
     opacity: 0.4;
     position: absolute;

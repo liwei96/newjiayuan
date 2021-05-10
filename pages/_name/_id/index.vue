@@ -329,8 +329,8 @@
           <img src="~/assets/ziliao.png" />领取分析资料
         </button>
       </div>
-      <div class="line"></div>
-      <div class="newprice">
+      <div class="line" v-if="chengjiao.length!=0"></div>
+      <div class="newprice" v-if="chengjiao.length!=0">
         <h3>
           最新成交价
           <p>
@@ -866,6 +866,32 @@ import Swiper from "swiper";
 import "swiper/css/swiper.min.css";
 import { get, msg, verification, top_sure } from "@/api/api";
 export default {
+  async asyncData(context) {
+    try {
+      let other = context.store.state.cookie.other;
+      let jkl = context.params.name;
+      let id = context.params.id;
+      let [res] = await Promise.all([
+        context.$axios
+          .get("/detail", {
+            params: {
+              id: id,
+              other: other,
+            },
+          })
+          .then((resp) => {
+            return resp;
+          }),
+      ]);
+      return {
+        jkl: jkl,
+        topimgs: res.data.data.basic.imgs
+      };
+    } catch (err) {
+      console.log("errConsole========:", err);
+      context.error({ statusCode: 404, message: "页面未找到或无数据" });
+    }
+  },
   head() {
     return {
       title: this.basic.name + "-" + this.basic.city + "-" + this.basic.country,
@@ -1680,7 +1706,15 @@ export default {
           this.url = newurl;
           this.humsgs = res.data.data.basic.house_types;
           this.city = res.data.data.basic.pid;
-          this.topimgs = res.data.data.basic.imgs;
+          this.$nextTick(()=>{
+            var mySwiper2 = new Swiper(".swiper-topimg", {
+              slidesPerView: 1,
+              spaceBetween: 0,
+              observer: true,
+              resistanceRatio: 0.1,
+              autoplay: true,
+            });
+          })
           this.scores = res.data.scores;
           let m = 0;
           let arr = Object.values(res.data.scores);
@@ -2449,13 +2483,7 @@ export default {
         direction: "vertical", // 垂直切换选项
         autoplay: true,
       });
-      var mySwiper2 = new Swiper(".swiper-topimg", {
-        slidesPerView: 1,
-        spaceBetween: 0,
-        observer: true,
-        resistanceRatio: 0.1,
-        autoplay: true,
-      });
+      
       that.mmap();
       this.$nextTick(() => {
         this.drawlei();
