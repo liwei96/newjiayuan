@@ -6,16 +6,16 @@
     <div class="map-con">
       <div id="map"></div>
       <div id="panel" style="display: none"></div>
-      <!-- <div class="map-type tel">
+      <div class="map-type tel">
         <a :href="'tel:'+phone">
+          <img src="~/assets/maptel.png" alt="">
           <p>电话</p>
-          <p>咨询</p>
         </a>
       </div>
-      <div class="map-type" @click="pop('预约看房',95,'周边详情页+预约看房')">
-        <p>预约</p>
-        <p>看房</p>
-      </div> -->
+      <div class="map-type" @click="pop('咨询服务', 100, '详情页+咨询服务')">
+        <img src="~/assets/maptalk.png" alt="">
+        <p>咨询</p>
+      </div>
     </div>
     <div class="map-mm">
       <div class="swiper-map">
@@ -100,6 +100,7 @@
         </p>
       </div>
     </div>
+
     <van-popup
       v-model="tan"
       :style="{ background: 'rgba(0,0,0,0)' }"
@@ -229,24 +230,30 @@ export default {
             zoomEnable: true,
             dragEnable: true,
           });
-          let content = `<div
-          style="width:140px;height: 36px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:4px;padding-left: 17px;position: relative;background: #fff;" id="buildbox">
-          <div style="float: left;width:72%" id="buildbox">
-            <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${pro}</h5>
-            <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" id="buildbox">${add}</p>
-          </div>
-          <div style="float: left;"><img style="width: 29px;margin-top:3px" src="${img}" alt="" id="buildbox"></div>
-          <div
-            style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;" id="buildbox">
-          </div>
-        </div>`;
+          let content =  `<div style="width:150px;height: 40px;box-shadow:0px 0px 5px 0px rgba(6,0,1,0.1);border-radius:20px;padding-left: 17px;position: relative;background: #fff;"
+                id="buildbox">
+                <div style="float: left;width:72%" id="buildbox">
+                    <h5 style="color: #121212;font-size: 12px;margin:0;margin-top: .125rem;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
+                        id="buildbox">${pro}</h5>
+                    <p style="color: #919499;font-size: 10px;margin:0;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"
+                        id="buildbox">${add}</p>
+                </div>
+                <div
+                    style="float: left;width: 32px;height: 32px;border-radius: 50%;text-align: center;color: #fff;font-size:
+                    10px;background-color: #2AC46C;margin-top: 4px;">
+                    咨询<br /> 路线</div>
+                <div style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;"
+                    id="buildbox">
+                </div>
+            </div>`;
+        
           let marker = new AMap.Marker({
             content: content,
             position: that.pois,
-            offset: new AMap.Pixel(-78, -44),
+            offset: new AMap.Pixel(-84, -48),
           });
           let con =
-            '<div style="width: 24px;height: 24px;border-radius: 50%;background:rgba(228,186,75,0.3);position: relative;"><div style="width: 6px;height: 6px;border-radius: 50%;background:rgba(228,186,75,1);position: absolute;top:50%;left:50%;margin-top: -3px;margin-left: -3px;"></div></div>';
+            '<div style="width: 24px;height: 24px;border-radius: 50%;background:rgba(42, 198, 109, 0.2);position: relative;"><div style="width: 6px;height: 6px;border-radius: 50%;background:rgba(42, 198, 109, 1);position: absolute;top:50%;left:50%;margin-top: -3px;margin-left: -3px;"></div></div>';
           let mark = new AMap.Marker({
             content: con,
             position: that.pois,
@@ -416,23 +423,26 @@ header {
     position: absolute;
     width: 2.875rem;
     height: 2.875rem;
-    border-radius: 50%;
+    border-radius: .375rem;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.15);
     text-align: center;
-    color: #333333;
+    color: #2AC46C;
     font-size: 0.75rem;
     bottom: 17.25rem;
     right: 4%;
     background-color: #fff;
-    p:nth-of-type(1) {
-      margin-top: 0.3125rem;
+    img {
+      width: 1.125rem;
+      margin-top: .375rem;
+      margin-bottom: -0.125rem;
     }
     a {
-      color: #333333;
+      color: #FFFFFF;
     }
   }
   .tel {
     bottom: 21rem;
+    background-color: #2AC46C;
   }
 }
 .map-mm {
