@@ -86,7 +86,9 @@ export default {
       recommends: res.recommends,
       title:res1.common.header.title,
       description:res1.common.header.description,
-      keywords:res1.common.header.keywords
+      keywords:res1.common.header.keywords,
+      cityid: res.common.city_info.current.area_id,
+        cityname: res.common.city_info.current.short
     };
   },
   head() {
@@ -127,7 +129,8 @@ export default {
       let name = this.name;
       if (name) {
         this.isnull = true;
-        souari({name:name,page:1,limit:10}).then(res=>{
+        let id = $cookies.get('city')
+        souari({name:name,page:1,limit:10,city:id}).then(res=>{
           if(res.data.code == 200){
             that.list = res.data.data
             that.num = res.data.total
@@ -155,6 +158,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit('setcity', this.cityid)
+    $cookies.set("city",this.cityid);
+    localStorage.setItem("cityname", this.cityname);
     document.getElementById('foott').style.display = 'none'
     window.addEventListener("scroll", this.getmore);
   },

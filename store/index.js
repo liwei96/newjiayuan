@@ -92,6 +92,9 @@ const store = () => new Vuex.Store({
       //   commit('setuuid', app.store.state.cookie.uuid)
       // }
       let name = req.url.split('/')[1].split('?')[0]
+      commit('setpinyin', {
+        'pinyin': name
+      })
       switch (name) {
         case 'xuzhou':
           if (process.server == false) {
@@ -232,6 +235,13 @@ const store = () => new Vuex.Store({
           $cookies.set('city', 291)
         }
         commit('setcity', 291)
+          break;
+        case 'zhanjiang':
+        if (process.server == false) {
+          localStorage.setItem('city', 93)
+          $cookies.set('city', 93)
+        }
+        commit('setcity', 93)
         break;
       }
     },

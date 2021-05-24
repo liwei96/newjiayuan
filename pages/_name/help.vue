@@ -79,7 +79,7 @@
           <button @click="sendmsg">确定</button>
         </div>
         <div class="two" v-if="isok">
-          <p class="msg">验证码已发送到187****4376 请注意查看</p>
+          <p class="msg">验证码已发送到{{telmsg}} 请注意查看</p>
           <input class="txt" type="text" placeholder="请输入验证码" v-model="code" />
           <span @click="sendmsg">{{msg}}</span>
           <button @click="sure">确定</button>
@@ -173,6 +173,7 @@ export default {
       tel: "",
       code: "",
       isnull: true,
+      telmsg: ''
     };
   },
   methods: {
@@ -237,6 +238,7 @@ export default {
       });
       send({ phone: that.tel, source: 3, ip: ip }).then((res) => {
         if (res.data.code == 200) {
+          that.telmsg = that.tel.substr(0,3)+'****'+that.tel.substr(7)
           that.isok = true;
           let num = 60;
           that.isnull = false;

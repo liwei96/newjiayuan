@@ -5,6 +5,9 @@ export default ({
   store
 }) => {
   app.router.beforeEach((to, from, next) => {
+    if (process.server == false) {
+      sessionStorage.setItem('pinyin', to.params.name)
+    }
     switch (to.params.name) {
       case 'xuzhou':
         if (process.server == false) {
@@ -145,6 +148,13 @@ export default ({
         $cookies.set('city', 291)
       }
       store.state.city = 291
+        break;
+      case 'zhanjiang':
+      if (process.server == false) {
+        localStorage.setItem('city', 93)
+        $cookies.set('city', 93)
+      }
+      store.state.city = 93
       break;
     }
     // let city = localStorage.getItem('city')

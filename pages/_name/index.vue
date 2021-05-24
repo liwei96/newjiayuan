@@ -515,8 +515,7 @@ export default {
           })
           .then((resp) => {
             let data = resp.data;
-            //   console.log(data)
-            console.log(host);
+              // console.log(data)
             return data;
           }),
       ]);
@@ -530,6 +529,7 @@ export default {
         dynamics: res.dynamics,
         jkl: jkl,
         cityname: res.common.city_info.current.short,
+        cityid: res.common.city_info.current.area_id,
         city: city,
         title: res.common.header.title,
         description: res.common.header.description,
@@ -598,6 +598,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit('setcity', this.cityid)
+    $cookies.set("city",this.cityid);
+    localStorage.setItem("cityname", this.cityname);
     if (this.host == 0) {
       this.txt = "家园";
     } else {
@@ -605,7 +608,7 @@ export default {
     }
     console.log(this.$store.state);
     // this.cityname = $cookies.get('cityname')
-    localStorage.setItem("cityname", this.cityname);
+    
     var swiper07 = new Swiper(".swiper-nav", {
       slidesPerView: 5,
       spaceBetween: 0,

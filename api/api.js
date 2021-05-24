@@ -5,11 +5,14 @@ axios.interceptors.request.use(function (config) {
   // 处理请求之前的配置
   if (config.method == 'get') {
     config.params.uuid = $cookies.get('uuid')
+    config.params.pinyin = sessionStorage.getItem('pinyin')
   } else {
     if (config.data) {
       config.data.uuid = $cookies.get('uuid')
+      config.data.pinyin = sessionStorage.getItem('pinyin')
     } else {
       config.params.uuid = $cookies.get('uuid')
+      config.params.pinyin = sessionStorage.getItem('pinyin')
     }
   }
   return config

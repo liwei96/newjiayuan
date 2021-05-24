@@ -926,6 +926,7 @@ export default {
         count: res.count,
         collect: res.collect,
         cityname: res.common.city_info.current.short,
+        cityid: res.common.city_info.current.area_id,
         othercode: other,
         kidcode: kid,
         title: res.common.header.title,
@@ -1564,6 +1565,9 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit('setcity', this.cityid)
+    $cookies.set("city",this.cityid);
+    localStorage.setItem("cityname", this.cityname);
     if (this.host == 0) {
       this.txt = "家园";
     } else {

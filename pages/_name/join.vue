@@ -318,10 +318,10 @@
     <div class="code">
       <img src="~/assets/jia-code.jpg" alt />
       <p class="codemsg">扫码加盟官方微信号</p>
-      <p class="tel">加盟热线：<span>400-718-6666</span></p>
+      <p class="tel">加盟热线：<span>{{jtel}}</span></p>
     </div>
     <div class="nav">
-      <a href="tel:400-718-6686">
+      <a :href="'tel:'+jtel">
         <button>电话咨询</button>
       </a>
       <button class="btn" @click="show = true">申请加盟</button>
@@ -391,7 +391,8 @@ export default {
       title:res.common.header.title,
       description:res.common.header.description,
       keywords:res.common.header.keywords,
-      host: host
+      host: host,
+      jtel: res.common.phone
     };
   },
   head() {
