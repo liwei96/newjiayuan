@@ -170,6 +170,34 @@ export default {
       pathRewrite: {
         "^/front": "/front" // 去掉接口地址中的api字符串
       }
+    },
+    "/applets": {
+      target: "http://39.98.227.114:8989/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/applets": "/applets" // 去掉接口地址中的api字符串
+      }
+    },
+    "/country": {
+      target: "http://39.98.227.114:8989/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/country": "/country" // 去掉接口地址中的api字符串
+      }
+    },
+    "/street": {
+      target: "http://39.98.227.114:8989/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/street": "/street" // 去掉接口地址中的api字符串
+      }
+    },
+    "/buildings": {
+      target: "http://39.98.227.114:8989/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/buildings": "/buildings" // 去掉接口地址中的api字符串
+      }
     }
   },
   axios: {

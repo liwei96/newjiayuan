@@ -163,10 +163,10 @@
     <div class="hui">
       <h3>
         优惠信息
-        <span @click="huo = true" v-if="participate==0">
+        <span @click="huo = true" v-if="participate == 0">
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
-        <span @click="huo1 = true" v-if="participate!=0">
+        <span @click="huo1 = true" v-if="participate != 0">
           <img src="~/assets/ques.png" alt /> 活动规则
         </span>
       </h3>
@@ -192,12 +192,16 @@
           </p>
         </div>
       </div>
-      <div class="phone-huo" v-if="participate!=0">
-        <img src="~/assets/phone-huo.jpg" alt="">
-        <p>{{participate}}人已领</p>
-        <button @click="pop('家园专享购房送手机', 121, '详情页+家园专享购房送手机')">立即抢</button>
+      <div class="phone-huo" v-if="participate != 0">
+        <img src="~/assets/phone-huo.jpg" alt="" />
+        <p>{{ participate }}人已领</p>
+        <button
+          @click="pop('家园专享购房送手机', 121, '详情页+家园专享购房送手机')"
+        >
+          立即抢
+        </button>
       </div>
-      <div class="hui-con" v-if="activity.length == 0 && participate==0">
+      <div class="hui-con" v-if="activity.length == 0 && participate == 0">
         <div class="hui-left">
           <h6>
             最高
@@ -322,7 +326,7 @@
             v-for="(item, key) in house_types"
             :key="key"
           >
-            <nuxt-link :to="'/' + jkl + '/hu/'+abstract.id+'/' + item.id">
+            <nuxt-link :to="'/' + jkl + '/hu/' + abstract.id + '/' + item.id">
               <div class="hu-top">
                 <img
                   :src="item.small"
@@ -837,7 +841,8 @@
           <img @click="huo1 = false" src="~/assets/w-del.png" alt />
           <div>
             <p>
-              即日起，凡是通过本线上营销中心成交的本项目，即送苹果12 pro max一台，平台合计1000台手机送完为止。具体活动详情来电咨询
+              即日起，凡是通过本线上营销中心成交的本项目，即送苹果12 pro
+              max一台，平台合计1000台手机送完为止。具体活动详情来电咨询
             </p>
             <p>注：活动最终解释权归{{ txt }}所有</p>
           </div>
@@ -934,7 +939,7 @@ export default {
         keywords: res.common.header.keywords,
         host: host,
         activity: res.common.activity || [],
-        infos: res.article
+        infos: res.article,
       };
     } catch (err) {
       console.log("errConsole========:", err);
@@ -1565,8 +1570,8 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit('setcity', this.cityid)
-    $cookies.set("city",this.cityid);
+    this.$store.commit("setcity", this.cityid);
+    $cookies.set("city", this.cityid);
     localStorage.setItem("cityname", this.cityname);
     if (this.host == 0) {
       this.txt = "家园";
@@ -2166,7 +2171,7 @@ export default {
       font-size: 1rem;
       height: 3.25rem;
       line-height: 3.25rem;
-      min-width: 2.125rem!important;
+      min-width: 2.125rem !important;
       p {
         width: 2.125rem;
       }
@@ -2320,31 +2325,31 @@ export default {
   }
   .phone-huo {
     position: relative;
-    margin-top: .875rem;
+    margin-top: 0.875rem;
     img {
       width: 100%;
     }
     p {
       position: absolute;
-      font-size: .75rem;
+      font-size: 0.75rem;
       color: #fff;
       right: 1.25rem;
-      bottom: .625rem;
+      bottom: 0.625rem;
     }
     button {
       width: 4rem;
       height: 1.5rem;
-      border-radius: .75rem;
+      border-radius: 0.75rem;
       background-color: #fff;
       text-align: center;
       line-height: 1.5rem;
       border: 0;
       outline: none;
       position: absolute;
-      right: .9375rem;
+      right: 0.9375rem;
       top: 1.875rem;
       color: #153870;
-      font-size: .75rem;
+      font-size: 0.75rem;
     }
   }
 }
@@ -3027,6 +3032,7 @@ export default {
         }
       }
     }
+
     .map-tishi {
       height: 10.6875rem;
       text-align: center;

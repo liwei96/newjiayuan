@@ -153,8 +153,9 @@
                   :data-v="key"
                   :key="key"
                   @click="tp($event)"
+                  v-if="item"
                 >
-                  {{ item.type }}
+                  {{ item }}
                 </li>
               </ul>
               <!-- <h2>开发商</h2>
@@ -213,10 +214,10 @@
           :position="item"
           :text="
             zoom < 14
-              ? ` <h4 id='m_name'> ${item.country || item.street}</h4>
-                 <p id='m_num'>${item.Num}个</p>
+              ? ` <h4 id='m_name'> ${item.name || item.street}</h4>
+                 <p id='m_num'>${item.num||item.Num}个</p>
                  `
-              : ` <h4 id='b_name'> ${item.building_name}</h4>
+              : ` <h4 id='b_name'> ${item.name}</h4>
                  <p id='b_price'>约${parseInt(item.price)}元/m²</p>
                  `
           "
@@ -230,7 +231,7 @@
     <div class="project" v-show="pro">
       <div class="re-list" @click="gobuild(building.id)">
         <div class="re-con-left">
-          <img :src="building.img" />
+          <img :src="building.image" />
           <!-- <span>
             <i class="iconfont iconyanjing"></i>
             {{ building.count }}
@@ -239,21 +240,21 @@
         <div class="re-con-right">
           <h5>
             {{ building.name }}
-            <span>{{ building.status }}</span>
+            <span>{{ building.state }}</span>
           </h5>
           <p class="price">
-            <span>{{ building.single_price }}</span
+            <span>{{ building.price }}</span
             >元/m²
           </p>
           <p class="area">
-            <span>{{ building.area_name }}</span>
+            <span>{{ building.city }}</span> - {{building.country}}
             <span>建面</span>
             <span> {{ building.area }}m² </span>
           </p>
           <p class="tabs">
             <span class="strong">{{ building.decorate }}</span>
-            <span v-show="building.railways">{{ building.railways }}</span>
-            <span v-show="building.features">{{ building.features }}</span>
+            <span v-show="building.railway">{{ building.railway }}</span>
+            <span v-show="building.feature">{{ building.feature }}</span>
           </p>
         </div>
       </div>
@@ -273,13 +274,7 @@
 import MyOverlay1 from "@/components/MyOverlay1.vue";
 import MyOverlays1 from "@/components/MyOverlays1.vue";
 import "@/static/css/foot.css";
-import {
-  search_start,
-  mapSaerch,
-  mapSearch,
-  content_data,
-  mapProject,
-} from "~/api/api";
+import { mapoptions, mapSearch, mapsount, mapstreet, mapbuildings, mapProjects } from "~/api/api";
 export default {
   name: "Map",
   components: {
@@ -408,11 +403,12 @@ export default {
       let right_top_lng = bsne.lng;
       let right_top_lat = bsne.lat;
       let mapwhere = $cookies.get("mapwhere");
+      let that = this;
       if (mapwhere) {
-        mapwhere.left_bottom_lng = left_bottom_lng;
-        mapwhere.left_bottom_lat = left_bottom_lat;
-        mapwhere.right_top_lng = right_top_lng;
-        mapwhere.right_top_lat = right_top_lat;
+        // mapwhere.left_bottom_lng = left_bottom_lng;
+        // mapwhere.left_bottom_lat = left_bottom_lat;
+        // mapwhere.right_top_lng = right_top_lng;
+        // mapwhere.right_top_lat = right_top_lat;
       } else {
         mapwhere = {
           ip: ip,
@@ -422,23 +418,41 @@ export default {
           left_bottom_lat: left_bottom_lat,
           right_top_lng: right_top_lng,
           right_top_lat: right_top_lat,
+          level: 1,
         };
       }
       $cookies.set("mapwhere", mapwhere, "5min");
       if (zoom > 10 && zoom <= 12) {
         mapwhere.level = 1;
         this.level = 1;
+        mapsount(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
       } else if (zoom > 12 && zoom < 14) {
         mapwhere.level = 2;
         this.level = 2;
+        mapstreet(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
       } else if (zoom >= 14) {
         this.level = 3;
         mapwhere.level = 3;
+        mapwhere.left_bottom_lng = left_bottom_lng;
+        mapwhere.left_bottom_lat = left_bottom_lat;
+        mapwhere.right_top_lng = right_top_lng;
+        mapwhere.right_top_lat = right_top_lat;
+        mapbuildings(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
       }
-      let that = this;
+      
+      
       mapSearch(mapwhere)
         .then((resp) => {
-          that.point = resp.data.data;
+          // that.point = resp.data.data;
           that.city = 0;
           that.all = resp.data.sum_city;
           for (let item of that.point) {
@@ -483,16 +497,35 @@ export default {
       // let ip = returnCitySN["cip"];;
       let city = this.$route.params.city;
       let token = localStorage.getItem("token");
-      $cookies.set("mapwhere", { ip: ip, city: city, token: token });
-      search_start({ ip: ip, city: city, platform: "2", token: token })
+      $cookies.set("mapwhere", {
+        area: 0,
+        city: 1,
+        country: 0,
+        decorate: "",
+        feature: 0,
+        house_types: [],
+        limit: 10,
+        near_railway: 0,
+        page: 1,
+        railway: 0,
+        single_price: 0,
+        sort: 0,
+        special: 0,
+        total_price: 0,
+        total_price_max: 0,
+        total_price_min: 0,
+        type: "",
+      });
+      mapoptions({ city: city })
         .then((resp) => {
-          let data = resp.data.data.conditions;
-          this.citys = data.cities;
+          console.log(resp, "res");
+          let data = resp.data.data;
+          this.apartments = data.house_types;
+          this.citys = data.countries;
           this.dities = data.railways;
           this.single_prices = data.single_prices;
           this.total_prices = data.total_prices;
-          this.apartments = data.apartments;
-          this.build_types = data.build_types;
+          this.build_types = data.building_types;
           this.features = data.features;
         })
         .catch((error) => {
@@ -501,11 +534,12 @@ export default {
     },
     qu(e) {
       let id = e.target.getAttribute("data-v");
+      console.log(id)
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.country;
+        where.country= 0
       } else {
-        where.country = id;
+        where.country = Number(id);
       }
       $cookies.set("mapwhere", where, 0);
       this.q1 = id;
@@ -521,7 +555,7 @@ export default {
       let id = e.target.getAttribute("data-v");
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.railway;
+        where.railway=0
       } else {
         where.railway = id;
       }
@@ -539,7 +573,7 @@ export default {
       let id = e.target.getAttribute("data-v");
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.totalprice;
+        where.totalprice=0
       } else {
         where.totalprice = id;
       }
@@ -559,7 +593,7 @@ export default {
       if (id != 0) {
         where.single_price = id;
       } else {
-        delete where.single_price;
+        where.single_price=0
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -573,9 +607,9 @@ export default {
     },
     hu() {
       let id = this.hus;
-      id = id.join(",");
+      // id = id.join(",");
       let where = $cookies.get("mapwhere");
-      where.apartment = id;
+      where.house_types = id;
       $cookies.set("mapwhere", where, 0);
       this.search_data();
     },
@@ -596,7 +630,7 @@ export default {
         where.feature = this.te;
       }
       if (this.type) {
-        where.build_type = this.type;
+        where.type = this.type;
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -604,9 +638,27 @@ export default {
     search_data() {
       let mapwhere = $cookies.get("mapwhere");
       let that = this;
+
+      if (this.level==1) {
+        mapsount(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
+      }else if (this.level==2) {
+        mapstreet(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
+      }else {
+        mapbuildings(mapwhere).then((res) => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
+      }
+      
       mapSearch(mapwhere)
         .then((resp) => {
-          that.point = resp.data.data;
+          // that.point = resp.data.data;
           that.city = 0;
           that.all = resp.data.sum_city;
           for (let item of that.point) {
@@ -626,22 +678,12 @@ export default {
       let ip = ip_arr["ip"];
       let token = $cookies.get("token");
       let that = this;
-      mapProject({ ip: ip, id: id, token: token, platform: 2 })
-        .then((resp) => {
-          console.log(resp);
-          this.pro = true;
-          let data = resp.data.data;
+      mapProjects({id:id}).then(res=>{
+        console.log(res)
+        this.pro = true;
+          let data = res.data.data;
           that.building = data;
-          if (that.building.railways) {
-            that.building.railways = that.building.railways[0];
-          }
-          if (that.building.features) {
-            that.building.features = that.building.features[0];
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      })
     },
     boxclick(item, e) {
       if (this.level <= 2) {
@@ -671,14 +713,14 @@ export default {
       let where = $cookies.get("mapwhere");
       this.te = "";
       this.type = "";
-      delete where.feature;
-      delete where.build_type;
+      where.feature = '';
+      where.build_type = '';
       $cookies.set("mapwhere", where, 0);
     },
     clear1() {
       this.hus = [];
       let where = $cookies.get("mapwhere");
-      delete where.apartment;
+      where.house_types = [];
       $cookies.set("mapwhere", where, 0);
     },
     gosearch() {
@@ -726,11 +768,12 @@ export default {
     },
     checkbox(e) {
       console.log(e.target);
-      $(".hubox").each(function () {
-        $(this).prop("checked", false);
-      });
-      $(e.target).prop("checked", true);
-      this.hus = this.hus.slice(0, this.hus.length - 1);
+      console.log(this.hus);
+      // $(".hubox").each(function () {
+      //   $(this).prop("checked", false);
+      // });
+      // $(e.target).prop("checked", true);
+      // this.hus = this.hus.slice(0, this.hus.length - 1);
       // if (this.hus.length >= 1) {
       //   // e.target.checked = false
       //   $(e.target).prop("checked", false);
@@ -1231,7 +1274,7 @@ input:-ms-input-placeholder {
   top: 1px;
 }
 .re-list .re-con-right h5 {
-  color: #12181F;
+  color: #12181f;
   font-size: 16px;
   margin-bottom: 2px;
 }
@@ -1249,7 +1292,7 @@ input:-ms-input-placeholder {
   font-size: 11px;
 }
 .re-list .re-con-right .price {
-  color: #FF6040;
+  color: #ff6040;
   font-size: 13px;
   font-weight: bold;
   margin-bottom: 2px;
@@ -1258,7 +1301,7 @@ input:-ms-input-placeholder {
   font-size: 16px;
 }
 .re-list .re-con-right .area {
-  color: #7D7E80;
+  color: #7d7e80;
   font-size: 12px;
   margin-bottom: 2px;
 }
@@ -1268,15 +1311,15 @@ input:-ms-input-placeholder {
 .re-list .re-con-right .tabs .strong {
   font-weight: 500;
   padding: 3px 7px;
-  background-color: #F0F5F9;
+  background-color: #f0f5f9;
   margin-right: 6px;
-  color: #628BB9;
+  color: #628bb9;
   font-size: 12px;
 }
 .re-list .re-con-right .tabs span {
   padding: 3px 5px;
-  background-color: #F5F5F5;
-  color: #7D7E80;
+  background-color: #f5f5f5;
+  color: #7d7e80;
   font-size: 12px;
   margin-right: 6px;
   border-radius: 2px;

@@ -23,8 +23,8 @@ export default {
     handleClick () {
     },
     draw ({el, BMap, map}) {
-      const {lng, lat} = this.position
-      const pixel = map.pointToOverlayPixel(new BMap.Point(lng, lat))
+      const {longitude, latitude} = this.position
+      const pixel = map.pointToOverlayPixel(new BMap.Point(longitude, latitude))
       el.style.left = pixel.x - 45 + 'px'
       el.style.top = pixel.y - 45 + 'px'
     }

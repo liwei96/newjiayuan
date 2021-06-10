@@ -4,8 +4,10 @@ axios.defaults.withCredentials = true;
 axios.interceptors.request.use(function (config) {
   // 处理请求之前的配置
   if (config.method == 'get') {
-    config.params.uuid = $cookies.get('uuid')
-    config.params.pinyin = sessionStorage.getItem('pinyin')
+    if (config.params) {
+      config.params.uuid = $cookies.get('uuid')
+      config.params.pinyin = sessionStorage.getItem('pinyin')
+    }
   } else {
     if (config.data) {
       config.data.uuid = $cookies.get('uuid')
@@ -166,10 +168,38 @@ export const search_start = (msg) => {
     data: msg
   })
 }
+export const mapoptions = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/applets/jy/conditions',
+    params: msg
+  })
+}
 export const mapSearch = (msg) => {
   return axios.request({
     method: 'post',
     url: '/api/map/area',
+    data: msg
+  })
+}
+export const mapsount = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/country/sum',
+    data: msg
+  })
+}
+export const mapstreet = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/street/sum',
+    data: msg
+  })
+}
+export const mapbuildings = (msg) => {
+  return axios.request({
+    method: 'post',
+    url: '/buildings/map',
     data: msg
   })
 }
@@ -192,6 +222,13 @@ export const mapProject = (msg) => {
     method: 'post',
     url: '/api/map/detail',
     data: msg
+  })
+}
+export const mapProjects = (msg) => {
+  return axios.request({
+    method: 'get',
+    url: '/applets/jy/building/card',
+    params: msg
   })
 }
 export const agreeanswer = (msg) => {
