@@ -134,40 +134,44 @@ export default {
     let id = context.params.id;
     let token = context.store.state.cookie.token;
     let baidu = context.query.isbaidu;
-    let [res] = await Promise.all([
-      context.$axios
-        .get("/jy/building/map", {
-          params: {
-            other: other,
+    let [res1] = await Promise.all([
+        context.$axios.request({
+          method: 'post',
+          url:'/applets/jy/building/location',
+          params: {other: other,
             id: id,
-            token: token,
-          },
+            token: token,}
         })
+        // .post("/applets/jy/building/location", {
+        //     other: other,
+        //     id: id,
+        //     token: token,
+        // })
         .then((resp) => {
-          let data = resp.data;
-          //   console.log(data);
+          let data = resp.data.data;
+            console.log(data);
           return data;
         }),
     ]);
     return {
       jkl: jkl,
-      phone: res.common.phone,
-      building: res.building,
+      phone: res1.phone,
+      building: res1.data,
       id: id,
       isbaidu: baidu,
     };
   },
   head() {
     return {
-      title: "允家新房-" + this.building.name + "-周边详情",
+      title: "家园新房-" + this.building.name + "-周边详情",
       meta: [
         {
           name: "description",
-          content: "允家新房",
+          content: "家园新房",
         },
         {
           name: "Keywords",
-          content: "允家新房",
+          content: "家园新房",
         },
       ],
     };
@@ -240,7 +244,7 @@ export default {
                 </div>
                 <div
                     style="float: left;width: 32px;height: 32px;border-radius: 50%;text-align: center;color: #fff;font-size:
-                    10px;background-color: #2AC46C;margin-top: 4px;">
+                    10px;background-color: #2AC46C;margin-top: 4px;" id="buildbox">
                     咨询<br /> 路线</div>
                 <div style="position: absolute;border:8px solid transparent;border-top-color: #fff;bottom:-16px;left:50%;margin-left: -8px;"
                     id="buildbox">
@@ -324,6 +328,9 @@ export default {
     },
   },
   mounted() {
+    if(this.$route.query.phone) {
+      $cookies.set("phone",this.$route.query.phone)
+    }
     // this.isbaidu = this.$route.query.isbaidu
     document.getElementById("foott").style.display = "none";
     this.mmap();
@@ -335,29 +342,32 @@ export default {
     });
     let box = document.getElementById("Zhou");
     let id = this.$route.params.id;
+    let that = this
     box.onclick = function (e) {
       console.log(e.target.id);
       if (e.target.id == "buildbox") {
-        $(document).ready(function () {
-          var u = navigator.userAgent;
-          var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
-          if (!isbaidu) {
-            console.log(55)
-            wx.miniProgram.navigateTo({
-              url: "/pages/content/content?id=" + id,
-            });
-          } else {
-            swan.webView.redirectTo({
-              url: "/pages/content/content?id=" + id,
-              success() {
-                console.log("to-web-view success");
-              },
-              fail() {
-                console.log("fail");
-              },
-            });
-          }
-        });
+        console.log('is pro')
+        that.pop('咨询服务', 100, '详情页+咨询服务')
+        // $(document).ready(function () {
+        //   var u = navigator.userAgent;
+        //   var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        //   if (!isbaidu) {
+        //     console.log(55)
+        //     wx.miniProgram.navigateTo({
+        //       url: "/pages/content/content?id=" + id,
+        //     });
+        //   } else {
+        //     swan.webView.redirectTo({
+        //       url: "/pages/content/content?id=" + id,
+        //       success() {
+        //         console.log("to-web-view success");
+        //       },
+        //       fail() {
+        //         console.log("fail");
+        //       },
+        //     });
+        //   }
+        // });
       }
     };
   },

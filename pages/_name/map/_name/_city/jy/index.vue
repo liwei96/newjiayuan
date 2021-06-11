@@ -152,7 +152,7 @@
                   v-for="(item, key) in build_types"
                   :data-v="key"
                   :key="key"
-                  @click="tp($event)"
+                  @click="tp($event,item)"
                   v-if="item"
                 >
                   {{ item }}
@@ -323,7 +323,7 @@ export default {
   },
   data() {
     return {
-      zoom: 12,
+      zoom: 11,
       show: true,
       active: false,
       point: [
@@ -403,6 +403,10 @@ export default {
       let right_top_lng = bsne.lng;
       let right_top_lat = bsne.lat;
       let mapwhere = $cookies.get("mapwhere");
+      console.log(mapwhere,'where')
+      if(!this.q1) {
+        mapwhere.country = 0
+      }
       let that = this;
       if (mapwhere) {
         // mapwhere.left_bottom_lng = left_bottom_lng;
@@ -439,10 +443,11 @@ export default {
       } else if (zoom >= 14) {
         this.level = 3;
         mapwhere.level = 3;
-        mapwhere.left_bottom_lng = left_bottom_lng;
-        mapwhere.left_bottom_lat = left_bottom_lat;
-        mapwhere.right_top_lng = right_top_lng;
-        mapwhere.right_top_lat = right_top_lat;
+        mapwhere.left_bottom_longitude = left_bottom_lng;
+        mapwhere.left_bottom_latitude = left_bottom_lat;
+        mapwhere.right_top_longitude = right_top_lng;
+        mapwhere.right_top_latitude = right_top_lat;
+        $cookies.set("mapwhere", mapwhere, "5min");
         mapbuildings(mapwhere).then((res) => {
           console.log(res, "resps");
           that.point = res.data.data;
@@ -450,22 +455,22 @@ export default {
       }
       
       
-      mapSearch(mapwhere)
-        .then((resp) => {
-          // that.point = resp.data.data;
-          that.city = 0;
-          that.all = resp.data.sum_city;
-          for (let item of that.point) {
-            if (item.Num) {
-              that.city += item.Num;
-            } else {
-              that.city++;
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // mapSearch(mapwhere)
+      //   .then((resp) => {
+      //     // that.point = resp.data.data;
+      //     that.city = 0;
+      //     that.all = resp.data.sum_city;
+      //     for (let item of that.point) {
+      //       if (item.Num) {
+      //         that.city += item.Num;
+      //       } else {
+      //         that.city++;
+      //       }
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     },
     gobuild(id) {
       $(document).ready(function () {
@@ -499,7 +504,7 @@ export default {
       let token = localStorage.getItem("token");
       $cookies.set("mapwhere", {
         area: 0,
-        city: 1,
+        city: city,
         country: 0,
         decorate: "",
         feature: 0,
@@ -573,9 +578,9 @@ export default {
       let id = e.target.getAttribute("data-v");
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        where.totalprice=0
+        where.total_price=0
       } else {
-        where.totalprice = id;
+        where.total_price = id;
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -613,11 +618,11 @@ export default {
       $cookies.set("mapwhere", where, 0);
       this.search_data();
     },
-    tp(e) {
-      let id = e.target.innerHTML;
+    tp(e,name) {
+      // let id = e.target.innerHTML;
       let key = e.target.getAttribute("data-v");
       this.t1 = key;
-      this.type = id;
+      this.type = name;
     },
     se(e) {
       let id = e.target.getAttribute("data-v");
@@ -656,22 +661,22 @@ export default {
         });
       }
       
-      mapSearch(mapwhere)
-        .then((resp) => {
-          // that.point = resp.data.data;
-          that.city = 0;
-          that.all = resp.data.sum_city;
-          for (let item of that.point) {
-            if (item.Num) {
-              that.city += item.Num;
-            } else {
-              that.city++;
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // mapSearch(mapwhere)
+      //   .then((resp) => {
+      //     // that.point = resp.data.data;
+      //     that.city = 0;
+      //     that.all = resp.data.sum_city;
+      //     for (let item of that.point) {
+      //       if (item.Num) {
+      //         that.city += item.Num;
+      //       } else {
+      //         that.city++;
+      //       }
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     },
     putid(id, e) {
       $(e.currentTarget).addClass("dv").siblings().removeClass("dv");
@@ -699,13 +704,22 @@ export default {
     },
     changezoom(item) {
       // console.log(item);
+      let mapwhere = $cookies.get("mapwhere");
       if (this.level == 1) {
         this.zoom = 13;
+        mapwhere.country = item.id
       } else if (this.level == 2) {
         this.zoom = 14;
+        mapwhere.street = item.id
+      }else{
+        mapwhere.street = item.id
       }
-      let BMap = this.Bmap;
-      this.map.panTo(new BMap.Point(item["lng"], item["lat"]));
+      // let BMap = this.Bmap;
+      console.log(item["longitude"], item["latitude"])
+      $cookies.set('mapwhere',mapwhere,'5min')
+      // this.search_data()
+      // return
+      // this.map.panTo(new BMap.Point(item["latitude"],item["longitude"]));
     },
     clear2() {
       this.t1 = -1;
