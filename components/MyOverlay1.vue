@@ -1,7 +1,7 @@
 <template>
   <bm-overlay
     ref="customOverlay"
-    :class="active < 14 ? 'sample' : 'samples'"
+    :class="active < 13 ? 'sample' : 'samples'"
     pane="labelPane"
     @draw="draw">
     <div v-html="text" @click="handleClick"></div>

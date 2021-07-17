@@ -279,7 +279,7 @@ export default {
   name: "Map",
   components: {
     MyOverlay1,
-    MyOverlays1,
+    // MyOverlays1,
   },
   async asyncData(context) {
     let jkl = context.params.name;
@@ -1184,6 +1184,25 @@ export default {
   white-space: nowrap;
 }
 .Map >>> #b_price {
+  font-size: 0.5625rem;
+  color: #fefefe;
+  text-align: center;
+  height: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.Map >>> #m_name {
+  text-align: center;
+  font-size: 0.75rem;
+  color: #fff;
+  height: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+.Map >>> #m_num {
   font-size: 0.5625rem;
   color: #fefefe;
   text-align: center;

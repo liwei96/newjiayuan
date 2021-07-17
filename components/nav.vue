@@ -63,6 +63,7 @@ export default {
     },
   },
   mounted() {
+    return
     if (this.totalnum == "NaN") {
       this.totalnum = 0;
     }

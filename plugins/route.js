@@ -5,9 +5,9 @@ export default ({
   store
 }) => {
   app.router.beforeEach((to, from, next) => {
-    if (process.server == false) {
-      sessionStorage.setItem('pinyin', to.params.name)
-    }
+    // if (process.server == false) {
+    //   sessionStorage.setItem('pinyin', to.params.name)
+    // }
     switch (to.params.name) {
       case 'xuzhou':
         if (process.server == false) {
@@ -167,7 +167,6 @@ export default ({
     // }else{
     //   pro = 0
     // }
-
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
       let timestamp = ''

@@ -399,17 +399,17 @@ header {
     overflow-y: auto;
     padding-top: 1.125rem;
     padding: 0 4%;
-    /deep/ .map-msg-con {
+     .map-msg-con {
       /deep/ li {
         list-style: none;
         margin-bottom: 1.125rem;
-        /deep/ h5 {
+         h5 {
           color: #1a1a1a;
           font-size: 0.9375rem;
           margin-bottom: 0.5rem;
           font-weight: 400;
         }
-        /deep/ p {
+         p {
           color: #999999;
           font-size: 0.8125rem;
           span {

@@ -3,7 +3,7 @@
     <top-view :jkl="jkl"></top-view>
     <div class="current">
       <img src="~/assets/cur.png" alt class="cur" />
-      <span class="city">{{city}}</span>
+      <span class="city">{{ current.name }}</span>
       <span class="msg">当前城市</span>
     </div>
     <div class="hot">
@@ -11,177 +11,32 @@
       <div class="hot-tabs">
         <span
           v-for="hot in hots"
-          :data-v="hot.area_id"
-          :key="hot.area_id"
+          :data-v="hot.id"
+          :key="hot.id"
           @click="setcity"
           :data-n="hot.pinyin"
-        >{{hot.short}}</span>
+          >{{ hot.name }}</span
+        >
       </div>
     </div>
     <div class="all">
       <h4>全部城市</h4>
-      <p class="tit" id="A">A</p>
-      <ul>
-        <li v-for="city in A" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="B">B</p>
-      <ul>
-        <li v-for="city in B" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="C">C</p>
-      <ul>
-        <li v-for="city in C" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="D">D</p>
-      <ul>
-        <li v-for="city in D" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="E">E</p>
-      <ul>
-        <li v-for="city in E" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="F">F</p>
-      <ul>
-        <li v-for="city in F" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="G">G</p>
-      <ul>
-        <li v-for="city in G" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="H">H</p>
-      <ul>
-        <li v-for="city in H" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="J">J</p>
-      <ul>
-        <li v-for="city in J" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="K">K</p>
-      <ul>
-        <li v-for="city in K" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="L">L</p>
-      <ul>
-        <li v-for="city in L" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="M">M</p>
-      <ul>
-        <li v-for="city in M" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="N">N</p>
-      <ul>
-        <li v-for="city in N" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="O">O</p>
-      <ul>
-        <li v-for="city in O" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="P">P</p>
-      <ul>
-        <li v-for="city in P" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="Q">Q</p>
-      <ul>
-        <li v-for="city in Q" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="R">R</p>
-      <ul>
-        <li v-for="city in R" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="S">S</p>
-      <ul>
-        <li v-for="city in S" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="T">T</p>
-      <ul>
-        <li v-for="city in T" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="W">W</p>
-      <ul>
-        <li v-for="city in W" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="X">X</p>
-      <ul>
-        <li v-for="city in X" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="Y">Y</p>
-      <ul>
-        <li v-for="city in Y" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
-      <p class="tit" id="Z">Z</p>
-      <ul>
-        <li v-for="city in Z" :key="city.area_id" @click="show($event, city.area_id, city.short, city.pinyin)">{{city.city}}</li>
-      </ul>
+      <div v-for="(item, key) in list" :key="key">
+        <p class="tit" :id="item">{{ item }}</p>
+        <ul>
+          <li
+            v-for="city in cities[item]"
+            :key="city.id"
+            @click="show($event, city.id, city.name, city.pinyin)"
+          >
+            {{ city.name }}
+          </li>
+        </ul>
+      </div>
     </div>
     <ul class="right">
-      <li>
-        <a href="#A">A</a>
-      </li>
-      <li>
-        <a href="#B">B</a>
-      </li>
-      <li>
-        <a href="#C">C</a>
-      </li>
-      <li>
-        <a href="#D">D</a>
-      </li>
-      <li>
-        <a href="#E">E</a>
-      </li>
-      <li>
-        <a href="#F">F</a>
-      </li>
-      <li>
-        <a href="#G">G</a>
-      </li>
-      <li>
-        <a href="#H">H</a>
-      </li>
-      <li>
-        <a href="#J">J</a>
-      </li>
-      <li>
-        <a href="#K">K</a>
-      </li>
-      <li>
-        <a href="#L">L</a>
-      </li>
-      <li>
-        <a href="#M">M</a>
-      </li>
-      <li>
-        <a href="#N">N</a>
-      </li>
-      <li>
-        <a href="#O">O</a>
-      </li>
-      <li>
-        <a href="#P">P</a>
-      </li>
-      <li>
-        <a href="#Q">Q</a>
-      </li>
-      <li>
-        <a href="#R">R</a>
-      </li>
-      <li>
-        <a href="#S">S</a>
-      </li>
-      <li>
-        <a href="#T">T</a>
-      </li>
-      <li>
-        <a href="#W">W</a>
-      </li>
-      <li>
-        <a href="#X">X</a>
-      </li>
-      <li>
-        <a href="#Y">Y</a>
-      </li>
-      <li>
-        <a href="#Z">Z</a>
+      <li v-for="(item, key) in list" :key="'sdf' + key">
+        <a :href="'#' + item">{{ item }}</a>
       </li>
     </ul>
     <div class="zhao" @click="close"></div>
@@ -189,174 +44,136 @@
       <img src="~/assets/w-del.png" alt class="del" @click="close" />
       <img class="bg" src="~/assets/addressd.png" alt />
       <h5>很遗憾没有城市信息</h5>
-      <p>非常遗憾的通知您，您当前选择的城市我并未涉及，不是我们能力不足，是我们需要更多的人来一起点亮它，让我们一起来维护您选择的家园</p>
+      <p>
+        非常遗憾的通知您，您当前选择的城市我并未涉及，不是我们能力不足，是我们需要更多的人来一起点亮它，让我们一起来维护您选择的家园
+      </p>
       <div class="bom">
         <div class="b-left" @click="tohot">热门城市</div>
         <div class="b-right" @click="please">申请开放</div>
       </div>
     </div>
-    <div class="msg">我们已收到您诚挚的申请，在下一个开放城市中我们会优先开放—{{getname}}</div>
+    <!-- <div class="msg">我们已收到您诚挚的申请，在下一个开放城市中我们会优先开放—{{getname}}</div> -->
+    <van-popup
+      v-model="tan"
+      :style="{ background: 'rgba(0,0,0,0)' }"
+      @click-overlay="typebtn = 0"
+    >
+      <tan-view
+        :txt="remark"
+        :typenum="typenum"
+        :id="id"
+        :name="name"
+        @close="cli($event)"
+        :typebtn="typebtn"
+        :proname="''"
+        :city="cityid"
+      ></tan-view>
+    </van-popup>
   </div>
 </template>
 <script>
 import { address_start, ip } from "~/api/api";
-import '@/static/css/foot.css'
-import top from '@/components/header'
+import "@/static/css/foot.css";
+import tan from "@/components/tan.vue";
+import top from "@/components/header";
 import axios from "axios";
 export default {
   name: "Address",
-  components:{
-    'top-view':top
+  components: {
+    "top-view": top,
+    "tan-view": tan,
   },
-  async asyncData (context) {
-   let ip=context.store.state.cookie.ip;
+  async asyncData(context) {
+    let ip = context.store.state.cookie.ip;
     let city = context.store.state.cookie.city;
-    let token=context.store.state.cookie.token;
+    let token = context.store.state.cookie.token;
     let jkl = context.params.name;
-    let kid = context.store.state.cookie.kid ? context.store.state.cookie.kid : ''
-    let other = context.store.state.cookie.other ? context.store.state.cookie.other : ''
-    let [res]= await Promise.all([
-      context.$axios.post('/api/first/city',{ platform: 2, token: token, ip: ip,kid:kid,other:other })
-      .then((resp)=>{
+    let kid = context.store.state.cookie.kid
+      ? context.store.state.cookie.kid
+      : "";
+    let other = context.store.state.cookie.other
+      ? context.store.state.cookie.other
+      : "";
+    let [res1] = await Promise.all([
+      context.$axios
+        .get("/cities/all", { params: { city: city } })
+        .then((resp) => {
           let msg = resp.data.data;
-            
           return msg;
-      })
-    ])
-    return{
-          A : res.city.A,
-            B : res.city.B,
-            C : res.city.C,
-            D : res.city.D,
-            E : res.city.E,
-            F : res.city.F,
-            G : res.city.G,
-            H : res.city.H,
-            I : res.city.I,
-            J : res.city.J,
-            K : res.city.K,
-            L : res.city.L,
-            M : res.city.M,
-            N : res.city.N,
-            O : res.city.O,
-            P : res.city.P,
-            Q : res.city.Q,
-            R : res.city.R,
-            S : res.city.S,
-            T : res.city.T,
-            W : res.city.W,
-            X : res.city.X,
-            Y : res.city.Y,
-            Z : res.city.Z,
-            hots : res.hots,
-            jkl:jkl,
-            title:res.city.title,
-            description:res.city.description,
-            keywords:res.city.keywords
-    }
+        }),
+    ]);
+    return {
+      cities: res1.cities,
+      hots: res1.hots,
+      jkl: jkl,
+      current: res1.current
+    };
   },
   head() {
     return {
-      title: "家园新房-楼盘城市",
+      title: "楼盘城市",
       meta: [
         {
           name: "description",
-          content:
-            "家园新房"
+          content: "",
         },
         {
           name: "Keywords",
-          content: "家园新房"
-        }
-      ]
+          content: "",
+        },
+      ],
     };
   },
   data() {
     return {
+      tan: false,
+      remark: "",
+      name: "申请开放",
+      typebtn: 1,
+      typenum: 122,
+      id: '0',
       kk: false,
       getname: "",
       ll: 0,
-      A: [],
-      B: [],
-      C: [],
-      D: [],
-      E: [],
-      F: [],
-      G: [],
-      H: [],
-      I: [],
-      X: [],
-      V: [],
-      N: [],
-      M: [],
-      S: [],
-      J: [],
-      K: [],
-      L: [],
-      Q: [],
-      W: [],
-      R: [],
-      T: [],
-      Y: [],
-      U: [],
-      I: [],
-      O: [],
-      P: [],
-      Z: [],
+      list: [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "W",
+        "X",
+        "Y",
+        "Z",
+      ],
       hot: [],
       city: "杭州",
       btn: "重新定位",
       hots: [],
       ip: "",
-      jkl:'',
-      title:'',
-      keywords:'',
-      description:''
+      jkl: "",
+      title: "",
+      keywords: "",
+      description: "",
+      cityid: 0
     };
   },
   methods: {
-    start() {
-      this.city = localStorage.getItem("cityname");
-      
-        let token = localStorage.getItem("token");
-        let ip = ip_arr["ip"];
-        // let ip = returnCitySN["cip"];
-        this.ip = ip;
-        localStorage.getItem("ip");
-        let data = { platform: 2, token: token, ip: ip };
-        address_start(data)
-          .then(resp => {
-            let msg = resp.data.data.city;
-            localStorage.setItem("address", JSON.stringify(resp.data.data));
-            this.A = msg.A;
-            this.B = msg.B;
-            this.C = msg.C;
-            this.D = msg.D;
-            this.E = msg.E;
-            this.F = msg.F;
-            this.G = msg.G;
-            this.H = msg.H;
-            this.I = msg.I;
-            this.J = msg.J;
-            this.K = msg.K;
-            this.L = msg.L;
-            this.M = msg.M;
-            this.N = msg.N;
-            this.O = msg.O;
-            this.P = msg.P;
-            this.Q = msg.Q;
-            this.R = msg.R;
-            this.S = msg.S;
-            this.T = msg.T;
-            this.W = msg.W;
-            this.X = msg.X;
-            this.Y = msg.Y;
-            this.Z = msg.Z;
-            this.hots = resp.data.data.hots;
-          })
-          .catch(error => {
-            console.log(error);
-          });
+    cli(e) {
+      this.tan = e;
     },
     getcity() {
       this.getip();
@@ -366,19 +183,26 @@ export default {
       let n = e.target.getAttribute("data-n");
       let name = e.target.innerHTML;
       localStorage.setItem("city", city);
-      $cookies.set('city',city);
+      $cookies.set("city", city);
       localStorage.setItem("cityname", name);
-      $cookies.set('cityname',name);
+      $cookies.set("cityname", name);
       localStorage.setItem("pinyin", n);
-      $cookies.set('pinyin',n)
-      window.location.href="/"+n
+      $cookies.set("pinyin", n);
+      window.location.href = "/" + n;
       // this.$router.push("/" + n);
     },
     goback() {
       this.$router.go(-1);
     },
     show(e, id, name, pinyin) {
-      if (id) {
+      console.log(id, name);
+      let type = false
+      for(let item of this.hots) {
+        if (item.id == id) {
+          type = true
+        }
+      }
+      if (type) {
         let city = id;
         let n = pinyin;
         let name = name;
@@ -390,6 +214,7 @@ export default {
         $cookies.set("pinyin", n);
         window.location.href = "/" + n;
       } else {
+        this.cityid = id
         let n = e.target;
         this.getname = n.innerHTML;
         let address = JSON.parse(localStorage.getItem("address"));
@@ -404,7 +229,7 @@ export default {
     close() {
       $(".zhao").hide();
       this.kk = false;
-      this.ll=0;
+      this.ll = 0;
     },
     tohot() {
       $(".zhao").hide();
@@ -412,29 +237,31 @@ export default {
       window.scrollTo(0, 0);
     },
     please() {
-      if (this.ll == 0) {
-        this.ll = 1;
-        $(".b-right").css({ color: "#B8BCC2" });
-        $(".msg").show();
-        setTimeout(function() {
-          $(".msg").hide();
-        }, 2000);
-      }
-    }
+      this.tan = true;
+      this.kk = false
+      $(".zhao").hide();
+      // if (this.ll == 0) {
+      //   this.ll = 1;
+      //   $(".b-right").css({ color: "#B8BCC2" });
+      //   $(".msg").show();
+      //   setTimeout(function() {
+      //     $(".msg").hide();
+      //   }, 2000);
+      // }
+    },
   },
   mounted() {
-    this.start();
     let that = this;
     let n = localStorage.getItem("pinyin");
-    $("#sea").on("click", function() {
+    $("#sea").on("click", function () {
       // window.location.href = '/'+n+"/soucity";
       this.$router.push("/" + n + "/soucity");
     });
-    $(".zhao").on("click", function() {
+    $(".zhao").on("click", function () {
       $(this).hide();
       that.kk = false;
     });
-  }
+  },
 };
 </script>
 <style scoped>
@@ -534,7 +361,7 @@ li {
   line-height: 54px;
   height: 54px;
   padding: 0 4%;
-  padding-top: 2.75rem
+  padding-top: 2.75rem;
 }
 .current .cur {
   width: 5%;
@@ -569,17 +396,17 @@ li {
   margin-top: 14px;
 }
 .hot span {
-  width: 4.375rem;
-  height: 24px;
+  width: 4.5rem;
+  height: 1.5625rem;
   background-color: #f2f4f7;
   text-align: center;
-  line-height: 24px;
+  line-height: 1.5625rem;
   display: inline-block;
   margin-right: 3.773%;
   color: #5e6166;
   font-size: 14px;
   margin-bottom: 15px;
-  border-radius: 0.125rem;
+  border-radius: 0.375rem;
 }
 
 .all {

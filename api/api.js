@@ -290,6 +290,16 @@ export const get = (id, other) => {
     }
   })
 }
+export const newget = (id, other) => {
+  return axios.request({
+    method: 'get',
+    url: '/jia_yuan_new/sem',
+    params: {
+      id: id,
+      other: other
+    }
+  })
+}
 
 export const msg = (msg) => {
   return axios.request({

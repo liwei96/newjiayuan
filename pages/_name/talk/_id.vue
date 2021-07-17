@@ -612,11 +612,11 @@ export default {
       this.othertype = true
       console.log(decodeURIComponent(url.split("=")[1]));
       let arr = decodeURIComponent(url.split("=")[1]).split("?");
-      if (arr[0].indexOf("yunim") !== -1) {
+      // if (arr[0].indexOf("yunim") !== -1) {
         this.xymsg = "允家用户协议";
         this.yunjia = true;
         this.typetxt = "允家咨询师";
-      }
+      // }
       console.log(arr[0]);
       sessionStorage.setItem("reconnect", arr[0]);
       let kk = arr[1].split("&");
@@ -636,10 +636,10 @@ export default {
       let pro = kk[0].split("=")[1];
       let city = kk[2].split("=")[1];
       sessionStorage.setItem("proid", pro);
-      console.log(kk[3].split('=').length)
+      console.log(kk[4].split('=').length,kk[4].split('='))
       this.proid = pro
-      if (kk[3].split('=').length == 2) {
-        let staff = kk[3].split("=")[1];
+      if (kk[4].split('=').length == 2) {
+        let staff = kk[4].split("=")[1];
         console.log(staff)
         this.staffid = staff
         sessionStorage.setItem('staffid',staff)
@@ -655,7 +655,7 @@ export default {
             city: city,
             project: pro,
             ip: ip,
-            url: arr[0],
+            url: decodeURIComponent(url.split("=")[1]),
             uuid: uuid,
             host:self.host
           },

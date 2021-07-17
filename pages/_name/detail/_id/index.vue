@@ -35,7 +35,7 @@
           类 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
           <span>{{ building.type }}</span>
         </li>
-        <li>
+        <li class="huxing">
           户 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 型：
           <span>{{ building.room_types }}</span>
           <nuxt-link :to="'/' + jkl + '/hus/' + id">
@@ -439,6 +439,18 @@ header {
         color: #2ac66d;
         float: right;
         margin-top: 0.625rem;
+      }
+    }
+    .huxing {
+      display: flex;
+      align-items: center;
+      span {
+        display: inline-block;
+        width: 11.25rem;
+        line-height: 20px;
+      }
+      a {
+        margin-left: auto;
       }
     }
     .pri {

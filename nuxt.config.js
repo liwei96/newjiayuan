@@ -198,6 +198,20 @@ export default {
       pathRewrite: {
         "^/buildings": "/buildings" // 去掉接口地址中的api字符串
       }
+    },
+    "/cities": {
+      target: "http://java.edefang.net/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/cities": "/cities" // 去掉接口地址中的api字符串
+      }
+    },
+    "/jia_yuan_new": {
+      target: "http://java.edefang.net/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/jia_yuan_new": "/jia_yuan_new" // 去掉接口地址中的api字符串
+      }
     }
   },
   axios: {
