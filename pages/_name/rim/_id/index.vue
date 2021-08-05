@@ -334,7 +334,7 @@ header {
   padding-top: 2.5rem;
   padding-bottom: 15.3125rem;
   position: relative;
-  background-color: pink;
+  background-color: #f5f5f5;
   #map {
     width: 100%;
     height: 100%;

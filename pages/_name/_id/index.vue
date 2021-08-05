@@ -875,7 +875,7 @@ import { msg, verification, top_sure, newget } from "@/api/api";
 export default {
   async asyncData(context) {
     try {
-      let other = context.store.state.cookie.other;
+      let other = context.query.other;
       let id = context.params.id;
       let [res1] = await Promise.all([
         context.$axios
@@ -1701,7 +1701,7 @@ export default {
       }
       let url = window.location.href;
       url = url.split("?")[1];
-      if (url && url.indexOf("kid") !== -1) {
+      if (url && url.indexOf("other") !== -1) {
         url = url.split("&");
         let kid = this.$route.query.kid;
         let other = this.$route.query.other;
@@ -2326,6 +2326,9 @@ export default {
     }
   },
   mounted() {
+    let ip = ip_arr["ip"];
+    let pro = this.$route.params.id
+    let url = window.location.href;
     let that = this;
     // var mySwiper1 = new Swiper(".swiper-hu", {
     //     slidesPerView: 2.08,
@@ -2343,14 +2346,11 @@ export default {
     });
     $("#foott").css("display", "none");
     this.start();
-    let url = window.location.href;
     let newurl = "";
     if (url.split("=").length) {
       newurl = encodeURIComponent(url.split("=")[0]);
     }
 
-    let ip = ip_arr["ip"];
-    let pro = this.$route.params.id;
     if (this.chengjiao.length) {
       this.drawline();
     }
@@ -2363,8 +2363,8 @@ export default {
         city: this.basic.pid,
         project: pro,
         ip: ip,
-        url: newurl,
-        uuid: localStorage.getItem("uuid"),
+        url: url,
+        uuid: this.$route.query.uuid || localStorage.getItem('uuid'),
         host: this.$store.state.hostname
       }
     };

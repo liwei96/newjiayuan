@@ -878,6 +878,7 @@ export default {
     "nav-view": nav,
     "tan-view": tan,
   },
+
   async asyncData(context) {
     try {
       let host = context.store.state.host;
@@ -946,6 +947,10 @@ export default {
       context.error({ statusCode: 404, message: "页面未找到或无数据" });
     }
   },
+  validate({ params, query }) {
+  console.log(query)
+  return true
+},
   head() {
     return {
       title: this.title || this.abstract.name + "-" + this.cityname,

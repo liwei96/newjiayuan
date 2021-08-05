@@ -63,7 +63,6 @@ export default {
     },
   },
   mounted() {
-    return
     if (this.totalnum == "NaN") {
       this.totalnum = 0;
     }
@@ -104,7 +103,7 @@ export default {
         project: pro,
         ip: ip,
         url: url,
-        uuid: localStorage.getItem("uuid"),
+        uuid: that.$route.query.uuid || localStorage.getItem('uuid'),
         host: that.$store.state.hostname
       },
     };
@@ -135,7 +134,7 @@ export default {
   border-top: 0.03125rem solid #f7f7f7;
   .nav-peo {
     position: relative;
-    margin-right: 1.25rem;
+    margin-right: 1.2rem;
     margin-left: 0.625rem;
     text-align: center;
     img {

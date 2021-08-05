@@ -326,11 +326,7 @@ export default {
       zoom: 11,
       show: true,
       active: false,
-      point: [
-        { lng: 120.151694, lat: 30.323685 },
-        { lng: 120.140771, lat: 30.122969 },
-        { lng: 120.080405, lat: 30.269303 },
-      ],
+      point: [],
       citys: [],
       dities: [],
       single_prices: [],

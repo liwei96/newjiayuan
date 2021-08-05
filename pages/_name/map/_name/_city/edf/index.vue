@@ -1,31 +1,34 @@
 <template>
   <div class="Map">
     <div class="top">
-      <img class="back" src="~/assets/return.png" alt @click="back" />
+      <!-- <img class="back" src="~/assets/return.png" alt @click="back"/>
       <input
         class="inpu"
         type="button"
         value="请输入楼盘名称"
         @click="gosearch"
       />
-      <img class="search" src="~/assets/search.png" alt />
+      <img class="search" src="~/assets/search.png" alt /> -->
       <div class="sou_box">
         <ul class="select">
           <li class="click_qu">
             区域
-            <span class="iconfont iconxiajiantoushixinxiao"></span>
+            <img src="~/assets/down1.png" alt="" />
           </li>
           <li class="click_price">
             价格
-            <span class="iconfont iconxiajiantoushixinxiao"></span>
+            <img src="~/assets/down1.png" alt="" />
           </li>
           <li class="click_huxing">
             户型
-            <span class="iconfont iconxiajiantoushixinxiao"></span>
+            <img src="~/assets/down1.png" alt="" />
           </li>
           <li class="click_shai">
-            筛选
-            <span class="iconfont iconxiajiantoushixinxiao"></span>
+            更多
+            <img src="~/assets/down1.png" alt="" />
+          </li>
+          <li @click="search">
+            <img class="img" src="~/assets/mapsearch.png" alt="">
           </li>
         </ul>
 
@@ -152,9 +155,10 @@
                   v-for="(item, key) in build_types"
                   :data-v="key"
                   :key="key"
-                  @click="tp($event)"
+                  @click="tp($event, item)"
+                  v-if="item"
                 >
-                  {{ item.type }}
+                  {{ item }}
                 </li>
               </ul>
               <!-- <h2>开发商</h2>
@@ -184,7 +188,7 @@
 
           <div class="zhao"></div>
         </div>
-        <div class="number">
+        <div class="number" v-if="false">
           <p>
             可视范围内找到
             <span id="ks">{{ city }}</span> 个楼盘, 当前城市共找到
@@ -208,115 +212,99 @@
         :enableGeolocation="show"
       ></bm-navigation>
       <template v-for="(item, index) in point">
-        <my-overlay
+        <my-overlay1
           :key="index"
           :position="item"
           :text="
             zoom < 14
-              ? ` <h4 id='m_name'> ${item.country || item.street}</h4>
-                 <p id='m_num'>${item.Num}个</p>
+              ? ` <h4 id='m_name'> ${item.name || item.street}</h4>
+                 <p id='m_num'>${item.num || item.Num}个</p>
                  `
-              : ` <h4 id='b_name'> ${item.building_name}</h4>
-                 <p id='b_price'>约${parseInt(item.price)}元/m²</p>
+              : ` <h4 id='b_name'> ${item.name}</h4>
+                 <p id='b_price'>${parseInt(item.price)}元/m²</p>
                  `
           "
           :active="zoom"
           @mouseover.native="active = true"
           @mouseleave.native="active = false"
           @click.native="boxclick(item, $event)"
-        ></my-overlay>
+        ></my-overlay1>
       </template>
     </baidu-map>
     <div class="project" v-show="pro">
-      <router-link :to="'/' + jkl + '/content/' + building.id">
-        <div class="re-list">
-          <div class="re-con-left">
-            <img :src="building.img" />
-            <span>
-              <i class="iconfont iconyanjing"></i>
-              {{ building.count }}
-            </span>
-          </div>
-          <div class="re-con-right">
-            <h5>
-              {{ building.name }}
-              <span>{{ building.status }}</span>
-            </h5>
-            <p class="price">
-              <span>{{ building.single_price }}</span
-              >元/m²
-            </p>
-            <p class="area">
-              <span>{{ building.area_name }}</span>
-              <span>建面</span>
-              <span> {{ building.area }}m² </span>
-            </p>
-            <p class="tabs">
-              <span class="strong">{{ building.decorate }}</span>
-              <span v-show="building.railways">{{ building.railways }}</span>
-              <span v-show="building.features">{{ building.features }}</span>
-            </p>
-          </div>
+      <div class="re-list" @click="gobuild(building.id)">
+        <div class="re-con-left">
+          <img :src="building.image" />
+          <!-- <span>
+            <i class="iconfont iconyanjing"></i>
+            {{ building.count }}
+          </span> -->
         </div>
-      </router-link>
-    </div>
-    <div class="you" @click="gohui">
-      <img src="~/assets/map-hui.png" alt="" />
-      <p>优惠</p>
-    </div>
-
-    <div class="you list" @click="search">
-      <img src="~/assets/map-list.png" alt="" />
-      <p>列表</p>
+        <div class="re-con-right">
+          <h5>
+            {{ building.name }}
+            <span>{{ building.state }}</span>
+          </h5>
+          <p class="price">
+            <span>{{ building.price }}</span
+            >元/m²
+          </p>
+          <p class="area">
+            <span>{{ building.type }}</span
+            >| <span>{{ building.city }}-{{ building.country }}</span
+            >|
+            <span> {{ building.area }}m² </span>
+          </p>
+          <p class="tabs">
+            <span class="strong">{{ building.decorate }}</span>
+            <span v-show="building.railway">{{ building.railway }}</span>
+            <span v-show="building.feature">{{ building.feature }}</span>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import MyOverlay from "@/components/MyOverlay";
-import MyOverlays from "@/components/MyOverlays";
+import MyOverlay1 from "@/components/MyOverlay2.vue";
 import "@/static/css/foot.css";
 import {
-  search_start,
-  mapSaerch,
+  mapoptions,
   mapSearch,
-  content_data,
-  mapProject,
+  mapsount,
+  mapstreet,
+  mapbuildings,
+  mapProjects
 } from "~/api/api";
 export default {
   name: "Map",
   components: {
-    MyOverlay,
-    MyOverlays,
+    MyOverlay1
   },
   async asyncData(context) {
-    try {
-      let jkl = context.params.name;
-      let city = context.store.state.city;
-      let token = context.store.state.cookie.token;
-      let [res] = await Promise.all([
-        context.$axios
-          .get("/jy/phone/head/foot", {
-            params: {
-              city: city,
-              token: token,
-            },
-          })
-          .then((resp) => {
-            let data = resp.data;
-            // console.log(data)
-            return data;
-          }),
-      ]);
-      return {
-        jkl: jkl,
-        title: res.common.header.title,
-        description: res.common.header.description,
-        keywords: res.common.header.keywords,
-      };
-    } catch (err) {
-      console.log("errConsole========:", err);
-      context.error({ statusCode: 404, message: "页面未找到或无数据" });
-    }
+    let jkl = context.params.name;
+    let city = context.params.city;
+    let token = context.store.state.cookie.token;
+    let [res] = await Promise.all([
+      context.$axios
+        .get("/jy/phone/head/foot", {
+          params: {
+            city: city,
+            token: token
+          }
+        })
+        .then(resp => {
+          let data = resp.data;
+          // console.log(data)
+          return data;
+        })
+    ]);
+    return {
+      jkl: jkl,
+      title: res.common.header.title,
+      description: res.common.header.description,
+      keywords: res.common.header.keywords
+    };
   },
   head() {
     return {
@@ -324,18 +312,18 @@ export default {
       meta: [
         {
           name: "description",
-          content: this.description || "家园新房",
+          content: this.description || "家园新房"
         },
         {
           name: "Keywords",
-          content: this.keywords || "家园新房",
-        },
-      ],
+          content: this.keywords || "家园新房"
+        }
+      ]
     };
   },
   data() {
     return {
-      zoom: 12,
+      zoom: 11,
       show: true,
       active: false,
       point: [],
@@ -373,13 +361,13 @@ export default {
       num5: "",
       num4: "",
       num7: "",
-      num6: "",
+      num6: ""
     };
   },
   created() {
     if (process.client) {
-      let name = this.$route.query.cityname || localStorage.getItem("cityname");
-      localStorage.setItem("cityname", name);
+      console.log(this.$route.params.name);
+      let name = this.$route.params.name;
       if (name) {
         this.cityname = name;
       } else {
@@ -392,14 +380,12 @@ export default {
     }
   },
   methods: {
-    back() {
-      this.$router.go(-1);
-    },
     handler({ BMap, map }) {
       this.Bmap = BMap;
       map.disableDragging();
     },
     getzoom(e) {
+      
       this.map = e.target;
       let con = e.target.getBounds();
       var bssw = con.getSouthWest(); //可视区域左下角
@@ -414,11 +400,16 @@ export default {
       let right_top_lng = bsne.lng;
       let right_top_lat = bsne.lat;
       let mapwhere = $cookies.get("mapwhere");
+      console.log(mapwhere, "where");
+      if (!this.q1) {
+        mapwhere.country = 0;
+      }
+      let that = this;
       if (mapwhere) {
-        mapwhere.left_bottom_lng = left_bottom_lng;
-        mapwhere.left_bottom_lat = left_bottom_lat;
-        mapwhere.right_top_lng = right_top_lng;
-        mapwhere.right_top_lat = right_top_lat;
+        // mapwhere.left_bottom_lng = left_bottom_lng;
+        // mapwhere.left_bottom_lat = left_bottom_lat;
+        // mapwhere.right_top_lng = right_top_lng;
+        // mapwhere.right_top_lat = right_top_lat;
       } else {
         mapwhere = {
           ip: ip,
@@ -428,25 +419,33 @@ export default {
           left_bottom_lat: left_bottom_lat,
           right_top_lng: right_top_lng,
           right_top_lat: right_top_lat,
+          level: 1
         };
       }
       $cookies.set("mapwhere", mapwhere, "5min");
+      that.city = 0
       if (zoom > 10 && zoom <= 12) {
+        this.pro = false
         mapwhere.level = 1;
         this.level = 1;
+        mapsount(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+          for (let item of that.point) {
+            if (item.num) {
+              that.city += item.num;
+            } else {
+              that.city++;
+            }
+          }
+        });
       } else if (zoom > 12 && zoom < 14) {
+        this.pro = false
         mapwhere.level = 2;
         this.level = 2;
-      } else if (zoom >= 14) {
-        this.level = 3;
-        mapwhere.level = 3;
-      }
-      let that = this;
-      mapSearch(mapwhere)
-        .then((resp) => {
-          that.point = resp.data.data;
-          that.city = 0;
-          that.all = resp.data.sum_city;
+        mapstreet(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
           for (let item of that.point) {
             if (item.Num) {
               that.city += item.Num;
@@ -454,10 +453,47 @@ export default {
               that.city++;
             }
           }
-        })
-        .catch((error) => {
-          console.log(error);
         });
+      } else if (zoom >= 14) {
+        this.level = 3;
+        mapwhere.level = 3;
+        mapwhere.left_bottom_longitude = left_bottom_lng;
+        mapwhere.left_bottom_latitude = left_bottom_lat;
+        mapwhere.right_top_longitude = right_top_lng;
+        mapwhere.right_top_latitude = right_top_lat;
+        $cookies.set("mapwhere", mapwhere, "5min");
+        mapbuildings(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+          for (let item of that.point) {
+            if (item.Num) {
+              that.city += item.num;
+            } else {
+              that.city++;
+            }
+          }
+          that.toast(`可视范围内找到 ${that.city} 个楼盘`)
+        });
+      }
+    },
+    gobuild(id) {
+      $(document).ready(function() {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pageA/content/content?id=" + id });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pageA/content/content?id=" + id,
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            }
+          });
+        }
+      });
     },
     move(e) {
       e.target.enableDragging();
@@ -468,31 +504,51 @@ export default {
     start() {
       let ip = ip_arr["ip"];
       // let ip = returnCitySN["cip"];;
-      let city = localStorage.getItem("city");
+      let city = this.$route.params.city;
       let token = localStorage.getItem("token");
-      $cookies.set("mapwhere", { ip: ip, city: city, token: token });
-      search_start({ ip: ip, city: city, platform: "2", token: token })
-        .then((resp) => {
-          let data = resp.data.data.conditions;
-          this.citys = data.cities;
+      $cookies.set("mapwhere", {
+        area: 0,
+        city: city,
+        country: 0,
+        decorate: "",
+        feature: 0,
+        house_types: [],
+        limit: 10,
+        near_railway: 0,
+        page: 1,
+        railway: 0,
+        single_price: 0,
+        sort: 0,
+        special: 0,
+        total_price: 0,
+        total_price_max: 0,
+        total_price_min: 0,
+        type: ""
+      });
+      mapoptions({ city: city })
+        .then(resp => {
+          console.log(resp, "res");
+          let data = resp.data.data;
+          this.apartments = data.house_types;
+          this.citys = data.countries;
           this.dities = data.railways;
           this.single_prices = data.single_prices;
           this.total_prices = data.total_prices;
-          this.apartments = data.apartments;
-          this.build_types = data.build_types;
+          this.build_types = data.building_types;
           this.features = data.features;
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
     qu(e) {
       let id = e.target.getAttribute("data-v");
+      console.log(id);
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.country;
+        where.country = 0;
       } else {
-        where.country = id;
+        where.country = Number(id);
       }
       $cookies.set("mapwhere", where, 0);
       this.q1 = id;
@@ -508,7 +564,7 @@ export default {
       let id = e.target.getAttribute("data-v");
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.railway;
+        where.railway = 0;
       } else {
         where.railway = id;
       }
@@ -526,9 +582,9 @@ export default {
       let id = e.target.getAttribute("data-v");
       let where = $cookies.get("mapwhere");
       if (id == 0) {
-        delete where.totalprice;
+        where.total_price = 0;
       } else {
-        where.totalprice = id;
+        where.total_price = id;
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -546,7 +602,7 @@ export default {
       if (id != 0) {
         where.single_price = id;
       } else {
-        delete where.single_price;
+        where.single_price = 0;
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -560,17 +616,17 @@ export default {
     },
     hu() {
       let id = this.hus;
-      id = id.join(",");
+      // id = id.join(",");
       let where = $cookies.get("mapwhere");
-      where.apartment = id;
+      where.house_types = id;
       $cookies.set("mapwhere", where, 0);
       this.search_data();
     },
-    tp(e) {
-      let id = e.target.innerHTML;
+    tp(e, name) {
+      // let id = e.target.innerHTML;
       let key = e.target.getAttribute("data-v");
       this.t1 = key;
-      this.type = id;
+      this.type = name;
     },
     se(e) {
       let id = e.target.getAttribute("data-v");
@@ -583,7 +639,7 @@ export default {
         where.feature = this.te;
       }
       if (this.type) {
-        where.build_type = this.type;
+        where.type = this.type;
       }
       $cookies.set("mapwhere", where, 0);
       this.search_data();
@@ -591,64 +647,55 @@ export default {
     search_data() {
       let mapwhere = $cookies.get("mapwhere");
       let that = this;
-      mapSearch(mapwhere)
-        .then((resp) => {
-          that.point = resp.data.data;
-          that.city = 0;
-          that.all = resp.data.sum_city;
-          for (let item of that.point) {
-            if (item.Num) {
-              that.city += item.Num;
-            } else {
-              that.city++;
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+
+      if (this.level == 1) {
+        mapsount(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
         });
+      } else if (this.level == 2) {
+        mapstreet(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
+      } else {
+        mapbuildings(mapwhere).then(res => {
+          console.log(res, "resps");
+          that.point = res.data.data;
+        });
+      }
+
+      // mapSearch(mapwhere)
+      //   .then((resp) => {
+      //     // that.point = resp.data.data;
+      //     that.city = 0;
+      //     that.all = resp.data.sum_city;
+      //     for (let item of that.point) {
+      //       if (item.Num) {
+      //         that.city += item.Num;
+      //       } else {
+      //         that.city++;
+      //       }
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
     },
     putid(id, e) {
-      // map.panTo(new BMap.Point(jk[0],jk[1]));
-      // let n = e.target.parentElement.parentElement.parentElement.children;
-
-      //   console.log(n, id, e.currentTarget);
-      //   return
-      // for (let i = 1; i < n.length; i++) {
-      //   n[i].style.backgroundColor = "#40A2F4";
-      //   n[i].style.zIndex = "1";
-      // }
-      // e.currentTarget.style.background =
-      //   "linear-gradient(270deg, #FF8D41, #FFAE2D)";
-      $(e.currentTarget).addClass("dv").siblings().removeClass("dv");
-      // e.currentTarget.style.zIndex = 2;
-      //   if (e.target.id == "b_name") {
-      //     e.target.style.backgroundColor = "#FF6666";
-      //     e.target.parentElement.parentElement.style.zIndex='2'
-      //   } else {
-      //     e.target.previousElementSibling.style.backgroundColor = "#FF6666";
-      //     e.target.parentElement.parentElement.style.zIndex='2'
-      //   }
+      $(e.currentTarget)
+        .addClass("dv")
+        .siblings()
+        .removeClass("dv");
       let ip = ip_arr["ip"];
-      // let ip = returnCitySN["cip"];
       let token = $cookies.get("token");
       let that = this;
-      mapProject({ ip: ip, id: id, token: token, platform: 2 })
-        .then((resp) => {
-          console.log(resp);
-          this.pro = true;
-          let data = resp.data.data;
-          that.building = data;
-          if (that.building.railways) {
-            that.building.railways = that.building.railways[0];
-          }
-          if (that.building.features) {
-            that.building.features = that.building.features[0];
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      mapProjects({ id: id }).then(res => {
+        console.log(res);
+        this.pro = true;
+        let data = res.data.data;
+        that.building = data;
+      });
     },
     boxclick(item, e) {
       if (this.level <= 2) {
@@ -664,13 +711,22 @@ export default {
     },
     changezoom(item) {
       // console.log(item);
+      let mapwhere = $cookies.get("mapwhere");
       if (this.level == 1) {
         this.zoom = 13;
+        mapwhere.country = item.id;
       } else if (this.level == 2) {
-        this.zoom = 14;
+        this.zoom = 15;
+        mapwhere.street = item.id;
+      } else {
+        mapwhere.street = item.id;
       }
-      let BMap = this.Bmap;
-      this.map.panTo(new BMap.Point(item["lng"], item["lat"]));
+      // let BMap = this.Bmap;
+      console.log(item["longitude"], item["latitude"]);
+      $cookies.set("mapwhere", mapwhere, "5min");
+      // this.search_data()
+      // return
+      // this.map.panTo(new BMap.Point(item["latitude"],item["longitude"]));
     },
     clear2() {
       this.t1 = -1;
@@ -678,37 +734,72 @@ export default {
       let where = $cookies.get("mapwhere");
       this.te = "";
       this.type = "";
-      delete where.feature;
-      delete where.build_type;
+      where.feature = "";
+      where.build_type = "";
       $cookies.set("mapwhere", where, 0);
     },
     clear1() {
       this.hus = [];
       let where = $cookies.get("mapwhere");
-      delete where.apartment;
+      where.house_types = [];
       $cookies.set("mapwhere", where, 0);
     },
     gosearch() {
       this.$router.push("/" + this.$route.params.name + "/searchname");
     },
     gohui() {
-      this.$router.push("/" + this.$route.params.name + "/special");
+      $(document).ready(function() {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pageA/special/special" });
+        } else {
+          swan.webView.redirectTo({
+            url: "/pageA/special/special",
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            }
+          });
+        }
+      });
+
+      // this.$router.push("/" + this.$route.params.name + "/special");
     },
     search() {
-      this.$router.push("/" + this.$route.params.name + "/search");
+      $(document).ready(function() {
+        var u = navigator.userAgent;
+        var isbaidu = u.indexOf("baiduboxapp") > -1; //百度小程序
+        if (!isbaidu) {
+          wx.miniProgram.navigateTo({ url: "/pages/building/building" });
+        } else {
+          swan.webView.switchTab({
+            url: "/pages/building/building",
+            success() {
+              console.log("to-web-view success");
+            },
+            fail() {
+              console.log("fail");
+            }
+          });
+        }
+      });
     },
     checkbox(e) {
       console.log(e.target);
-      $(".hubox").each(function () {
-        $(this).prop("checked", false);
-      });
-      $(e.target).prop("checked", true);
-      this.hus = this.hus.slice(0, this.hus.length - 1);
+      console.log(this.hus);
+      // $(".hubox").each(function () {
+      //   $(this).prop("checked", false);
+      // });
+      // $(e.target).prop("checked", true);
+      // this.hus = this.hus.slice(0, this.hus.length - 1);
       // if (this.hus.length >= 1) {
       //   // e.target.checked = false
       //   $(e.target).prop("checked", false);
       // }
-    },
+    }
   },
   mounted() {
     // var ua = window.navigator.userAgent.toLowerCase();
@@ -722,22 +813,31 @@ export default {
     //     }
     let that = this;
     this.start();
-    $(".sea").on("click", function () {
+    $(".sea").on("click", function() {
       window.location.href = "/search";
     });
-    $(".type li").click(function () {
-      $(this).addClass("active").siblings("li").removeClass("active");
+    $(".type li").click(function() {
+      $(this)
+        .addClass("active")
+        .siblings("li")
+        .removeClass("active");
       console.log($(this).html());
     });
-    $(".kaifa li").click(function () {
-      $(this).addClass("active").siblings("li").removeClass("active");
+    $(".kaifa li").click(function() {
+      $(this)
+        .addClass("active")
+        .siblings("li")
+        .removeClass("active");
       console.log($(this).html());
     });
-    $(".tese li").click(function () {
-      $(this).addClass("active").siblings("li").removeClass("active");
+    $(".tese li").click(function() {
+      $(this)
+        .addClass("active")
+        .siblings("li")
+        .removeClass("active");
       console.log($(this).html());
     });
-    $(".qu-left li").click(function () {
+    $(".qu-left li").click(function() {
       var con = $(this).html();
       if (con == "城区") {
         $(".qu-quyu").show();
@@ -747,11 +847,17 @@ export default {
         $(".qu-quyu").hide();
       }
       console.log($(this).html());
-      $(this).addClass("qu_active").siblings("li").removeClass("qu_active");
+      $(this)
+        .addClass("qu_active")
+        .siblings("li")
+        .removeClass("qu_active");
     });
     /*区域和地铁*/
-    $(".qu-quyu li").click(function () {
-      $(this).addClass("qu_active").siblings("li").removeClass("qu_active");
+    $(".qu-quyu li").click(function() {
+      $(this)
+        .addClass("qu_active")
+        .siblings("li")
+        .removeClass("qu_active");
       // console.log($(this).html())
       var str = $(this).attr("data_v");
       console.log(str);
@@ -761,8 +867,11 @@ export default {
       str = $(this).html();
       $(".click_qu").text(str);
     });
-    $(".qu-ditie li").click(function () {
-      $(this).addClass("qu_active").siblings("li").removeClass("qu_active");
+    $(".qu-ditie li").click(function() {
+      $(this)
+        .addClass("qu_active")
+        .siblings("li")
+        .removeClass("qu_active");
       var str = $(this).attr("data-v");
       console.log(str);
       send(str, 2);
@@ -770,14 +879,14 @@ export default {
       $(".zhao").hide();
     });
     /*单价和总价*/
-    $(".price-zong li").click(function () {
+    $(".price-zong li").click(function() {
       var str = $(this).attr("data_v");
       console.log(str);
       send(str, 4);
       $(".price-list").hide();
       $(".zhao").hide();
     });
-    $(".price-dan li").click(function () {
+    $(".price-dan li").click(function() {
       var str = $(this).attr("data_v");
       console.log(str);
       send(str, 3);
@@ -785,7 +894,7 @@ export default {
       $(".zhao").hide();
     });
 
-    $(".price-left li").click(function () {
+    $(".price-left li").click(function() {
       var con = $(this).html();
       console.log(con);
       if (con == "总价") {
@@ -795,28 +904,55 @@ export default {
         $(".price-zong").hide();
         $(".price-dan").show();
       }
-      $(this).addClass("qu_active").siblings("li").removeClass("qu_active");
+      $(this)
+        .addClass("qu_active")
+        .siblings("li")
+        .removeClass("qu_active");
     });
 
-    $(".price-right li").click(function () {
-      $(this).addClass("qu_active").siblings("li").removeClass("qu_active");
+    $(".price-right li").click(function() {
+      $(this)
+        .addClass("qu_active")
+        .siblings("li")
+        .removeClass("qu_active");
       console.log($(this).html());
     });
 
-    $(".huxing_top li").click(function () {
-      if ($(this).find("input").prop("checked")) {
-        $(this).find("input").prop("checked", false);
+    $(".huxing_top li").click(function() {
+      if (
+        $(this)
+          .find("input")
+          .prop("checked")
+      ) {
+        $(this)
+          .find("input")
+          .prop("checked", false);
       } else {
-        $(this).find("input").prop("checked", true);
+        $(this)
+          .find("input")
+          .prop("checked", true);
       }
-      console.log($(this).children("span").html());
-      $(this).children("span").addClass("hu_active");
-      $(this).siblings("li").children("span").removeClass("hu_active");
+      console.log(
+        $(this)
+          .children("span")
+          .html()
+      );
+      $(this)
+        .children("span")
+        .addClass("hu_active");
+      $(this)
+        .siblings("li")
+        .children("span")
+        .removeClass("hu_active");
 
-      console.log($(this).children("span").html());
+      console.log(
+        $(this)
+          .children("span")
+          .html()
+      );
     });
     /*户型*/
-    $(".huxing_que  .m-h-r").click(function () {
+    $(".huxing_que  .m-h-r").click(function() {
       $(".zhao").hide();
       that.flag1 = true;
       that.flag = true;
@@ -828,7 +964,7 @@ export default {
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       $(".huxing_list").slideUp(100);
     });
-    $(".huxing_que .m-h-l").click(function () {
+    $(".huxing_que .m-h-l").click(function() {
       $(this)
         .parent()
         .prev()
@@ -838,7 +974,7 @@ export default {
     });
 
     /*筛选*/
-    $(".shaixuan .m-h-r").click(function () {
+    $(".shaixuan .m-h-r").click(function() {
       $(".zhao").hide();
       that.flag1 = true;
       that.flag = true;
@@ -850,13 +986,21 @@ export default {
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       $(".shaixuan_list").slideUp(100);
     });
-    $(".shaixuan .m-h-l").click(function () {
-      $(this).parent().prev().children(".bgg").children().removeClass("active");
+    $(".shaixuan .m-h-l").click(function() {
+      $(this)
+        .parent()
+        .prev()
+        .children(".bgg")
+        .children()
+        .removeClass("active");
     });
 
     /*排序*/
-    $(".paixu_list li").click(function () {
-      $(this).addClass("pai_active").siblings("li").removeClass("pai_active");
+    $(".paixu_list li").click(function() {
+      $(this)
+        .addClass("pai_active")
+        .siblings("li")
+        .removeClass("pai_active");
       console.log($(this).attr("data_v"));
       var str = $(this).attr("data_v");
       send(str, 7);
@@ -864,7 +1008,7 @@ export default {
       $(".zhao").hide();
     });
 
-    $(".click_qu").click(function () {
+    $(".click_qu").click(function() {
       that.flag1 = true;
       that.flag2 = true;
       that.flag3 = true;
@@ -883,19 +1027,23 @@ export default {
         .children()
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       if (that.flag == true) {
-        $(this).children().attr("class", "iconfont iconshangjiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconshangjiantoushixinxiao");
         $(".quyu-list").slideDown("fast");
         $(".zhao").show();
         that.flag = false;
       } else {
-        $(this).children().attr("class", "iconfont iconxiajiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconxiajiantoushixinxiao");
         $(".quyu-list").slideUp("fast");
         $(".zhao").hide();
         that.flag = true;
       }
     });
 
-    $(".click_price").click(function () {
+    $(".click_price").click(function() {
       that.flag = true;
       that.flag2 = true;
       that.flag3 = true;
@@ -914,19 +1062,23 @@ export default {
         .children()
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       if (that.flag1 == true) {
-        $(this).children().attr("class", "iconfont iconshangjiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconshangjiantoushixinxiao");
         $(".price-list").slideDown("fast");
         $(".zhao").show();
         that.flag1 = false;
       } else {
-        $(this).children().attr("class", "iconfont iconxiajiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconxiajiantoushixinxiao");
         $(".price-list").slideUp("fast");
         $(".zhao").hide();
         that.flag1 = true;
       }
     });
 
-    $(".click_huxing").click(function () {
+    $(".click_huxing").click(function() {
       that.flag = true;
       that.flag1 = true;
       that.flag3 = true;
@@ -945,19 +1097,23 @@ export default {
         .children()
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       if (that.flag2 == true) {
-        $(this).children().attr("class", "iconfont iconshangjiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconshangjiantoushixinxiao");
         $(".huxing_list").slideDown("fast");
         $(".zhao").show();
         that.flag2 = false;
       } else {
-        $(this).children().attr("class", "iconfont iconxiajiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconxiajiantoushixinxiao");
         $(".huxing_list").slideUp("fast");
         $(".zhao").hide();
         that.flag2 = true;
       }
     });
 
-    $(".click_shai").click(function () {
+    $(".click_shai").click(function() {
       that.flag1 = true;
       that.flag2 = true;
       that.flag = true;
@@ -976,19 +1132,23 @@ export default {
         .children()
         .attr("class", "iconfont iconxiajiantoushixinxiao");
       if (that.flag3 == true) {
-        $(this).children().attr("class", "iconfont iconshangjiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconshangjiantoushixinxiao");
         $(".shaixuan_list").slideDown("fast");
         $(".zhao").show();
         that.flag3 = false;
       } else {
-        $(this).children().attr("class", "iconfont iconxiajiantoushixinxiao");
+        $(this)
+          .children()
+          .attr("class", "iconfont iconxiajiantoushixinxiao");
         $(".shaixuan_list").slideUp("fast");
         $(".zhao").hide();
         that.flag3 = true;
       }
     });
 
-    $(".click_pai").click(function () {
+    $(".click_pai").click(function() {
       that.flag = true;
       that.flag2 = true;
       that.flag3 = true;
@@ -1019,7 +1179,7 @@ export default {
         that.flag4 = true;
       }
     });
-    $(".zhao").click(function () {
+    $(".zhao").click(function() {
       that.flag1 = true;
       that.flag = true;
       that.flag2 = true;
@@ -1058,8 +1218,8 @@ export default {
     // }
     zoom(val) {
       console.log(val);
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -1077,9 +1237,8 @@ export default {
   width: 100%;
   flex: 1;
 }
-
 .Map >>> #m_name {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 400;
   margin-bottom: 0.625rem;
 }
@@ -1093,11 +1252,11 @@ export default {
 }
 .Map >>> #b_name {
   text-align: center;
-  font-size: 0.75rem;
-  color: #fff;
-  height: 1rem;
+  font-size: .875rem;
+  color: #0f161a;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: normal;
   white-space: nowrap;
 }
 .Map >>> #b_price {
@@ -1109,9 +1268,25 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.Map >>> #m_name {
+  text-align: center;
+  font-size: 1rem;
+  color: #0f161a;
+  margin: 0;
+  margin-bottom: .375rem;
+}
+.Map >>> #m_num {
+  font-size: .75rem;
+  color: #2e3133;
+  text-align: center;
+  height: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .top {
   width: 100%;
-  height: 8rem;
+  height: 48px;
   background-color: #fff;
   z-index: 20;
 }
@@ -1179,80 +1354,81 @@ input:-ms-input-placeholder {
   visibility: hidden;
 }
 .re-list .re-con-left {
-  margin-right: 14px;
+  margin-right: 0.875rem;
   position: relative;
-  width: 30.667%;
-  height: 84px;
-  border-radius: 5px;
+  width: 110px;
+  height: 82.5px;
+  border-radius: 8px;
   float: left;
 }
 .re-list .re-con-left img {
   width: 100%;
-  height: 84px;
-  border-radius: 5px;
+  height: 82.5px;
+  border-radius: 8px;
 }
 .re-list .re-con-left span {
   position: absolute;
   right: 3%;
   bottom: 1%;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: #ffffff;
 }
 .re-list .re-con-right {
   float: left;
   width: 60%;
   position: relative;
-  top: 1px;
+  top: 0.0625rem;
 }
 .re-list .re-con-right h5 {
-  color: #2e3033;
-  font-size: 17px;
-  margin-bottom: 2px;
+  color: #0f161a;
+  font-size: 16px;
+  margin-bottom: 0.125rem;
 }
 .re-list .re-con-right h5 span {
-  width: 36px;
-  height: 17px;
-  border-radius: 2px;
+  width: 2.25rem;
+  height: 1.0625rem;
+  border-radius: 0.1875rem;
   text-align: center;
-  line-height: 17px;
+  line-height: 1.0625rem;
   float: right;
-  background-color: #e9f7ea;
-  color: #2cd264;
+  background-color: #f8efdc;
+  color: #b68826;
   display: block;
   font-weight: 500;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 .re-list .re-con-right .price {
-  color: #ff5454;
-  font-size: 12px;
-  margin-bottom: 2px;
+  color: #fa5332;
+  font-size: 0.8125rem;
+  font-weight: bold;
+  margin-bottom: 0.125rem;
 }
 .re-list .re-con-right .price span {
-  font-size: 18px;
+  font-size: 1rem;
 }
 .re-list .re-con-right .area {
-  color: #919499;
-  font-size: 12px;
-  margin-bottom: 2px;
+  color: #2e3133;
+  font-size: 0.75rem;
+  margin-bottom: 4px;
 }
 .re-list .re-con-right .area span {
   margin-right: 2%;
 }
 .re-list .re-con-right .tabs .strong {
   font-weight: 500;
-  padding: 3px 7px;
-  background-color: #ebf5fc;
-  margin-right: 6px;
-  color: #4db5ff;
-  font-size: 11px;
+  padding: 0.1875rem 0.4375rem;
+  background-color: #e3f4fc;
+  margin-right: 0.375rem;
+  color: #36a8e0;
+  font-size: 0.75rem;
 }
 .re-list .re-con-right .tabs span {
-  padding: 3px 5px;
-  background-color: #f7f8fa;
-  color: #919499;
-  font-size: 11px;
-  margin-right: 6px;
-  border-radius: 2px;
+  padding: 0.1875rem 0.3125rem;
+  background-color: #f5f5f5;
+  color: #7d7e80;
+  font-size: 0.75rem;
+  margin-right: 0.375rem;
+  border-radius: 0.1875rem;
 }
 .you {
   width: 2.75rem;

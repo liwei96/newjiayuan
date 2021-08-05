@@ -212,6 +212,13 @@ export default {
       pathRewrite: {
         "^/jia_yuan_new": "/jia_yuan_new" // 去掉接口地址中的api字符串
       }
+    },
+    "/applet_edefang": {
+      target: "http://java.edefang.net/", // 重新映射的新地址 
+      changeOrigin: true, // 是否跨域
+      pathRewrite: {
+        "^/applet_edefang": "/applet_edefang" // 去掉接口地址中的api字符串
+      }
     }
   },
   axios: {

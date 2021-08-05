@@ -8,9 +8,10 @@
         <input type="tel" placeholder="请输入手机号" v-model="baoming" />
         <p class="xiyi">
           <input type="checkbox" v-model="checks" />我已阅读并同意
-          <a @click="goo">《家园用户协议》</a>
+          <a @click="goo" v-if="!edf">《家园用户协议》</a>
+          <a @click="goo" v-if="edf">《易得房用户协议》</a>
         </p>
-        <button @click="send">立即订阅</button>
+        <button :class="edf?'edf':''" @click="send">立即订阅</button>
         <p class="bomm">获取后会有置业顾问致电联系您并提供服务</p>
       </div>
       <div class="two" v-show="type">
@@ -72,7 +73,11 @@ export default {
     lucktype: {
       type: Number,
     },
-    city: {}
+    city: {},
+    edf: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -419,6 +424,9 @@ export default {
       border: 0;
       background: #2ac66d;
       margin-bottom: 0.625rem;
+    }
+    .edf {
+      background-color: #D5AA4D;
     }
     .bomm {
       color: #adadad;

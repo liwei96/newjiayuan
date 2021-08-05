@@ -14,7 +14,7 @@ li {
 }
 
 .select-list .qu_active {
-    color: #2AC66D !important;
+    color: #B68826 !important;
 }
 
 
@@ -100,22 +100,25 @@ li {
     justify-content: space-around;
     color: #414141;
     cursor: pointer;
+    padding: 0 10px;
 }
 
 .sou_box .select li {
     line-height: 48px;
     font-size: 14px;
+    display: flex;
+    align-items: center;
 }
 
-.sou_box .select li i {
-    font-size: 24px;
-}
 
-.sou_box .select li span {
-    color: #B3B3B3;
-    font-size: 18px;
+.sou_box .select li img {
+    width: 1rem;
+    margin-left: .25rem;
 }
-
+.sou_box .select li .img {
+    margin: 0;
+    width: 1.125rem;
+}
 /* 筛选列表框*/
 
 .sou_box .select-list .quyu-list,
@@ -213,7 +216,7 @@ li {
 }
 .quyu-list .qu-right li.active,
 .price-list .price-right li.active{
-    color:#4DB5FF;
+    color:#B68826;
 }
 
 .huxing_list {
@@ -295,7 +298,7 @@ li {
     text-align: center;
     line-height: 40px;
     border-radius: 0.25rem;
-    background:#2AC66D;
+    background:#B68826;
     color: #fff;
 }
 
@@ -328,7 +331,7 @@ li {
 
 .hua .active {
     color: #fff !important;
-    background-color:#2AC66D!important;
+    background-color:#B68826!important;
 }
 
 .shaixuan_list h2 {

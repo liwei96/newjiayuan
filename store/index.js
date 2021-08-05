@@ -68,6 +68,7 @@ const store = () => new Vuex.Store({
       req,
       app
       }) {
+      console.log(555)
       let cookie = req.headers.cookie;
       commit('sethostname', req.headers.host)
       // req.headers.host = 'edefang.net'

@@ -5,9 +5,6 @@ export default ({
   store
 }) => {
   app.router.beforeEach((to, from, next) => {
-    // if (process.server == false) {
-    //   sessionStorage.setItem('pinyin', to.params.name)
-    // }
     switch (to.params.name) {
       case 'xuzhou':
         if (process.server == false) {
@@ -157,16 +154,6 @@ export default ({
       store.state.city = 93
       break;
     }
-    // let city = localStorage.getItem('city')
-    // let ip = ip_arr["ip"];
-    // let url = 'm.jy1980.com'+to.fullPath
-    // console.log(url)
-    // let pro = 0
-    // if (url.indexOf('content') !== -1) {
-    //   pro = to.params.id
-    // }else{
-    //   pro = 0
-    // }
     if (!to.query.uuid) {
       let toQuery = JSON.parse(JSON.stringify(to.query));
       let timestamp = ''
