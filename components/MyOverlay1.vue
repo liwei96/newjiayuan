@@ -50,7 +50,7 @@ export default {
 }
 .samples {
   width: 8.5rem;
-  height: 2.25rem;
+  height: 2.4rem;
   border-radius: 1.125rem;
   position: absolute;
   background: linear-gradient(270deg, #28C567, #81DB85);

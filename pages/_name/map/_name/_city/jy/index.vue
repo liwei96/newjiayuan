@@ -1172,9 +1172,8 @@ export default {
 }
 .Map >>> #b_name {
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: #fff;
-  height: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1190,16 +1189,15 @@ export default {
 }
 .Map >>> #m_name {
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 1rem;
   color: #fff;
-  height: 1rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0;
 }
 .Map >>> #m_num {
-  font-size: 0.5625rem;
+  font-size: .75rem;
   color: #fefefe;
   text-align: center;
   height: 1rem;
